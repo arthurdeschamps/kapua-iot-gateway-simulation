@@ -3,6 +3,6 @@ Supply chain management simulator for kapua. The goal is to build a parametrisab
 
 ## Technologies
 ### Database
-Engine: SQLite
+Engine: H2
 
-ORM: Hibernate
+ORM: Ebean
