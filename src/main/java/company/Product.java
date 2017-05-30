@@ -1,16 +1,26 @@
 package company;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  * Created by Arthur Deschamps on 30.05.17.
  * This class represents a product sold by the company
  */
-public class Product {
-    
-    private String Id;
+@Entity
+@Table(name="products")
+public class Product extends BaseModel {
+
+    @Size(min = 1, max = 100)
     private String name;
+    @Size(min = 1, max = 200)
     private String productionCountry;
-    private float price;
-    private float weight;
+    @NotNull
+    private float price; // in USD
+    @NotNull
+    private float weight; // in grams
     private boolean isFragile;
 
 
@@ -36,10 +46,6 @@ public class Product {
 
     public void setPrice(float price) {
         this.price = price;
-    }
-
-    public String getId() {
-        return Id;
     }
 
     public String getProductionCountry() {
