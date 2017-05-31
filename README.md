@@ -4,7 +4,7 @@ Supply chain management simulator for kapua. The goal is to build a parametrisab
 ## Getting started
 Install redis
  - On mac os (with brew): 
-    ```# brew install redis```
+    ```brew install redis```
  - Other platforms: see this [page](https://redis.io/topics/quickstart)
  
 Start redis:
@@ -21,5 +21,11 @@ employees, vehicles, etc), you can install redis-commander:
     // run on localhost
     # redis-commander
 ## Technologies
+### Language
+Java
+
 ### Database
 Redis
+
+### Build automation tool
+Apache Maven
