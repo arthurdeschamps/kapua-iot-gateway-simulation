@@ -1,35 +1,53 @@
 package company;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jedis.JedisManager;
+import jedis.JedisObject;
+
+import java.util.UUID;
 
 /**
  * Created by Arthur Deschamps on 30.05.17.
  * This class represents a product sold by the company
  */
-@Entity
-@Table(name="products")
-public class Product extends BaseModel {
+public class Product implements JedisObject {
 
-    @Size(min = 1, max = 100)
+    private String id;
     private String name;
-    @Size(min = 1, max = 200)
     private String productionCountry;
-    @NotNull
     private float price; // in USD
-    @NotNull
     private float weight; // in grams
     private boolean isFragile;
 
 
     public Product(String name, String productionCountry, float price, float weight, boolean isFragile) {
+        this.id = UUID.randomUUID().toString();
         this.name = name;
         this.productionCountry = productionCountry;
         this.price = price;
         this.weight = weight;
         this.isFragile = isFragile;
+    }
+
+
+    // Validate object before saving
+    public boolean validate() {
+        return ((name.length() <= 50) && (productionCountry.length() <= 50) && (price > 0) && (weight > 0));
+    }
+
+    @Override
+    public void save() {
+        JedisManager.getInstance().save(this);
+    }
+
+    @Override
+    public void delete() {
+        JedisManager.getInstance().delete(this);
+    }
+
+
+    @Override
+    public String getId() {
+        return Product.class.getName().toLowerCase()+":"+id+":";
     }
 
     public String getName() {
