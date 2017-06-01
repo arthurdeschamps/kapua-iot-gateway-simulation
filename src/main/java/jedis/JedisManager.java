@@ -5,14 +5,16 @@ import org.apache.commons.beanutils.BeanUtilsBean;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
-import redis.clients.jedis.Pipeline;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 /**
  * Created by Arthur Deschamps on 31.05.17.
+ * This class takes care of the interactions between Redis and JedisObjects
  */
 public final class JedisManager {
 
@@ -56,24 +58,51 @@ public final class JedisManager {
                 e.printStackTrace();
             }
         } else {
-            Logger.getLogger(Product.class.getName()).info("Couldn't validate object of type \""+object.toString()+"\"");
+            logger.info("Couldn't validate object of type \""+object.toString()+"\"");
         }
     }
 
-    // Retrieve object from memory
-    public JedisObject retrieve(JedisObject object) {
+    // Retrieve object from memory by id and class
+    public <T extends JedisObject> T retrieve(String id, T bean) {
         try(Jedis jedis = getResource()) {
-            Map<String, String> properties = jedis.hgetAll(object.getId());
-            BeanUtilsBean.getInstance().populate(object,properties);
-        } catch (IllegalAccessException | InvocationTargetException e) {
+            Map<String, String> properties = jedis.hgetAll(id);
+            populateObject(bean,properties);
+        }
+        return bean;
+    }
+
+
+    // Retrieve all objects from specific class
+    public <T extends JedisObject> List<T> retrieveAllFromClass(T bean) {
+        List<T> objects = new ArrayList<>();
+        try (Jedis jedis = getResource()){
+            // Get all keys from given class
+            Set<String> keys = jedis.keys(bean.getClass().getName().toLowerCase()+":*");
+
+            // Iterate over found keys and add newly populated object to list
+            for (final String key : keys) {
+                T newBean = (T) bean.clone();
+                populateObject(newBean,jedis.hgetAll(key));
+                objects.add(newBean);
+            }
+        } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
-        return object;
+        return objects;
     }
 
     public void delete(JedisObject object) {
         try(Jedis jedis = getResource()) {
             jedis.del(object.getId());
+        }
+    }
+
+    // Populate an object with properties retrieve from Redis
+    private void populateObject(Object object, Map<String,String> properties) {
+        try {
+            BeanUtilsBean.getInstance().populate(object,properties);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
         }
     }
 

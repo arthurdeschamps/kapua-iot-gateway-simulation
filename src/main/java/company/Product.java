@@ -1,31 +1,28 @@
 package company;
 
-import jedis.JedisManager;
 import jedis.JedisObject;
 
-import java.util.UUID;
 
 /**
  * Created by Arthur Deschamps on 30.05.17.
  * This class represents a product sold by the company
  */
-public class Product implements JedisObject {
+public class Product extends JedisObject {
 
-    private String id;
+    // Id
     private String name;
     private String productionCountry;
     private float price; // in USD
     private float weight; // in grams
-    private boolean isFragile;
+    private boolean fragile;
 
 
-    public Product(String name, String productionCountry, float price, float weight, boolean isFragile) {
-        this.id = UUID.randomUUID().toString();
+    public Product(String name, String productionCountry, float price, float weight, boolean fragile) {
         this.name = name;
         this.productionCountry = productionCountry;
         this.price = price;
         this.weight = weight;
-        this.isFragile = isFragile;
+        this.fragile = fragile;
     }
 
 
@@ -34,21 +31,12 @@ public class Product implements JedisObject {
         return ((name.length() <= 50) && (productionCountry.length() <= 50) && (price > 0) && (weight > 0));
     }
 
-    @Override
-    public void save() {
-        JedisManager.getInstance().save(this);
-    }
-
-    @Override
-    public void delete() {
-        JedisManager.getInstance().delete(this);
-    }
-
 
     @Override
     public String getId() {
-        return Product.class.getName().toLowerCase()+":"+id+":";
+        return Product.class.getName().toLowerCase()+":"+name.toLowerCase().replace(' ','_')+":";
     }
+
 
     public String getName() {
         return name;
@@ -75,6 +63,18 @@ public class Product implements JedisObject {
     }
 
     public boolean isFragile() {
-        return isFragile;
+        return fragile;
+    }
+
+    public void setProductionCountry(String productionCountry) {
+        this.productionCountry = productionCountry;
+    }
+
+    public void setWeight(float weight) {
+        this.weight = weight;
+    }
+
+    public void setFragile(boolean fragile) {
+        this.fragile = fragile;
     }
 }
