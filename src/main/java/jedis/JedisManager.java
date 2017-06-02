@@ -53,7 +53,7 @@ public final class JedisManager {
         if (object.validate()) {
             try (Jedis jedis = getResource()) {
                 Map<String, String> properties = BeanUtilsBean.getInstance().describe(object);
-                jedis.hmset(object.getId(),properties);
+                jedis.hmset(object.getClass().getName().toLowerCase()+":"+object.getId(),properties);
             } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                 e.printStackTrace();
             }

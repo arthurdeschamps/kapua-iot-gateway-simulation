@@ -1,5 +1,6 @@
 package company;
 
+import com.sun.istack.internal.Nullable;
 import jedis.JedisObject;
 
 
@@ -34,7 +35,7 @@ public class Product extends JedisObject {
 
     @Override
     public String getId() {
-        return Product.class.getName().toLowerCase()+":"+name.toLowerCase().replace(' ','_')+":";
+        return  getName().toLowerCase().replace(' ','_');
     }
 
 
@@ -77,4 +78,5 @@ public class Product extends JedisObject {
     public void setFragile(boolean fragile) {
         this.fragile = fragile;
     }
+
 }
