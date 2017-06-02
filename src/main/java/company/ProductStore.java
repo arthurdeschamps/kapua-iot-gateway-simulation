@@ -1,11 +1,9 @@
 package company;
 
 import jedis.JedisManager;
-import jedis.JedisObject;
 import jedis.JedisObjectFactoryInterface;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
