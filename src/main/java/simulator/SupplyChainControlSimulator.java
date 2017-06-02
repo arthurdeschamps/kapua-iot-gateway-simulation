@@ -5,7 +5,7 @@ import jedis.JedisManager;
 /**
  * Created by Arthur Deschamps on 30.05.17.
  */
-public class Simulator {
+public class SupplyChainControlSimulator {
 
     public static void main(String[] args) {
     }
