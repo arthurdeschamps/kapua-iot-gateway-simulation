@@ -13,7 +13,7 @@ Start redis:
 Run project
 
 ### More
-In order to be able to see the model's parameters (products, 
+In order to be able to see the model's parameters (storage, 
 employees, vehicles, etc), you can install redis-commander:
 
     // install via npm

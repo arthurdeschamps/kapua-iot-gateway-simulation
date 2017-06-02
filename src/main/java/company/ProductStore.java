@@ -1,49 +1,26 @@
 package company;
 
-import jedis.JedisManager;
 import jedis.JedisObjectStoreInterface;
 
 import java.util.*;
 
 /**
  * Created by Arthur Deschamps on 01.06.17.
- * Store and manage products
+ * Store and manage storage
  */
 public class ProductStore implements JedisObjectStoreInterface<Product> {
 
-    private List<Product> products;
+    private List<Product> storage;
     private Map<String, Integer> productsQuantities;
 
     public ProductStore() {
-        products = new ArrayList<>();
+        storage = new ArrayList<>();
         productsQuantities = new HashMap<>();
-    }
-
-    @Override
-    public Optional<Product> retrieve(String productName) {
-        return getProducts().stream().findFirst().filter(product -> product.getName().equals(productName));
-    }
-
-    @Override
-    public List<Product> retrieveAll() {
-        // Retrieve all products from redis
-        List<Product> productsJedis = JedisManager.getInstance().retrieveAllFromClass(getNewBean());
-        if (productsJedis != null)
-            products.addAll(productsJedis);
-        return productsJedis;
     }
 
     @Override
     public Product getNewBean() {
         return new Product(null,null,0,0,false);
-    }
-
-    public int getProductQuantityRemaining(String productId) {
-        return getProductsQuantities().get(productId);
-    }
-
-    public void setProductQuantityRemaining(String productId, int productQuantity) {
-        getProductsQuantities().put(productId, productQuantity);
     }
 
     public Map<String, Integer> getProductsQuantities() {
@@ -54,11 +31,13 @@ public class ProductStore implements JedisObjectStoreInterface<Product> {
         this.productsQuantities = productsQuantities;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    @Override
+    public List<Product> getStorage() {
+        return storage;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    @Override
+    public void setStorage(List<Product> storage) {
+        this.storage = storage;
     }
 }

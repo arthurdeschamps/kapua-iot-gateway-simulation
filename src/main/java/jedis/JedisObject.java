@@ -10,7 +10,7 @@ public abstract class JedisObject implements Cloneable {
     public abstract boolean validate();
 
     // Save object in db
-    public void save() {
+    void save() {
         JedisManager.getInstance().save(this);
     }
 

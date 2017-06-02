@@ -406,7 +406,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFcWGWcNyAfYik="
 									},
-									"name": "products",
+									"name": "storage",
 									"visibility": "private",
 									"isStatic": false,
 									"isLeaf": false,
@@ -2509,7 +2509,7 @@
 													"height": 13,
 													"autoResize": false,
 													"underline": false,
-													"text": "-products: List<Product>",
+													"text": "-storage: List<Product>",
 													"horizontalAlignment": 0,
 													"verticalAlignment": 5,
 													"wordWrap": false
@@ -10457,7 +10457,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFcWMMUT26OjGo="
 									},
-									"name": "products",
+									"name": "storage",
 									"visibility": "private",
 									"isStatic": false,
 									"isLeaf": false,
@@ -10765,7 +10765,7 @@
 													"height": 13,
 													"autoResize": false,
 													"underline": false,
-													"text": "-products: ProductStore",
+													"text": "-storage: ProductStore",
 													"horizontalAlignment": 0,
 													"verticalAlignment": 5,
 													"wordWrap": false
@@ -11197,7 +11197,7 @@
 													"height": 13,
 													"autoResize": false,
 													"underline": false,
-													"text": "+generateCompany(entityType, typeOfService, products): Company",
+													"text": "+generateCompany(entityType, typeOfService, storage): Company",
 													"horizontalAlignment": 0,
 													"verticalAlignment": 5,
 													"wordWrap": false
@@ -14197,7 +14197,7 @@
 											"_parent": {
 												"$ref": "AAAAAAFcWNJ0w40W5aA="
 											},
-											"name": "products",
+											"name": "storage",
 											"visibility": "public",
 											"isStatic": false,
 											"isLeaf": false,

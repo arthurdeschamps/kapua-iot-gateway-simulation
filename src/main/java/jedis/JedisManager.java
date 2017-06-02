@@ -66,7 +66,11 @@ public final class JedisManager {
     public <T extends JedisObject> T retrieve(String id, T bean) {
         try(Jedis jedis = getResource()) {
             Map<String, String> properties = jedis.hgetAll(bean.getClass().getName().toLowerCase()+":"+id);
-            populateObject(bean,properties);
+            if (properties.size() == 0) {
+                bean = null;
+            } else {
+                populateObject(bean, properties);
+            }
         }
         return bean;
     }
@@ -100,7 +104,7 @@ public final class JedisManager {
     // Populate an object with properties retrieve from Redis
     private void populateObject(Object object, Map<String,String> properties) {
         try {
-            BeanUtilsBean.getInstance().populate(object,properties);
+            BeanUtilsBean.getInstance().copyProperties(object,properties);
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }

@@ -15,12 +15,15 @@ public class Transportation extends JedisObject {
     private float capacity; // in tonnes
     private GeoCoordinate currentPosition;
     private int maxSpeed; // km/h
+    private TransportationMode transportationMode;
 
-    public Transportation(float capacity, GeoCoordinate currentPosition, int maxSpeed) {
+
+    public Transportation(float capacity, GeoCoordinate currentPosition, int maxSpeed, TransportationMode transportationMode) {
         this.capacity = capacity;
         this.currentPosition = currentPosition;
         this.maxSpeed = maxSpeed;
         this.id = UUID.randomUUID().toString();
+        this.transportationMode = transportationMode;
     }
 
     @Override
@@ -59,5 +62,9 @@ public class Transportation extends JedisObject {
 
     public void setMaxSpeed(int maxSpeed) {
         this.maxSpeed = maxSpeed;
+    }
+
+    public TransportationMode getTransportationMode() {
+        return transportationMode;
     }
 }
