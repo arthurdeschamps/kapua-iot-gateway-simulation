@@ -53,7 +53,7 @@ public final class JedisManager {
         if (object.validate()) {
             try (Jedis jedis = getResource()) {
                 Map<String, String> properties = BeanUtilsBean.getInstance().describe(object);
-                jedis.hmset(object.getClass().getName().toLowerCase()+":"+object.getId(),properties);
+                jedis.hmset(getEntryId(object),properties);
             } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                 e.printStackTrace();
             }
@@ -62,10 +62,10 @@ public final class JedisManager {
         }
     }
 
-    // Retrieve object from memory by id and class
+    // Retrieve object from memory and populate bean. Bean must be an "empty" object from the calling class.
     public <T extends JedisObject> T retrieve(String id, T bean) {
         try(Jedis jedis = getResource()) {
-            Map<String, String> properties = jedis.hgetAll(id);
+            Map<String, String> properties = jedis.hgetAll(bean.getClass().getName().toLowerCase()+":"+id);
             populateObject(bean,properties);
         }
         return bean;
@@ -112,5 +112,9 @@ public final class JedisManager {
 
     public JedisPool getPool() {
         return pool;
+    }
+
+    private <T extends JedisObject> String getEntryId(T object) {
+        return object.getClass().getName().toLowerCase()+":"+object.getId().replace(' ','_');
     }
 }

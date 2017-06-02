@@ -47,7 +47,7 @@ public class CompanyTest {
         Product result = JedisManager.getInstance().retrieve(watch.getId(),productStore.getNewBean());
         Assert.assertNotNull(result);
         Assert.assertEquals(watch.getName(),result.getName());
-        //Assert.assertEquals(watch.getProductionCountry(),result.getProductionCountry());
+        Assert.assertEquals(watch.getProductionCountry(),result.getProductionCountry());
         Assert.assertEquals(watch.isFragile(),result.isFragile());
         Assert.assertTrue(watch.getWeight() == result.getWeight());
 
