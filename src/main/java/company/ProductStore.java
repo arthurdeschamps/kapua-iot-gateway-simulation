@@ -18,10 +18,6 @@ public class ProductStore implements JedisObjectStoreInterface<Product> {
         productsQuantities = new HashMap<>();
     }
 
-    @Override
-    public Product getNewBean() {
-        return new Product(null,null,0,0,false);
-    }
 
     public Map<String, Integer> getProductsQuantities() {
         return productsQuantities;
@@ -34,6 +30,11 @@ public class ProductStore implements JedisObjectStoreInterface<Product> {
     @Override
     public List<Product> getStorage() {
         return storage;
+    }
+
+    @Override
+    public Class<Product> getItemClass() {
+        return Product.class;
     }
 
     @Override

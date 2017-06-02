@@ -3,11 +3,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>org.eclipse.kapua.iot-gateway-simulator.supply-chain-management</groupId>
     <artifactId>kapua-iot-gateway-simulation-scm</artifactId>
     <version>1.0-SNAPSHOT</version>
-
     <dependencies>
         <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
         <dependency>
@@ -20,19 +18,13 @@
             <artifactId>junit</artifactId>
             <version>4.12</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
-        <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-            <version>1.9.3</version>
-        </dependency>
+        <!-- Gson, Apache2 -->
         <dependency>
             <groupId>info.cukes</groupId>
             <artifactId>gherkin</artifactId>
             <version>2.12.2</version>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>

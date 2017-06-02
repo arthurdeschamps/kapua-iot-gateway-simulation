@@ -1,15 +1,10 @@
 package jedis;
 
-import company.Product;
-import org.apache.commons.beanutils.BeanUtilsBean;
+import gherkin.deps.com.google.gson.Gson;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
-
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 /**
@@ -52,10 +47,9 @@ public final class JedisManager {
     public void save(JedisObject object) {
         if (object.validate()) {
             try (Jedis jedis = getResource()) {
-                Map<String, String> properties = BeanUtilsBean.getInstance().describe(object);
-                jedis.hmset(getEntryId(object),properties);
-            } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-                e.printStackTrace();
+                Gson gson = new Gson();
+                String properties = gson.toJson(object);
+                jedis.set(getEntryId(object), properties);
             }
         } else {
             logger.info("Couldn't validate object of type \""+object.toString()+"\"");
@@ -63,34 +57,32 @@ public final class JedisManager {
     }
 
     // Retrieve object from memory and populate bean. Bean must be an "empty" object from the calling class.
-    public <T extends JedisObject> T retrieve(String id, T bean) {
+    public <T extends JedisObject> T retrieve(String id, Class<T> clazz) {
+        T returnObject;
         try(Jedis jedis = getResource()) {
-            Map<String, String> properties = jedis.hgetAll(bean.getClass().getName().toLowerCase()+":"+id);
-            if (properties.size() == 0) {
-                bean = null;
+            Gson gson = new Gson();
+            String properties = jedis.get(clazz.getName().toLowerCase()+":"+id);
+            if (properties == null) {
+                returnObject = null;
             } else {
-                populateObject(bean, properties);
+                returnObject = gson.fromJson(properties,clazz);
             }
         }
-        return bean;
+        return returnObject;
     }
 
 
     // Retrieve all objects from specific class
-    public <T extends JedisObject> List<T> retrieveAllFromClass(T bean) {
+    public <T extends JedisObject> List<T> retrieveAllFromClass(Class<T> clazz) {
         List<T> objects = new ArrayList<>();
         try (Jedis jedis = getResource()){
             // Get all keys from given class
-            Set<String> keys = jedis.keys(bean.getClass().getName().toLowerCase()+":*");
+            Set<String> keys = jedis.keys(clazz.getName().toLowerCase()+":*");
 
+            Gson gson = new Gson();
             // Iterate over found keys and add newly populated object to list
-            for (final String key : keys) {
-                T newBean = (T) bean.clone();
-                populateObject(newBean,jedis.hgetAll(key));
-                objects.add(newBean);
-            }
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
+            for (final String key : keys)
+                objects.add(gson.fromJson(jedis.get(key),clazz));
         }
         return objects;
     }
@@ -98,15 +90,6 @@ public final class JedisManager {
     public void delete(JedisObject object) {
         try(Jedis jedis = getResource()) {
             jedis.del(object.getId());
-        }
-    }
-
-    // Populate an object with properties retrieve from Redis
-    private void populateObject(Object object, Map<String,String> properties) {
-        try {
-            BeanUtilsBean.getInstance().copyProperties(object,properties);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
         }
     }
 
