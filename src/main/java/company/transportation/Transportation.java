@@ -1,9 +1,8 @@
-package company;
+package company.transportation;
 
+import company.transportation.TransportationMode;
+import jedis.JedisManager;
 import jedis.JedisObject;
-import redis.clients.jedis.GeoCoordinate;
-
-import java.util.UUID;
 
 /**
  * Created by Arthur Deschamps on 02.06.17.
@@ -13,22 +12,20 @@ public class Transportation extends JedisObject {
 
     private String id;
     private float capacity; // in tonnes
-    private GeoCoordinate currentPosition;
     private int maxSpeed; // km/h
     private TransportationMode transportationMode;
 
 
-    public Transportation(float capacity, GeoCoordinate currentPosition, int maxSpeed, TransportationMode transportationMode) {
+    public Transportation(float capacity, int maxSpeed, TransportationMode transportationMode) {
         this.capacity = capacity;
-        this.currentPosition = currentPosition;
         this.maxSpeed = maxSpeed;
-        this.id = UUID.randomUUID().toString();
+        this.id = JedisManager.getInstance().generateUniqueId();
         this.transportationMode = transportationMode;
     }
 
     @Override
     public boolean validate() {
-        return ((capacity > 0) && (currentPosition != null) && (maxSpeed > 0));
+        return ((capacity > 0) && (maxSpeed > 0));
     }
 
     @Override
@@ -46,14 +43,6 @@ public class Transportation extends JedisObject {
 
     public void setCapacity(float capacity) {
         this.capacity = capacity;
-    }
-
-    public GeoCoordinate getCurrentPosition() {
-        return currentPosition;
-    }
-
-    public void setCurrentPosition(GeoCoordinate currentPosition) {
-        this.currentPosition = currentPosition;
     }
 
     public int getMaxSpeed() {

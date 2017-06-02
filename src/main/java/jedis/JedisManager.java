@@ -104,4 +104,9 @@ public final class JedisManager {
     private <T extends JedisObject> String getEntryId(T object) {
         return object.getClass().getName().toLowerCase()+":"+object.getId().replace(' ','_');
     }
+
+    // Generate an id for a JedisObject
+    public String generateUniqueId() {
+        return UUID.randomUUID().toString();
+    }
 }

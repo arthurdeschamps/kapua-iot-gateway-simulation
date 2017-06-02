@@ -1,11 +1,7 @@
 package jedis;
 
-import company.Product;
-import redis.clients.jedis.Jedis;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 /**
  * Created by Arthur Deschamps on 01.06.17.

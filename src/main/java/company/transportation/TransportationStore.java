@@ -1,4 +1,4 @@
-package company;
+package company.transportation;
 
 import jedis.JedisObjectStoreInterface;
 

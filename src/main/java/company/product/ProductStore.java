@@ -1,5 +1,6 @@
-package company;
+package company.product;
 
+import company.product.Product;
 import jedis.JedisObjectStoreInterface;
 
 import java.util.*;

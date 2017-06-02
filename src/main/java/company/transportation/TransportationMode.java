@@ -1,4 +1,4 @@
-package company;
+package company.transportation;
 
 /**
  * Created by Arthur Deschamps on 02.06.17.

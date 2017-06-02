@@ -166,7 +166,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFcWFudvx4JVGk="
 									},
-									"name": "price",
+									"name": "basePrice",
 									"visibility": "private",
 									"isStatic": false,
 									"isLeaf": false,
@@ -1133,7 +1133,7 @@
 													"height": 13,
 													"autoResize": false,
 													"underline": false,
-													"text": "-price: float",
+													"text": "-basePrice: float",
 													"horizontalAlignment": 0,
 													"verticalAlignment": 5,
 													"wordWrap": false
