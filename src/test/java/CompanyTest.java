@@ -2,6 +2,12 @@
  * Created by Arthur Deschamps on 30.05.17.
  */
 
+import company.customer.Customer;
+import company.customer.CustomerStore;
+import company.customer.PostalAddress;
+import company.order.DeliveryStore;
+import company.order.Order;
+import company.order.OrderStore;
 import company.product.Product;
 import company.product.ProductStore;
 import company.product.ProductType;
@@ -17,6 +23,7 @@ import org.junit.Test;
 import redis.clients.jedis.GeoCoordinate;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -27,6 +34,9 @@ public class CompanyTest {
     private ProductTypeStore productTypeStore;
     private TransportationStore transportationStore;
     private Transportation expectedTransportation;
+    private CustomerStore customerStore;
+    private OrderStore orderStore;
+    private DeliveryStore deliveryStore;
     private final Logger logger = Logger.getLogger(CompanyTest.class.getName());
 
     @Before
@@ -37,6 +47,9 @@ public class CompanyTest {
         productTypeStore = new ProductTypeStore();
         productStore = new ProductStore();
         transportationStore = new TransportationStore();
+        orderStore = new OrderStore();
+        deliveryStore = new DeliveryStore();
+        customerStore = new CustomerStore();
 
         productTypeStore.add(new ProductType("Basket Ball","USA",20.0f,0.6f,false));
         // Create a product with a identical id (name). Should override elder values.
@@ -95,5 +108,36 @@ public class CompanyTest {
         Assert.assertEquals(expectedTransportation.getMaxSpeed(),result.getMaxSpeed());
         Assert.assertEquals(expectedTransportation.getTransportationMode(),result.getTransportationMode());
         Assert.assertTrue(transportationStore.retrieveAll().size() == 3);
+    }
+
+
+    @Test
+    public void testEquals() {
+        PostalAddress addr1 = new PostalAddress("street","city","region","country",100);
+        PostalAddress addr2 = new PostalAddress("street","city","region","country",100);
+        Assert.assertEquals(addr1,addr2);
+        addr1.setCity("city2");
+        Assert.assertNotEquals(addr1,addr2);
+        Customer customer1 = new Customer("Arthur","Deschamps",addr1);
+        Customer customer2 = new Customer("Arthur","Deschamps",addr1);
+        Assert.assertEquals(customer1,customer2);
+        customer1.setFirstName("Marc");
+        Assert.assertNotEquals(customer1,customer2);
+        customer1.setFirstName(customer2.getFirstName());
+        addr2.setCountry("USA");
+        customer1.setPostalAddress(addr2);
+        Assert.assertNotEquals(customer1,customer2);
+    }
+
+    @Test
+    public void testOrder() {
+        List<Product> products = productStore.getStorage();
+        List<Customer> customers = customerStore.getStorage();
+        orderStore.add(new Order(customers.get(0), productStore.getStorage()));
+    }
+
+    @Test
+    public void testDelivery() {
+
     }
 }

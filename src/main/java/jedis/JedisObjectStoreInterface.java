@@ -22,6 +22,7 @@ public interface JedisObjectStoreInterface<T extends JedisObject> {
         return allObjects;
     }
 
+
     // Return stored items class
     Class<T> getItemClass();
 
@@ -37,7 +38,7 @@ public interface JedisObjectStoreInterface<T extends JedisObject> {
     default void add(T object) {
         if (object != null) {
             if (JedisManager.getInstance().retrieve(object.getId(), object.getClass()) == null) {
-                JedisManager.getInstance().save(object);
+                object.save();
                 getStorage().add(object);
             }
         }

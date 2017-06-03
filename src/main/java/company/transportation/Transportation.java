@@ -10,7 +10,6 @@ import jedis.JedisObject;
  */
 public class Transportation extends JedisObject {
 
-    private String id;
     private float capacity; // in tonnes
     private int maxSpeed; // km/h
     private TransportationMode transportationMode;
@@ -19,18 +18,12 @@ public class Transportation extends JedisObject {
     public Transportation(float capacity, int maxSpeed, TransportationMode transportationMode) {
         this.capacity = capacity;
         this.maxSpeed = maxSpeed;
-        this.id = JedisManager.getInstance().generateUniqueId();
         this.transportationMode = transportationMode;
     }
 
     @Override
     public boolean validate() {
         return ((capacity > 0) && (maxSpeed > 0));
-    }
-
-    @Override
-    public String getId() {
-        return this.id;
     }
 
     public void setId(String id) {

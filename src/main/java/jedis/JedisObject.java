@@ -6,21 +6,33 @@ package jedis;
  */
 public abstract class JedisObject {
 
+    protected String id;
+
+    public JedisObject() {
+        this.id = generateId();
+    }
+
     // Validate that object conforms to the schema
     public abstract boolean validate();
 
     // Save object in db
-    void save() {
+    final void save() {
         JedisManager.getInstance().save(this);
     }
 
     // Delete object from db
-    public void delete() {
+    public final void delete() {
         JedisManager.getInstance().delete(this);
     }
 
     // Must have a unique ID
-    public abstract String getId();
+    public final String getId() {
+        return id;
+    }
+
+    private String generateId() {
+        return JedisManager.getInstance().generateUniqueId();
+    }
 
 
 }

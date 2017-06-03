@@ -10,13 +10,11 @@ import redis.clients.jedis.GeoCoordinate;
  */
 public class Product extends JedisObject {
 
-    private String id;
     private ProductType productType;
     private GeoCoordinate currentLocation;
     private float price;
 
     public Product(ProductType productType, GeoCoordinate currentLocation, int price) {
-        this.id = JedisManager.getInstance().generateUniqueId();
         this.currentLocation = currentLocation;
         this.productType = productType;
         this.price = price;
@@ -32,11 +30,6 @@ public class Product extends JedisObject {
     @Override
     public boolean validate() {
         return ((productType != null) && (currentLocation != null));
-    }
-
-    @Override
-    public String getId() {
-        return id;
     }
 
     public ProductType getProductType() {

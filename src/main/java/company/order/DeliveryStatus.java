@@ -1,4 +1,4 @@
-package company.delivery;
+package company.order;
 
 /**
  * Created by Arthur Deschamps on 02.06.17.

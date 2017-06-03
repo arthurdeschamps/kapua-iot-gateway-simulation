@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class ProductTypeStore implements JedisObjectStoreInterface<ProductType> {
 
-    List<ProductType> productTypes;
+    private List<ProductType> productTypes;
 
     public ProductTypeStore() {
         productTypes = new ArrayList<>();

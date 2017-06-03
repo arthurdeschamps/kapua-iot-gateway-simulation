@@ -1,5 +1,6 @@
-package company.delivery;
+package company.order;
 
+import company.customer.PostalAddress;
 import company.product.Product;
 import company.transportation.Transportation;
 import jedis.JedisManager;
@@ -13,17 +14,15 @@ import java.util.List;
  */
 public class Delivery extends JedisObject {
 
-    private String id;
-    private List<Product> packageContent;
+    private List<Order> orders;
     private Transportation transporter;
-    private GeoCoordinate destination;
-    private GeoCoordinate departure;
+    private PostalAddress destination;
+    private PostalAddress departure;
     private GeoCoordinate currentPosition;
     private DeliveryStatus deliveryState;
 
-    public Delivery(List<Product> packageContent, Transportation transporter, GeoCoordinate departure, GeoCoordinate currentPosition, GeoCoordinate destination) {
-        this.id = JedisManager.getInstance().generateUniqueId();
-        this.packageContent = packageContent;
+    public Delivery(List<Order> orders, Transportation transporter, PostalAddress departure, GeoCoordinate currentPosition, PostalAddress destination) {
+        this.orders = orders;
         this.transporter = transporter;
         this.departure = departure;
         this.currentPosition = currentPosition;
@@ -34,21 +33,16 @@ public class Delivery extends JedisObject {
 
     @Override
     public boolean validate() {
-        return ((packageContent.size() > 0) && (transporter != null) && (destination != null) &&
+        return ((transporter != null) && (destination != null) &&
                 (departure != null) && (currentPosition != null) && (deliveryState != null));
     }
 
-    @Override
-    public String getId() {
-        return id;
+    public List<Order> getOrders() {
+        return orders;
     }
 
-    public List<Product> getPackageContent() {
-        return packageContent;
-    }
-
-    public void setPackageContent(List<Product> packageContent) {
-        this.packageContent = packageContent;
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     public Transportation getTransporter() {
@@ -59,19 +53,19 @@ public class Delivery extends JedisObject {
         this.transporter = transporter;
     }
 
-    public GeoCoordinate getDestination() {
+    public PostalAddress getDestination() {
         return destination;
     }
 
-    public void setDestination(GeoCoordinate destination) {
+    public void setDestination(PostalAddress destination) {
         this.destination = destination;
     }
 
-    public GeoCoordinate getDeparture() {
+    public PostalAddress getDeparture() {
         return departure;
     }
 
-    public void setDeparture(GeoCoordinate departure) {
+    public void setDeparture(PostalAddress departure) {
         this.departure = departure;
     }
 

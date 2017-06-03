@@ -33,12 +33,6 @@ public class ProductType extends JedisObject {
     }
 
 
-    @Override
-    public String getId() {
-        return  getName().toLowerCase().replace(' ','_');
-    }
-
-
     public String getName() {
         return name;
     }
