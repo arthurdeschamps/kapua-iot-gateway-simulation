@@ -1,6 +1,5 @@
 package simulator;
 
-import com.sun.tools.corba.se.idl.constExpr.Or;
 import company.customer.Customer;
 import company.customer.CustomerStore;
 import company.customer.PostalAddress;
@@ -20,7 +19,6 @@ import company.transportation.TransportationStore;
 import jedis.JedisManager;
 import redis.clients.jedis.GeoCoordinate;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -29,7 +27,7 @@ import java.util.logging.Logger;
  * Created by Arthur Deschamps on 01.06.17.
  * Generates default data for simulation
  */
-public class PopulateDatabase {
+final class DefaultDataGenerator {
 
     private static ProductStore productStore = new ProductStore();
     private static ProductTypeStore productTypeStore = new ProductTypeStore();
@@ -38,9 +36,12 @@ public class PopulateDatabase {
     private static OrderStore orderStore = new OrderStore();
     private static DeliveryStore deliveryStore = new DeliveryStore();
     private static Company company = new Company(CompanyType.DOMESTIC,"Iot Corp",new PostalAddress("4 Goldfield Rd","Honolulu","HI","United States",96815));
-    private static final Logger logger = Logger.getLogger(PopulateDatabase.class.getName());
+    private static final Logger logger = Logger.getLogger(DefaultDataGenerator.class.getName());
 
-    public static void main(String[] args) {
+    private DefaultDataGenerator(){}
+
+    public static void generateDefaultDatabase() {
+        deleteAll();
         generateDatabase();
     }
 
@@ -68,14 +69,19 @@ public class PopulateDatabase {
 
     private static void generateProducts() {
         GeoCoordinate coordinate = new GeoCoordinate(100,100);
-        Product apple = new Product(productTypeStore.getStorage().get(0),coordinate);
-        for (int i = 0; i < 20000; i++)
+        Product apple;
+        for (int i = 0; i < 20000; i++) {
+            apple = new Product(productTypeStore.getStorage().get(0),coordinate);
             productStore.add(apple);
-        Product basketBall = new Product(productTypeStore.getStorage().get(3),coordinate,20);
-        for (int i = 0; i < 100; i++)
+        }
+        Product basketBall;
+        for (int i = 0; i < 100; i++) {
+            basketBall = new Product(productTypeStore.getStorage().get(3),coordinate,20);
             productStore.add(basketBall);
-        Product tv = new Product(productTypeStore.getStorage().get(4),coordinate,2499);
+        }
+        Product tv;
         for (int i = 0; i < 450; i++) {
+            tv = new Product(productTypeStore.getStorage().get(4),coordinate,2499);
             productStore.add(tv);
         }
     }
