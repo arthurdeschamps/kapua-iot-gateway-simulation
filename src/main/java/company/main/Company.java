@@ -1,11 +1,15 @@
 package company.main;
 
+import com.github.javafaker.Faker;
+import company.customer.CustomerStore;
 import company.customer.PostalAddress;
 import company.order.DeliveryStore;
 import company.product.ProductStore;
 import company.product.ProductTypeStore;
 import company.transportation.TransportationStore;
 import redis.clients.jedis.GeoCoordinate;
+
+import java.util.Random;
 
 /**
  * Created by Arthur Deschamps on 30.05.17.
@@ -21,12 +25,14 @@ public class Company {
     private ProductTypeStore productTypeStore;
     private DeliveryStore deliveryStore;
     private TransportationStore transportationStore;
+    private CustomerStore customerStore;
 
     public Company(CompanyType companyType, String name, PostalAddress postalAddress) {
         this.productStore = new ProductStore();
         this.productTypeStore = new ProductTypeStore();
         this.deliveryStore = new DeliveryStore();
         this.transportationStore = new TransportationStore();
+        this.customerStore = new CustomerStore();
         this.type = companyType;
         this.name = name;
         this.headquarters = postalAddress;
@@ -86,5 +92,13 @@ public class Company {
 
     public void setTransportationStore(TransportationStore transportationStore) {
         this.transportationStore = transportationStore;
+    }
+
+    public CustomerStore getCustomerStore() {
+        return customerStore;
+    }
+
+    public void setCustomerStore(CustomerStore customerStore) {
+        this.customerStore = customerStore;
     }
 }

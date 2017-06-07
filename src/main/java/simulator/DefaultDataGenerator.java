@@ -1,5 +1,8 @@
 package simulator;
 
+import com.github.javafaker.Address;
+import com.github.javafaker.Faker;
+import com.github.javafaker.Name;
 import company.customer.Customer;
 import company.customer.CustomerStore;
 import company.customer.PostalAddress;
@@ -35,7 +38,7 @@ final class DefaultDataGenerator {
     private static CustomerStore customerStore = new CustomerStore();
     private static OrderStore orderStore = new OrderStore();
     private static DeliveryStore deliveryStore = new DeliveryStore();
-    private static Company company = new Company(CompanyType.DOMESTIC,"Iot Corp",new PostalAddress("4 Goldfield Rd","Honolulu","HI","United States",96815));
+    private static Company company = DefaultDataGenerator.generateRandomCompany();
     private static final Logger logger = Logger.getLogger(DefaultDataGenerator.class.getName());
 
     private DefaultDataGenerator(){}
@@ -43,6 +46,40 @@ final class DefaultDataGenerator {
     public static void generateDefaultDatabase() {
         deleteAll();
         generateDatabase();
+    }
+
+    public static Customer generateRandomCustomer() {
+        Faker faker = new Faker();
+        Name name = faker.name();
+        return new Customer(name.firstName(),name.lastName(),DefaultDataGenerator.generateRandomAddress(),
+                faker.internet().emailAddress(),faker.phoneNumber().phoneNumber());
+    }
+
+    public static PostalAddress generateRandomAddress() {
+        Faker faker = new Faker();
+        Address address = faker.address();
+        return new PostalAddress(address.streetAddress(),address.cityName(),address.state(),address.country(),
+                address.zipCode());
+    }
+
+
+    public static Company generateRandomCompany() {
+        CompanyType companyType = CompanyType.DOMESTIC;
+        Random random = new Random();
+        int rand = random.nextInt(3);
+        switch (rand) {
+            case 0:
+                companyType = CompanyType.DOMESTIC;
+                break;
+            case 1:
+                companyType = CompanyType.INTERNATIONAL;
+                break;
+            case 2:
+                companyType = CompanyType.GLOBAL;
+                break;
+        }
+        Faker faker = new Faker();
+        return new Company(companyType,faker.company().name(),DefaultDataGenerator.generateRandomAddress());
     }
 
     private static void generateDatabase() {
@@ -93,9 +130,8 @@ final class DefaultDataGenerator {
     }
 
     private static void generateCustomers() {
-        customerStore.add(new Customer("Dave","Johnson",new PostalAddress("21 Jump Street","Los Angeles","CA","United States",64000)));
-        customerStore.add(new Customer("Mike","Jordan",new PostalAddress("5335 Wisconsin Avenue NW","Washington DC","Washington","United States",20015)));
-        customerStore.add(new Customer("Shia","Labeouf",new PostalAddress("3727 W. Magnolia","Burbank","CA","United States",91505)));
+        for (int i = 0; i < 10; i++)
+            customerStore.add(DefaultDataGenerator.generateRandomCustomer());
     }
 
     private static void generateOrders() {

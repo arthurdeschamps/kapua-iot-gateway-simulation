@@ -113,13 +113,13 @@ public class CompanyTest {
 
     @Test
     public void testEquals() {
-        PostalAddress addr1 = new PostalAddress("street","city","region","country",100);
-        PostalAddress addr2 = new PostalAddress("street","city","region","country",100);
+        PostalAddress addr1 = new PostalAddress("street","city","region","country","100");
+        PostalAddress addr2 = new PostalAddress("street","city","region","country","100");
         Assert.assertEquals(addr1,addr2);
         addr1.setCity("city2");
         Assert.assertNotEquals(addr1,addr2);
-        Customer customer1 = new Customer("Arthur","Deschamps",addr1);
-        Customer customer2 = new Customer("Arthur","Deschamps",addr1);
+        Customer customer1 = new Customer("Arthur","Deschamps",addr1,"arthur@email.com","0000");
+        Customer customer2 = new Customer("Arthur","Deschamps",addr1,"arthur@email.com","0000");
         Assert.assertEquals(customer1,customer2);
         customer1.setFirstName("Marc");
         Assert.assertNotEquals(customer1,customer2);

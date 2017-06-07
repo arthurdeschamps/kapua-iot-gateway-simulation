@@ -1,5 +1,6 @@
 package simulator;
 
+import com.github.javafaker.Faker;
 import company.customer.PostalAddress;
 import company.main.Company;
 import company.main.CompanyType;
@@ -9,19 +10,60 @@ import company.main.CompanyType;
  */
 class CompanyGenerator {
 
-    private final String defaultStreet = "Default street";
-    private final String defaultCity = "Default city";
-    private final String defaultRegion = "Default region";
-    private final String defaultCountry = "Default country";
-    private final int defaultPostalCode = 1000;
-    private final String defaultCompanyName = "Default company";
-    private final CompanyType defaultCompanyType = CompanyType.DOMESTIC;
+    private String defaultStreet;
+    private String defaultCity;
+    private String defaultRegion;
+    private String defaultCountry;
+    private String defaultPostalCode;
+    private String defaultCompanyName;
+    private final CompanyType defaultCompanyType;
+    private final PostalAddress defaultPostalAddress;
 
-    private final PostalAddress defaultPostalAddress = new PostalAddress(defaultStreet,defaultCity,defaultRegion,defaultCountry,defaultPostalCode);
-
-    public CompanyGenerator() {}
+    public CompanyGenerator() {
+        Faker faker = new Faker();
+        defaultStreet = faker.address().streetAddress();
+        defaultCity = faker.address().city();
+        defaultRegion = faker.address().state();
+        defaultCountry = faker.address().country();
+        defaultPostalCode = faker.address().zipCode();
+        defaultCompanyName = faker.company().name();
+        defaultPostalAddress = new PostalAddress(defaultStreet,defaultCity,defaultRegion,defaultCountry,defaultPostalCode);
+        defaultCompanyType = CompanyType.DOMESTIC;
+    }
 
     Company generateDefault() {
         return new Company(this.defaultCompanyType, this.defaultCompanyName, this.defaultPostalAddress);
+    }
+
+    public String getDefaultStreet() {
+        return defaultStreet;
+    }
+
+    public String getDefaultCity() {
+        return defaultCity;
+    }
+
+    public String getDefaultRegion() {
+        return defaultRegion;
+    }
+
+    public String getDefaultCountry() {
+        return defaultCountry;
+    }
+
+    public String getDefaultPostalCode() {
+        return defaultPostalCode;
+    }
+
+    public String getDefaultCompanyName() {
+        return defaultCompanyName;
+    }
+
+    public CompanyType getDefaultCompanyType() {
+        return defaultCompanyType;
+    }
+
+    public PostalAddress getDefaultPostalAddress() {
+        return defaultPostalAddress;
     }
 }

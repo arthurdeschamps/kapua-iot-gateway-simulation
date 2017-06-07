@@ -1,5 +1,6 @@
 package company.customer;
 
+import com.sun.istack.internal.Nullable;
 import jedis.JedisObject;
 
 /**
@@ -10,11 +11,16 @@ public class Customer extends JedisObject {
     private String firstName;
     private String lastName;
     private PostalAddress postalAddress;
+    private String emailAddress;
+    @Nullable
+    private String phoneNumber;
 
-    public Customer(String firstName, String lastName, PostalAddress postalAddress) {
+    public Customer(String firstName, String lastName, PostalAddress postalAddress, String emailAddress, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.postalAddress = postalAddress;
+        this.emailAddress = emailAddress;
+        this.phoneNumber = phoneNumber;
     }
 
     @Override
@@ -53,5 +59,22 @@ public class Customer extends JedisObject {
 
     public void setPostalAddress(PostalAddress postalAddress) {
         this.postalAddress = postalAddress;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    @Nullable
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(@Nullable String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

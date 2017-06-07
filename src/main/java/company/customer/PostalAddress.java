@@ -1,5 +1,6 @@
 package company.customer;
 
+import com.github.javafaker.Faker;
 import redis.clients.jedis.GeoCoordinate;
 
 /**
@@ -11,9 +12,9 @@ public class PostalAddress {
     private String city;
     private String region;
     private String country;
-    private int postalCode;
+    private String postalCode;
 
-    public PostalAddress(String street, String city, String region, String country, int postalCode) {
+    public PostalAddress(String street, String city, String region, String country, String postalCode) {
         this.street = street;
         this.city = city;
         this.region = region;
@@ -24,6 +25,10 @@ public class PostalAddress {
     public GeoCoordinate asCoordinates() {
         // TODO: address to coordinates conversion
         return new GeoCoordinate(0,0);
+    }
+
+    public String asString() {
+        return this.getPostalCode()+" "+this.getStreet()+" "+this.getCity()+" "+this.getRegion()+" "+this.getCountry();
     }
 
     @Override
@@ -61,11 +66,11 @@ public class PostalAddress {
         this.country = country;
     }
 
-    public int getPostalCode() {
+    public String getPostalCode() {
         return postalCode;
     }
 
-    public void setPostalCode(int postalCode) {
+    public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 

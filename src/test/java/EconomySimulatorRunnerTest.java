@@ -1,16 +1,17 @@
 import org.junit.Test;
-import simulator.Economy;
+import simulator.EconomySimulatorRunner;
 
 import java.util.logging.Logger;
 
 /**
  * Created by Arthur Deschamps on 05.06.17.
+ * This test is supposed to verify if the law of large numbers is verified for each economy parameter
  */
-public class EconomyTest {
+public class EconomySimulatorRunnerTest {
 
     @Test
     public void runEconomy() throws InterruptedException {
-        Economy economy = new Economy();
+        EconomySimulatorRunner economy = new EconomySimulatorRunner();
         new Thread(economy).start();
 
         Thread.sleep(1000);

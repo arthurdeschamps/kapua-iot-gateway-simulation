@@ -1,9 +1,11 @@
 package company.customer;
 
+import com.github.javafaker.Faker;
 import jedis.JedisObjectStoreInterface;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Arthur Deschamps on 03.06.17.
@@ -14,6 +16,11 @@ public class CustomerStore implements JedisObjectStoreInterface<Customer> {
 
     public CustomerStore() {
         this.storage = new ArrayList<>();
+    }
+
+    public void removeRandomCustomer() {
+        Random random = new Random();
+        this.getStorage().remove(random.nextInt(this.getStorage().size()));
     }
 
     @Override
