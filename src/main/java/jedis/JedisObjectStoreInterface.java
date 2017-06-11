@@ -2,6 +2,7 @@ package jedis;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 /**
  * Created by Arthur Deschamps on 01.06.17.
@@ -41,6 +42,13 @@ public interface JedisObjectStoreInterface<T extends JedisObject> {
                 object.save();
                 getStorage().add(object);
             }
+        }
+    }
+
+    // Delete object from storage and db
+    default void delete(T object) {
+        if (object != null) {
+            JedisManager.getInstance().delete(object.getId());
         }
     }
 

@@ -4,6 +4,7 @@ import jedis.JedisObjectStoreInterface;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Arthur Deschamps on 02.06.17.

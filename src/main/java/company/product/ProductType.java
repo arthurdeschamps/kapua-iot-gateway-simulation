@@ -32,6 +32,17 @@ public class ProductType extends JedisObject {
         return ((name.length() <= 50) && (productionCountry.length() <= 50) && (basePrice > 0) && (weight > 0));
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        try {
+            ProductType productType = (ProductType) obj;
+            return (productType.getName().equals(this.getName()) && productType.getBasePrice() == this.getBasePrice()
+            && productType.getProductionCountry().equals(this.getProductionCountry()) && productType.getWeight() == this.getWeight());
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     public String getName() {
         return name;

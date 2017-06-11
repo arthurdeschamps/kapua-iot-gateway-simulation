@@ -12,20 +12,13 @@ import java.util.*;
 public class ProductStore implements JedisObjectStoreInterface<Product> {
 
     private List<Product> storage;
-    private Map<String, Integer> productsQuantities;
 
     public ProductStore() {
         storage = new ArrayList<>();
-        productsQuantities = new HashMap<>();
     }
 
-
-    public Map<String, Integer> getProductsQuantities() {
-        return productsQuantities;
-    }
-
-    public void setProductsQuantities(Map<String, Integer> productsQuantities) {
-        this.productsQuantities = productsQuantities;
+    public long getProductTypeQuantity(ProductType productType) {
+        return getStorage().stream().filter(product -> product.getProductType().equals(productType)).count();
     }
 
     @Override

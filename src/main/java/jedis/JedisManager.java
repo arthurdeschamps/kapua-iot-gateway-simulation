@@ -25,11 +25,6 @@ public final class JedisManager {
         logger.info("Redis server running at "+host+":"+port);
     }
 
-    // Returns a new resource from the pool
-    public Jedis getResource() {
-        return pool.getResource();
-    }
-
     // Close resource
     public void closeResource(Jedis jedis) {
         if (jedis != null)
@@ -46,7 +41,7 @@ public final class JedisManager {
     // Save object in memory
     public void save(JedisObject object) {
         if (object.validate()) {
-            try (Jedis jedis = getResource()) {
+            try (Jedis jedis = pool.getResource()) {
                 Gson gson = new Gson();
                 String properties = gson.toJson(object);
                 jedis.set(getEntryId(object), properties);
@@ -58,16 +53,17 @@ public final class JedisManager {
 
     // Retrieve object from memory and populate bean. Bean must be an "empty" object from the calling class.
     public <T extends JedisObject> T retrieve(String id, Class<T> clazz) {
-        T returnObject;
-        try(Jedis jedis = getResource()) {
+        T returnObject = null;
+        try(Jedis jedis = pool.getResource()) {
             Gson gson = new Gson();
             String properties = jedis.get(clazz.getName().toLowerCase()+":"+id);
-            if (properties == null) {
-                returnObject = null;
-            } else {
+            if (properties != null) {
                 returnObject = gson.fromJson(properties,clazz);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
         return returnObject;
     }
 
@@ -75,7 +71,7 @@ public final class JedisManager {
     // Retrieve all objects from specific class
     public <T extends JedisObject> List<T> retrieveAllFromClass(Class<T> clazz) {
         List<T> objects = new ArrayList<>();
-        try (Jedis jedis = getResource()){
+        try (Jedis jedis = pool.getResource()){
             // Get all keys from given class
             Set<String> keys = jedis.keys(clazz.getName().toLowerCase()+":*");
 
@@ -88,7 +84,7 @@ public final class JedisManager {
     }
 
     public void delete(JedisObject object) {
-        try(Jedis jedis = getResource()) {
+        try(Jedis jedis = pool.getResource()) {
             jedis.del(object.getId());
         }
     }
@@ -108,5 +104,17 @@ public final class JedisManager {
     // Generate an id for a JedisObject
     public String generateUniqueId() {
         return UUID.randomUUID().toString();
+    }
+
+    public void flushDB() {
+        try(Jedis jedis = pool.getResource()) {
+            jedis.flushDB();
+        }
+    }
+
+    public void delete(String key) {
+        try(Jedis jedis = pool.getResource()) {
+            jedis.del(key);
+        }
     }
 }

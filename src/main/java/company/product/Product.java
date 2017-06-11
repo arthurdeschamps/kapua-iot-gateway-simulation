@@ -14,7 +14,7 @@ public class Product extends JedisObject {
     private GeoCoordinate currentLocation;
     private float price;
 
-    public Product(ProductType productType, GeoCoordinate currentLocation, int price) {
+    public Product(ProductType productType, GeoCoordinate currentLocation, float price) {
         this.currentLocation = currentLocation;
         this.productType = productType;
         this.price = price;

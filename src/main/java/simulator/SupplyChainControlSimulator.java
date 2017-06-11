@@ -1,6 +1,7 @@
 package simulator;
 
 import company.main.Company;
+import jedis.JedisManager;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -27,7 +28,8 @@ public class SupplyChainControlSimulator {
         // Generate default company if user didn't choose any parameter
         company = new CompanyGenerator().generateDefault();
         // Generate default data
-        //DefaultDataGenerator.generateDefaultDatabase();
+        //DataGeneraotr.getInstance().generateDefaultDatabase();
+        JedisManager.getInstance().flushDB();
         // Generate default parametrizer
         parametrizer = new Parametrizer(10000);
 
@@ -48,7 +50,7 @@ public class SupplyChainControlSimulator {
         executor.scheduleWithFixedDelay(companySimulator,0,delay,TimeUnit.MICROSECONDS);
         // Display data
         executor.scheduleWithFixedDelay(() -> logger.info("Growth: "+economySimulator.getGrowth()+", Demand: "+economySimulator.getDemand()
-                +", Sector concurrency: "+economySimulator.getSectorConcurrency()),1,1,TimeUnit.SECONDS);
+                +", Sector concurrency: "+economySimulator.getSectorConcurrency()),1,5,TimeUnit.SECONDS);
     }
 
 }

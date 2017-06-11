@@ -1,6 +1,5 @@
-package company.customer;
+package company.transportation;
 
-import com.github.javafaker.Faker;
 import redis.clients.jedis.GeoCoordinate;
 
 /**
@@ -22,12 +21,13 @@ public class PostalAddress {
         this.postalCode = postalCode;
     }
 
-    public GeoCoordinate asCoordinates() {
+    public GeoCoordinate toCoordinates() {
         // TODO: address to coordinates conversion
         return new GeoCoordinate(0,0);
     }
 
-    public String asString() {
+    @Override
+    public String toString() {
         return this.getPostalCode()+" "+this.getStreet()+" "+this.getCity()+" "+this.getRegion()+" "+this.getCountry();
     }
 

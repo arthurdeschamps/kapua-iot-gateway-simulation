@@ -18,11 +18,6 @@ public class CustomerStore implements JedisObjectStoreInterface<Customer> {
         this.storage = new ArrayList<>();
     }
 
-    public void removeRandomCustomer() {
-        Random random = new Random();
-        this.getStorage().remove(random.nextInt(this.getStorage().size()));
-    }
-
     @Override
     public Class<Customer> getItemClass() {
         return Customer.class;

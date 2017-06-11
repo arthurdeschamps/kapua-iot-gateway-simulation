@@ -32,6 +32,13 @@ public class EconomySimulatorRunner implements Runnable {
         this.demand = demand;
     }
 
+    private void generateValues() {
+        this.setGrowth(0);
+        this.setDemand(0.5f);
+        this.setSectorConcurrency(0.5f);
+        this.setUpheavalLikelihood(0.000001f);
+    }
+
     @Override
     public void run() {
         try {
@@ -75,12 +82,16 @@ public class EconomySimulatorRunner implements Runnable {
          x takes random value between 0 and 9
          1 hour = 60 minutes = 60^2 seconds
           */
-        final int minute = 3600;
-        if (random.nextInt(minute) == 0) {
+        final int hour = 3600;
+        if (random.nextInt(hour) == 0) {
             // Totally random increase factor
-            float economyGrowthIncrease = (float) (Math.pow(-1,Math.floor(random.nextInt(2)))*random.nextInt(10)/100);
+            float economyGrowthIncrease = (float) (Math.pow(-1,random.nextInt(2))*random.nextInt(10)/100);
+            //Logger.getGlobal().info("economyGrowthIncrease = "+economyGrowthIncrease);
             // Factor based on growth magnitude: when the growth gets high (positive or negative), the curve inverts
-            float magnitudeCorrecter = (float) (Math.signum(this.getGrowth())*Math.log(Math.abs(this.getGrowth()))/10);
+            float magnitudeCorrecter = 0;
+            if (random.nextInt((int) (Math.abs((500-Math.pow(this.getGrowth(),2)))+1)) == 0)
+                magnitudeCorrecter = Math.signum(this.getGrowth())*Math.abs(this.getGrowth());
+            //Logger.getGlobal().info("magnitudeCorrecter = "+magnitudeCorrecter);
             this.setGrowth(this.getGrowth()+economyGrowthIncrease+magnitudeCorrecter);
         }
     }
@@ -97,13 +108,6 @@ public class EconomySimulatorRunner implements Runnable {
         if (random.nextInt(day) == 0)
             inc = -0.1f;
         this.setSectorConcurrency(this.getSectorConcurrency()+inc);
-    }
-
-    private void generateValues() {
-        this.setGrowth(1);
-        this.setDemand(0.5f);
-        this.setSectorConcurrency(0.5f);
-        this.setUpheavalLikelihood(0.00000001f);
     }
 
     public float getGrowth() {

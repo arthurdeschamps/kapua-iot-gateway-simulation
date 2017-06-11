@@ -1,11 +1,11 @@
-/**
+package company.main; /**
  * Created by Arthur Deschamps on 30.05.17.
  */
 
 import company.customer.Customer;
 import company.customer.CustomerStore;
-import company.customer.PostalAddress;
-import company.order.DeliveryStore;
+import company.transportation.PostalAddress;
+import company.delivery.DeliveryStore;
 import company.order.Order;
 import company.order.OrderStore;
 import company.product.Product;
@@ -21,10 +21,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import redis.clients.jedis.GeoCoordinate;
+import simulator.DataGenerator;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 public class CompanyTest {
@@ -41,8 +42,8 @@ public class CompanyTest {
 
     @Before
     public void setUp() throws IOException {
-        //TODO test database server (to not interfere in app db)
-        JedisManager.getInstance().getResource().flushDB();
+        //TODO test with fake database (to not interfere with app db)
+        JedisManager.getInstance().flushDB();
 
         productTypeStore = new ProductTypeStore();
         productStore = new ProductStore();
@@ -63,26 +64,31 @@ public class CompanyTest {
         transportationStore.add(expectedTransportation);
         transportationStore.add(new Transportation(2.0f,150,TransportationMode.LAND_ROAD));
         transportationStore.add(new Transportation(59.0f,80,TransportationMode.LAND_RAIL));
+
+        customerStore.add(DataGenerator.getInstance().generateRandomCustomer());
+
     }
 
     @After
     public void tearDown() {
+        JedisManager.getInstance().flushDB();
     }
 
     @Test
     public void productTypes() {
-        ProductType watch = new ProductType("Swiss watch","Switzerland",3450.0f,0.567f,true);
-        Assert.assertTrue(productTypeStore.retrieve(watch.getId()).isPresent());
-        final ProductType result = productTypeStore.retrieve(watch.getId()).get();
-        Assert.assertEquals(watch.getName(),result.getName());
-        Assert.assertEquals(watch.getProductionCountry(),result.getProductionCountry());
-        Assert.assertEquals(watch.isFragile(),result.isFragile());
-        Assert.assertTrue(watch.getWeight() == result.getWeight());
+        Optional<ProductType> watch = productTypeStore.getStorage().stream().filter(productType -> productType.getName().equals("Swiss watch")).findFirst();
+        Assert.assertTrue(watch.isPresent());
+        final ProductType result = productTypeStore.retrieve(watch.get().getId()).get();
+        Assert.assertEquals(watch.get().getName(),result.getName());
+        Assert.assertEquals(watch.get().getProductionCountry(),result.getProductionCountry());
+        Assert.assertEquals(watch.get().isFragile(),result.isFragile());
+        Assert.assertTrue(watch.get().getWeight() == result.getWeight());
 
 
         List<ProductType> newProductTypes = productTypeStore.getStorage();
         newProductTypes.removeIf(productType -> !(productType.getName().equals("Basket Ball")));
-        Assert.assertEquals(1, newProductTypes.size());
+        // Basketball shall be present twice, since they have a different id
+        Assert.assertEquals(2, newProductTypes.size());
         Assert.assertEquals(newProductTypes.get(0).getProductionCountry(),"USA");
     }
 

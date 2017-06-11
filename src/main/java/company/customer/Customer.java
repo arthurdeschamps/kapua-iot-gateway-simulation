@@ -1,6 +1,7 @@
 package company.customer;
 
 import com.sun.istack.internal.Nullable;
+import company.transportation.PostalAddress;
 import jedis.JedisObject;
 
 /**

@@ -1,5 +1,6 @@
-package company.order;
+package company.delivery;
 
+import company.delivery.Delivery;
 import jedis.JedisObjectStoreInterface;
 
 import java.util.ArrayList;

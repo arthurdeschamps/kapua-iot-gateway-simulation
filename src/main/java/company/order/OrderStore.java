@@ -5,6 +5,7 @@ import jedis.JedisObjectStoreInterface;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -18,8 +19,9 @@ public class OrderStore implements JedisObjectStoreInterface<Order> {
         storage = new ArrayList<>();
     }
 
-    public List<Order> getByCustomer(Customer customer) {
-        return retrieveAll().stream().filter(order -> order.getBuyer().equals(customer)).collect(Collectors.toList());
+    public Order getByCustomer(Customer customer) {
+        Optional<Order> candidate = getStorage().stream().filter(order -> order.getBuyer().equals(customer)).findFirst();
+        return candidate.orElse(null);
     }
 
     @Override

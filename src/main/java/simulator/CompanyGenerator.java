@@ -1,12 +1,14 @@
 package simulator;
 
+import com.github.javafaker.Address;
 import com.github.javafaker.Faker;
-import company.customer.PostalAddress;
+import company.transportation.PostalAddress;
 import company.main.Company;
 import company.main.CompanyType;
 
 /**
  * Created by Arthur Deschamps on 02.06.17.
+ * TODO: use this class through DataGenerator exclusively
  */
 class CompanyGenerator {
 
@@ -21,11 +23,12 @@ class CompanyGenerator {
 
     public CompanyGenerator() {
         Faker faker = new Faker();
-        defaultStreet = faker.address().streetAddress();
-        defaultCity = faker.address().city();
-        defaultRegion = faker.address().state();
-        defaultCountry = faker.address().country();
-        defaultPostalCode = faker.address().zipCode();
+        Address address = faker.address();
+        defaultStreet = address.streetAddress();
+        defaultCity = address.city();
+        defaultRegion = address.state();
+        defaultCountry = address.country();
+        defaultPostalCode = address.zipCode();
         defaultCompanyName = faker.company().name();
         defaultPostalAddress = new PostalAddress(defaultStreet,defaultCity,defaultRegion,defaultCountry,defaultPostalCode);
         defaultCompanyType = CompanyType.DOMESTIC;
