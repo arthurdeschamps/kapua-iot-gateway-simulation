@@ -6,6 +6,7 @@ import jedis.JedisObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created by Arthur Deschamps on 03.06.17.
@@ -24,12 +25,16 @@ public class Order extends JedisObject {
 
     public Order(Customer buyer, List<Product> orderedProducts) {
         this.orderedProducts = orderedProducts;
+        this.buyer = buyer;
         this.issued = false;
     }
 
     @Override
     public boolean validate() {
-        return true;
+        if (buyer == null) {
+            Logger.getGlobal().warning("null buyer on order");
+        }
+        return buyer != null && orderedProducts.size() > 0;
     }
 
     public List<Product> getOrderedProducts() {

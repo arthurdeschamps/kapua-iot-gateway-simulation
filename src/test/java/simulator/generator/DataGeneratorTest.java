@@ -1,8 +1,8 @@
-package simulator;
+package simulator.generator;
 
-import com.github.javafaker.Faker;
 import org.junit.Assert;
 import org.junit.Test;
+import simulator.generator.DataGenerator;
 
 /**
  * Created by Arthur Deschamps on 09.06.17.

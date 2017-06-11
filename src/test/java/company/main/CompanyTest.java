@@ -21,7 +21,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import redis.clients.jedis.GeoCoordinate;
-import simulator.DataGenerator;
+import simulator.generator.DataGenerator;
 
 import java.io.IOException;
 import java.util.List;

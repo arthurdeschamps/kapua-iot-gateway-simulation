@@ -1,4 +1,4 @@
-package simulator;
+package simulator.generator;
 
 import com.github.javafaker.Address;
 import com.github.javafaker.Faker;
@@ -10,7 +10,7 @@ import company.main.CompanyType;
  * Created by Arthur Deschamps on 02.06.17.
  * TODO: use this class through DataGenerator exclusively
  */
-class CompanyGenerator {
+public class CompanyGenerator {
 
     private String defaultStreet;
     private String defaultCity;
@@ -34,7 +34,7 @@ class CompanyGenerator {
         defaultCompanyType = CompanyType.DOMESTIC;
     }
 
-    Company generateDefault() {
+    public Company generateDefault() {
         return new Company(this.defaultCompanyType, this.defaultCompanyName, this.defaultPostalAddress);
     }
 

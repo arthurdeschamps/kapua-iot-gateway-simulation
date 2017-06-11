@@ -1,4 +1,4 @@
-package simulator;
+package simulator.runner;
 
 import company.main.Company;
 import company.product.ProductType;
@@ -7,6 +7,8 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import simulator.generator.CompanyGenerator;
+import simulator.generator.DataGenerator;
 
 
 /**
@@ -17,13 +19,13 @@ import org.junit.Test;
 public class CompanySimulatorRunnerTest {
 
     private Company company;
-    private EconomySimulatorRunner economySimulatorRunner;
-    private CompanySimulatorRunner companySimulatorRunner;
     private Thread economyThread;
     private Thread companyThread;
 
     @Before
     public void setUp() {
+        EconomySimulatorRunner economySimulatorRunner;
+        CompanySimulatorRunner companySimulatorRunner;
         JedisManager.getInstance().flushDB();
         CompanyGenerator companyGenerator = new CompanyGenerator();
         company = companyGenerator.generateDefault();
@@ -44,12 +46,9 @@ public class CompanySimulatorRunnerTest {
          */
         try {
             final int initialProductTypesSize = company.getProductTypes().size();
-            for (int i = 0; i < Math.pow(10,6); i++) {
+            for (int i = 0; i < Math.pow(10,5)*2; i++) {
                 economyThread.run();
                 companyThread.run();
-                if (initialProductTypesSize != company.getProductTypes().size()) {
-                    break;
-                }
             }
 
             Assert.assertFalse(initialProductTypesSize == company.getProductTypes().size());
@@ -67,7 +66,7 @@ public class CompanySimulatorRunnerTest {
          */
         try {
             final int initialProductSize = company.getProducts().size();
-            for (int i = 0; i < Math.pow(10, 6); i++) {
+            for (int i = 0; i < Math.pow(10, 5)*2; i++) {
                 economyThread.run();
                 companyThread.run();
                 if (initialProductSize != company.getProducts().size()) {
@@ -88,18 +87,18 @@ public class CompanySimulatorRunnerTest {
     public void testProductTypeDestruction() {
         try {
             // If product quantity = product containing orders = 0, 1/1000 chances that the product gets destroyed
-            if (company.getProductTypes().size() == 0)
-                company.newProductType(DataGenerator.getInstance().generateRandomProductType());
-
-            final ProductType productType = company.getProductTypes().get(0);
+            int productTypeSize = company.getProductTypes().size();
             for (int i = 0; i < Math.pow(10, 6); i++) {
                 economyThread.run();
                 companyThread.run();
-                if (!company.getProductTypes().contains(productType))
+                if (productTypeSize > company.getProductTypes().size()) {
                     break;
+                } else {
+                    productTypeSize = company.getProductTypes().size();
+                }
             }
 
-            Assert.assertFalse(company.getProductTypes().contains(productType));
+            Assert.assertFalse(productTypeSize == company.getProductTypes().size());
 
         } catch (Exception e) {
             Assert.fail();
@@ -109,6 +108,6 @@ public class CompanySimulatorRunnerTest {
 
     @After
     public void clean() {
-        JedisManager.getInstance().flushDB();
+        //JedisManager.getInstance().flushDB();
     }
 }

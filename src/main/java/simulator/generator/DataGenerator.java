@@ -1,4 +1,4 @@
-package simulator;
+package simulator.generator;
 
 import com.github.javafaker.Address;
 import com.github.javafaker.Faker;
@@ -80,7 +80,7 @@ public final class DataGenerator {
                 address.zipCode());
     }
 
-    ProductType generateRandomProductType() {
+    public ProductType generateRandomProductType() {
         return new ProductType(faker.commerce().productName(),faker.address().country(),
                 (float) Math.random()*1000, (float) Math.log(Math.random()*10000+1), faker.bool().bool());
     }
@@ -104,7 +104,7 @@ public final class DataGenerator {
         return new Company(companyType,faker.company().name(), this.generateRandomAddress());
     }
 
-    Transportation generateRandomTransportation() {
+    public Transportation generateRandomTransportation() {
         return new Transportation((float) Math.log(Math.random()*10000+1),(int) Math.log(Math.random()*1000),
                 TransportationMode.randomTransportationMode());
     }

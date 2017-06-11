@@ -11,10 +11,10 @@ import java.util.List;
  */
 public class ProductTypeStore implements JedisObjectStoreInterface<ProductType> {
 
-    private List<ProductType> productTypes;
+    private List<ProductType> storage;
 
     public ProductTypeStore() {
-        productTypes = new ArrayList<>();
+        storage = new ArrayList<>();
     }
 
     @Override
@@ -24,11 +24,11 @@ public class ProductTypeStore implements JedisObjectStoreInterface<ProductType> 
 
     @Override
     public void setStorage(List<ProductType> allObjects) {
-        productTypes = allObjects;
+        storage = allObjects;
     }
 
     @Override
     public List<ProductType> getStorage() {
-        return productTypes;
+        return storage;
     }
 }

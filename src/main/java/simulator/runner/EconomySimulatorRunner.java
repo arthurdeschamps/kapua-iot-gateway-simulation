@@ -1,7 +1,6 @@
-package simulator;
+package simulator.runner;
 
 import java.util.Random;
-import java.util.logging.Logger;
 
 /**
  * Created by Arthur Deschamps on 02.06.17.
@@ -25,7 +24,7 @@ public class EconomySimulatorRunner implements Runnable {
         generateValues();
     }
 
-    public EconomySimulatorRunner(float growth, float sectorConcurrency, float upheavalLikelihood, float demand, long timeFlow) {
+    public EconomySimulatorRunner(float growth, float sectorConcurrency, float upheavalLikelihood, float demand) {
         this.growth = growth;
         this.sectorConcurrency = sectorConcurrency;
         this.upheavalLikelihood = upheavalLikelihood;

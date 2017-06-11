@@ -1,9 +1,9 @@
-package simulator;
+package simulator.main;
 
 /**
  * Created by Arthur Deschamps on 02.06.17.
  */
-class Parametrizer {
+public class Parametrizer {
 
     // Time flow speediness in seconds per second
     private long timeFlow;
@@ -13,7 +13,7 @@ class Parametrizer {
         this.timeFlow = 10;
     }
 
-    Parametrizer(long timeFlow) {
+    public Parametrizer(long timeFlow) {
         this.timeFlow = timeFlow;
     }
 

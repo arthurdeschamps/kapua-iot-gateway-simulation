@@ -49,6 +49,8 @@ public interface JedisObjectStoreInterface<T extends JedisObject> {
     default void delete(T object) {
         if (object != null) {
             JedisManager.getInstance().delete(object.getId());
+            getStorage().remove(object);
+
         }
     }
 

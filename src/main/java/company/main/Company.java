@@ -62,20 +62,19 @@ public class Company {
         return false;
     }
 
-    public boolean deleteRandomCustomer() {
+    public void deleteRandomCustomer() {
         if (customerStore.getStorage().size() > 0) {
             Random random = new Random();
             Customer randomCustomer = customerStore.getStorage().get(random.nextInt(customerStore.getStorage().size()));
             if (!hasOrders(randomCustomer)) {
                 customerStore.delete(randomCustomer);
-                return true;
             }
         }
-        return false;
     }
 
     private boolean hasOrders(Customer customer) {
-        return (customer != null) && (orderStore.getStorage().size() > 0) && orderStore.getStorage().stream().anyMatch(order -> order.getBuyer().equals(customer));
+        return (customer != null) && (orderStore.getStorage().size() > 0) && orderStore.getStorage().stream().anyMatch(order ->
+                order.getBuyer().equals(customer));
     }
 
     public List<Customer> getCustomers() {
@@ -96,8 +95,14 @@ public class Company {
 
     public void deleteProductType(ProductType productType) {
         // Delete all products of same type
-        productStore.getStorage().stream().filter(product -> product.getProductType().equals(productType))
-                .forEach(product -> productStore.delete(product));
+        List<Product> products = productStore.getStorage().stream().filter(product -> {
+            if (product.getProductType() == null)
+                Logger.getGlobal().info("product type null for product..");
+            return product.getProductType().equals(productType);
+        }).collect(Collectors.toList());
+        for (final Product product: products) {
+            productStore.delete(product);
+        }
         productTypeStore.delete(productType);
     }
 

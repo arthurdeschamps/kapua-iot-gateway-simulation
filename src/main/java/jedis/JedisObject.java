@@ -1,5 +1,7 @@
 package jedis;
 
+import java.util.logging.Logger;
+
 /**
  * Created by Arthur Deschamps on 31.05.17.
  * This interface defines the required methods to be a redis object (to be saved in db)
@@ -7,6 +9,8 @@ package jedis;
 public abstract class JedisObject {
 
     protected String id;
+
+    private static final Logger logger = Logger.getLogger(JedisObject.class.getName());
 
     public JedisObject() {
         this.id = generateId();

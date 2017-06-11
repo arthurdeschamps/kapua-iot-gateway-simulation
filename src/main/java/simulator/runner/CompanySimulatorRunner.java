@@ -1,4 +1,4 @@
-package simulator;
+package simulator.runner;
 
 import company.delivery.Delivery;
 import company.main.Company;
@@ -6,6 +6,7 @@ import company.order.Order;
 import company.product.Product;
 import company.product.ProductType;
 import company.transportation.Transportation;
+import simulator.generator.DataGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +19,13 @@ import java.util.logging.Logger;
  */
 public class CompanySimulatorRunner implements Runnable {
 
-    private final Logger logger = Logger.getLogger(CompanySimulatorRunner.class.getName());
+    private static final Logger logger = Logger.getLogger(CompanySimulatorRunner.class.getName());
 
     private Company company;
     private EconomySimulatorRunner economy;
     private Random random;
 
-    CompanySimulatorRunner(Company company, EconomySimulatorRunner economy) {
+    public CompanySimulatorRunner(Company company, EconomySimulatorRunner economy) {
         this.company = company;
         this.economy = economy;
         random = new Random();
@@ -33,19 +34,22 @@ public class CompanySimulatorRunner implements Runnable {
     @Override
     public void run() {
         try {
-            simulateProductTypeCreation();
-            simulateProduction();
-            simulateProductTypeDestruction();
+            simulateProducts();
             simulateCustomersBehavior();
-            simulateNewOrders();
+            simulateOrders();
             simulateDeliveries();
-            simulateProductsMovement();
-            simulatePriceCuts();
-            simulateTransportationAcquisitions();
-            simulateTransportationDestruction();
+            simulateTransportation();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void simulateProducts() {
+        simulateProductTypeCreation();
+        simulateProduction();
+        simulateProductsMovement();
+        simulatePriceCuts();
+        simulateProductTypeDestruction();
     }
 
     private void simulateProduction () {
@@ -71,21 +75,16 @@ public class CompanySimulatorRunner implements Runnable {
         if (random.nextInt(nbrOutcomes) == 0) {
             final ProductType productType = DataGenerator.getInstance().generateRandomProductType();
             company.newProductType(productType);
-            logger.info("New product type: "+productType.getName());
         }
     }
 
     private void simulateProductTypeDestruction() {
-        int productQuantity;
         for (final ProductType productType : company.getProductTypes()) {
-
-            // Sometimes when stock is down to 0 and no order on the product's type exist, company decides to get rid of it
+            // Sometimes when no order on the product's type exist, company decides to get rid of it
             // Company must have at least 2 types of products
-            productQuantity = (int) company.getProductQuantity(productType);
-            if (productQuantity == 0 && company.getOrdersForProductType(productType).size() == 0 && company.getProductTypes().size() > 2) {
+            if (company.getOrdersForProductType(productType).size() == 0 && company.getProductTypes().size() > 2) {
                 if (random.nextInt(1000) == 0) {
                     company.deleteProductType(productType);
-                    logger.info("Product type " + productType.getName() + " deleted");
                     return;
                 }
             }
@@ -96,25 +95,23 @@ public class CompanySimulatorRunner implements Runnable {
         // TODO
     }
 
-    private void simulateNewOrders() {
+    private void simulateOrders() {
         // No customer means no order
         if (company.getCustomers().size() > 0 && company.getProducts().size() > 0) {
-            // A product has probability nbrCustomers/(price*10^8) to be ordered
+            // A product has probability nbrCustomers/(price*10^4) to be ordered
             int nbrOutcomes;
             List<Product> orderedProducts = new ArrayList<>();
             for (final Product product : company.getProducts()) {
-                nbrOutcomes = (int) (product.getPrice() * Math.pow(10, 5)) / company.getCustomers().size();
+                nbrOutcomes = (int) (product.getPrice() * Math.pow(10, 4)) / company.getCustomers().size();
                 if (nbrOutcomes < 1)
                     nbrOutcomes = 1;
 
                 if (random.nextInt(nbrOutcomes) == 0) {
-                    logger.info("Product \"" + product.getProductType().getName() + "\" ordered");
                     orderedProducts.add(product);
                 }
             }
             if (orderedProducts.size() > 0) {
                 company.newOrder(new Order(company.getCustomers().get(random.nextInt(company.getCustomers().size())), orderedProducts));
-                logger.info("New order");
             }
         }
     }
@@ -128,13 +125,19 @@ public class CompanySimulatorRunner implements Runnable {
                 if (potentialTransportation != null && potentialTransportation.isPresent()) {
                     company.newDelivery(new Delivery(order, company.getAvailableTransportation().get(), company.getHeadquarters(),
                             company.getHeadquarters().toCoordinates(), order.getBuyer().getPostalAddress()));
-                    logger.info("New delivery for order no. " + order.getId());
                 }
             }
         }
     }
 
-    private void simulateProductsMovement() {}
+    private void simulateProductsMovement() {
+
+    }
+
+    private void simulateTransportation() {
+        simulateTransportationAcquisitions();
+        simulateTransportationDestruction();
+    }
 
     private void simulateCustomersBehavior() {
         //TODO company can gain or lose customers despite the growth signum
@@ -142,13 +145,11 @@ public class CompanySimulatorRunner implements Runnable {
             // If economy growth is high, there is a high chance of getting a new customer
             if (random.nextInt(10000) <= economy.getGrowth()) {
                 company.newCustomer(DataGenerator.getInstance().generateRandomCustomer());
-                logger.info("New customer");
             }
         } else {
             // If economy growth is negative, there is a chance that our company might lose customers
             if (random.nextInt(10000) <= Math.abs(economy.getGrowth())) {
-                if(company.deleteRandomCustomer())
-                    logger.info("Customer lost");
+                company.deleteRandomCustomer();
             }
         }
     }
@@ -160,7 +161,6 @@ public class CompanySimulatorRunner implements Runnable {
             if (random.nextInt(2) == 1000) {
                 Transportation transportation = DataGenerator.getInstance().generateRandomTransportation();
                 company.newTransportation(transportation);
-                logger.info("New transportation of type "+transportation.getTransportationMode().name());
             }
         }
     }
