@@ -209,10 +209,10 @@ public class CompanySimulatorRunner implements Runnable {
      * @since 1.0
      */
     private void simulateTransportationAcquisitions() {
-        // If orders >= nbr transportation * 100, new transportation acquired
+        // If orders >= nbr transportation * 100, new transportation should be acquired
         if (company.getOrders().size() >= company.getAllTransportation().size()*100) {
-            // Not instantaneous
-            if (random.nextInt(2) == 0) {
+            // On average takes 2 weeks to be done
+            if (event(0.5d,TimeUnit.WEEK)) {
                 Transportation transportation = DataGenerator.getInstance().generateRandomTransportation();
                 company.newTransportation(transportation);
             }
@@ -224,7 +224,14 @@ public class CompanySimulatorRunner implements Runnable {
      * @since 1.0
      */
     private void simulateTransportationDestruction() {
-        // TODO
+        // If number of transportation surpasses number of orders, there is a surplus of transportation
+        if (company.getOrders().size() <= company.getAllTransportation().size()) {
+            // Takes on average two weeks to get rid of
+            if (event(2,TimeUnit.MONTH)) {
+                Optional<Transportation> transportationToDelete = company.getAvailableTransportation();
+                transportationToDelete.ifPresent(transportation -> company.deleteTransportation(transportation));
+            }
+        }
     }
 
     /**
@@ -241,15 +248,17 @@ public class CompanySimulatorRunner implements Runnable {
      * @since 1.0
      */
     private boolean event(double frequency, TimeUnit timeUnit) {
-        // Convert frequency from initial time unit to months in order to have a common unit
-        double normalizedFrequency = TimeUnit.convertToMonth(frequency,timeUnit);
-        // Convert frequency into number of outcomes
-        while (normalizedFrequency % 1 != 0) {
-            normalizedFrequency *= 10;
-        }
-        // Convert into integer
+        if (frequency < 0)
+            throw new IllegalArgumentException("Frequency can't be negative");
+        // Convert frequency from initial time unit to the biggest available unit in order to make the decimal part of
+        // the computed frequency not relevant in comparison to the integer part
+        double normalizedFrequency = TimeUnit.convertToBiggestUnit(frequency,timeUnit);
+        // Convert frequency per second to number of outcomes for a uniform law of probability
         int nbrOutcomes = (int) normalizedFrequency;
-        // Simulate event
+        // If number of outcomes is 0, there is not chance that the event happens
+        if (nbrOutcomes == 0)
+            return false;
+        // Simulate event using a uniform law of probability
         Random random = new Random();
         return random.nextInt(nbrOutcomes) == 0;
     }
@@ -262,18 +271,19 @@ public class CompanySimulatorRunner implements Runnable {
     private enum TimeUnit {
         HOUR, DAY, WEEK, MONTH, YEAR;
 
-        public static double convertToMonth(double value, TimeUnit timeUnit) {
+        public static double convertToBiggestUnit(double value, TimeUnit timeUnit) {
+            // Biggest unit is currently a year
             switch (timeUnit) {
                 case YEAR:
-                    return value*12;
-                case MONTH:
                     return value;
+                case MONTH:
+                    return value*12;
                 case WEEK:
-                    return value/4;
+                    return value*12*4;
                 case DAY:
-                    return value/(4*7);
+                    return value*12*4*7;
                 case HOUR:
-                    return value/(4*7*24);
+                    return value*12*4*7*24;
             }
             throw new EnumConstantNotPresentException(TimeUnit.class,"Given TimeUnit not recognized");
         }

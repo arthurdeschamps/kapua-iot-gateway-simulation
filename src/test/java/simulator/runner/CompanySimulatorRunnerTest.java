@@ -14,8 +14,12 @@ import java.util.logging.Logger;
 
 /**
  * Created by Arthur Deschamps on 05.06.17.
- * This test is supposed to verify if everything works with the economy simulation
+ * This class test is supposed to verify if everything works with the economy simulation
  * TODO: consider probabilities..
+ *
+ * @author Arthur Deschamps
+ * @since 1.0
+ * @see CompanySimulatorRunner
  */
 public class CompanySimulatorRunnerTest {
 
