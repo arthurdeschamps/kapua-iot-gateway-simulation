@@ -1,10 +1,8 @@
 package simulator.main;
 
 import company.main.Company;
-import jedis.JedisManager;
 import simulator.runner.EconomySimulatorRunner;
 import simulator.generator.CompanyGenerator;
-import simulator.generator.DataGenerator;
 import simulator.runner.CompanySimulatorRunner;
 
 import java.util.concurrent.Executors;
@@ -30,10 +28,8 @@ public class SupplyChainControlSimulator {
 
     private static void initDefault(){
         // Generate default company if user didn't choose any parameter
-        company = new CompanyGenerator().generateDefault();
-        // Generate default data
-        DataGenerator.getInstance().generateDefaultDatabase();
-        JedisManager.getInstance().flushDB();
+        company = new CompanyGenerator().generateDefaultCompany();
+
         // Generate default parametrizer
         parametrizer = new Parametrizer(10000);
 
@@ -57,4 +53,7 @@ public class SupplyChainControlSimulator {
                 +", Sector concurrency: "+economySimulator.getSectorConcurrency()),1,5,TimeUnit.SECONDS);
     }
 
+    public static Company getCompany() {
+        return company;
+    }
 }

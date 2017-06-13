@@ -39,20 +39,22 @@ public final class JedisManager {
     }
 
     // Save object in memory
-    public void save(JedisObject object) {
+    boolean save(JedisObject object) {
         if (object.validate()) {
             try (Jedis jedis = pool.getResource()) {
                 Gson gson = new Gson();
                 String properties = gson.toJson(object);
                 jedis.set(getEntryId(object), properties);
+                return true;
             }
         } else {
             logger.info("Couldn't validate object of type \""+object.toString()+"\"");
+            return false;
         }
     }
 
     // Retrieve object from memory and populate bean. Bean must be an "empty" object from the calling class.
-    public <T extends JedisObject> T retrieve(String id, Class<T> clazz) {
+    <T extends JedisObject> T retrieve(String id, Class<T> clazz) {
         T returnObject = null;
         try(Jedis jedis = pool.getResource()) {
             Gson gson = new Gson();
@@ -83,7 +85,7 @@ public final class JedisManager {
         return objects;
     }
 
-    public void delete(JedisObject object) {
+    void delete(JedisObject object) {
         try(Jedis jedis = pool.getResource()) {
             jedis.del(object.getId());
         }
@@ -93,7 +95,7 @@ public final class JedisManager {
         return jedisManager;
     }
 
-    public JedisPool getPool() {
+    JedisPool getPool() {
         return pool;
     }
 
@@ -101,8 +103,12 @@ public final class JedisManager {
         return object.getClass().getName().toLowerCase()+":"+object.getId().replace(' ','_');
     }
 
-    // Generate an id for a JedisObject
-    public String generateUniqueId() {
+    /**
+     * Generate an ID using UUID.randomUUID() for a JedisObject
+     * @return
+     * String: unique ID
+     */
+    String generateUniqueId() {
         return UUID.randomUUID().toString();
     }
 
@@ -112,7 +118,13 @@ public final class JedisManager {
         }
     }
 
-    public void delete(String key) {
+    public void flushAll() {
+        try(Jedis jedis = pool.getResource()) {
+            jedis.flushAll();
+        }
+    }
+
+    void delete(String key) {
         try(Jedis jedis = pool.getResource()) {
             jedis.del(key);
         }

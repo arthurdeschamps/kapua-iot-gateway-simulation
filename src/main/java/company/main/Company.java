@@ -13,7 +13,9 @@ import company.product.ProductType;
 import company.product.ProductTypeStore;
 import company.transportation.Transportation;
 import company.transportation.TransportationStore;
+import jedis.JedisObjectStoreInterface;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -49,17 +51,30 @@ public class Company {
         this.headquarters = postalAddress;
     }
 
+    /**
+     * Set all stores to what is available in database. This method enables consistency between the company and the database.
+     */
+    public void updateAllData() {
+        Arrays.stream(this.getClass().getDeclaredFields()).forEach(field -> {
+            if (Arrays.stream(field.getType().getInterfaces()).anyMatch(aClass -> aClass.equals(JedisObjectStoreInterface.class))) {
+                try {
+                    JedisObjectStoreInterface objectStore = (JedisObjectStoreInterface) field.get(this);
+                    objectStore.setStorage(objectStore.retrieveAll());
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     public void newCustomer(Customer customer) {
         customerStore.add(customer);
     }
 
     // Return false if customer currently has orders
-    public boolean deleteCustomer(Customer customer) {
-        if (!hasOrders(customer)) {
+    public void deleteCustomer(Customer customer) {
+        if (!hasOrders(customer))
             customerStore.delete(customer);
-            return true;
-        }
-        return false;
     }
 
     public void deleteRandomCustomer() {
@@ -82,7 +97,8 @@ public class Company {
     }
 
     public void newProduct(Product product) {
-        productStore.add(product);
+        if (product != null)
+            productStore.add(product);
     }
 
     public void deleteProduct(Product product) {
@@ -90,7 +106,8 @@ public class Company {
     }
 
     public void newProductType(ProductType productType) {
-        productTypeStore.add(productType);
+        if (productType != null)
+            productTypeStore.add(productType);
     }
 
     public void deleteProductType(ProductType productType) {
@@ -100,10 +117,11 @@ public class Company {
                 Logger.getGlobal().info("product type null for product..");
             return product.getProductType().equals(productType);
         }).collect(Collectors.toList());
-        for (final Product product: products) {
-            productStore.delete(product);
-        }
-        productTypeStore.delete(productType);
+        for (final Product product: products)
+            this.deleteProduct(product);
+        // If there is no more product with the type we want to delete
+        if (this.getProducts().stream().noneMatch(product -> product.getProductType().equals(productType)))
+            productTypeStore.delete(productType);
     }
 
     public List<Product> getProducts() {
@@ -130,7 +148,7 @@ public class Company {
         orderStore.delete(order);
     }
 
-    public List<Order> getOrdersForProductType(ProductType productType) {
+    public List<Order> getOrdersFromProductType(ProductType productType) {
         return orderStore.getStorage().stream().filter(order ->
                 order.getOrderedProducts().stream().anyMatch(product -> product.getProductType().equals(productType)))
                 .collect(Collectors.toList());
@@ -138,6 +156,10 @@ public class Company {
 
     public List<Order> getOrders() {
         return orderStore.getStorage();
+    }
+
+    public List<Delivery> getDeliveries() {
+        return deliveryStore.getStorage();
     }
 
     public List<Transportation> getAllTransportation() {

@@ -1,14 +1,15 @@
 package simulator.runner;
 
+import company.delivery.Delivery;
 import company.main.Company;
+import company.order.Order;
+import company.product.Product;
 import company.product.ProductType;
 import jedis.JedisManager;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import simulator.generator.CompanyGenerator;
-import simulator.generator.DataGenerator;
+
+import java.util.logging.Logger;
 
 
 /**
@@ -18,17 +19,16 @@ import simulator.generator.DataGenerator;
  */
 public class CompanySimulatorRunnerTest {
 
-    private Company company;
-    private Thread economyThread;
-    private Thread companyThread;
+    private static Company company;
+    private static Thread economyThread;
+    private static Thread companyThread;
 
-    @Before
-    public void setUp() {
+    @BeforeClass
+    public static void setUp() {
+
         EconomySimulatorRunner economySimulatorRunner;
         CompanySimulatorRunner companySimulatorRunner;
-        JedisManager.getInstance().flushDB();
-        CompanyGenerator companyGenerator = new CompanyGenerator();
-        company = companyGenerator.generateDefault();
+        company = new CompanyGenerator().generateDefaultCompany();
         economySimulatorRunner = new EconomySimulatorRunner();
         companySimulatorRunner = new CompanySimulatorRunner(company, economySimulatorRunner);
         economyThread = new Thread(economySimulatorRunner);
@@ -46,7 +46,7 @@ public class CompanySimulatorRunnerTest {
          */
         try {
             final int initialProductTypesSize = company.getProductTypes().size();
-            for (int i = 0; i < Math.pow(10,5)*2; i++) {
+            for (int i = 0; i < Math.pow(10,6); i++) {
                 economyThread.run();
                 companyThread.run();
             }
@@ -57,6 +57,7 @@ public class CompanySimulatorRunnerTest {
             Assert.fail();
             e.printStackTrace();
         }
+        Assert.assertEquals(company.getProductTypes().size(), JedisManager.getInstance().retrieveAllFromClass(ProductType.class).size());
     }
 
     @Test
@@ -66,7 +67,7 @@ public class CompanySimulatorRunnerTest {
          */
         try {
             final int initialProductSize = company.getProducts().size();
-            for (int i = 0; i < Math.pow(10, 5)*2; i++) {
+            for (int i = 0; i < Math.pow(10, 6); i++) {
                 economyThread.run();
                 companyThread.run();
                 if (initialProductSize != company.getProducts().size()) {
@@ -81,6 +82,7 @@ public class CompanySimulatorRunnerTest {
             e.printStackTrace();
         }
 
+        Assert.assertEquals(company.getProducts().size(), JedisManager.getInstance().retrieveAllFromClass(Product.class).size());
     }
 
     @Test
@@ -104,10 +106,58 @@ public class CompanySimulatorRunnerTest {
             Assert.fail();
             e.printStackTrace();
         }
+
+        Assert.assertEquals(company.getProductTypes().size(),JedisManager.getInstance().retrieveAllFromClass(ProductType.class).size());
     }
 
-    @After
-    public void clean() {
-        //JedisManager.getInstance().flushDB();
+    @Test
+    public void testOrders() {
+        try {
+            int orderSize = company.getOrders().size();
+            for (int i = 0; i < Math.pow(10,6); i++) {
+                economyThread.run();
+                companyThread.run();
+                if (orderSize < company.getOrders().size()) {
+                    break;
+                } else {
+                    orderSize = company.getOrders().size();
+                }
+            }
+
+            Assert.assertFalse(orderSize == company.getOrders().size());
+        } catch (Exception e) {
+            Assert.fail();
+            e.printStackTrace();
+        }
+
+        Assert.assertEquals(company.getOrders().size(),JedisManager.getInstance().retrieveAllFromClass(Order.class).size());
     }
+
+    @Test
+    public void testDeliveries() {
+        try {
+            int deliverySize = company.getDeliveries().size();
+            for (int i = 0; i < Math.pow(10,6);i++) {
+                economyThread.run();
+                companyThread.run();
+                if (deliverySize < company.getDeliveries().size()) {
+                    break;
+                } else {
+                    deliverySize = company.getDeliveries().size();
+                }
+            }
+            Assert.assertFalse(deliverySize == company.getDeliveries().size());
+        } catch (Exception e) {
+            Assert.fail();
+            e.printStackTrace();
+        }
+
+        Assert.assertEquals(company.getDeliveries().size(),JedisManager.getInstance().retrieveAllFromClass(Delivery.class).size());
+    }
+
+    @AfterClass
+    public static void clean() {
+        JedisManager.getInstance().flushDB();
+    }
+
 }

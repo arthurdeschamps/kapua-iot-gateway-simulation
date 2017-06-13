@@ -34,8 +34,10 @@ public class CompanyGenerator {
         defaultCompanyType = CompanyType.DOMESTIC;
     }
 
-    public Company generateDefault() {
-        return new Company(this.defaultCompanyType, this.defaultCompanyName, this.defaultPostalAddress);
+    public Company generateDefaultCompany() {
+        Company company = new Company(this.defaultCompanyType, this.defaultCompanyName, this.defaultPostalAddress);
+        DataGenerator.getInstance().generateDefaultData(company);
+        return company;
     }
 
     public String getDefaultStreet() {

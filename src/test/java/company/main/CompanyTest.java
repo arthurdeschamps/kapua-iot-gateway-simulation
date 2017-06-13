@@ -21,6 +21,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import redis.clients.jedis.GeoCoordinate;
+import simulator.generator.CompanyGenerator;
 import simulator.generator.DataGenerator;
 
 import java.io.IOException;
@@ -38,7 +39,7 @@ public class CompanyTest {
     private CustomerStore customerStore;
     private OrderStore orderStore;
     private DeliveryStore deliveryStore;
-    private final Logger logger = Logger.getLogger(CompanyTest.class.getName());
+    private static final Logger logger = Logger.getLogger(CompanyTest.class.getName());
 
     @Before
     public void setUp() throws IOException {
@@ -145,5 +146,20 @@ public class CompanyTest {
     @Test
     public void testDelivery() {
 
+    }
+
+    @Test
+    public void testConsistency() {
+        Company company = new Company(CompanyType.DOMESTIC,"test company",DataGenerator.getInstance().generateRandomAddress());
+        company.newProductType(DataGenerator.getInstance().generateRandomProductType());
+        company.updateAllData();
+        Assert.assertEquals(company.getProductTypes(),JedisManager.getInstance().retrieveAllFromClass(ProductType.class));
+    }
+
+    @Test
+    public void testGenerateDefault() {
+        Company company = new CompanyGenerator().generateDefaultCompany();
+        Assert.assertEquals(company.getProducts().size(),JedisManager.getInstance().retrieveAllFromClass(Product.class).size());
+        Assert.assertEquals(company.getProducts(),JedisManager.getInstance().retrieveAllFromClass(Product.class));
     }
 }

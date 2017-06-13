@@ -10,12 +10,16 @@ import java.util.logging.Logger;
  */
 public interface JedisObjectStoreInterface<T extends JedisObject> {
 
-    // Retrieve an object by id
+    /**
+     * Retrieve an object by id
+     */
     default Optional<T> retrieve(String id) {
         return getStorage().stream().filter(object -> object.getId().equals(id)).findFirst();
     }
 
-    // Retrieve all objects from class and fill store object list
+    /**
+     * Retrieve all objects from class and fill store object list
+     */
     default List<T> retrieveAll() {
         List<T> allObjects = JedisManager.getInstance().retrieveAllFromClass(getItemClass());
         if (allObjects != null)
@@ -24,33 +28,42 @@ public interface JedisObjectStoreInterface<T extends JedisObject> {
     }
 
 
-    // Return stored items class
+    /**
+     * Return stored items' class
+     */
     Class<T> getItemClass();
 
-    // Fill the Store "storage"
+    /**
+     * Fill the store "storage"
+     */
     void setStorage(List<T> allObjects);
 
 
-    // Return the Store "storage"
+    /**
+     * Return the Store "storage"
+     */
     List<T> getStorage();
 
 
-    // Add object to storage and db
+    /**
+     * Add object to storage and db
+     */
     default void add(T object) {
         if (object != null) {
             if (JedisManager.getInstance().retrieve(object.getId(), object.getClass()) == null) {
-                object.save();
-                getStorage().add(object);
+                if (object.save())
+                    getStorage().add(object);
             }
         }
     }
 
-    // Delete object from storage and db
+    /**
+     * Delete object from storage and db
+     */
     default void delete(T object) {
         if (object != null) {
-            JedisManager.getInstance().delete(object.getId());
-            getStorage().remove(object);
-
+            if (getStorage().remove(object))
+                object.delete();
         }
     }
 

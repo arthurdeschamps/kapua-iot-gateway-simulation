@@ -4,25 +4,15 @@ import com.github.javafaker.Address;
 import com.github.javafaker.Faker;
 import com.github.javafaker.Name;
 import company.customer.Customer;
-import company.customer.CustomerStore;
 import company.transportation.PostalAddress;
 import company.main.Company;
 import company.main.CompanyType;
-import company.delivery.Delivery;
-import company.delivery.DeliveryStore;
-import company.order.Order;
-import company.order.OrderStore;
 import company.product.Product;
 import company.product.ProductStore;
 import company.product.ProductType;
-import company.product.ProductTypeStore;
 import company.transportation.Transportation;
 import company.transportation.TransportationMode;
-import company.transportation.TransportationStore;
 import jedis.JedisManager;
-import redis.clients.jedis.GeoCoordinate;
-
-import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
 
@@ -32,38 +22,23 @@ import java.util.logging.Logger;
  */
 public final class DataGenerator {
 
-    private ProductStore productStore;
-    private ProductTypeStore productTypeStore;
-    private TransportationStore transportationStore;
-    private CustomerStore customerStore;
-    private OrderStore orderStore;
-    private DeliveryStore deliveryStore;
-    private Company company;
-
     private static DataGenerator dataGenerator = new DataGenerator();
 
     private  final Logger logger = Logger.getLogger(DataGenerator.class.getName());
+    private static final Random random = new Random();
     private  Faker faker;
 
     private DataGenerator(){
         faker = new Faker();
-
-        productStore = new ProductStore();
-        productTypeStore = new ProductTypeStore();
-        transportationStore = new TransportationStore();
-        customerStore = new CustomerStore();
-        orderStore = new OrderStore();
-        deliveryStore = new DeliveryStore();
-        company = this.generateRandomCompany();
     }
 
     public static DataGenerator getInstance() {
         return dataGenerator;
     }
 
-    public  void generateDefaultDatabase() {
+    void generateDefaultData(Company company) {
         deleteAll();
-        generateDatabase();
+        generateData(company);
     }
 
     public  Customer generateRandomCustomer() {
@@ -72,12 +47,15 @@ public final class DataGenerator {
                 faker.internet().emailAddress(),faker.phoneNumber().phoneNumber());
     }
 
-    PostalAddress generateRandomAddress() {
-        if (productStore == null)
-            logger.info("productStore null");
+    public PostalAddress generateRandomAddress() {
         Address address = faker.address();
         return new PostalAddress(address.streetAddress(),address.cityName(),address.state(),address.country(),
                 address.zipCode());
+    }
+
+    public Product generateRandomProductFromProductType(ProductType productType) {
+        // TODO generate different price from stock one sometimes ?
+        return new Product(productType,this.generateRandomAddress().toCoordinates());
     }
 
     public ProductType generateRandomProductType() {
@@ -109,82 +87,43 @@ public final class DataGenerator {
                 TransportationMode.randomTransportationMode());
     }
 
-    private  void generateDatabase() {
+    private void generateData(Company company) {
+        // TODO: generate regarding to the company business type
         logger.info("Flushing database...");
         deleteAll();
         logger.info("Done");
         logger.info("Populating database...");
-        generateProductTypes();
-        generateProducts();
-        generateTransportation();
-        generateCustomers();
-        generateOrders();
-        generateDeliveries();
+        generateProductTypes(company);
+        generateProducts(company);
+        generateTransportation(company);
+        generateCustomers(company);
         logger.info("All done !");
     }
 
-    private  void generateProductTypes() {
-        productTypeStore.add(new ProductType("Apple","Germany",0.5f,0.2f,false));
-        productTypeStore.add(new ProductType("Diamond","Brasil",1000.0f,1.4f,true));
-        productTypeStore.add(new ProductType("Basket ball","USA",30.0f,1.0f,false));
-        productTypeStore.add(new ProductType("Crystal glass","France",198.4f,1.5f,true));
-        productTypeStore.add(new ProductType("Sony QLED TV","Japan",4509.99f,20.4f,true));
+    private  void generateProductTypes(Company company) {
+        for (int i = 0; i < random.nextInt(10); i++)
+            company.newProductType(this.generateRandomProductType());
     }
 
-    private  void generateProducts() {
-        GeoCoordinate coordinate = new GeoCoordinate(100,100);
-        Product apple;
-        for (int i = 0; i < 20000; i++) {
-            apple = new Product(productTypeStore.getStorage().get(0),coordinate);
-            productStore.add(apple);
-        }
-        Product basketBall;
-        for (int i = 0; i < 100; i++) {
-            basketBall = new Product(productTypeStore.getStorage().get(3),coordinate,20);
-            productStore.add(basketBall);
-        }
-        Product tv;
-        for (int i = 0; i < 450; i++) {
-            tv = new Product(productTypeStore.getStorage().get(4),coordinate,2499);
-            productStore.add(tv);
-        }
-    }
-
-    private  void generateTransportation() {
-        transportationStore.add(new Transportation(450,60, TransportationMode.LAND_RAIL));
-        transportationStore.add(new Transportation(259,140,TransportationMode.LAND_ROAD));
-        transportationStore.add(new Transportation(30000,30,TransportationMode.WATER));
-    }
-
-    private  void generateCustomers() {
-        for (int i = 0; i < 10; i++)
-            customerStore.add(dataGenerator.generateRandomCustomer());
-    }
-
-    private  void generateOrders() {
-        List<Product> products = productStore.getStorage();
-        Random randomUtil = new Random();
-        for (final Customer customer : customerStore.getStorage()) {
-            for (int j = 0; j < randomUtil.nextInt(5)+1; j++) {
-                Order order = new Order(customer);
-                final int nbrProducts = products.size();
-                for (int i = 0; i < randomUtil.nextInt(10)+1; i++)
-                    order.getOrderedProducts().add(products.get(randomUtil.nextInt(nbrProducts)));
-                orderStore.add(order);
+    private  void generateProducts(Company company) {
+        for (final ProductType productType : company.getProductTypes()) {
+            for (int i = 0; i < random.nextInt(100); i++) {
+                company.newProduct(this.generateRandomProductFromProductType(productType));
             }
         }
     }
 
-    private  void generateDeliveries() {
-        Random randomUtil = new Random();
-        for (final Customer customer : customerStore.getStorage()) {
-            final int size = transportationStore.getStorage().size();
-            deliveryStore.add(new Delivery(orderStore.getByCustomer(customer),transportationStore.getStorage().get(randomUtil.nextInt(size)),company.getHeadquarters(),
-                    company.getHeadquarters().toCoordinates(),customer.getPostalAddress()));
-        }
+    private  void generateTransportation(Company company) {
+        for (int i = 0; i < random.nextInt(50); i++)
+            company.newTransportation(this.generateRandomTransportation());
+    }
+
+    private  void generateCustomers(Company company) {
+        for (int i = 0; i < random.nextInt(50); i++)
+            company.newCustomer(this.generateRandomCustomer());
     }
 
     private  void deleteAll() {
-        JedisManager.getInstance().flushDB();
+        JedisManager.getInstance().flushAll();
     }
 }

@@ -21,7 +21,6 @@ public class Product extends JedisObject {
     }
 
     public Product(ProductType productType, GeoCoordinate currentLocation) {
-        this.id = JedisManager.getInstance().generateUniqueId();
         this.currentLocation = currentLocation;
         this.productType = productType;
         this.price = productType.getBasePrice();

@@ -20,8 +20,8 @@ public abstract class JedisObject {
     public abstract boolean validate();
 
     // Save object in db
-    final void save() {
-        JedisManager.getInstance().save(this);
+    final boolean save() {
+        return JedisManager.getInstance().save(this);
     }
 
     // Delete object from db
@@ -38,5 +38,14 @@ public abstract class JedisObject {
         return JedisManager.getInstance().generateUniqueId();
     }
 
-
+    @Override
+    public boolean equals(Object obj) {
+        try {
+            JedisObject jedisObject = (JedisObject) obj;
+            return (jedisObject.getId().equals(this.getId()));
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
