@@ -2,7 +2,7 @@ package company.order;
 
 import company.customer.Customer;
 import company.product.Product;
-import jedis.JedisObject;
+import storage.Item;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 /**
  * Created by Arthur Deschamps on 03.06.17.
  */
-public class Order extends JedisObject {
+public class Order extends Item {
 
     private List<Product> orderedProducts;
     private Customer buyer;

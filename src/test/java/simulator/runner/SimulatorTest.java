@@ -2,13 +2,10 @@ package simulator.runner;
 
 import company.main.Company;
 import company.product.Product;
-import company.product.ProductType;
-import jedis.JedisManager;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import simulator.generator.CompanyGenerator;
-import simulator.main.Parametrizer;
 import simulator.main.SupplyChainControlSimulator;
 
 import java.util.List;
@@ -49,25 +46,22 @@ public class SimulatorTest {
         /*
             Now that we have a product or multiple product types, we should be able to create products
          */
-        List<Product> programProductStore = null;
-        List<Product> dbProductStore = null;
+        boolean newProduct = false;
         try {
             final int initialProductSize = company.getProducts().size();
             for (int i = 0; i < Math.pow(10, 6); i++) {
                 if (initialProductSize != company.getProducts().size()) {
-                    programProductStore = company.getProducts();
-                    dbProductStore = JedisManager.getInstance().retrieveAllFromClass(Product.class);
+                    newProduct = true;
                     break;
                 }
             }
-            Assert.assertNotNull(dbProductStore);
-            Assert.assertNotNull(programProductStore);
+
+            Assert.assertTrue(newProduct);
 
         } catch (Exception e) {
             Assert.fail();
             e.printStackTrace();
         }
 
-        Assert.assertEquals(programProductStore.size(), dbProductStore.size());
     }
 }

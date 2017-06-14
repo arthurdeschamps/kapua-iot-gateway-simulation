@@ -1,6 +1,6 @@
 package company.transportation;
 
-import redis.clients.jedis.GeoCoordinate;
+import simulator.main.Coordinate;
 
 /**
  * Created by Arthur Deschamps on 03.06.17.
@@ -21,9 +21,9 @@ public class PostalAddress {
         this.postalCode = postalCode;
     }
 
-    public GeoCoordinate toCoordinates() {
+    public Coordinate toCoordinates() {
         // TODO: address to coordinates conversion
-        return new GeoCoordinate(0,0);
+        return new Coordinate(0,0);
     }
 
     @Override

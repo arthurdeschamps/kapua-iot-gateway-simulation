@@ -147,7 +147,7 @@ public class CompanySimulatorRunner implements Runnable {
             }
             // Make sure the order is not empty
             if (orderedProducts.size() > 0)
-                company.newOrder(new Order(company.getCustomers().get(random.nextInt(company.getCustomers().size())), orderedProducts));
+                company.newOrder(new Order(company.getCustomerStore().getRandom(), orderedProducts));
         }
     }
 

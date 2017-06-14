@@ -3,22 +3,22 @@ package company.delivery;
 import company.order.Order;
 import company.transportation.PostalAddress;
 import company.transportation.Transportation;
-import jedis.JedisObject;
-import redis.clients.jedis.GeoCoordinate;
+import simulator.main.Coordinate;
+import storage.Item;
 
 /**
  * Created by Arthur Deschamps on 02.06.17.
  */
-public class Delivery extends JedisObject {
+public class Delivery extends Item {
 
     private Order order;
     private Transportation transporter;
     private PostalAddress destination;
     private PostalAddress departure;
-    private GeoCoordinate currentPosition;
+    private Coordinate currentPosition;
     private DeliveryStatus deliveryState;
 
-    public Delivery(Order order, Transportation transporter, PostalAddress departure, GeoCoordinate currentPosition, PostalAddress destination) {
+    public Delivery(Order order, Transportation transporter, PostalAddress departure, Coordinate currentPosition, PostalAddress destination) {
         this.order = order;
         this.transporter = transporter;
         this.departure = departure;
@@ -66,11 +66,11 @@ public class Delivery extends JedisObject {
         this.departure = departure;
     }
 
-    public GeoCoordinate getCurrentPosition() {
+    public Coordinate getCurrentPosition() {
         return currentPosition;
     }
 
-    public void setCurrentPosition(GeoCoordinate currentPosition) {
+    public void setCurrentPosition(Coordinate currentPosition) {
         this.currentPosition = currentPosition;
     }
 

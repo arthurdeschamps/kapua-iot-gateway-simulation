@@ -1,24 +1,15 @@
 package company.main;
 
 import company.customer.Customer;
-import company.customer.CustomerStore;
 import company.transportation.PostalAddress;
 import company.delivery.Delivery;
-import company.delivery.DeliveryStore;
 import company.order.Order;
-import company.order.OrderStore;
 import company.product.Product;
-import company.product.ProductStore;
 import company.product.ProductType;
-import company.product.ProductTypeStore;
 import company.transportation.Transportation;
-import company.transportation.TransportationStore;
-import jedis.JedisObjectStoreInterface;
+import storage.ItemStore;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -32,39 +23,23 @@ public class Company {
     private PostalAddress headquarters;
 
     // Object stores
-    private ProductStore productStore;
-    private ProductTypeStore productTypeStore;
-    private DeliveryStore deliveryStore;
-    private TransportationStore transportationStore;
-    private CustomerStore customerStore;
-    private OrderStore orderStore;
+    private ItemStore<Product> productStore;
+    private ItemStore<ProductType> productTypeStore;
+    private ItemStore<Delivery> deliveryStore;
+    private ItemStore<Transportation> transportationStore;
+    private ItemStore<Customer> customerStore;
+    private ItemStore<Order> orderStore;
 
     public Company(CompanyType companyType, String name, PostalAddress postalAddress) {
-        this.productStore = new ProductStore();
-        this.productTypeStore = new ProductTypeStore();
-        this.deliveryStore = new DeliveryStore();
-        this.transportationStore = new TransportationStore();
-        this.customerStore = new CustomerStore();
-        this.orderStore = new OrderStore();
+        this.productStore = new ItemStore<>();
+        this.productTypeStore = new ItemStore<>();
+        this.deliveryStore = new ItemStore<>();
+        this.transportationStore = new ItemStore<>();
+        this.customerStore = new ItemStore<>();
+        this.orderStore = new ItemStore<>();
         this.type = companyType;
         this.name = name;
         this.headquarters = postalAddress;
-    }
-
-    /**
-     * Set all stores to what is available in database. This method enables consistency between the company and the database.
-     */
-    public void updateAllData() {
-        Arrays.stream(this.getClass().getDeclaredFields()).forEach(field -> {
-            if (Arrays.stream(field.getType().getInterfaces()).anyMatch(aClass -> aClass.equals(JedisObjectStoreInterface.class))) {
-                try {
-                    JedisObjectStoreInterface objectStore = (JedisObjectStoreInterface) field.get(this);
-                    objectStore.setStorage(objectStore.retrieveAll());
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
     public void newCustomer(Customer customer) {
@@ -80,7 +55,7 @@ public class Company {
     public void deleteRandomCustomer() {
         if (customerStore.getStorage().size() > 0) {
             Random random = new Random();
-            Customer randomCustomer = customerStore.getStorage().get(random.nextInt(customerStore.getStorage().size()));
+            Customer randomCustomer = customerStore.getRandom();
             if (!hasOrders(randomCustomer)) {
                 customerStore.delete(randomCustomer);
             }
@@ -92,7 +67,7 @@ public class Company {
                 order.getBuyer().equals(customer));
     }
 
-    public List<Customer> getCustomers() {
+    public Set<Customer> getCustomers() {
         return customerStore.getStorage();
     }
 
@@ -124,16 +99,17 @@ public class Company {
             productTypeStore.delete(productType);
     }
 
-    public List<Product> getProducts() {
+    public Set<Product> getProducts() {
         return productStore.getStorage();
     }
 
-    public List<ProductType> getProductTypes() {
+    public Set<ProductType> getProductTypes() {
         return productTypeStore.getStorage();
     }
 
     public long getProductQuantity(ProductType productType) {
-        return productStore.getProductTypeQuantity(productType);
+        return productStore.getStorage().stream().filter(product -> product.getProductType().equals(productType))
+                .collect(Collectors.toList()).size();
     }
 
     public void newOrder(Order order) {
@@ -154,15 +130,15 @@ public class Company {
                 .collect(Collectors.toList());
     }
 
-    public List<Order> getOrders() {
+    public Set<Order> getOrders() {
         return orderStore.getStorage();
     }
 
-    public List<Delivery> getDeliveries() {
+    public Set<Delivery> getDeliveries() {
         return deliveryStore.getStorage();
     }
 
-    public List<Transportation> getAllTransportation() {
+    public Set<Transportation> getAllTransportation() {
         return transportationStore.getStorage();
     }
 
@@ -187,7 +163,6 @@ public class Company {
         transportationStore.delete(transportation);
         return true;
     }
-
     public void newDelivery(Delivery delivery) {
         deliveryStore.add(delivery);
     }
@@ -218,5 +193,29 @@ public class Company {
 
     public void setHeadquarters(PostalAddress headquarters) {
         this.headquarters = headquarters;
+    }
+
+    public ItemStore<Product> getProductStore() {
+        return productStore;
+    }
+
+    public ItemStore<ProductType> getProductTypeStore() {
+        return productTypeStore;
+    }
+
+    public ItemStore<Delivery> getDeliveryStore() {
+        return deliveryStore;
+    }
+
+    public ItemStore<Transportation> getTransportationStore() {
+        return transportationStore;
+    }
+
+    public ItemStore<Customer> getCustomerStore() {
+        return customerStore;
+    }
+
+    public ItemStore<Order> getOrderStore() {
+        return orderStore;
     }
 }

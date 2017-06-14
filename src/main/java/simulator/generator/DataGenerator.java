@@ -8,11 +8,10 @@ import company.transportation.PostalAddress;
 import company.main.Company;
 import company.main.CompanyType;
 import company.product.Product;
-import company.product.ProductStore;
 import company.product.ProductType;
 import company.transportation.Transportation;
 import company.transportation.TransportationMode;
-import jedis.JedisManager;
+
 import java.util.Random;
 import java.util.logging.Logger;
 
@@ -83,15 +82,10 @@ public final class DataGenerator {
 
     void generateData(Company company) {
         // TODO: generate regarding to the company business type
-        logger.info("Flushing database...");
-        deleteAll();
-        logger.info("Done");
-        logger.info("Populating database...");
         generateProductTypes(company);
         generateProducts(company);
         generateTransportation(company);
         generateCustomers(company);
-        logger.info("All done !");
     }
 
     private  void generateProductTypes(Company company) {
@@ -115,7 +109,4 @@ public final class DataGenerator {
             company.newCustomer(this.generateRandomCustomer());
     }
 
-    private  void deleteAll() {
-        JedisManager.getInstance().flushAll();
-    }
 }

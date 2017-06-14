@@ -2,12 +2,12 @@ package company.customer;
 
 import com.sun.istack.internal.Nullable;
 import company.transportation.PostalAddress;
-import jedis.JedisObject;
+import storage.Item;
 
 /**
  * Created by Arthur Deschamps on 03.06.17.
  */
-public class Customer extends JedisObject {
+public class Customer extends Item {
 
     private String firstName;
     private String lastName;

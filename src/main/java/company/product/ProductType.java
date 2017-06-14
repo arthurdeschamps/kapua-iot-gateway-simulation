@@ -1,6 +1,6 @@
 package company.product;
 
-import jedis.JedisObject;
+import storage.Item;
 
 
 /**
@@ -8,7 +8,7 @@ import jedis.JedisObject;
  * This class represents a type of product sold by the company.
  * It is the meta-class of the class Product
  */
-public class ProductType extends JedisObject {
+public class ProductType extends Item {
 
     private String name;
     private String productionCountry;

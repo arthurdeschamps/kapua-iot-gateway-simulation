@@ -1,14 +1,12 @@
 package company.transportation;
 
-import company.transportation.TransportationMode;
-import jedis.JedisManager;
-import jedis.JedisObject;
+import storage.Item;
 
 /**
  * Created by Arthur Deschamps on 02.06.17.
  * Company transportation means
  */
-public class Transportation extends JedisObject {
+public class Transportation extends Item {
 
     private float capacity; // in tonnes
     private int maxSpeed; // km/h

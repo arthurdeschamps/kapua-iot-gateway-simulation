@@ -5,11 +5,8 @@ import company.main.Company;
 import company.order.Order;
 import company.product.Product;
 import company.product.ProductType;
-import jedis.JedisManager;
 import org.junit.*;
 import simulator.generator.CompanyGenerator;
-
-import java.util.logging.Logger;
 
 
 /**
@@ -60,7 +57,6 @@ public class CompanySimulatorRunnerTest {
             Assert.fail();
             e.printStackTrace();
         }
-        Assert.assertEquals(company.getProductTypes().size(), JedisManager.getInstance().retrieveAllFromClass(ProductType.class).size());
     }
 
     @Test
@@ -85,7 +81,6 @@ public class CompanySimulatorRunnerTest {
             e.printStackTrace();
         }
 
-        Assert.assertEquals(company.getProducts().size(), JedisManager.getInstance().retrieveAllFromClass(Product.class).size());
     }
 
     @Test
@@ -110,7 +105,6 @@ public class CompanySimulatorRunnerTest {
             e.printStackTrace();
         }
 
-        Assert.assertEquals(company.getProductTypes().size(),JedisManager.getInstance().retrieveAllFromClass(ProductType.class).size());
     }
 
     @Test
@@ -133,7 +127,6 @@ public class CompanySimulatorRunnerTest {
             e.printStackTrace();
         }
 
-        Assert.assertEquals(company.getOrders().size(),JedisManager.getInstance().retrieveAllFromClass(Order.class).size());
     }
 
     @Test
@@ -155,12 +148,7 @@ public class CompanySimulatorRunnerTest {
             e.printStackTrace();
         }
 
-        Assert.assertEquals(company.getDeliveries().size(),JedisManager.getInstance().retrieveAllFromClass(Delivery.class).size());
     }
 
-    @AfterClass
-    public static void clean() {
-        JedisManager.getInstance().flushDB();
-    }
 
 }
