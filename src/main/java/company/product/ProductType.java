@@ -10,7 +10,6 @@ import jedis.JedisObject;
  */
 public class ProductType extends JedisObject {
 
-    // Id
     private String name;
     private String productionCountry;
     private float basePrice; // in USD
@@ -29,7 +28,7 @@ public class ProductType extends JedisObject {
 
     // Validate object before saving
     public boolean validate() {
-        return ((name.length() <= 50) && (productionCountry.length() <= 50) && (basePrice > 0) && (weight > 0));
+        return ((basePrice > 0) && (weight > 0));
     }
 
     @Override

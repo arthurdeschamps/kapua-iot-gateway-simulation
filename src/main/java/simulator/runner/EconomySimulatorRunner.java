@@ -19,6 +19,7 @@ public class EconomySimulatorRunner implements Runnable {
     private float demand;
 
     private Random random = new Random();
+    private final ProbabilitySimulator probabilitySimulator = new ProbabilitySimulator();
 
     public EconomySimulatorRunner() {
         generateValues();

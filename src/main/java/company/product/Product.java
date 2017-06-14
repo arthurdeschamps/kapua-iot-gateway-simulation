@@ -26,6 +26,7 @@ public class Product extends JedisObject {
         this.price = productType.getBasePrice();
     }
 
+
     @Override
     public boolean validate() {
         return ((productType != null) && (currentLocation != null));

@@ -53,20 +53,28 @@ public final class JedisManager {
         }
     }
 
-    // Retrieve object from memory and populate bean. Bean must be an "empty" object from the calling class.
-    <T extends JedisObject> T retrieve(String id, Class<T> clazz) {
+    /**
+     * Retrieve object from memory and tries cast it to given type
+     * @param id
+     * Object id
+     * @param clazz
+     * Object class
+     * @param <T>
+     * Object type
+     * @return
+     * Object of type T if id exists in database and castable to given type. Null otherwise.
+     */
+    <T extends JedisObject> Optional<T> retrieve(String id, Class<T> clazz) {
         T returnObject = null;
         try(Jedis jedis = pool.getResource()) {
             Gson gson = new Gson();
             String properties = jedis.get(clazz.getName().toLowerCase()+":"+id);
-            if (properties != null) {
-                returnObject = gson.fromJson(properties,clazz);
-            }
+            returnObject = gson.fromJson(properties,clazz);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return returnObject;
+        return Optional.ofNullable(returnObject);
     }
 
 

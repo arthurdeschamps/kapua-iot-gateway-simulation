@@ -36,11 +36,6 @@ public final class DataGenerator {
         return dataGenerator;
     }
 
-    void generateDefaultData(Company company) {
-        deleteAll();
-        generateData(company);
-    }
-
     public  Customer generateRandomCustomer() {
         Name name = faker.name();
         return new Customer(name.firstName(),name.lastName(), this.generateRandomAddress(),
@@ -54,7 +49,6 @@ public final class DataGenerator {
     }
 
     public Product generateRandomProductFromProductType(ProductType productType) {
-        // TODO generate different price from stock one sometimes ?
         return new Product(productType,this.generateRandomAddress().toCoordinates());
     }
 
@@ -87,7 +81,7 @@ public final class DataGenerator {
                 TransportationMode.randomTransportationMode());
     }
 
-    private void generateData(Company company) {
+    void generateData(Company company) {
         // TODO: generate regarding to the company business type
         logger.info("Flushing database...");
         deleteAll();
@@ -106,11 +100,9 @@ public final class DataGenerator {
     }
 
     private  void generateProducts(Company company) {
-        for (final ProductType productType : company.getProductTypes()) {
-            for (int i = 0; i < random.nextInt(100); i++) {
+        for (final ProductType productType : company.getProductTypes())
+            for (int i = 0; i < random.nextInt(100); i++)
                 company.newProduct(this.generateRandomProductFromProductType(productType));
-            }
-        }
     }
 
     private  void generateTransportation(Company company) {

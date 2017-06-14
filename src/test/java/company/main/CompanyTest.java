@@ -160,6 +160,24 @@ public class CompanyTest {
     public void testGenerateDefault() {
         Company company = new CompanyGenerator().generateDefaultCompany();
         Assert.assertEquals(company.getProducts().size(),JedisManager.getInstance().retrieveAllFromClass(Product.class).size());
-        Assert.assertEquals(company.getProducts(),JedisManager.getInstance().retrieveAllFromClass(Product.class));
+        final List<Product> dbProds = JedisManager.getInstance().retrieveAllFromClass(Product.class);
+        Assert.assertTrue(company.getProducts().stream().allMatch(product -> dbProds.contains(product)));
+    }
+
+    @Test
+    public void testAddMethods() {
+        JedisManager.getInstance().flushAll();
+        Company company = new Company(CompanyType.DOMESTIC,"test company",DataGenerator.getInstance().generateRandomAddress());
+        for (int i = 0; i < 100; i++) {
+            company.newCustomer(DataGenerator.getInstance().generateRandomCustomer());
+        }
+        Assert.assertEquals(company.getCustomers().size(),100);
+        Assert.assertEquals(company.getCustomers().size(),JedisManager.getInstance().retrieveAllFromClass(Customer.class).size());
+        Assert.assertEquals(company.getProductTypes().size(),0);
+        for (int i = 0; i <200; i++) {
+            company.newProductType(DataGenerator.getInstance().generateRandomProductType());
+        }
+        Assert.assertEquals(company.getProductTypes().size(),200);
+        Assert.assertEquals(company.getProductTypes().size(),JedisManager.getInstance().retrieveAllFromClass(ProductType.class).size());
     }
 }

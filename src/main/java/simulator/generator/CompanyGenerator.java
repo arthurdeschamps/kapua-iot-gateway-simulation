@@ -36,7 +36,7 @@ public class CompanyGenerator {
 
     public Company generateDefaultCompany() {
         Company company = new Company(this.defaultCompanyType, this.defaultCompanyName, this.defaultPostalAddress);
-        DataGenerator.getInstance().generateDefaultData(company);
+        DataGenerator.getInstance().generateData(company);
         return company;
     }
 

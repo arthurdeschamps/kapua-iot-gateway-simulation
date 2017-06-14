@@ -16,6 +16,8 @@ import java.util.logging.Logger;
 
 /**
  * This runnable simulates a company's production and delivery chain based on the given economy simulator metrics.
+ * The base unit of this runnable is 1 second. This means that 1 execution of the method run is equivalent to 1 second
+ * elapsed in real time.
  *
  * @author Arthur Deschamps
  * @since 1.0
@@ -24,6 +26,7 @@ import java.util.logging.Logger;
 public class CompanySimulatorRunner implements Runnable {
 
     private static final Logger logger = Logger.getLogger(CompanySimulatorRunner.class.getName());
+    private final ProbabilitySimulator probability = new ProbabilitySimulator();
 
     private Company company;
     private EconomySimulatorRunner economy;
@@ -87,7 +90,7 @@ public class CompanySimulatorRunner implements Runnable {
      */
     private void simulateProductTypeCreation() {
         // A new product type is likely to be created when the economy is well, the demand is weak or the concurrency is high
-        if (event(Math.abs(economy.getGrowth()+economy.getDemand()+economy.getSectorConcurrency()),TimeUnit.YEAR)) {
+        if (probability.event(Math.abs(economy.getGrowth()+economy.getDemand()+economy.getSectorConcurrency()), ProbabilitySimulator.TimeUnit.YEAR)) {
             final ProductType productType = DataGenerator.getInstance().generateRandomProductType();
             company.newProductType(productType);
         }
@@ -102,7 +105,7 @@ public class CompanySimulatorRunner implements Runnable {
             // Sometimes when no order on the product's type exist, company decides to get rid of it
             // Company must have at least 2 types of products
             if (company.getOrdersFromProductType(productType).size() == 0 && company.getProductTypes().size() > 2) {
-                if (event(2,TimeUnit.MONTH)) {
+                if (probability.event(2, ProbabilitySimulator.TimeUnit.MONTH)) {
                     company.deleteProductType(productType);
                     return;
                 }
@@ -116,7 +119,7 @@ public class CompanySimulatorRunner implements Runnable {
      */
     private void simulatePriceCuts() {
         for(final ProductType productType : company.getProductTypes()) {
-            if (event(company.getOrdersFromProductType(productType).size()/100,TimeUnit.YEAR)) {
+            if (probability.event(company.getOrdersFromProductType(productType).size()/100, ProbabilitySimulator.TimeUnit.YEAR)) {
                 company.getProducts().forEach(product -> {
                     // 10 % discount
                     final float cutPrice = product.getPrice()*90/100;
@@ -139,7 +142,7 @@ public class CompanySimulatorRunner implements Runnable {
             // A product has probability nbrCustomers/(price*10^4) to be ordered
             List<Product> orderedProducts = new ArrayList<>();
             for (final Product product : company.getProducts()) {
-                if (event(company.getCustomers().size()/product.getPrice(),TimeUnit.MONTH))
+                if (probability.event(company.getCustomers().size()/product.getPrice(),ProbabilitySimulator.TimeUnit.MONTH))
                     orderedProducts.add(product);
             }
             // Make sure the order is not empty
@@ -155,7 +158,7 @@ public class CompanySimulatorRunner implements Runnable {
     private void simulateDeliveries() {
         // An order starts to be delivered in a day on average
         for (final Order order : company.getOrders()) {
-            if (event(1,TimeUnit.DAY)) {
+            if (probability.event(1,ProbabilitySimulator.TimeUnit.DAY)) {
                 Optional<Transportation> potentialTransportation = company.getAvailableTransportation();
                 if (potentialTransportation != null && potentialTransportation.isPresent()) {
                     company.newDelivery(new Delivery(order, company.getAvailableTransportation().get(), company.getHeadquarters(),
@@ -189,17 +192,17 @@ public class CompanySimulatorRunner implements Runnable {
     private void simulateCustomersBehavior() {
         if (economy.getGrowth() > 0) {
             // If economy growth is high, there is a high chance of getting a new customer
-            if (event(economy.getGrowth()*2,TimeUnit.MONTH))
+            if (probability.event(economy.getGrowth()*2,ProbabilitySimulator.TimeUnit.MONTH))
                 company.newCustomer(DataGenerator.getInstance().generateRandomCustomer());
             // It can still lose customers sometimes
-            if (event(economy.getGrowth(),TimeUnit.YEAR))
+            if (probability.event(economy.getGrowth(),ProbabilitySimulator.TimeUnit.YEAR))
                 company.deleteRandomCustomer();
         } else {
             // If economy growth is negative, there is a chance that our company might lose customers
-            if (event(Math.abs(economy.getGrowth()),TimeUnit.MONTH))
+            if (probability.event(Math.abs(economy.getGrowth()),ProbabilitySimulator.TimeUnit.MONTH))
                 company.deleteRandomCustomer();
             // Company can still acquire a new customer
-            if (event(Math.abs(economy.getGrowth()),TimeUnit.YEAR))
+            if (probability.event(Math.abs(economy.getGrowth()),ProbabilitySimulator.TimeUnit.YEAR))
                 company.newCustomer(DataGenerator.getInstance().generateRandomCustomer());
         }
     }
@@ -212,7 +215,7 @@ public class CompanySimulatorRunner implements Runnable {
         // If orders >= nbr transportation * 100, new transportation should be acquired
         if (company.getOrders().size() >= company.getAllTransportation().size()*100) {
             // On average takes 2 weeks to be done
-            if (event(0.5d,TimeUnit.WEEK)) {
+            if (probability.event(0.5d,ProbabilitySimulator.TimeUnit.WEEK)) {
                 Transportation transportation = DataGenerator.getInstance().generateRandomTransportation();
                 company.newTransportation(transportation);
             }
@@ -227,67 +230,13 @@ public class CompanySimulatorRunner implements Runnable {
         // If number of transportation surpasses number of orders, there is a surplus of transportation
         if (company.getOrders().size() <= company.getAllTransportation().size()) {
             // Takes on average two weeks to get rid of
-            if (event(2,TimeUnit.MONTH)) {
+            if (probability.event(2,ProbabilitySimulator.TimeUnit.MONTH)) {
                 Optional<Transportation> transportationToDelete = company.getAvailableTransportation();
                 transportationToDelete.ifPresent(transportation -> company.deleteTransportation(transportation));
             }
         }
     }
 
-    /**
-     * This method returns true if an event that happens with a certain frequency (in a certain time unit) happened
-     * and false if it did not happen. The only computation done is a Random.nextInt(nbr) with nbr depending on the
-     * frequency and time unit.
-     * @param frequency
-     * Frequency at which the event occurs.
-     * @param timeUnit
-     * The frequency's unit. See TimeUnit enumeration of this class.
-     * @return
-     * A boolean value indicating if the event occured (true) or not (false).
-     *
-     * @since 1.0
-     */
-    private boolean event(double frequency, TimeUnit timeUnit) {
-        if (frequency < 0)
-            throw new IllegalArgumentException("Frequency can't be negative");
-        // Convert frequency from initial time unit to the biggest available unit in order to make the decimal part of
-        // the computed frequency not relevant in comparison to the integer part
-        double normalizedFrequency = TimeUnit.convertToBiggestUnit(frequency,timeUnit);
-        // Convert frequency per second to number of outcomes for a uniform law of probability
-        int nbrOutcomes = (int) normalizedFrequency;
-        // If number of outcomes is 0, there is not chance that the event happens
-        if (nbrOutcomes == 0)
-            return false;
-        // Simulate event using a uniform law of probability
-        Random random = new Random();
-        return random.nextInt(nbrOutcomes) == 0;
-    }
-
-    /**
-     * TimeUnit allows simulation functions to indicate the time unit of the frequency at each the simulated event
-     * occurs on average.
-     * @since 1.0
-     */
-    private enum TimeUnit {
-        HOUR, DAY, WEEK, MONTH, YEAR;
-
-        public static double convertToBiggestUnit(double value, TimeUnit timeUnit) {
-            // Biggest unit is currently a year
-            switch (timeUnit) {
-                case YEAR:
-                    return value;
-                case MONTH:
-                    return value*12;
-                case WEEK:
-                    return value*12*4;
-                case DAY:
-                    return value*12*4*7;
-                case HOUR:
-                    return value*12*4*7*24;
-            }
-            throw new EnumConstantNotPresentException(TimeUnit.class,"Given TimeUnit not recognized");
-        }
-    }
 
     public Company getCompany() {
         return company;
