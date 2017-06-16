@@ -8,7 +8,6 @@ import org.junit.Test;
 import simulator.generator.CompanyGenerator;
 import simulator.main.SupplyChainControlSimulator;
 
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -16,6 +15,8 @@ import java.util.logging.Logger;
 
 /**
  * Created by Arthur Deschamps on 14.06.17.
+ * @author Arthur Deschamps
+ * @since 1.0
  */
 public class SimulatorTest {
 
@@ -28,11 +29,10 @@ public class SimulatorTest {
     @BeforeClass
     public static void setUp() {
 
-        company = new CompanyGenerator().generateDefaultCompany();
+        company = CompanyGenerator.getInstance().generateDefaultCompany();
 
         economySimulator = new EconomySimulatorRunner();
         companySimulator = new CompanySimulatorRunner(company, economySimulator);
-        SupplyChainControlSimulator supplyChainControlSimulator = new SupplyChainControlSimulator();
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
         executor.scheduleWithFixedDelay(economySimulator,0,1,TimeUnit.MICROSECONDS);
         executor.scheduleWithFixedDelay(companySimulator,0,1,TimeUnit.MICROSECONDS);
@@ -64,4 +64,5 @@ public class SimulatorTest {
         }
 
     }
+    
 }

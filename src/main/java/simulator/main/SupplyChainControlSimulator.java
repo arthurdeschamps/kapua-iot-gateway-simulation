@@ -28,7 +28,7 @@ public class SupplyChainControlSimulator {
 
     private static void initDefault(){
         // Generate default company if user didn't choose any parameter
-        company = new CompanyGenerator().generateDefaultCompany();
+        company = CompanyGenerator.getInstance().generateDefaultCompany();
 
         // Generate default parametrizer
         parametrizer = new Parametrizer(10000);

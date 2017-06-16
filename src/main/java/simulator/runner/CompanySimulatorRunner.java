@@ -157,15 +157,11 @@ public class CompanySimulatorRunner implements Runnable {
      */
     private void simulateDeliveries() {
         // An order starts to be delivered in a day on average
-        for (final Order order : company.getOrders()) {
-            if (probability.event(1,ProbabilitySimulator.TimeUnit.DAY)) {
-                Optional<Transportation> potentialTransportation = company.getAvailableTransportation();
-                if (potentialTransportation != null && potentialTransportation.isPresent()) {
-                    company.newDelivery(new Delivery(order, company.getAvailableTransportation().get(), company.getHeadquarters(),
-                            company.getHeadquarters().toCoordinates(), order.getBuyer().getPostalAddress()));
-                }
-            }
-        }
+        for (final Order order : company.getOrders())
+            if (probability.event(1,ProbabilitySimulator.TimeUnit.DAY))
+                company.getAvailableTransportation().ifPresent(transportation -> company.newDelivery(new Delivery(order,
+                        transportation, company.getHeadquarters(),
+                        order.getBuyer().getPostalAddress())));
     }
 
     /**
@@ -231,8 +227,8 @@ public class CompanySimulatorRunner implements Runnable {
         if (company.getOrders().size() <= company.getAllTransportation().size()) {
             // Takes on average two weeks to get rid of
             if (probability.event(2,ProbabilitySimulator.TimeUnit.MONTH)) {
-                Optional<Transportation> transportationToDelete = company.getAvailableTransportation();
-                transportationToDelete.ifPresent(transportation -> company.deleteTransportation(transportation));
+                company.getAvailableTransportation().ifPresent(transportation ->
+                        company.deleteTransportation(transportation));
             }
         }
     }

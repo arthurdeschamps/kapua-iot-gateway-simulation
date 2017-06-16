@@ -18,11 +18,11 @@ public class Delivery extends Item {
     private Coordinate currentPosition;
     private DeliveryStatus deliveryState;
 
-    public Delivery(Order order, Transportation transporter, PostalAddress departure, Coordinate currentPosition, PostalAddress destination) {
+    public Delivery(Order order, Transportation transporter, PostalAddress departure, PostalAddress destination) {
         this.order = order;
         this.transporter = transporter;
         this.departure = departure;
-        this.currentPosition = currentPosition;
+        this.currentPosition = departure.toCoordinates();
         this.departure = departure;
         this.destination = destination;
         this.deliveryState = DeliveryStatus.WAREHOUSE;

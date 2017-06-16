@@ -6,6 +6,8 @@ import company.transportation.PostalAddress;
 import company.main.Company;
 import company.main.CompanyType;
 
+import java.util.Random;
+
 /**
  * Created by Arthur Deschamps on 02.06.17.
  * TODO: use this class through DataGenerator exclusively
@@ -21,7 +23,9 @@ public class CompanyGenerator {
     private final CompanyType defaultCompanyType;
     private final PostalAddress defaultPostalAddress;
 
-    public CompanyGenerator() {
+    private static CompanyGenerator companyGenerator = new CompanyGenerator();
+
+    private CompanyGenerator() {
         Faker faker = new Faker();
         Address address = faker.address();
         defaultStreet = address.streetAddress();
@@ -34,8 +38,62 @@ public class CompanyGenerator {
         defaultCompanyType = CompanyType.DOMESTIC;
     }
 
+    public static CompanyGenerator getInstance() {
+        return companyGenerator;
+    }
+
+    /**
+     * Generates a "default" company without any data.
+     * @return
+     * Object of type Company
+     */
+    public Company generateDefaultCompanyWithNoData() {
+        return new Company(this.defaultCompanyType, this.defaultCompanyName, this.defaultPostalAddress);
+    }
+
+
+    /**
+     * Generates a "default" company with random data.
+     * @return
+     * Object of type Company
+     */
     public Company generateDefaultCompany() {
-        Company company = new Company(this.defaultCompanyType, this.defaultCompanyName, this.defaultPostalAddress);
+        Company company = generateDefaultCompanyWithNoData();
+        DataGenerator.getInstance().generateData(company);
+        return company;
+    }
+
+    /**
+     * Generates a random company with no data.
+     * @return
+     * Object of type Company
+     */
+    public Company generateRandomCompanyWithNoData() {
+        CompanyType companyType = CompanyType.DOMESTIC;
+        Random random = new Random();
+        int rand = random.nextInt(3);
+        switch (rand) {
+            case 0:
+                companyType = CompanyType.DOMESTIC;
+                break;
+            case 1:
+                companyType = CompanyType.INTERNATIONAL;
+                break;
+            case 2:
+                companyType = CompanyType.GLOBAL;
+                break;
+        }
+        Faker faker = new Faker();
+        return new Company(companyType,faker.company().name(), DataGenerator.getInstance().generateRandomAddress());
+    }
+
+    /**
+     * Generates a random company with random data.
+     * @return
+     * Object of type Company
+     */
+    public Company generateRandomCompany() {
+        Company company = generateRandomCompanyWithNoData();
         DataGenerator.getInstance().generateData(company);
         return company;
     }

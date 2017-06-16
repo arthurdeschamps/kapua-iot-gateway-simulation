@@ -4,6 +4,8 @@ import com.github.javafaker.Address;
 import com.github.javafaker.Faker;
 import com.github.javafaker.Name;
 import company.customer.Customer;
+import company.delivery.Delivery;
+import company.order.Order;
 import company.transportation.PostalAddress;
 import company.main.Company;
 import company.main.CompanyType;
@@ -12,6 +14,9 @@ import company.product.ProductType;
 import company.transportation.Transportation;
 import company.transportation.TransportationMode;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.logging.Logger;
 
@@ -56,24 +61,42 @@ public final class DataGenerator {
                 (float) Math.random()*1000, (float) Math.log(Math.random()*10000+1), faker.bool().bool());
     }
 
-    private  Company generateRandomCompany() {
-        CompanyType companyType = CompanyType.DOMESTIC;
-        Random random = new Random();
-        int rand = random.nextInt(3);
-        switch (rand) {
-            case 0:
-                companyType = CompanyType.DOMESTIC;
-                break;
-            case 1:
-                companyType = CompanyType.INTERNATIONAL;
-                break;
-            case 2:
-                companyType = CompanyType.GLOBAL;
-                break;
+    /**
+     * Returns a randomly generated order
+     * @param company
+     * An object of type Company is required to be able to access the products and customers.
+     * @return
+     * A optional object of type Order. If the company doesn't have products or customers, the result is null.
+     */
+    public Optional<Order> generateRandomOrder(Company company) {
+        if (company != null && company.getProducts().size() > 0 && company.getCustomers().size() > 0) {
+            Customer customer = company.getCustomerStore().getRandom();
+            List<Product> productList = new ArrayList<>();
+            for (int i = 0; i < random.nextInt(10)+1; i++) {
+                /*
+                 Checks if there is no more product available in the product store. This is done because the method
+                 newOrder from Company takes care of removing all the products of an order from the product store
+                 before adding the order
+                  */
+                if (i >= company.getProducts().size())
+                    break;
+                productList.add(company.getProductStore().getRandom());
+            }
+            return Optional.of(new Order(customer,productList));
         }
-        Faker faker = new Faker();
-        return new Company(companyType,faker.company().name(), this.generateRandomAddress());
+
+        return Optional.empty();
     }
+
+    public Optional<Delivery> generateRandomDelivery(Company company) {
+        if (company.getOrders().size() > 0 && company.getAvailableTransportation().isPresent()) {
+            return Optional.of(new Delivery(company.getOrderStore().getRandom(), company.getAvailableTransportation().get(),
+                    company.getHeadquarters(), company.getCustomerStore().getRandom().getPostalAddress()));
+        }
+
+        return Optional.empty();
+    }
+
 
     public Transportation generateRandomTransportation() {
         return new Transportation((float) Math.log(Math.random()*10000+1),(int) Math.log(Math.random()*1000),

@@ -28,7 +28,7 @@ public class CompanySimulatorRunnerTest {
 
         EconomySimulatorRunner economySimulatorRunner;
         CompanySimulatorRunner companySimulatorRunner;
-        company = new CompanyGenerator().generateDefaultCompany();
+        company = CompanyGenerator.getInstance().generateDefaultCompany();
         economySimulatorRunner = new EconomySimulatorRunner();
         companySimulatorRunner = new CompanySimulatorRunner(company, economySimulatorRunner);
         economyThread = new Thread(economySimulatorRunner);

@@ -54,7 +54,6 @@ public class Company {
 
     public void deleteRandomCustomer() {
         if (customerStore.getStorage().size() > 0) {
-            Random random = new Random();
             Customer randomCustomer = customerStore.getRandom();
             if (!hasOrders(randomCustomer)) {
                 customerStore.delete(randomCustomer);
@@ -112,13 +111,23 @@ public class Company {
                 .collect(Collectors.toList()).size();
     }
 
+    /**
+     * Creates a new order in the order store and take all the products of the order out of the product store.
+     * @param order
+     * Object of type Order.
+     */
     public void newOrder(Order order) {
         // Remove from product store all products from order
         order.getOrderedProducts().forEach(product -> productStore.delete(product));
         orderStore.add(order);
     }
 
-    public void deleteOrder(Order order) {
+    /**
+     * Removes order from the order store of the company and puts back the products in the product store.
+     * @param order
+     * Order to be cancelled.
+     */
+    public void cancelOrder(Order order) {
         // Puts back products in product store
         order.getOrderedProducts().forEach(product -> productStore.add(product));
         orderStore.delete(order);
@@ -142,6 +151,12 @@ public class Company {
         return transportationStore.getStorage();
     }
 
+    /**
+     * Tries to find an available transportation (not assigned to a delivery) and returns it. If there is no available
+     * transportation, null is returned.
+     * @return
+     * Optional object of type Transportation.
+     */
     public Optional<Transportation> getAvailableTransportation() {
         for (final Transportation candidate : transportationStore.getStorage()) {
             if (deliveryStore.getStorage().stream().noneMatch(delivery -> delivery.getTransporter().equals(candidate))) {
@@ -149,25 +164,42 @@ public class Company {
             }
 
         }
-        return null;
+        return Optional.empty();
     }
 
     public void newTransportation(Transportation transportation) {
         transportationStore.add(transportation);
     }
 
-    // Return false if transportation is assigned to deliveries
+    /**
+     * Return false if transportation is assigned to any delivery and true otherwise. If the result is true, the
+     * given transportation is deleted from the transportation store of the company.
+     */
     public boolean deleteTransportation(Transportation transportation) {
         if (deliveryStore.getStorage().stream().anyMatch(delivery -> delivery.getTransporter().equals(transportation)))
             return false;
         transportationStore.delete(transportation);
         return true;
     }
+
+    /**
+     * Creates a new delivery and stores it in the delivery store of the company. The order that shall be delivered is
+     * taken off of the order store.
+     * @param delivery
+     * Object of type Delivery.
+     */
     public void newDelivery(Delivery delivery) {
+        orderStore.delete(delivery.getOrder());
         deliveryStore.add(delivery);
     }
 
-    public void deleteDelivery(Delivery delivery) {
+    /**
+     * Cancels a delivery and puts back the order in the order store of the company.
+     * @param delivery
+     * Delivery to be cancelled.
+     */
+    public void cancelDelivery(Delivery delivery) {
+        orderStore.add(delivery.getOrder());
         deliveryStore.delete(delivery);
     }
 
