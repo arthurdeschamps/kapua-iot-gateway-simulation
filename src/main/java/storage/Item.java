@@ -11,36 +11,16 @@ import java.util.logging.Logger;
  */
 public abstract class Item {
 
-    protected String id;
-
     private static final Logger logger = Logger.getLogger(Item.class.getName());
-
-    public Item() {
-        this.id = generateId();
-    }
 
     // Validate that object conforms to the schema
     public abstract boolean validate();
 
-    // Must have a unique ID
-    public final String getId() {
-        return id;
-    }
 
     private String generateId() {
         return UUID.randomUUID().toString();
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        try {
-            Item item = (Item) obj;
-            return (item.getId().equals(this.getId()));
-        } catch (ClassCastException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 
     public String asJson() {
         Gson gson = new Gson();

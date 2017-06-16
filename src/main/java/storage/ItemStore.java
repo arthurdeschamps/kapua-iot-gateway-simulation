@@ -34,17 +34,6 @@ public class ItemStore<T extends Item>{
         return storage;
     }
 
-    /**
-     * Tries to find an object by its id
-     * @param id
-     * Object's id
-     * @return
-     * Object if found and null otherwise
-     */
-    public Optional<T> getById(String id) {
-        return getStorage().stream().filter(item -> item.getId().equals(id)).findFirst();
-    }
-
 
     /**
      * Add object to storage and db

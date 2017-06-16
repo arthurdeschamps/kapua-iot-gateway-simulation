@@ -24,9 +24,6 @@ public class Transportation extends Item {
         return ((capacity > 0) && (maxSpeed > 0));
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public float getCapacity() {
         return capacity;
