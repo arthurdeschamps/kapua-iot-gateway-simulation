@@ -1,7 +1,6 @@
 package simulator.runner;
 
 import company.main.Company;
-import company.product.Product;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -34,8 +33,8 @@ public class SimulatorTest {
         economySimulator = new EconomySimulatorRunner();
         companySimulator = new CompanySimulatorRunner(company, economySimulator);
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
-        executor.scheduleWithFixedDelay(economySimulator,0,1,TimeUnit.MICROSECONDS);
-        executor.scheduleWithFixedDelay(companySimulator,0,1,TimeUnit.MICROSECONDS);
+        executor.scheduleWithFixedDelay(economySimulator,0,1,TimeUnit.NANOSECONDS);
+        executor.scheduleWithFixedDelay(companySimulator,0,1,TimeUnit.NANOSECONDS);
         // Display data
         executor.scheduleWithFixedDelay(() -> logger.info("Growth: "+economySimulator.getGrowth()+", Demand: "+economySimulator.getDemand()
                 +", Sector concurrency: "+economySimulator.getSectorConcurrency()),1,5,TimeUnit.SECONDS);
@@ -49,7 +48,7 @@ public class SimulatorTest {
         boolean newProduct = false;
         try {
             final int initialProductSize = company.getProducts().size();
-            for (int i = 0; i < Math.pow(10, 6); i++) {
+            for (int i = 0; i < Math.pow(10, 10); i++) {
                 if (initialProductSize != company.getProducts().size()) {
                     newProduct = true;
                     break;
@@ -64,5 +63,24 @@ public class SimulatorTest {
         }
 
     }
-    
+
+    @Test
+    public void testProductTypeCreation() {
+        boolean newType = false;
+        try {
+            final int initialProductTypesSize = company.getProductTypes().size();
+            for (int i = 0; i < Math.pow(10, 6); i++) {
+                if (initialProductTypesSize != company.getProductTypes().size()) {
+                    newType = true;
+                    break;
+                }
+            }
+
+            Assert.assertTrue(newType);
+        } catch (Exception e) {
+            Assert.fail();
+            e.printStackTrace();
+        }
+    }
+
 }

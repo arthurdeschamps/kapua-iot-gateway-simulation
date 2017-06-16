@@ -4,12 +4,14 @@ import java.util.Random;
 
 /**
  * Created by Arthur Deschamps on 13.06.17.
+ * @author Arthur Deschamps
+ * @since 1.0
  */
 class ProbabilitySimulator {
     /**
-     * This method returns true if an event that happens with a certain frequency (in a certain time unit) happened
-     * and false if it did not happen. The only computation done is a Random.nextInt(nbr) with nbr depending on the
-     * frequency and time unit.
+     * This method simulates if an event that occurs at the given frequency in the given time unit has occurred in 1 second.
+     * For instance, if the event has frequency 1 per hour, the method might be called on average 3600 times in order to return true
+     * at least once.
      * @param frequency
      * Frequency at which the event occurs.
      * @param timeUnit
@@ -27,11 +29,11 @@ class ProbabilitySimulator {
         double normalizedFrequency = TimeUnit.convertToBiggestUnit(frequency,timeUnit);
         // Convert frequency per second to number of favorable outcomes for a uniform law of probability
         long nbrFavorableOutcomes = (long) normalizedFrequency;
-        // We are simulating one second, so the total number of outcomes is the number of second in a year.
-        final long nbrTotalOutcomes = 12*4*7*24*60*60;
+        // We are simulating one second, so the total number of outcomes one second converted to the biggest unit
+        final double nbrTotalOutcomes = TimeUnit.convertToBiggestUnit(1,TimeUnit.SECOND);
         // Simulate event using a uniform law of probability
         Random random = new Random();
-        return random.nextInt((int)(nbrTotalOutcomes+1-nbrFavorableOutcomes)) == 0;
+        return random.nextInt((int)(nbrTotalOutcomes/nbrFavorableOutcomes)) == 0;
     }
 
     /**
@@ -40,8 +42,17 @@ class ProbabilitySimulator {
      * @since 1.0
      */
      enum TimeUnit {
-        HOUR, DAY, WEEK, MONTH, YEAR;
+        SECOND,HOUR, DAY, WEEK, MONTH, YEAR;
 
+        /**
+         * Converts given value in time unit to a new value in the biggest existing unit
+         * @param value
+         * Frequency
+         * @param timeUnit
+         * Frequency's time unit
+         * @return
+         * Frequency converted to the biggest time unit of TimeUnit
+         */
         public static double convertToBiggestUnit(double value, TimeUnit timeUnit) {
             // Biggest unit is currently a year
             switch (timeUnit) {
@@ -55,6 +66,8 @@ class ProbabilitySimulator {
                     return value*12*4*7;
                 case HOUR:
                     return value*12*4*7*24;
+                case SECOND:
+                    return value*12*4*7*24*60*60;
             }
             throw new EnumConstantNotPresentException(TimeUnit.class,"Given TimeUnit not recognized");
         }

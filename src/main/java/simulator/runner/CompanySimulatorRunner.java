@@ -38,6 +38,10 @@ public class CompanySimulatorRunner implements Runnable {
         random = new Random();
     }
 
+    /**
+     * Calls every simulation method.
+     * @since 1.0
+     */
     @Override
     public void run() {
         try {
@@ -52,8 +56,7 @@ public class CompanySimulatorRunner implements Runnable {
     }
 
     /**
-     * Calls every simulation method.
-     * @since 1.0
+     * Calls every simulation method related to products (products, product types, etc)
      */
     private void simulateProducts() {
         simulateProductTypeCreation();
@@ -75,12 +78,14 @@ public class CompanySimulatorRunner implements Runnable {
             // Cast is safe since even if we have billions of products, it won't be refilled anyway
             productQuantity = (int) company.getProductQuantity(productType);
 
-            // + 10 to not automatically refill every second when the stock is down
-            if (random.nextInt(productQuantity+100) == 0) {
-                company.newProduct(new Product(productType,company.getHeadquarters().toCoordinates(),productType.getBasePrice()));
-                //logger.info("New product of type "+productType.getName()+" produced");
-            }
-
+            //Check the product stock on average thrice a week
+            if (probability.event(3, ProbabilitySimulator.TimeUnit.WEEK)) {
+                if (productQuantity < company.getOrdersFromProductType(productType).size()) {
+                    // Refilled by 50 % of number of orders
+                    for (int i = 0; i < (int) (company.getOrdersFromProductType(productType).size()*0.5); i++)
+                        company.newProduct(new Product(productType,company.getHeadquarters().toCoordinates()));
+                }
+            }             
         }
     }
 

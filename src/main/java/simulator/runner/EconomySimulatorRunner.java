@@ -76,24 +76,25 @@ public class EconomySimulatorRunner implements Runnable {
         }
     }
 
+    /**
+     * Simulates economy total growth
+     */
     private void simulateGrowth() {
         /*
          Growth increases or decreases by 0.0x on average once per hour with probability 0.5 each
-         x takes random value between 0 and 9
-         1 hour = 60 minutes = 60^2 seconds
           */
-        final int hour = 3600;
-        if (random.nextInt(hour) == 0) {
-            // Totally random increase factor
-            float economyGrowthIncrease = (float) (Math.pow(-1,random.nextInt(2))*random.nextInt(10)/100);
-            //Logger.getGlobal().info("economyGrowthIncrease = "+economyGrowthIncrease);
-            // Factor based on growth magnitude: when the growth gets high (positive or negative), the curve inverts
-            float magnitudeCorrecter = 0;
-            if (random.nextInt((int) (Math.abs((500-Math.pow(this.getGrowth(),2)))+1)) == 0)
-                magnitudeCorrecter = Math.signum(this.getGrowth())*Math.abs(this.getGrowth());
-            //Logger.getGlobal().info("magnitudeCorrecter = "+magnitudeCorrecter);
-            this.setGrowth(this.getGrowth()+economyGrowthIncrease+magnitudeCorrecter);
-        }
+        if (probabilitySimulator.event(1, ProbabilitySimulator.TimeUnit.HOUR))
+            if (Math.random() > 0.5d) {
+                // Totally random increase factor
+                float economyGrowthIncrease = (float) (Math.pow(-1, random.nextInt(2)) * random.nextInt(10) / 100);
+                //Logger.getGlobal().info("economyGrowthIncrease = "+economyGrowthIncrease);
+                // Factor based on growth magnitude: when the growth gets high (positive or negative), the curve inverts
+                float magnitudeCorrecter = 0;
+                if (random.nextInt((int) (Math.abs((500 - Math.pow(this.getGrowth(), 2))) + 1)) == 0)
+                    magnitudeCorrecter = Math.signum(this.getGrowth()) * Math.abs(this.getGrowth());
+                //Logger.getGlobal().info("magnitudeCorrecter = "+magnitudeCorrecter);
+                this.setGrowth(this.getGrowth() + economyGrowthIncrease + magnitudeCorrecter);
+            }
     }
 
     private void simulateSectorConcurrency() {
