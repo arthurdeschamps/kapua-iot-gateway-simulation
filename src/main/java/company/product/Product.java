@@ -10,17 +10,14 @@ import storage.Item;
 public class Product extends Item {
 
     private ProductType productType;
-    private Coordinate currentLocation;
     private float price;
 
     public Product(ProductType productType, Coordinate currentLocation, float price) {
-        this.currentLocation = currentLocation;
         this.productType = productType;
         this.price = price;
     }
 
     public Product(ProductType productType, Coordinate currentLocation) {
-        this.currentLocation = currentLocation;
         this.productType = productType;
         this.price = productType.getBasePrice();
     }
@@ -28,7 +25,7 @@ public class Product extends Item {
 
     @Override
     public boolean validate() {
-        return ((productType != null) && (currentLocation != null));
+        return ((productType != null));
     }
 
     public ProductType getProductType() {
@@ -37,14 +34,6 @@ public class Product extends Item {
 
     public void setProductType(ProductType productType) {
         this.productType = productType;
-    }
-
-    public Coordinate getCurrentLocation() {
-        return currentLocation;
-    }
-
-    public void setCurrentLocation(Coordinate currentLocation) {
-        this.currentLocation = currentLocation;
     }
 
     public float getPrice() {

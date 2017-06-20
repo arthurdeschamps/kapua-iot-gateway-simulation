@@ -26,11 +26,11 @@ class ProbabilitySimulator {
             throw new IllegalArgumentException("Frequency can't be negative");
         // Convert frequency from initial time unit to the biggest available unit in order to make the decimal part of
         // the computed frequency not relevant in comparison to the integer part
-        double normalizedFrequency = TimeUnit.convertToBiggestUnit(frequency,timeUnit);
+        double normalizedFrequency = TimeUnit.scaleToBiggestUnit(frequency,timeUnit);
         // Convert frequency per second to number of favorable outcomes for a uniform law of probability
         long nbrFavorableOutcomes = (long) normalizedFrequency;
         // We are simulating one second, so the total number of outcomes one second converted to the biggest unit
-        final double nbrTotalOutcomes = TimeUnit.convertToBiggestUnit(1,TimeUnit.SECOND);
+        final double nbrTotalOutcomes = TimeUnit.scaleToBiggestUnit(1,TimeUnit.SECOND);
         // Simulate event using a uniform law of probability
         Random random = new Random();
         return random.nextInt((int)(nbrTotalOutcomes/nbrFavorableOutcomes)) == 0;
@@ -42,18 +42,19 @@ class ProbabilitySimulator {
      * @since 1.0
      */
      enum TimeUnit {
-        SECOND,HOUR, DAY, WEEK, MONTH, YEAR;
+        SECOND, MINUTE, HOUR, DAY, WEEK, MONTH, YEAR;
 
         /**
-         * Converts given value in time unit to a new value in the biggest existing unit
+         * Scales a given value in time unit to a new value in the biggest existing unit (ex: 1 month = 12 if year is
+         * the biggest unit).
          * @param value
          * Frequency
          * @param timeUnit
          * Frequency's time unit
          * @return
-         * Frequency converted to the biggest time unit of TimeUnit
+         * Frequency scaled to the biggest time unit of TimeUnit
          */
-        public static double convertToBiggestUnit(double value, TimeUnit timeUnit) {
+        public static double scaleToBiggestUnit(double value, TimeUnit timeUnit) {
             // Biggest unit is currently a year
             switch (timeUnit) {
                 case YEAR:
@@ -66,6 +67,8 @@ class ProbabilitySimulator {
                     return value*12*4*7;
                 case HOUR:
                     return value*12*4*7*24;
+                case MINUTE:
+                    return value*12*4*7*24*60;
                 case SECOND:
                     return value*12*4*7*24*60*60;
             }

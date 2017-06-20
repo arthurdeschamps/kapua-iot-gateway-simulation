@@ -18,7 +18,7 @@ public class ProbabilitySimulatorTest {
         boolean occured = false;
 
         // Test once an hour = 3600 seconds
-        for (int i = 0; i < 3600 * 3; i++) {
+        for (int i = 0; i < 3600 * 2; i++) {
             if (proba.event(1, ProbabilitySimulator.TimeUnit.HOUR)) {
                 occured = true;
                 break;
@@ -28,7 +28,26 @@ public class ProbabilitySimulatorTest {
         Assert.assertTrue(occured);
         occured = false;
 
-        //TODO next tests..
+        // Test once a day = 3600 * 24
+        for (int i = 0; i < 3600 * 24 * 2; i++) {
+            if (proba.event(1,ProbabilitySimulator.TimeUnit.DAY)) {
+                occured = true;
+                break;
+            }
+        }
+
+        Assert.assertTrue(occured);
+        occured = false;
+
+        // Test once a week = 3600*24*7
+        for (int i = 0; i < 3600*24*7*2; i++) {
+            if (proba.event(1,ProbabilitySimulator.TimeUnit.WEEK)) {
+                occured = true;
+                break;
+            }
+        }
+
+        Assert.assertTrue(occured);
     }
 
 }

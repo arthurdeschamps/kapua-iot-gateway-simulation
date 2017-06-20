@@ -15,14 +15,14 @@ public class Delivery extends Item {
     private Transportation transporter;
     private PostalAddress destination;
     private PostalAddress departure;
-    private Coordinate currentPosition;
+    private Coordinate currentLocation;
     private DeliveryStatus deliveryState;
 
     public Delivery(Order order, Transportation transporter, PostalAddress departure, PostalAddress destination) {
         this.order = order;
         this.transporter = transporter;
         this.departure = departure;
-        this.currentPosition = departure.toCoordinates();
+        this.currentLocation = departure.toCoordinates();
         this.departure = departure;
         this.destination = destination;
         this.deliveryState = DeliveryStatus.WAREHOUSE;
@@ -31,7 +31,7 @@ public class Delivery extends Item {
     @Override
     public boolean validate() {
         return ((transporter != null) && (destination != null) &&
-                (departure != null) && (currentPosition != null) && (deliveryState != null));
+                (departure != null) && (currentLocation != null) && (deliveryState != null));
     }
 
     public Order getOrder() {
@@ -66,12 +66,12 @@ public class Delivery extends Item {
         this.departure = departure;
     }
 
-    public Coordinate getCurrentPosition() {
-        return currentPosition;
+    public Coordinate getCurrentLocation() {
+        return currentLocation;
     }
 
-    public void setCurrentPosition(Coordinate currentPosition) {
-        this.currentPosition = currentPosition;
+    public void setCurrentLocation(Coordinate currentLocation) {
+        this.currentLocation = currentLocation;
     }
 
     public DeliveryStatus getDeliveryState() {

@@ -84,7 +84,7 @@ public class CompanyTest {
         company.newTransportation(DataGenerator.getInstance().generateRandomTransportation());
         company.newProductType(DataGenerator.getInstance().generateRandomProductType());
         company.newProduct(DataGenerator.getInstance().generateRandomProductFromProductType(
-                company.getProductTypeStore().getRandom()
+                company.getProductTypeStore().getRandom().get()
         ));
         company.newCustomer(DataGenerator.getInstance().generateRandomCustomer());
         DataGenerator.getInstance().generateRandomOrder(company).ifPresent(order ->

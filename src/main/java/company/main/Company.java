@@ -53,8 +53,8 @@ public class Company {
     }
 
     public void deleteRandomCustomer() {
-        if (customerStore.getStorage().size() > 0) {
-            Customer randomCustomer = customerStore.getRandom();
+        if (customerStore.getRandom().isPresent()) {
+            Customer randomCustomer = customerStore.getRandom().get();
             if (!hasOrders(randomCustomer)) {
                 customerStore.delete(randomCustomer);
             }
@@ -185,12 +185,29 @@ public class Company {
     /**
      * Creates a new delivery and stores it in the delivery store of the company. The order that shall be delivered is
      * taken off of the order store.
+     * @throws ConcurrentModificationException
+     * The passed delivery should not be tighten up is any way to an Iterator, otherwise it will throw a
+     * ConcurrentModificationException due to the delete
      * @param delivery
      * Object of type Delivery.
      */
-    public void newDelivery(Delivery delivery) {
-        orderStore.delete(delivery.getOrder());
-        deliveryStore.add(delivery);
+    public void newDelivery(Delivery delivery) throws ConcurrentModificationException {
+        try {
+            deliveryStore.add(delivery);
+            orderStore.delete(delivery.getOrder());
+        } catch (ConcurrentModificationException e) {
+            deliveryStore.delete(delivery);
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * A delivery has been delivered. It's thus removed from the delivery store.
+     * @param delivery
+     * Delivery to be ended.
+     */
+    public void deleteDelivery(Delivery delivery) {
+        deliveryStore.delete(delivery);
     }
 
     /**

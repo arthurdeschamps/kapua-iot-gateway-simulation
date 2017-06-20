@@ -57,7 +57,7 @@ public class EconomySimulatorRunner implements Runnable {
          demand = demand + (growth/2 - concurrency)/100
           */
         if (random.nextInt(1000) == 0)
-            this.setDemand(this.getDemand()+(this.getGrowth()*0.1f-this.getSectorConcurrency())/100);
+            this.setDemand(Math.abs(this.getDemand()+(this.getGrowth()*0.1f-this.getSectorConcurrency())/100));
     }
 
     private void simulateUpheavalLikelihood() {
@@ -81,17 +81,17 @@ public class EconomySimulatorRunner implements Runnable {
      */
     private void simulateGrowth() {
         /*
-         Growth increases or decreases by 0.0x on average once per hour with probability 0.5 each
+         Growth increases or decreases by 0.00x on average once per hour with probability 0.5 each
           */
         if (probabilitySimulator.event(1, ProbabilitySimulator.TimeUnit.HOUR))
             if (Math.random() > 0.5d) {
                 // Totally random increase factor
-                float economyGrowthIncrease = (float) (Math.pow(-1, random.nextInt(2)) * random.nextInt(10) / 100);
+                float economyGrowthIncrease = (float) (Math.pow(-1, random.nextInt(2)) * random.nextInt(10) / 1000);
                 //Logger.getGlobal().info("economyGrowthIncrease = "+economyGrowthIncrease);
                 // Factor based on growth magnitude: when the growth gets high (positive or negative), the curve inverts
                 float magnitudeCorrecter = 0;
-                if (random.nextInt((int) (Math.abs((500 - Math.pow(this.getGrowth(), 2))) + 1)) == 0)
-                    magnitudeCorrecter = Math.signum(this.getGrowth()) * Math.abs(this.getGrowth());
+                if (probabilitySimulator.event(3, ProbabilitySimulator.TimeUnit.WEEK))
+                    magnitudeCorrecter = -this.getGrowth()*(60/100);
                 //Logger.getGlobal().info("magnitudeCorrecter = "+magnitudeCorrecter);
                 this.setGrowth(this.getGrowth() + economyGrowthIncrease + magnitudeCorrecter);
             }

@@ -69,8 +69,8 @@ public final class DataGenerator {
      * A optional object of type Order. If the company doesn't have products or customers, the result is null.
      */
     public Optional<Order> generateRandomOrder(Company company) {
-        if (company != null && company.getProducts().size() > 0 && company.getCustomers().size() > 0) {
-            Customer customer = company.getCustomerStore().getRandom();
+        if (company != null && company.getProductStore().getRandom().isPresent() && company.getCustomerStore().getRandom().isPresent()) {
+            Customer customer = company.getCustomerStore().getRandom().get();
             List<Product> productList = new ArrayList<>();
             for (int i = 0; i < random.nextInt(10)+1; i++) {
                 /*
@@ -80,7 +80,7 @@ public final class DataGenerator {
                   */
                 if (i >= company.getProducts().size())
                     break;
-                productList.add(company.getProductStore().getRandom());
+                productList.add(company.getProductStore().getRandom().get());
             }
             return Optional.of(new Order(customer,productList));
         }
@@ -89,9 +89,10 @@ public final class DataGenerator {
     }
 
     public Optional<Delivery> generateRandomDelivery(Company company) {
-        if (company.getOrders().size() > 0 && company.getAvailableTransportation().isPresent()) {
-            return Optional.of(new Delivery(company.getOrderStore().getRandom(), company.getAvailableTransportation().get(),
-                    company.getHeadquarters(), company.getCustomerStore().getRandom().getPostalAddress()));
+        if (company.getOrders().size() > 0 && company.getAvailableTransportation().isPresent() &&
+                company.getCustomerStore().getRandom().isPresent() && company.getOrderStore().getRandom().isPresent()) {
+            return Optional.of(new Delivery(company.getOrderStore().getRandom().get(), company.getAvailableTransportation().get(),
+                    company.getHeadquarters(), company.getCustomerStore().getRandom().get().getPostalAddress()));
         }
 
         return Optional.empty();

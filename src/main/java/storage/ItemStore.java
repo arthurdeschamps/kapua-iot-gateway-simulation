@@ -64,12 +64,15 @@ public class ItemStore<T extends Item>{
      * @return
      * random element of the storage
      */
-    public T getRandom() {
-        Random random = new Random();
-        Iterator<T> iterator = getStorage().iterator();
-        for (int i = 0; i < random.nextInt(storage.size()); i++) {
-            iterator.next();
+    public Optional<T> getRandom() {
+        if (storage.size() > 0) {
+            Random random = new Random();
+            Iterator<T> iterator = getStorage().iterator();
+            for (int i = 0; i < random.nextInt(storage.size()); i++) {
+                iterator.next();
+            }
+            return Optional.of(iterator.next());
         }
-        return iterator.next();
+        return Optional.empty();
     }
 }
