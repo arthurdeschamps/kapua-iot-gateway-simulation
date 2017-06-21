@@ -1,46 +1,45 @@
-package company.transportation;
-
-import simulator.main.Coordinate;
+package company.address;
 
 /**
- * Created by Arthur Deschamps on 03.06.17.
+ * Describes an address (street, city, country, zip, coordinates, etc).
+ * @author Arthur Deschamps
+ * @since 1.0
  */
-public class PostalAddress {
+public class Address {
 
     private String street;
     private String city;
     private String region;
     private String country;
-    private String postalCode;
+    private String zip;
+    private Coordinate coordinate;
 
-    public PostalAddress(String street, String city, String region, String country, String postalCode) {
+    public Address(String street, String city, String region, String country, String zip, Coordinate coordinate) {
         this.street = street;
         this.city = city;
         this.region = region;
         this.country = country;
-        this.postalCode = postalCode;
-    }
-
-    public Coordinate toCoordinates() {
-        // TODO: address to coordinates conversion
-        return new Coordinate(0,0);
+        this.zip = zip;
+        this.coordinate = coordinate;
     }
 
     @Override
     public String toString() {
-        return this.getPostalCode()+" "+this.getStreet()+" "+this.getCity()+" "+this.getRegion()+" "+this.getCountry();
+        return this.getZip()+" "+this.getStreet()+" "+this.getCity()+" "+this.getRegion()+" "+this.getCountry();
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj.getClass().equals(PostalAddress.class)) {
-            PostalAddress addr = (PostalAddress) obj;
+        if (obj.getClass().equals(Address.class)) {
+            Address addr = (Address) obj;
             return (this.getCity().equals(addr.getCity())) && (this.getCountry().equals(addr.getCountry())) &&
-                    (this.getPostalCode() == addr.getPostalCode()) && (this.getRegion().equals(addr.getRegion()))
+                    (this.getZip() == addr.getZip()) && (this.getRegion().equals(addr.getRegion()))
                     && (this.getStreet().equals(addr.getStreet()));
         }
         return false;
     }
+
+
 
     public String getStreet() {
         return street;
@@ -66,12 +65,12 @@ public class PostalAddress {
         this.country = country;
     }
 
-    public String getPostalCode() {
-        return postalCode;
+    public String getZip() {
+        return zip;
     }
 
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
+    public void setZip(String zip) {
+        this.zip = zip;
     }
 
     public String getRegion() {
@@ -80,5 +79,13 @@ public class PostalAddress {
 
     public void setRegion(String region) {
         this.region = region;
+    }
+
+    public Coordinate getCoordinate() {
+        return coordinate;
+    }
+
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
     }
 }

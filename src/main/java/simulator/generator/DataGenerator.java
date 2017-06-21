@@ -1,18 +1,17 @@
 package simulator.generator;
 
-import com.github.javafaker.Address;
 import com.github.javafaker.Faker;
 import com.github.javafaker.Name;
 import company.customer.Customer;
 import company.delivery.Delivery;
 import company.order.Order;
-import company.transportation.PostalAddress;
+import company.address.Address;
 import company.main.Company;
-import company.main.CompanyType;
 import company.product.Product;
 import company.product.ProductType;
 import company.transportation.Transportation;
 import company.transportation.TransportationMode;
+import company.address.Coordinate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,26 +35,55 @@ public final class DataGenerator {
         faker = new Faker();
     }
 
+    /**
+     * Returns the unique instance of the class.
+     * @return
+     * An instance of DataGenerator.
+     */
     public static DataGenerator getInstance() {
         return dataGenerator;
     }
 
+    /**
+     * Generates a random customer.
+     * @return
+     * The newly generated customer.
+     */
     public  Customer generateRandomCustomer() {
         Name name = faker.name();
         return new Customer(name.firstName(),name.lastName(), this.generateRandomAddress(),
                 faker.internet().emailAddress(),faker.phoneNumber().phoneNumber());
     }
 
-    public PostalAddress generateRandomAddress() {
-        Address address = faker.address();
-        return new PostalAddress(address.streetAddress(),address.cityName(),address.state(),address.country(),
-                address.zipCode());
+    /**
+     * Generates a random address.
+     * @return
+     * The newly generated address.
+     */
+    public Address generateRandomAddress() {
+        com.github.javafaker.Address address = faker.address();
+        return new Address(address.streetAddress(),address.cityName(),address.state(),address.country(),
+                address.zipCode(),new Coordinate(address.latitude(),address.longitude()));
     }
 
-    public Product generateRandomProductFromProductType(ProductType productType) {
-        return new Product(productType,this.generateRandomAddress().toCoordinates());
+    /**
+     * Generates a product with the given product type and the coordinate contained in the company address.
+     * @param companyAddress
+     * The address of the company.
+     * @param productType
+     * The type of product to be generated.
+     * @return
+     * The newly generated product.
+     */
+    public Product generateProductFromProductType(Address companyAddress, ProductType productType) {
+        return new Product(productType,companyAddress.getCoordinate());
     }
 
+    /**
+     * Generates a random type of product (random name, production country, price, etc).
+     * @return
+     * The newly generated type of product.
+     */
     public ProductType generateRandomProductType() {
         return new ProductType(faker.commerce().productName(),faker.address().country(),
                 (float) Math.random()*1000, (float) Math.log(Math.random()*10000+1), faker.bool().bool());
@@ -88,22 +116,40 @@ public final class DataGenerator {
         return Optional.empty();
     }
 
+    /**
+     * Generates a random delivery if the number of orders of the company is strictly greater than 0 and there is
+     * an available transportation.
+     * @param company
+     * Company to generate the delivery for.
+     * @return
+     * The newly generated delivery or an empty optional if the conditions are not met.
+     */
     public Optional<Delivery> generateRandomDelivery(Company company) {
         if (company.getOrders().size() > 0 && company.getAvailableTransportation().isPresent() &&
                 company.getCustomerStore().getRandom().isPresent() && company.getOrderStore().getRandom().isPresent()) {
             return Optional.of(new Delivery(company.getOrderStore().getRandom().get(), company.getAvailableTransportation().get(),
-                    company.getHeadquarters(), company.getCustomerStore().getRandom().get().getPostalAddress()));
+                    company.getHeadquarters(), company.getCustomerStore().getRandom().get().getAddress()));
         }
 
         return Optional.empty();
     }
 
 
+    /**
+     * Generates a random transportation.
+     * @return
+     * The newly generated transportation.
+     */
     public Transportation generateRandomTransportation() {
         return new Transportation((float) Math.log(Math.random()*10000+1),(int) Math.log(Math.random()*1000),
                 TransportationMode.randomTransportationMode());
     }
 
+    /**
+     * Fills the company with random data (types of product, products, customers, etc).
+     * @param company
+     * The company to be filled with data.
+     */
     void generateData(Company company) {
         // TODO: generate regarding to the company business type
         generateProductTypes(company);
@@ -120,7 +166,7 @@ public final class DataGenerator {
     private  void generateProducts(Company company) {
         for (final ProductType productType : company.getProductTypes())
             for (int i = 0; i < random.nextInt(100); i++)
-                company.newProduct(this.generateRandomProductFromProductType(productType));
+                company.newProduct(this.generateProductFromProductType(company.getHeadquarters(),productType));
     }
 
     private  void generateTransportation(Company company) {

@@ -1,10 +1,10 @@
 package simulator.generator;
 
-import com.github.javafaker.Address;
 import com.github.javafaker.Faker;
-import company.transportation.PostalAddress;
+import company.address.Address;
 import company.main.Company;
 import company.main.CompanyType;
+import company.address.Coordinate;
 
 import java.util.Random;
 
@@ -20,21 +20,23 @@ public class CompanyGenerator {
     private String defaultCountry;
     private String defaultPostalCode;
     private String defaultCompanyName;
+    private Coordinate defaultCoordinate;
     private final CompanyType defaultCompanyType;
-    private final PostalAddress defaultPostalAddress;
+    private final Address defaultAddress;
 
     private static CompanyGenerator companyGenerator = new CompanyGenerator();
 
     private CompanyGenerator() {
         Faker faker = new Faker();
-        Address address = faker.address();
+        com.github.javafaker.Address address = faker.address();
         defaultStreet = address.streetAddress();
         defaultCity = address.city();
         defaultRegion = address.state();
         defaultCountry = address.country();
         defaultPostalCode = address.zipCode();
+        defaultCoordinate = new Coordinate(address.latitude(),address.longitude());
         defaultCompanyName = faker.company().name();
-        defaultPostalAddress = new PostalAddress(defaultStreet,defaultCity,defaultRegion,defaultCountry,defaultPostalCode);
+        defaultAddress = new Address(defaultStreet,defaultCity,defaultRegion,defaultCountry,defaultPostalCode,defaultCoordinate);
         defaultCompanyType = CompanyType.DOMESTIC;
     }
 
@@ -48,7 +50,7 @@ public class CompanyGenerator {
      * Object of type Company
      */
     public Company generateDefaultCompanyWithNoData() {
-        return new Company(this.defaultCompanyType, this.defaultCompanyName, this.defaultPostalAddress);
+        return new Company(this.defaultCompanyType, this.defaultCompanyName, this.defaultAddress);
     }
 
 
@@ -126,7 +128,15 @@ public class CompanyGenerator {
         return defaultCompanyType;
     }
 
-    public PostalAddress getDefaultPostalAddress() {
-        return defaultPostalAddress;
+    public Address getDefaultAddress() {
+        return defaultAddress;
+    }
+
+    public Coordinate getDefaultCoordinate() {
+        return defaultCoordinate;
+    }
+
+    public void setDefaultCoordinate(Coordinate defaultCoordinate) {
+        this.defaultCoordinate = defaultCoordinate;
     }
 }

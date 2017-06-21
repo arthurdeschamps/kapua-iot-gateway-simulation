@@ -1,6 +1,6 @@
 package company.product;
 
-import simulator.main.Coordinate;
+import company.address.Coordinate;
 import storage.Item;
 
 /**

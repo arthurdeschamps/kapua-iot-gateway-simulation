@@ -1,7 +1,7 @@
 package company.customer;
 
 import com.sun.istack.internal.Nullable;
-import company.transportation.PostalAddress;
+import company.address.Address;
 import storage.Item;
 
 /**
@@ -11,15 +11,15 @@ public class Customer extends Item {
 
     private String firstName;
     private String lastName;
-    private PostalAddress postalAddress;
+    private Address address;
     private String emailAddress;
     @Nullable
     private String phoneNumber;
 
-    public Customer(String firstName, String lastName, PostalAddress postalAddress, String emailAddress, String phoneNumber) {
+    public Customer(String firstName, String lastName, Address address, String emailAddress, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.postalAddress = postalAddress;
+        this.address = address;
         this.emailAddress = emailAddress;
         this.phoneNumber = phoneNumber;
     }
@@ -28,7 +28,7 @@ public class Customer extends Item {
     public boolean equals(Object obj) {
         if (obj.getClass().equals(Customer.class)) {
             Customer customer = ((Customer) obj);
-            return this.firstName.equals(customer.getFirstName()) && this.lastName.equals(customer.getLastName()) && this.postalAddress.equals(customer.getPostalAddress());
+            return this.firstName.equals(customer.getFirstName()) && this.lastName.equals(customer.getLastName()) && this.address.equals(customer.getAddress());
         }
         return false;
     }
@@ -54,12 +54,12 @@ public class Customer extends Item {
         this.lastName = lastName;
     }
 
-    public PostalAddress getPostalAddress() {
-        return postalAddress;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setPostalAddress(PostalAddress postalAddress) {
-        this.postalAddress = postalAddress;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public String getEmailAddress() {

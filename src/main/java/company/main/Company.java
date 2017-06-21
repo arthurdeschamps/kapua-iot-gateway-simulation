@@ -1,7 +1,7 @@
 package company.main;
 
 import company.customer.Customer;
-import company.transportation.PostalAddress;
+import company.address.Address;
 import company.delivery.Delivery;
 import company.order.Order;
 import company.product.Product;
@@ -20,7 +20,7 @@ public class Company {
 
     private CompanyType type;
     private String name;
-    private PostalAddress headquarters;
+    private Address headquarters;
 
     // Object stores
     private ItemStore<Product> productStore;
@@ -30,7 +30,7 @@ public class Company {
     private ItemStore<Customer> customerStore;
     private ItemStore<Order> orderStore;
 
-    public Company(CompanyType companyType, String name, PostalAddress postalAddress) {
+    public Company(CompanyType companyType, String name, Address address) {
         this.productStore = new ItemStore<>();
         this.productTypeStore = new ItemStore<>();
         this.deliveryStore = new ItemStore<>();
@@ -39,7 +39,7 @@ public class Company {
         this.orderStore = new ItemStore<>();
         this.type = companyType;
         this.name = name;
-        this.headquarters = postalAddress;
+        this.headquarters = address;
     }
 
     public void newCustomer(Customer customer) {
@@ -236,11 +236,11 @@ public class Company {
         this.name = name;
     }
 
-    public PostalAddress getHeadquarters() {
+    public Address getHeadquarters() {
         return headquarters;
     }
 
-    public void setHeadquarters(PostalAddress headquarters) {
+    public void setHeadquarters(Address headquarters) {
         this.headquarters = headquarters;
     }
 

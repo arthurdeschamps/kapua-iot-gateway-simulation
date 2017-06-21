@@ -12,7 +12,9 @@ import simulator.generator.DataGenerator;
 import java.util.Optional;
 
 /**
- * Created by Arthur Deschamps on 30.05.17.
+ * Tests for Company class.
+ * @author Arthur Deschamps
+ * @since 1.0
  */
 
 public class CompanyTest {
@@ -32,7 +34,7 @@ public class CompanyTest {
         Assert.assertEquals(1,company.getCustomers().size());
         company.newProductType(dataGenerator.generateRandomProductType());
         Assert.assertEquals(1,company.getProductTypes().size());
-        company.newProduct(dataGenerator.generateRandomProductFromProductType(company.getProductTypes().iterator().next()));
+        company.newProduct(dataGenerator.generateProductFromProductType(company.getHeadquarters(),company.getProductTypes().iterator().next()));
         Assert.assertEquals(1,company.getProducts().size());
         Optional<Order> order = dataGenerator.generateRandomOrder(company);
         if (!order.isPresent())
@@ -63,8 +65,8 @@ public class CompanyTest {
         ProductType productType = DataGenerator.getInstance().generateRandomProductType();
         company.newProductType(productType);
         final int initialSize = company.getProducts().size();
-        company.newProduct(DataGenerator.getInstance().generateRandomProductFromProductType(productType));
-        company.newProduct(DataGenerator.getInstance().generateRandomProductFromProductType(productType));
+        company.newProduct(DataGenerator.getInstance().generateProductFromProductType(company.getHeadquarters(),productType));
+        company.newProduct(DataGenerator.getInstance().generateProductFromProductType(company.getHeadquarters(),productType));
         Assert.assertEquals(initialSize+2,company.getProducts().size());
         Assert.assertEquals(2,company.getProductQuantity(productType));
 
@@ -83,7 +85,7 @@ public class CompanyTest {
         company.getAllTransportation().removeIf(transportation -> true); // removes all transportation
         company.newTransportation(DataGenerator.getInstance().generateRandomTransportation());
         company.newProductType(DataGenerator.getInstance().generateRandomProductType());
-        company.newProduct(DataGenerator.getInstance().generateRandomProductFromProductType(
+        company.newProduct(DataGenerator.getInstance().generateProductFromProductType(company.getHeadquarters(),
                 company.getProductTypeStore().getRandom().get()
         ));
         company.newCustomer(DataGenerator.getInstance().generateRandomCustomer());

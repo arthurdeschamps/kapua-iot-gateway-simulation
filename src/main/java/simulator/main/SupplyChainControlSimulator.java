@@ -44,7 +44,7 @@ public class SupplyChainControlSimulator {
 
     private  void runner() {
         // Number of threads: economy simulator, company simulator and info displaying
-        final int threadsNbr = 4;
+        final int threadsNbr = 5;
 
         // Convert time flow to delay
         long delay = (long) ((1/(double)parametrizer.getTimeFlow())* Math.pow(10,6));

@@ -26,6 +26,15 @@ public class DeliveryMovementSimulatorRunner implements Runnable {
      * Delivery to be moved
      */
     private void moveDelivery(Delivery delivery) {
+        
+    }
+
+    /**
+     * Terminates a delivery (when it got the the destination address).
+     * @param delivery
+     * The delivery to terminate.
+     */
+    private void confirmDelivery(Delivery delivery) {
 
     }
 }

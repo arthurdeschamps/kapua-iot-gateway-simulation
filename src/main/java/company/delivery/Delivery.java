@@ -1,28 +1,30 @@
 package company.delivery;
 
 import company.order.Order;
-import company.transportation.PostalAddress;
+import company.address.Address;
 import company.transportation.Transportation;
-import simulator.main.Coordinate;
+import company.address.Coordinate;
 import storage.Item;
 
 /**
- * Created by Arthur Deschamps on 02.06.17.
+ * Describes a Delivery of the company.
+ * @author Arthur Deschamps
+ * @since 1.0
  */
 public class Delivery extends Item {
 
     private Order order;
     private Transportation transporter;
-    private PostalAddress destination;
-    private PostalAddress departure;
+    private Address destination;
+    private Address departure;
     private Coordinate currentLocation;
     private DeliveryStatus deliveryState;
 
-    public Delivery(Order order, Transportation transporter, PostalAddress departure, PostalAddress destination) {
+    public Delivery(Order order, Transportation transporter, Address departure, Address destination) {
         this.order = order;
         this.transporter = transporter;
         this.departure = departure;
-        this.currentLocation = departure.toCoordinates();
+        this.currentLocation = departure.getCoordinate();
         this.departure = departure;
         this.destination = destination;
         this.deliveryState = DeliveryStatus.WAREHOUSE;
@@ -50,19 +52,19 @@ public class Delivery extends Item {
         this.transporter = transporter;
     }
 
-    public PostalAddress getDestination() {
+    public Address getDestination() {
         return destination;
     }
 
-    public void setDestination(PostalAddress destination) {
+    public void setDestination(Address destination) {
         this.destination = destination;
     }
 
-    public PostalAddress getDeparture() {
+    public Address getDeparture() {
         return departure;
     }
 
-    public void setDeparture(PostalAddress departure) {
+    public void setDeparture(Address departure) {
         this.departure = departure;
     }
 

@@ -56,7 +56,6 @@ public class CompanySimulatorRunner implements Runnable {
     private void simulateProducts() {
         simulateProductTypeCreation();
         simulateProduction();
-        simulateProductsMovement();
         simulatePriceCuts();
         simulateProductTypeDestruction();
     }
@@ -78,7 +77,7 @@ public class CompanySimulatorRunner implements Runnable {
                 // Stock must be 3 times the number of orders (for a particular product type)
                 if (productQuantity <= company.getOrdersFromProductType(productType).size()*3) {
                     for (int i = 0; i <= new Random().nextInt(100)+10; i++)
-                        company.newProduct(new Product(productType,company.getHeadquarters().toCoordinates()));
+                        company.newProduct(new Product(productType,company.getHeadquarters().getCoordinate()));
                 }
             }
         }
@@ -161,23 +160,10 @@ public class CompanySimulatorRunner implements Runnable {
             if (probability.event(1,ProbabilitySimulator.TimeUnit.HOUR)) {
                 final Order order = iterator.next();
                 company.getAvailableTransportation().ifPresent(transportation -> company.getDeliveryStore().add(
-                        new Delivery(order,transportation,company.getHeadquarters(),order.getBuyer().getPostalAddress())
+                        new Delivery(order,transportation,company.getHeadquarters(),order.getBuyer().getAddress())
                 ));
                 iterator.remove();
             }
-        }
-    }
-
-    /**
-     * Simulates products movement during deliveries.
-     * @since 1.0
-     */
-    private void simulateProductsMovement() {
-        //TODO
-        if (probability.event(1, ProbabilitySimulator.TimeUnit.HOUR)) {
-            company.getDeliveryStore().getRandom().ifPresent(delivery ->
-                company.deleteDelivery(delivery)
-            );
         }
     }
 

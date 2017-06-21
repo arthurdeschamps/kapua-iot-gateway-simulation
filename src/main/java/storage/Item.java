@@ -6,22 +6,27 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 /**
- * Created by Arthur Deschamps on 31.05.17.
- * This interface defines the required methods to be a redis object (to be saved in db)
+ * Defines an Item. A item is stored in an ItemStore. It can be for example a Product, a Order, etc.
+ * @author Arthur Deschamps
+ * @since 1.0
+ * @see ItemStore
  */
 public abstract class Item {
 
     private static final Logger logger = Logger.getLogger(Item.class.getName());
 
-    // Validate that object conforms to the schema
+    /**
+     * Validate that object conforms to the schema
+     * @return
+     * True if the object is validated. False otherwise.
+     */
     public abstract boolean validate();
 
-
-    private String generateId() {
-        return UUID.randomUUID().toString();
-    }
-
-
+    /**
+     * Converts the item to a Json object.
+     * @return
+     * The item converted into Json format.
+     */
     public String asJson() {
         Gson gson = new Gson();
         return gson.toJson(this);
