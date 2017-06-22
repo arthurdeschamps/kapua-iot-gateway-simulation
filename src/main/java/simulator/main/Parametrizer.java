@@ -1,7 +1,10 @@
 package simulator.main;
 
 /**
- * Created by Arthur Deschamps on 02.06.17.
+ * Parameters for the SupplyChainControlSimulator.
+ * @author Arthur Deschamps
+ * @since 1.0
+ * @see SupplyChainControlSimulator
  */
 public class Parametrizer {
 

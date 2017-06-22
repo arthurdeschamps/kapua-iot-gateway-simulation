@@ -36,6 +36,10 @@ public class Delivery extends Item {
                 (departure != null) && (currentLocation != null) && (deliveryState != null));
     }
 
+    public double getDistanceFromDestination() {
+        return Coordinates.calculateDistance(this.getCurrentLocation(),this.getDestination().getCoordinates());
+    }
+
     public boolean isDelivered() {
         return deliveryState.equals(DeliveryStatus.DELIVERED);
     }

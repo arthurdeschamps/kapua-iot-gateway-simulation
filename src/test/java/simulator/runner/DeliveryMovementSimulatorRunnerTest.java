@@ -53,10 +53,14 @@ public class DeliveryMovementSimulatorRunnerTest {
         // Test that the delivery arrives at some point
         while (company.getDeliveries().contains(delivery.get())) {
             coordinatesBefore = delivery.get().getCurrentLocation();
-            deliveryMovementSimulatorRunner.run();
+            for (int i = 0; i < 10000; i++) {
+                deliveryMovementSimulatorRunner.run();
+            }
             coordinatesAfter = delivery.get().getCurrentLocation();
 
             Assert.assertNotEquals(coordinatesBefore, coordinatesAfter);
+
+            Logger.getGlobal().info(Double.toString(Coordinates.calculateDistance(delivery.get().getCurrentLocation(),delivery.get().getDestination().getCoordinates())));
 
             Assert.assertTrue(Coordinates.calculateDistance(coordinatesBefore,delivery.get().getDestination().getCoordinates())
             > Coordinates.calculateDistance(coordinatesAfter,delivery.get().getDestination().getCoordinates()));

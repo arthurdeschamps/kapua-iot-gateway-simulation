@@ -7,7 +7,7 @@ import company.transportation.Transportation;
 import java.util.Random;
 
 /**
- * Simulates product movement during deliveries
+ * Simulates product movement during deliveries. The base time unit of this class is 1 hour, that is 3600 seconds.
  * @author Arthur Deschamps
  * @since 1.0
  */
@@ -33,9 +33,12 @@ public class DeliveryMovementSimulatorRunner implements Runnable {
         // Get speed in km/s
         final float speed = getActualSpeed(delivery.getTransporter());
 
+        // We simulate 1 hour
+        final float distance = speed*3600;
+
         // Move in the distance-minimising direction
         delivery.setCurrentLocation(getDistanceMinimizerCoordinates(
-                delivery.getCurrentLocation(),delivery.getDestination().getCoordinates(),speed)
+                delivery.getCurrentLocation(),delivery.getDestination().getCoordinates(),distance)
         );
 
         // Check if arrived at destination
@@ -78,7 +81,7 @@ public class DeliveryMovementSimulatorRunner implements Runnable {
         double distanceX = -distance;
         double distanceY, intermediateDistance;
         // Step size
-        final double eps = 1e-5;
+        final double eps = 1;
 
         // Evaluation with each possible x and y distances
         while (distanceX <= distance) {

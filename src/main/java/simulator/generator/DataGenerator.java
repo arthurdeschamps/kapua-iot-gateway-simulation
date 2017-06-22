@@ -135,8 +135,31 @@ public final class DataGenerator {
      * The newly generated transportation.
      */
     public static Transportation generateRandomTransportation() {
-        return new Transportation((float) Math.log(Math.random()*5000+1000),(int) Math.log(Math.random()*700+150),
-                TransportationMode.randomTransportationMode());
+        TransportationMode transportationMode = TransportationMode.randomTransportationMode();
+        int maxSpeed;
+        float capacity;
+        switch (transportationMode) {
+            case WATER:
+                maxSpeed = (int) (Math.random()*20 + 30);
+                capacity = (int) (Math.random()*15000 + 10000);
+                break;
+            case LAND_ROAD:
+                maxSpeed = (int) (Math.random()*50 + 100);
+                capacity = (int) (Math.random()*5000+2000);
+                break;
+            case LAND_RAIL:
+                maxSpeed = (int) (Math.random()*200 + 150);
+                capacity = (int) (Math.random()*5000 + 5000);
+                break;
+            case AIR:
+                maxSpeed = (int) (Math.random()*100 + 350);
+                capacity = (int) (Math.random()*3000 + 1000);
+                break;
+            default:
+                capacity = 500;
+                maxSpeed = 200;
+        }
+        return new Transportation(capacity,maxSpeed,transportationMode);
     }
 
     /**
