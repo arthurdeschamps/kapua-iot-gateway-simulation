@@ -29,10 +29,10 @@ public class CompanySimulatorTest {
     @BeforeClass
     public static void setUp() {
 
-        company = CompanyGenerator.getInstance().generateDefaultCompany();
+        company = new CompanyGenerator().generateDefaultCompany();
         // Make sure company has client to speed up the tests
         for (int i = 0; i < 10; i++) {
-            company.newCustomer(DataGenerator.getInstance().generateRandomCustomer());
+            company.newCustomer(new DataGenerator(company).generateRandomCustomer());
         }
 
         economySimulator = new EconomySimulatorRunner();

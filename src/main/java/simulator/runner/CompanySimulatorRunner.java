@@ -8,8 +8,10 @@ import company.product.ProductType;
 import company.transportation.Transportation;
 import simulator.generator.DataGenerator;
 
-import java.util.*;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
 
 /**
  * This runnable simulates a company's production and delivery chain based on the given economy simulator metrics.
@@ -22,7 +24,7 @@ import java.util.logging.Logger;
  */
 public class CompanySimulatorRunner implements Runnable {
 
-    private static final Logger logger = Logger.getLogger(CompanySimulatorRunner.class.getName());
+    private DataGenerator dataGenerator;
     private final ProbabilitySimulator probability = new ProbabilitySimulator();
 
     private Company company;
@@ -31,6 +33,7 @@ public class CompanySimulatorRunner implements Runnable {
     public CompanySimulatorRunner(Company company, EconomySimulatorRunner economy) {
         this.company = company;
         this.economy = economy;
+        this.dataGenerator = new DataGenerator(this.company);
     }
 
     /**
@@ -77,7 +80,7 @@ public class CompanySimulatorRunner implements Runnable {
                 // Stock must be 3 times the number of orders (for a particular product type)
                 if (productQuantity <= company.getOrdersFromProductType(productType).size()*3) {
                     for (int i = 0; i <= new Random().nextInt(100)+10; i++)
-                        company.newProduct(new Product(productType,company.getHeadquarters().getCoordinate()));
+                        company.newProduct(new Product(productType,company.getHeadquarters().getCoordinates()));
                 }
             }
         }
@@ -90,7 +93,7 @@ public class CompanySimulatorRunner implements Runnable {
     private void simulateProductTypeCreation() {
         // A new product type is likely to be created when the economy is well, the demand is weak or the concurrency is high
         if (probability.event(Math.abs(economy.getGrowth()-economy.getDemand()+economy.getSectorConcurrency()), ProbabilitySimulator.TimeUnit.WEEK)) {
-            final ProductType productType = DataGenerator.getInstance().generateRandomProductType();
+            final ProductType productType = dataGenerator.generateRandomProductType();
             company.newProductType(productType);
         }
     }
@@ -184,7 +187,7 @@ public class CompanySimulatorRunner implements Runnable {
         if (economy.getGrowth() > 0) {
             // If economy growth is high, there is a high chance of getting a new customer
             if (probability.event(Math.abs(economy.getGrowth()*2),ProbabilitySimulator.TimeUnit.DAY))
-                company.newCustomer(DataGenerator.getInstance().generateRandomCustomer());
+                company.newCustomer(dataGenerator.generateRandomCustomer());
             // It can still lose customers sometimes
             if (probability.event(Math.abs(economy.getGrowth()),ProbabilitySimulator.TimeUnit.WEEK))
                 company.deleteRandomCustomer();
@@ -194,7 +197,7 @@ public class CompanySimulatorRunner implements Runnable {
                 company.deleteRandomCustomer();
             // Company can still acquire a new customer
             if (probability.event(Math.abs(economy.getGrowth()),ProbabilitySimulator.TimeUnit.WEEK))
-                company.newCustomer(DataGenerator.getInstance().generateRandomCustomer());
+                company.newCustomer(dataGenerator.generateRandomCustomer());
         }
     }
 
@@ -207,7 +210,7 @@ public class CompanySimulatorRunner implements Runnable {
         if (company.getOrders().size() >= company.getAllTransportation().size()*100) {
             // On average takes 2 weeks to be done
             if (probability.event(0.5d,ProbabilitySimulator.TimeUnit.WEEK)) {
-                Transportation transportation = DataGenerator.getInstance().generateRandomTransportation();
+                Transportation transportation = dataGenerator.generateRandomTransportation();
                 company.newTransportation(transportation);
             }
         }

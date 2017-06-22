@@ -1,7 +1,7 @@
 package company.main;
 
-import company.customer.Customer;
 import company.address.Address;
+import company.customer.Customer;
 import company.delivery.Delivery;
 import company.order.Order;
 import company.product.Product;
@@ -9,7 +9,10 @@ import company.product.ProductType;
 import company.transportation.Transportation;
 import storage.ItemStore;
 
-import java.util.*;
+import java.util.ConcurrentModificationException;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -30,7 +33,7 @@ public class Company {
     private ItemStore<Customer> customerStore;
     private ItemStore<Order> orderStore;
 
-    public Company(CompanyType companyType, String name, Address address) {
+    public Company(CompanyType companyType, String name, Address headquarters) {
         this.productStore = new ItemStore<>();
         this.productTypeStore = new ItemStore<>();
         this.deliveryStore = new ItemStore<>();
@@ -39,7 +42,7 @@ public class Company {
         this.orderStore = new ItemStore<>();
         this.type = companyType;
         this.name = name;
-        this.headquarters = address;
+        this.headquarters = headquarters;
     }
 
     public void newCustomer(Customer customer) {

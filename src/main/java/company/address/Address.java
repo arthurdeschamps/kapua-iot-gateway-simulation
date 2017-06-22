@@ -12,15 +12,15 @@ public class Address {
     private String region;
     private String country;
     private String zip;
-    private Coordinate coordinate;
+    private Coordinates coordinates;
 
-    public Address(String street, String city, String region, String country, String zip, Coordinate coordinate) {
+    public Address(String street, String city, String region, String country, String zip, Coordinates coordinates) {
         this.street = street;
         this.city = city;
         this.region = region;
         this.country = country;
         this.zip = zip;
-        this.coordinate = coordinate;
+        this.coordinates = coordinates;
     }
 
     @Override
@@ -81,11 +81,11 @@ public class Address {
         this.region = region;
     }
 
-    public Coordinate getCoordinate() {
-        return coordinate;
+    public Coordinates getCoordinates() {
+        return coordinates;
     }
 
-    public void setCoordinate(Coordinate coordinate) {
-        this.coordinate = coordinate;
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
     }
 }

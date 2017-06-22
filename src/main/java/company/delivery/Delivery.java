@@ -1,9 +1,9 @@
 package company.delivery;
 
-import company.order.Order;
 import company.address.Address;
+import company.address.Coordinates;
+import company.order.Order;
 import company.transportation.Transportation;
-import company.address.Coordinate;
 import storage.Item;
 
 /**
@@ -17,14 +17,14 @@ public class Delivery extends Item {
     private Transportation transporter;
     private Address destination;
     private Address departure;
-    private Coordinate currentLocation;
+    private Coordinates currentLocation;
     private DeliveryStatus deliveryState;
 
     public Delivery(Order order, Transportation transporter, Address departure, Address destination) {
         this.order = order;
         this.transporter = transporter;
         this.departure = departure;
-        this.currentLocation = departure.getCoordinate();
+        this.currentLocation = departure.getCoordinates();
         this.departure = departure;
         this.destination = destination;
         this.deliveryState = DeliveryStatus.WAREHOUSE;
@@ -35,6 +35,16 @@ public class Delivery extends Item {
         return ((transporter != null) && (destination != null) &&
                 (departure != null) && (currentLocation != null) && (deliveryState != null));
     }
+
+    public boolean isDelivered() {
+        return deliveryState.equals(DeliveryStatus.DELIVERED);
+    }
+
+    public boolean isInTransit() {
+        return !getCurrentLocation().equals(getDeparture().getCoordinates());
+    }
+
+
 
     public Order getOrder() {
         return order;
@@ -68,11 +78,11 @@ public class Delivery extends Item {
         this.departure = departure;
     }
 
-    public Coordinate getCurrentLocation() {
+    public Coordinates getCurrentLocation() {
         return currentLocation;
     }
 
-    public void setCurrentLocation(Coordinate currentLocation) {
+    public void setCurrentLocation(Coordinates currentLocation) {
         this.currentLocation = currentLocation;
     }
 

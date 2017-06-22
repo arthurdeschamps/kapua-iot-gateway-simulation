@@ -1,6 +1,6 @@
 package simulator.runner;
 
-import company.address.Coordinate;
+import company.address.Coordinates;
 import company.delivery.Delivery;
 import company.transportation.Transportation;
 
@@ -33,11 +33,74 @@ public class DeliveryMovementSimulatorRunner implements Runnable {
         // Get speed in km/s
         final float speed = getActualSpeed(delivery.getTransporter());
 
-        // Since we simulate 1 second, speed = distance in km. We can then convert km to degrees
-        //TODO decide x-distance and y-distance
-        //final Coordinate newCoordinate = Coordinate.applyDistance(delivery.getCurrentLocation(),speed/2,speed/2);
+        // Move in the distance-minimising direction
+        delivery.setCurrentLocation(getDistanceMinimizerCoordinates(
+                delivery.getCurrentLocation(),delivery.getDestination().getCoordinates(),speed)
+        );
 
-        // Moves in the direction of the longest distance (x or y)
+        // Check if arrived at destination
+        if (atDestination(delivery.getDestination().getCoordinates(),delivery.getCurrentLocation())) {
+            confirmDelivery(delivery);
+        }
+    }
+
+    /**
+     * Determines if the current location of a delivery is "close enough" to its destination to mark it as "delivered"
+     * @param destination
+     * Delivery's destination
+     * @param currentLocation
+     * Delivery's current location
+     * @return
+     * True if current location can be considered as destination, false otherwise.
+     */
+    private boolean atDestination(Coordinates destination, Coordinates currentLocation) {
+        // Maximum tolerated distance from destination
+        final int toleranceInKm = 30;
+
+        return Coordinates.calculateDistance(destination,currentLocation) < toleranceInKm;
+    }
+
+    /**
+     * Determines the route to take to minimize the distance between the current location and the destination.
+     * @param basePoint
+     * Current location of the delivery.
+     * @param distance
+     * Total distance that the delivery shall move to.
+     * @return
+     * New coordinates that are as close as possible to the destination considering the traveled destination.
+     */
+    private Coordinates getDistanceMinimizerCoordinates(Coordinates basePoint, Coordinates destination, final float distance) {
+
+        // Min is the base point at first
+        Coordinates minCoordinates = basePoint;
+        Coordinates intermediateCoordinates;
+        double minDistance = Coordinates.calculateDistance(minCoordinates,destination);
+        double distanceX = -distance;
+        double distanceY, intermediateDistance;
+        // Step size
+        final double eps = 1e-5;
+
+        // Evaluation with each possible x and y distances
+        while (distanceX <= distance) {
+            distanceY = -distance;
+            while (distanceY <= distance) {
+                // Constraint of our optimization problem
+                if (Math.abs(distanceX) + Math.abs(distanceY) <= distance) {
+                    intermediateCoordinates = Coordinates.applyDistance(basePoint,(float)distanceX,(float)distanceY);
+                    intermediateDistance = Coordinates.calculateDistance(intermediateCoordinates,destination);
+                    if (minDistance >= intermediateDistance) {
+                        minCoordinates = intermediateCoordinates;
+                        minDistance = intermediateDistance;
+                    }
+                }
+
+                distanceY += eps;
+            }
+            distanceX += eps;
+        }
+
+        return minCoordinates;
+
     }
 
     /**
@@ -48,27 +111,15 @@ public class DeliveryMovementSimulatorRunner implements Runnable {
      * A float representing a speed in km/s
      */
     private float getActualSpeed(Transportation transporter) {
-        // Movement quickness depends on the transportation mode and max speed
-        float speed = transporter.getMaxSpeed()/3600; // Converts km/h to km/s
-        switch (transporter.getTransportationMode()) {
-            case AIR:
-                speed = speed*95/100;
-                break;
-            case LAND_RAIL:
-                speed = speed*85/100;
-                break;
-            case LAND_ROAD:
-                speed = speed*70/100;
-            case WATER:
-                speed = speed*65/100;
-        }
+        double speed = (double)transporter.getMaxSpeed()/(double) 3600; // Converts km/h to km/s
+
 
         // Includes a randomness factor (speed is not constant during a delivery process) in the form of a bonus or
         // penalty from 1 to 5 %.
         Random random = new Random();
         final int randomFactor = (int) Math.pow(-1,random.nextInt(2))*(random.nextInt(5)+1);
 
-        return speed+speed*randomFactor/100;
+        return (float) (speed+speed*randomFactor/100);
     }
 
     /**
@@ -77,6 +128,6 @@ public class DeliveryMovementSimulatorRunner implements Runnable {
      * The delivery to terminate.
      */
     private void confirmDelivery(Delivery delivery) {
-
+        companySimulatorRunner.getCompany().deleteDelivery(delivery);
     }
 }

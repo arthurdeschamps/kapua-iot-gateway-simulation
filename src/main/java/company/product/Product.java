@@ -1,6 +1,6 @@
 package company.product;
 
-import company.address.Coordinate;
+import company.address.Coordinates;
 import storage.Item;
 
 /**
@@ -12,12 +12,12 @@ public class Product extends Item {
     private ProductType productType;
     private float price;
 
-    public Product(ProductType productType, Coordinate currentLocation, float price) {
+    public Product(ProductType productType, Coordinates currentLocation, float price) {
         this.productType = productType;
         this.price = price;
     }
 
-    public Product(ProductType productType, Coordinate currentLocation) {
+    public Product(ProductType productType, Coordinates currentLocation) {
         this.productType = productType;
         this.price = productType.getBasePrice();
     }

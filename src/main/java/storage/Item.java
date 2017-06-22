@@ -2,7 +2,6 @@ package storage;
 
 import gherkin.deps.com.google.gson.Gson;
 
-import java.util.UUID;
 import java.util.logging.Logger;
 
 /**

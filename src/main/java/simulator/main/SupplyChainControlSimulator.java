@@ -1,10 +1,10 @@
 package simulator.main;
 
 import company.main.Company;
-import simulator.runner.EconomySimulatorRunner;
 import simulator.generator.CompanyGenerator;
 import simulator.runner.CompanySimulatorRunner;
 import simulator.runner.DeliveryMovementSimulatorRunner;
+import simulator.runner.EconomySimulatorRunner;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -32,7 +32,7 @@ public class SupplyChainControlSimulator {
 
     private  void initDefault() {
         // Generate default company if user didn't choose any parameter
-        company = CompanyGenerator.getInstance().generateDefaultCompany();
+        company = new CompanyGenerator().generateDefaultCompany();
 
         // Generate default parametrizer
         parametrizer = new Parametrizer(10000);
@@ -53,7 +53,7 @@ public class SupplyChainControlSimulator {
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(threadsNbr);
         executor.scheduleWithFixedDelay(economySimulator,0,delay,TimeUnit.MICROSECONDS);
         executor.scheduleWithFixedDelay(companySimulator,0,delay,TimeUnit.MICROSECONDS);
-        executor.scheduleWithFixedDelay(productMovementSimulator,0,delay,TimeUnit.MICROSECONDS);
+        //executor.scheduleWithFixedDelay(productMovementSimulator,0,delay,TimeUnit.MICROSECONDS);
         // Display data
         executor.scheduleWithFixedDelay(() -> logger.info("Growth: "+economySimulator.getGrowth()+", Demand: "+economySimulator.getDemand()
                 +", Sector concurrency: "+economySimulator.getSectorConcurrency()),1,5,TimeUnit.SECONDS);

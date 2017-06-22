@@ -20,21 +20,22 @@ import java.util.Optional;
 public class CompanyTest {
 
     private static Company company;
+    private static DataGenerator dataGenerator;
 
     @BeforeClass
     public static void setUp() {
-        company = CompanyGenerator.getInstance().generateRandomCompanyWithNoData();
+        company = new CompanyGenerator().generateRandomCompanyWithNoData();
         Assert.assertNotNull(company);
+        dataGenerator = new DataGenerator(company);
     }
 
     @Test
     public void testNew() {
-        DataGenerator dataGenerator = DataGenerator.getInstance();
         company.newCustomer(dataGenerator.generateRandomCustomer());
         Assert.assertEquals(1,company.getCustomers().size());
-        company.newProductType(dataGenerator.generateRandomProductType());
+        company.newProductType(DataGenerator.generateRandomProductType());
         Assert.assertEquals(1,company.getProductTypes().size());
-        company.newProduct(dataGenerator.generateProductFromProductType(company.getHeadquarters(),company.getProductTypes().iterator().next()));
+        company.newProduct(dataGenerator.generateProductFromProductType(company.getProductTypes().iterator().next()));
         Assert.assertEquals(1,company.getProducts().size());
         Optional<Order> order = dataGenerator.generateRandomOrder(company);
         if (!order.isPresent())
@@ -42,7 +43,7 @@ public class CompanyTest {
         company.newOrder(order.get());
         Assert.assertEquals(1,company.getOrders().size());
         Assert.assertEquals(0,company.getProducts().size());
-        company.newTransportation(dataGenerator.generateRandomTransportation());
+        company.newTransportation(DataGenerator.generateRandomTransportation());
         Assert.assertEquals(1,company.getAllTransportation().size());
         Assert.assertNotNull(company.getAvailableTransportation());
         Optional<Delivery> delivery = dataGenerator.generateRandomDelivery(company);
@@ -62,11 +63,11 @@ public class CompanyTest {
     @Test
     public void testUtilityMethods() {
         // Test product quantity
-        ProductType productType = DataGenerator.getInstance().generateRandomProductType();
+        ProductType productType = DataGenerator.generateRandomProductType();
         company.newProductType(productType);
         final int initialSize = company.getProducts().size();
-        company.newProduct(DataGenerator.getInstance().generateProductFromProductType(company.getHeadquarters(),productType));
-        company.newProduct(DataGenerator.getInstance().generateProductFromProductType(company.getHeadquarters(),productType));
+        company.newProduct(dataGenerator.generateProductFromProductType(productType));
+        company.newProduct(dataGenerator.generateProductFromProductType(productType));
         Assert.assertEquals(initialSize+2,company.getProducts().size());
         Assert.assertEquals(2,company.getProductQuantity(productType));
 
@@ -76,25 +77,23 @@ public class CompanyTest {
         Assert.assertEquals(0,company.getProductQuantity(productType));
 
         final int initialCustomerSize = company.getCustomers().size();
-        company.newCustomer(DataGenerator.getInstance().generateRandomCustomer());
+        company.newCustomer(dataGenerator.generateRandomCustomer());
         Assert.assertEquals(initialCustomerSize+1,company.getCustomers().size());
         company.deleteRandomCustomer();
         Assert.assertEquals(initialCustomerSize,company.getCustomers().size());
 
         // Test get available transportation
         company.getAllTransportation().removeIf(transportation -> true); // removes all transportation
-        company.newTransportation(DataGenerator.getInstance().generateRandomTransportation());
-        company.newProductType(DataGenerator.getInstance().generateRandomProductType());
-        company.newProduct(DataGenerator.getInstance().generateProductFromProductType(company.getHeadquarters(),
-                company.getProductTypeStore().getRandom().get()
-        ));
-        company.newCustomer(DataGenerator.getInstance().generateRandomCustomer());
-        DataGenerator.getInstance().generateRandomOrder(company).ifPresent(order ->
+        company.newTransportation(DataGenerator.generateRandomTransportation());
+        company.newProductType(DataGenerator.generateRandomProductType());
+        company.newProduct(dataGenerator.generateProductFromProductType(company.getProductTypeStore().getRandom().get()));
+        company.newCustomer(dataGenerator.generateRandomCustomer());
+        dataGenerator.generateRandomOrder(company).ifPresent(order ->
             company.newOrder(order)
         );
         Assert.assertNotEquals(0,company.getOrders().size());
         // Creates a new delivery to assign our unique transportation
-        DataGenerator.getInstance().generateRandomDelivery(company).ifPresent(delivery ->
+        dataGenerator.generateRandomDelivery(company).ifPresent(delivery ->
                 company.newDelivery(delivery)
         );
         Assert.assertNotEquals(0,company.getDeliveries().size());
