@@ -6,6 +6,10 @@
     <groupId>org.eclipse.kapua.iot-gateway-simulator.supply-chain-management</groupId>
     <artifactId>kapua-iot-gateway-simulation-scm</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
