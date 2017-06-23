@@ -1,17 +1,18 @@
 package kapua.gateway;
 
-import company.customer.Customer;
-import company.main.Company;
-import economy.Economy;
+import company.company.Company;
+import company.delivery.Delivery;
 import org.eclipse.kapua.gateway.client.Application;
 import org.eclipse.kapua.gateway.client.Payload;
 import org.eclipse.kapua.gateway.client.Topic;
 import org.eclipse.kapua.gateway.client.mqtt.fuse.FuseClient;
 import org.eclipse.kapua.gateway.client.profile.kura.KuraMqttProfile;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import simulator.simulator.Parametrizer;
 
-import java.util.Optional;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 import static org.eclipse.kapua.gateway.client.Credentials.userAndPassword;
 import static org.eclipse.kapua.gateway.client.Transport.waitForConnection;
@@ -21,18 +22,18 @@ import static org.eclipse.kapua.gateway.client.Transport.waitForConnection;
  * @author Arthur Deschamps
  * @since 1.0
  */
-public class Client {
+public class KapuaGatewayClient {
 
     private Company company;
-    private Economy economy;
+    private Parametrizer parametrizer;
     private org.eclipse.kapua.gateway.client.Client client;
     private Application application;
 
-    private static final Logger logger = LoggerFactory.getLogger(Client.class);
+    private static final Logger logger = Logger.getLogger(KapuaGatewayClient.class.getName());
 
-    public Client(Economy economy, Company company) {
+    public KapuaGatewayClient(Company company, Parametrizer parametrizer) {
         this.company = company;
-        this.economy = economy;
+        this.parametrizer = parametrizer;
 
         try {
             client = KuraMqttProfile.newProfile(FuseClient.Builder::new)
@@ -53,13 +54,16 @@ public class Client {
     /**
      * Initialize all publications and subscriptions. Every data created in the simulation will be transferred to Kapua.
      */
-    public void startPublicationsAndSubscriptions() {
+    public void startCommunications() {
         try {
             // Wait for connection
             waitForConnection(application.transport());
 
             startSubscriptions();
-            startPublications();
+
+            ScheduledExecutorService executorService = Executors.newScheduledThreadPool(2);
+            executorService.scheduleWithFixedDelay(this::updateDeliveries,0,
+                    2, TimeUnit.SECONDS);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,22 +75,25 @@ public class Client {
      * @throws Exception
      */
     private void startSubscriptions() throws Exception {
-        application.data(Topic.of("company","customer")).subscribe(this::subscriptionHandler);
+        application.data(Topic.of("company","deliveries")).subscribe(this::subscriptionHandler);
     }
 
     /**
-     * Starts all publications.
-     * @throws Exception
+     * Sends all new or updated delivery data to Kapua
      */
-    private void startPublications() throws Exception {
+    private void updateDeliveries() {
         final Payload.Builder payload = new Payload.Builder();
 
-        // Customers
-        Customer customer = company.getCustomers().iterator().next();
-        payload.put(customer.getId(), customer.toJson());
+        // TODO: split json in multiple attributes
+        for (final Delivery delivery : company.getDeliveries())
+                payload.put(delivery.getId(),delivery.toJson());
 
-        application.data(Topic.of("company","customer")).send(payload);
-
+        // Sends everything
+        try {
+            application.data(Topic.of("company","deliveries")).send(payload);
+        } catch (Exception e) {
+            logger.warning(e.getMessage());
+        }
     }
 
     /**
@@ -98,16 +105,6 @@ public class Client {
         logger.info("Received: "+message.toString());
     }
 
-    /**
-     * Handles sending failures
-     * @param throwable
-     * Exception to handle
-     * @param message
-     * Error messages
-     */
-    private void publicationHandler(Throwable throwable, Optional<Payload> message) {
-        logger.info("Failed to publish: "+throwable.getMessage());
-    }
 
 
 }

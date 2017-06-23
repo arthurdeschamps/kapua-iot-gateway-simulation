@@ -1,4 +1,4 @@
-package company.main;
+package company.company;
 
 import company.delivery.Delivery;
 import company.order.Order;

@@ -2,7 +2,7 @@ package simulator.runner;
 
 import company.address.Coordinates;
 import company.delivery.Delivery;
-import company.main.Company;
+import company.company.Company;
 import company.transportation.Transportation;
 
 import java.util.Random;
@@ -132,6 +132,6 @@ public class DeliveryMovementSimulatorRunner implements Runnable {
      * The delivery to terminate.
      */
     private void confirmDelivery(Delivery delivery) {
-        company.deleteDelivery(delivery);
+        company.confirmDelivery(delivery);
     }
 }

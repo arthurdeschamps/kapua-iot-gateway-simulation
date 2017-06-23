@@ -3,8 +3,8 @@ package simulator.generator;
 import com.github.javafaker.Faker;
 import company.address.Address;
 import company.address.Coordinates;
-import company.main.Company;
-import company.main.CompanyType;
+import company.company.Company;
+import company.company.CompanyType;
 
 import java.util.Random;
 

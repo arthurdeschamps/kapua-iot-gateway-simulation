@@ -2,7 +2,7 @@ package simulator.runner;
 
 import company.address.Coordinates;
 import company.delivery.Delivery;
-import company.main.Company;
+import company.company.Company;
 import company.order.Order;
 import economy.Economy;
 import org.junit.Assert;

@@ -1,7 +1,7 @@
 package simulator.runner;
 
 import company.delivery.Delivery;
-import company.main.Company;
+import company.company.Company;
 import company.order.Order;
 import company.product.Product;
 import company.product.ProductType;

@@ -1,13 +1,13 @@
 package simulator.runner;
 
-import company.main.Company;
+import company.company.Company;
 import economy.Economy;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import simulator.generator.CompanyGenerator;
 import simulator.generator.DataGenerator;
-import simulator.main.SupplyChainControlSimulator;
+import simulator.simulator.SupplyChainControlSimulator;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

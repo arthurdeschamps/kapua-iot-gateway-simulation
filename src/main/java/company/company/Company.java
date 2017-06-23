@@ -1,8 +1,9 @@
-package company.main;
+package company.company;
 
 import company.address.Address;
 import company.customer.Customer;
 import company.delivery.Delivery;
+import company.delivery.DeliveryStatus;
 import company.order.Order;
 import company.product.Product;
 import company.product.ProductType;
@@ -205,22 +206,21 @@ public class Company {
     }
 
     /**
-     * A delivery has been delivered. It's thus removed from the delivery store.
+     * A delivery has been delivered. Its state thus changes to "delivered".
      * @param delivery
      * Delivery to be ended.
      */
-    public void deleteDelivery(Delivery delivery) {
-        deliveryStore.delete(delivery);
+    public void confirmDelivery(Delivery delivery) {
+        delivery.setDeliveryState(DeliveryStatus.DELIVERED);
     }
 
     /**
-     * Cancels a delivery and puts back the order in the order store of the company.
+     * Cancels a delivery and sets state to "cancelled".
      * @param delivery
      * Delivery to be cancelled.
      */
     public void cancelDelivery(Delivery delivery) {
-        orderStore.add(delivery.getOrder());
-        deliveryStore.delete(delivery);
+        delivery.setDeliveryState(DeliveryStatus.CANCELLED);
     }
 
     public CompanyType getType() {
