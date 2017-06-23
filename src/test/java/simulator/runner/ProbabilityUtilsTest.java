@@ -2,13 +2,14 @@ package simulator.runner;
 
 import org.junit.Assert;
 import org.junit.Test;
+import simulator.util.ProbabilityUtils;
 
 /**
  * Created by Arthur Deschamps on 16.06.17.
  */
-public class ProbabilitySimulatorTest {
+public class ProbabilityUtilsTest {
 
-    private final ProbabilitySimulator proba = new ProbabilitySimulator();
+    private final ProbabilityUtils proba = new ProbabilityUtils();
 
     @Test
     public void testEvent() {
@@ -17,7 +18,7 @@ public class ProbabilitySimulatorTest {
 
         // Test once an hour = 3600 seconds
         for (int i = 0; i < 3600 * 2; i++) {
-            if (proba.event(1, ProbabilitySimulator.TimeUnit.HOUR)) {
+            if (proba.event(1, ProbabilityUtils.TimeUnit.HOUR)) {
                 occured = true;
                 break;
             }
@@ -28,7 +29,7 @@ public class ProbabilitySimulatorTest {
 
         // Test once a day = 3600 * 24
         for (int i = 0; i < 3600 * 24 * 2; i++) {
-            if (proba.event(1,ProbabilitySimulator.TimeUnit.DAY)) {
+            if (proba.event(1, ProbabilityUtils.TimeUnit.DAY)) {
                 occured = true;
                 break;
             }
@@ -39,7 +40,7 @@ public class ProbabilitySimulatorTest {
 
         // Test once a week = 3600*24*7
         for (int i = 0; i < 3600*24*7*2; i++) {
-            if (proba.event(1,ProbabilitySimulator.TimeUnit.WEEK)) {
+            if (proba.event(1, ProbabilityUtils.TimeUnit.WEEK)) {
                 occured = true;
                 break;
             }

@@ -22,15 +22,59 @@
             <artifactId>gherkin</artifactId>
             <version>2.12.2</version>
         </dependency>
-            <dependency>
+        <!-- Faker for fake data -->
+        <dependency>
             <groupId>com.github.javafaker</groupId>
             <artifactId>javafaker</artifactId>
             <version>0.13</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/de.dentrassi.kapua/kapua-gateway-client-provider-mqtt-fuse -->
         <dependency>
             <groupId>de.dentrassi.kapua</groupId>
             <artifactId>kapua-gateway-client-provider-mqtt-fuse</artifactId>
             <version>0.2.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/de.dentrassi.kapua/kapua-gateway-client -->
+        <dependency>
+            <groupId>de.dentrassi.kapua</groupId>
+            <artifactId>kapua-gateway-client</artifactId>
+            <version>0.2.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/de.dentrassi.kapua/kapua-gateway-client-profile-kura -->
+        <dependency>
+            <groupId>de.dentrassi.kapua</groupId>
+            <artifactId>kapua-gateway-client-profile-kura</artifactId>
+            <version>0.2.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/de.dentrassi.kapua/kapua-gateway-client-provider-mqtt -->
+        <dependency>
+            <groupId>de.dentrassi.kapua</groupId>
+            <artifactId>kapua-gateway-client-provider-mqtt</artifactId>
+            <version>0.2.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/de.dentrassi.kapua/kapua-gateway-client-spi -->
+        <dependency>
+            <groupId>de.dentrassi.kapua</groupId>
+            <artifactId>kapua-gateway-client-spi</artifactId>
+            <version>0.2.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/de.dentrassi.kapua/kapua-gateway-client-api -->
+        <dependency>
+            <groupId>de.dentrassi.kapua</groupId>
+            <artifactId>kapua-gateway-client-api</artifactId>
+            <version>0.2.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/de.dentrassi.kapua/kapua-gateway-client-provider-mqtt-paho -->
+        <dependency>
+            <groupId>de.dentrassi.kapua</groupId>
+            <artifactId>kapua-gateway-client-provider-mqtt-paho</artifactId>
+            <version>0.2.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.25</version>
         </dependency>
     </dependencies>
     <build>

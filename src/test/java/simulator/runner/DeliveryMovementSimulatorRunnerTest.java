@@ -4,6 +4,7 @@ import company.address.Coordinates;
 import company.delivery.Delivery;
 import company.main.Company;
 import company.order.Order;
+import economy.Economy;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -24,13 +25,15 @@ public class DeliveryMovementSimulatorRunnerTest {
     private static EconomySimulatorRunner economySimulatorRunner;
     private static CompanySimulatorRunner companySimulatorRunner;
     private static Company company;
+    private static Economy economy;
 
     @BeforeClass
     public static void setUp() {
         company = new CompanyGenerator().generateRandomCompany();
-        economySimulatorRunner = new EconomySimulatorRunner();
-        companySimulatorRunner = new CompanySimulatorRunner(company,economySimulatorRunner);
-        deliveryMovementSimulatorRunner = new DeliveryMovementSimulatorRunner(companySimulatorRunner);
+        economy = new Economy();
+        economySimulatorRunner = new EconomySimulatorRunner(economy);
+        companySimulatorRunner = new CompanySimulatorRunner(company,economy);
+        deliveryMovementSimulatorRunner = new DeliveryMovementSimulatorRunner(company);
     }
 
     @Test

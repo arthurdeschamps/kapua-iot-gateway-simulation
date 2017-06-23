@@ -1,4 +1,4 @@
-package simulator.runner;
+package simulator.util;
 
 import java.util.Random;
 
@@ -7,7 +7,7 @@ import java.util.Random;
  * @author Arthur Deschamps
  * @since 1.0
  */
-class ProbabilitySimulator {
+public class ProbabilityUtils {
     /**
      * This method simulates if an event that occurs at the given frequency in the given time unit has occurred in 1 second.
      * For instance, if the event has frequency 1 per hour, the method might be called on average 3600 times in order to return true
@@ -21,7 +21,7 @@ class ProbabilitySimulator {
      *
      * @since 1.0
      */
-    boolean event(double frequency, TimeUnit timeUnit) {
+    public boolean event(double frequency, TimeUnit timeUnit) {
         if (frequency < 0)
             throw new IllegalArgumentException("Frequency can't be negative");
         // Convert frequency from initial time unit to the biggest available unit in order to make the decimal part of
@@ -41,7 +41,7 @@ class ProbabilitySimulator {
      * occurs on average.
      * @since 1.0
      */
-     enum TimeUnit {
+     public enum TimeUnit {
         SECOND, MINUTE, HOUR, DAY, WEEK, MONTH, YEAR;
 
         /**

@@ -6,7 +6,9 @@ import company.order.Order;
 import company.product.Product;
 import company.product.ProductType;
 import company.transportation.Transportation;
+import economy.Economy;
 import simulator.generator.DataGenerator;
+import simulator.util.ProbabilityUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,12 +27,12 @@ import java.util.Random;
 public class CompanySimulatorRunner implements Runnable {
 
     private DataGenerator dataGenerator;
-    private final ProbabilitySimulator probability = new ProbabilitySimulator();
+    private final ProbabilityUtils probability = new ProbabilityUtils();
 
     private Company company;
-    private EconomySimulatorRunner economy;
+    private Economy economy;
 
-    public CompanySimulatorRunner(Company company, EconomySimulatorRunner economy) {
+    public CompanySimulatorRunner(Company company, Economy economy) {
         this.company = company;
         this.economy = economy;
         this.dataGenerator = new DataGenerator(this.company);
@@ -76,7 +78,7 @@ public class CompanySimulatorRunner implements Runnable {
             productQuantity = (int) company.getProductQuantity(productType);
 
             //Check the product stock on average twice a day
-            if (probability.event(2, ProbabilitySimulator.TimeUnit.DAY)) {
+            if (probability.event(2, ProbabilityUtils.TimeUnit.DAY)) {
                 // Stock must be 3 times the number of orders (for a particular product type)
                 if (productQuantity <= company.getOrdersFromProductType(productType).size()*3) {
                     for (int i = 0; i <= new Random().nextInt(100)+10; i++)
@@ -92,7 +94,7 @@ public class CompanySimulatorRunner implements Runnable {
      */
     private void simulateProductTypeCreation() {
         // A new product type is likely to be created when the economy is well, the demand is weak or the concurrency is high
-        if (probability.event(Math.abs(economy.getGrowth()-economy.getDemand()+economy.getSectorConcurrency()), ProbabilitySimulator.TimeUnit.WEEK)) {
+        if (probability.event(Math.abs(economy.getGrowth()-economy.getDemand()+economy.getSectorConcurrency()), ProbabilityUtils.TimeUnit.WEEK)) {
             final ProductType productType = dataGenerator.generateRandomProductType();
             company.newProductType(productType);
         }
@@ -107,7 +109,7 @@ public class CompanySimulatorRunner implements Runnable {
             // Sometimes when no order on the product's type exist, company decides to get rid of it
             // Company must have at least 2 types of products
             if (company.getOrdersFromProductType(productType).size() == 0 && company.getProductTypes().size() > 2) {
-                if (probability.event(2, ProbabilitySimulator.TimeUnit.WEEK)) {
+                if (probability.event(2, ProbabilityUtils.TimeUnit.WEEK)) {
                     company.deleteProductType(productType);
                     return;
                 }
@@ -121,7 +123,7 @@ public class CompanySimulatorRunner implements Runnable {
      */
     private void simulatePriceCuts() {
         for(final ProductType productType : company.getProductTypes()) {
-            if (probability.event(company.getOrdersFromProductType(productType).size()/100, ProbabilitySimulator.TimeUnit.MONTH)) {
+            if (probability.event(company.getOrdersFromProductType(productType).size()/100, ProbabilityUtils.TimeUnit.MONTH)) {
                 company.getProducts().forEach(product -> {
                     // 10 % discount
                     final float cutPrice = product.getPrice()*90/100;
@@ -144,7 +146,7 @@ public class CompanySimulatorRunner implements Runnable {
             // A product has probability nbrCustomers/(price*10^4) to be ordered
             List<Product> orderedProducts = new ArrayList<>();
             for (final Product product : company.getProducts()) {
-                if (probability.event(company.getCustomers().size(),ProbabilitySimulator.TimeUnit.HOUR))
+                if (probability.event(company.getCustomers().size(), ProbabilityUtils.TimeUnit.HOUR))
                     orderedProducts.add(product);
             }
             // Make sure the order is not empty
@@ -160,7 +162,7 @@ public class CompanySimulatorRunner implements Runnable {
     private void simulateDeliveries() {
         Iterator<Order> iterator = company.getOrders().iterator();
         while (iterator.hasNext()) {
-            if (probability.event(1,ProbabilitySimulator.TimeUnit.HOUR)) {
+            if (probability.event(1, ProbabilityUtils.TimeUnit.HOUR)) {
                 final Order order = iterator.next();
                 company.getAvailableTransportation().ifPresent(transportation -> company.getDeliveryStore().add(
                         new Delivery(order,transportation,company.getHeadquarters(),order.getBuyer().getAddress())
@@ -186,17 +188,17 @@ public class CompanySimulatorRunner implements Runnable {
     private void simulateCustomersBehavior() {
         if (economy.getGrowth() > 0) {
             // If economy growth is high, there is a high chance of getting a new customer
-            if (probability.event(Math.abs(economy.getGrowth()*2),ProbabilitySimulator.TimeUnit.DAY))
+            if (probability.event(Math.abs(economy.getGrowth()*2), ProbabilityUtils.TimeUnit.DAY))
                 company.newCustomer(dataGenerator.generateRandomCustomer());
             // It can still lose customers sometimes
-            if (probability.event(Math.abs(economy.getGrowth()),ProbabilitySimulator.TimeUnit.WEEK))
+            if (probability.event(Math.abs(economy.getGrowth()), ProbabilityUtils.TimeUnit.WEEK))
                 company.deleteRandomCustomer();
         } else {
             // If economy growth is negative, there is a chance that our company might lose customers
-            if (probability.event(Math.abs(economy.getGrowth()),ProbabilitySimulator.TimeUnit.DAY))
+            if (probability.event(Math.abs(economy.getGrowth()), ProbabilityUtils.TimeUnit.DAY))
                 company.deleteRandomCustomer();
             // Company can still acquire a new customer
-            if (probability.event(Math.abs(economy.getGrowth()),ProbabilitySimulator.TimeUnit.WEEK))
+            if (probability.event(Math.abs(economy.getGrowth()), ProbabilityUtils.TimeUnit.WEEK))
                 company.newCustomer(dataGenerator.generateRandomCustomer());
         }
     }
@@ -209,7 +211,7 @@ public class CompanySimulatorRunner implements Runnable {
         // If orders >= nbr transportation * 100, new transportation should be acquired
         if (company.getOrders().size() >= company.getAllTransportation().size()*100) {
             // On average takes 2 weeks to be done
-            if (probability.event(0.5d,ProbabilitySimulator.TimeUnit.WEEK)) {
+            if (probability.event(0.5d, ProbabilityUtils.TimeUnit.WEEK)) {
                 Transportation transportation = dataGenerator.generateRandomTransportation();
                 company.newTransportation(transportation);
             }
@@ -224,7 +226,7 @@ public class CompanySimulatorRunner implements Runnable {
         // If number of transportation surpasses number of orders, there is a surplus of transportation
         if (company.getOrders().size() <= company.getAllTransportation().size()) {
             // Takes on average two weeks to get rid of
-            if (probability.event(2,ProbabilitySimulator.TimeUnit.WEEK)) {
+            if (probability.event(2, ProbabilityUtils.TimeUnit.WEEK)) {
                 company.getAvailableTransportation().ifPresent(transportation ->
                         company.deleteTransportation(transportation));
             }

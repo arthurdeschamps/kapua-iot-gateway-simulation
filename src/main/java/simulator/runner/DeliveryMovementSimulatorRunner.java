@@ -2,6 +2,7 @@ package simulator.runner;
 
 import company.address.Coordinates;
 import company.delivery.Delivery;
+import company.main.Company;
 import company.transportation.Transportation;
 
 import java.util.Random;
@@ -13,15 +14,15 @@ import java.util.Random;
  */
 public class DeliveryMovementSimulatorRunner implements Runnable {
 
-    private CompanySimulatorRunner companySimulatorRunner;
+    private Company company;
 
-    public DeliveryMovementSimulatorRunner(CompanySimulatorRunner companySimulatorRunner) {
-        this.companySimulatorRunner = companySimulatorRunner;
+    public DeliveryMovementSimulatorRunner(Company company) {
+        this.company = company;
     }
 
     @Override
     public void run() {
-        companySimulatorRunner.getCompany().getDeliveries().forEach(this::moveDelivery);
+        company.getDeliveries().forEach(this::moveDelivery);
     }
 
     /**
@@ -131,6 +132,6 @@ public class DeliveryMovementSimulatorRunner implements Runnable {
      * The delivery to terminate.
      */
     private void confirmDelivery(Delivery delivery) {
-        companySimulatorRunner.getCompany().deleteDelivery(delivery);
+        company.deleteDelivery(delivery);
     }
 }

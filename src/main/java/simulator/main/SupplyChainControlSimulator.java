@@ -1,12 +1,12 @@
 package simulator.main;
 
 import company.main.Company;
+import economy.Economy;
 import simulator.generator.CompanyGenerator;
 import simulator.runner.CompanySimulatorRunner;
 import simulator.runner.DeliveryMovementSimulatorRunner;
 import simulator.runner.EconomySimulatorRunner;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -20,10 +20,11 @@ import java.util.logging.Logger;
 public class SupplyChainControlSimulator {
 
     private  Company company;
+    private Economy economy;
     private  Parametrizer parametrizer;
     private  EconomySimulatorRunner economySimulator;
     private  CompanySimulatorRunner companySimulator;
-    private DeliveryMovementSimulatorRunner productMovementSimulator;
+    private DeliveryMovementSimulatorRunner movementSimulator;
     private  final Logger logger = Logger.getLogger(SupplyChainControlSimulator.class.getName());
 
     public SupplyChainControlSimulator() {
@@ -41,9 +42,9 @@ public class SupplyChainControlSimulator {
         // Generate default parametrizer
         parametrizer = new Parametrizer(10000);
 
-        economySimulator = new EconomySimulatorRunner();
-        companySimulator = new CompanySimulatorRunner(company, economySimulator);
-        productMovementSimulator = new DeliveryMovementSimulatorRunner(companySimulator);
+        economySimulator = new EconomySimulatorRunner(economy);
+        companySimulator = new CompanySimulatorRunner(company, economy);
+        movementSimulator = new DeliveryMovementSimulatorRunner(company);
     }
 
     private  void runner() {
@@ -61,7 +62,7 @@ public class SupplyChainControlSimulator {
             executor.scheduleWithFixedDelay(economySimulator,0,delay,TimeUnit.MICROSECONDS);
             executor.scheduleWithFixedDelay(companySimulator,0,delay,TimeUnit.MICROSECONDS);
             // ProductMovementSimulator is made to simulate 1 hour
-            executor.scheduleWithFixedDelay(productMovementSimulator,0,delay*3600,TimeUnit.MICROSECONDS);
+            executor.scheduleWithFixedDelay(movementSimulator,0,delay*3600,TimeUnit.MICROSECONDS);
             executor.scheduleWithFixedDelay(() -> company.getDeliveries().stream().findFirst().ifPresent(delivery ->
                     logger.info(Double.toString(delivery.getDistanceFromDestination()))),1,5,TimeUnit.SECONDS);
         } catch (Exception e) {
@@ -76,8 +77,8 @@ public class SupplyChainControlSimulator {
      * ScheduledExecutorService to attach the thread to.
      */
     public void displayEconomicalInfo(ScheduledExecutorService executor) {
-        executor.scheduleWithFixedDelay(() -> logger.info("Growth: "+economySimulator.getGrowth()+", Demand: "+economySimulator.getDemand()
-                +", Sector concurrency: "+economySimulator.getSectorConcurrency()),1,5,TimeUnit.SECONDS);
+        executor.scheduleWithFixedDelay(() -> logger.info("Growth: "+economy.getGrowth()+", Demand: "+economy.getDemand()
+                +", Sector concurrency: "+economy.getSectorConcurrency()),1,5,TimeUnit.SECONDS);
     }
 
     /**

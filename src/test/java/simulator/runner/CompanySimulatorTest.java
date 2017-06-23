@@ -1,6 +1,7 @@
 package simulator.runner;
 
 import company.main.Company;
+import economy.Economy;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -23,6 +24,7 @@ public class CompanySimulatorTest {
     private static EconomySimulatorRunner economySimulator;
     private static CompanySimulatorRunner companySimulator;
     private static Company company;
+    private static Economy economy;
     private static final Logger logger = Logger.getLogger(SupplyChainControlSimulator.class.getName());
 
 
@@ -30,18 +32,19 @@ public class CompanySimulatorTest {
     public static void setUp() {
 
         company = new CompanyGenerator().generateDefaultCompany();
+        economy = new Economy();
         // Make sure company has client to speed up the tests
         for (int i = 0; i < 10; i++) {
             company.newCustomer(new DataGenerator(company).generateRandomCustomer());
         }
 
-        economySimulator = new EconomySimulatorRunner();
-        companySimulator = new CompanySimulatorRunner(company, economySimulator);
+        economySimulator = new EconomySimulatorRunner(economy);
+        companySimulator = new CompanySimulatorRunner(company, economy);
 
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
         // Display data
-        executor.scheduleWithFixedDelay(() -> logger.info("Growth: "+economySimulator.getGrowth()+", Demand: "+economySimulator.getDemand()
-               +", Sector concurrency: "+economySimulator.getSectorConcurrency()),1,30,TimeUnit.SECONDS);
+        executor.scheduleWithFixedDelay(() -> logger.info("Growth: "+economy.getGrowth()+", Demand: "+economy.getDemand()
+               +", Sector concurrency: "+economy.getSectorConcurrency()),1,30,TimeUnit.SECONDS);
         executor.scheduleWithFixedDelay(() -> logger.info("Products: "+Integer.toString(company.getProducts().size())+", Types: "+
                 Integer.toString(company.getProductTypes().size())+
         ", Orders: "+Integer.toString(company.getOrders().size())+", Deliveries: "+Integer.toString(company.getDeliveries().size())
