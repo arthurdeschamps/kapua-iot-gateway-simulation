@@ -1,4 +1,6 @@
-package simulator.main;
+package simulator.util;
+
+import simulator.main.SupplyChainControlSimulator;
 
 /**
  * Parameters for the SupplyChainControlSimulator.
@@ -7,6 +9,8 @@ package simulator.main;
  * @see SupplyChainControlSimulator
  */
 public class Parametrizer {
+
+    //TODO parametrize everything
 
     // Time flow speediness in seconds per second
     private long timeFlow;

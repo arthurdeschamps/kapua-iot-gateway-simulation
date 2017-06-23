@@ -24,15 +24,12 @@ public class Economy {
     }
 
     public Economy() {
-        generateValues();
-    }
-
-    private void generateValues() {
         this.setGrowth(0);
         this.setDemand(0.5f);
         this.setSectorConcurrency(0.5f);
         this.setUpheavalLikelihood(0.000001f);
     }
+
 
     public float getGrowth() {
         return growth;

@@ -38,6 +38,7 @@ public class DeliveryMovementSimulatorRunnerTest {
 
     @Test
     public void testMoveDelivery() {
+
         DataGenerator dataGenerator = new DataGenerator(company);
         Optional<Order> order = dataGenerator.generateRandomOrder(company);
         Assert.assertTrue(order.isPresent());

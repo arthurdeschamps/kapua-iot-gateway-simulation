@@ -95,7 +95,7 @@ public class CompanySimulatorRunner implements Runnable {
     private void simulateProductTypeCreation() {
         // A new product type is likely to be created when the economy is well, the demand is weak or the concurrency is high
         if (probability.event(Math.abs(economy.getGrowth()-economy.getDemand()+economy.getSectorConcurrency()), ProbabilityUtils.TimeUnit.WEEK)) {
-            final ProductType productType = dataGenerator.generateRandomProductType();
+            final ProductType productType = DataGenerator.generateRandomProductType();
             company.newProductType(productType);
         }
     }
@@ -212,7 +212,7 @@ public class CompanySimulatorRunner implements Runnable {
         if (company.getOrders().size() >= company.getAllTransportation().size()*100) {
             // On average takes 2 weeks to be done
             if (probability.event(0.5d, ProbabilityUtils.TimeUnit.WEEK)) {
-                Transportation transportation = dataGenerator.generateRandomTransportation();
+                Transportation transportation = DataGenerator.generateRandomTransportation();
                 company.newTransportation(transportation);
             }
         }

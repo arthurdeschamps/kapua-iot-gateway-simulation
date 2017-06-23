@@ -2,7 +2,7 @@ package storage;
 
 import gherkin.deps.com.google.gson.Gson;
 
-import java.util.logging.Logger;
+import java.util.UUID;
 
 /**
  * Defines an Item. A item is stored in an ItemStore. It can be for example a Product, a Order, etc.
@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  */
 public abstract class Item {
 
-    private static final Logger logger = Logger.getLogger(Item.class.getName());
+    private String id = UUID.randomUUID().toString();
 
     /**
      * Validate that object conforms to the schema
@@ -26,8 +26,17 @@ public abstract class Item {
      * @return
      * The item converted into Json format.
      */
-    public String asJson() {
+    public String toJson() {
         Gson gson = new Gson();
         return gson.toJson(this);
+    }
+
+    /**
+     * Returns an id unique to each item.
+     * @return
+     * The id.
+     */
+    public String getId() {
+        return id;
     }
 }
