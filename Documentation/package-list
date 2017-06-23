@@ -1,10 +1,14 @@
+company.address
 company.customer
 company.delivery
 company.main
 company.order
 company.product
 company.transportation
+economy
+kapua.gateway
 simulator.generator
 simulator.main
 simulator.runner
+simulator.util
 storage
