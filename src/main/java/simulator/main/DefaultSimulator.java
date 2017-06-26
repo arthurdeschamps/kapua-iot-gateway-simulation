@@ -29,7 +29,7 @@ public class DefaultSimulator {
         new SupplyChainControlSimulator(company,economy,parametrizer).start(false);
 
         // Starts the communication with kapua
-        KapuaGatewayClient kapuaGatewayClient = new KapuaGatewayClient(company, parametrizer);
+        KapuaGatewayClient kapuaGatewayClient = new KapuaGatewayClient(company, 3);
         kapuaGatewayClient.startCommunications();
     }
 

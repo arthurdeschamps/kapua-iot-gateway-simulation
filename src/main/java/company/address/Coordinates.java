@@ -79,7 +79,7 @@ public class Coordinates {
 
     @Override
     public String toString() {
-        return "Longitude: "+this.getLongitude()+", Latitude: "+this.getLatitude();
+        return "Latitude: "+this.getLatitude()+", Longitude: "+this.getLongitude();
     }
 
     public float getLatitude() {

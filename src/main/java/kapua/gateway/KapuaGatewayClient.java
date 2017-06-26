@@ -2,12 +2,12 @@ package kapua.gateway;
 
 import company.company.Company;
 import company.delivery.Delivery;
+import company.delivery.DeliveryStatus;
 import org.eclipse.kapua.gateway.client.Application;
 import org.eclipse.kapua.gateway.client.Payload;
 import org.eclipse.kapua.gateway.client.Topic;
 import org.eclipse.kapua.gateway.client.mqtt.fuse.FuseClient;
 import org.eclipse.kapua.gateway.client.profile.kura.KuraMqttProfile;
-import simulator.simulator.Parametrizer;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -25,15 +25,15 @@ import static org.eclipse.kapua.gateway.client.Transport.waitForConnection;
 public class KapuaGatewayClient {
 
     private Company company;
-    private Parametrizer parametrizer;
     private org.eclipse.kapua.gateway.client.Client client;
     private Application application;
+    private int communicationsDelay;
 
     private static final Logger logger = Logger.getLogger(KapuaGatewayClient.class.getName());
 
-    public KapuaGatewayClient(Company company, Parametrizer parametrizer) {
+    public KapuaGatewayClient(Company company, int communicationsDelay) {
         this.company = company;
-        this.parametrizer = parametrizer;
+        this.communicationsDelay = communicationsDelay;
 
         try {
             client = KuraMqttProfile.newProfile(FuseClient.Builder::new)
@@ -63,7 +63,7 @@ public class KapuaGatewayClient {
 
             ScheduledExecutorService executorService = Executors.newScheduledThreadPool(2);
             executorService.scheduleWithFixedDelay(this::updateDeliveries,0,
-                    2, TimeUnit.SECONDS);
+                    communicationsDelay, TimeUnit.SECONDS);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -75,22 +75,22 @@ public class KapuaGatewayClient {
      * @throws Exception
      */
     private void startSubscriptions() throws Exception {
-        application.data(Topic.of("company","deliveries")).subscribe(this::subscriptionHandler);
+        application.data(Topic.of("company","deliveries","locations")).subscribe(this::subscriptionHandler);
     }
 
     /**
-     * Sends all new or updated delivery data to Kapua
+     * Sends deliveries' locations
      */
     private void updateDeliveries() {
         final Payload.Builder payload = new Payload.Builder();
 
-        // TODO: split json in multiple attributes
         for (final Delivery delivery : company.getDeliveries())
-                payload.put(delivery.getId(),delivery.toJson());
+            if (delivery.getDeliveryState().equals(DeliveryStatus.TRANSIT))
+                payload.put(delivery.getId(),delivery.getCurrentLocation().toString());
 
         // Sends everything
         try {
-            application.data(Topic.of("company","deliveries")).send(payload);
+            application.data(Topic.of("company","deliveries","locations")).send(payload);
         } catch (Exception e) {
             logger.warning(e.getMessage());
         }
