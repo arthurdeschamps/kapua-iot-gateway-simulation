@@ -1,14 +1,15 @@
-package simulator.runner;
+package simulation.runners;
 
-import company.delivery.Delivery;
 import company.company.Company;
+import company.delivery.Delivery;
+import company.delivery.DeliveryStatus;
 import company.order.Order;
 import company.product.Product;
 import company.product.ProductType;
 import company.transportation.Transportation;
 import economy.Economy;
-import simulator.generator.DataGenerator;
-import simulator.util.ProbabilityUtils;
+import simulation.generator.DataGenerator;
+import simulation.util.ProbabilityUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -155,11 +156,16 @@ public class CompanySimulatorRunner implements Runnable {
         }
     }
 
+    private void simulateDeliveries() {
+        simulateNewDeliveries();
+        simulateDeliveriesShipping();
+    }
+
     /**
      * Simulates new deliveries.
      * @since 1.0
      */
-    private void simulateDeliveries() {
+    private void simulateNewDeliveries() {
         Iterator<Order> iterator = company.getOrders().iterator();
         while (iterator.hasNext()) {
             if (probability.event(1, ProbabilityUtils.TimeUnit.HOUR)) {
@@ -170,6 +176,20 @@ public class CompanySimulatorRunner implements Runnable {
                 iterator.remove();
             }
         }
+    }
+
+    /**
+     * Simulates deliveries shipping. A delivery that is still at the warehouse will be shipped eventually.
+     */
+    private void simulateDeliveriesShipping() {
+        company.getDeliveries()
+                .stream()
+                .filter(delivery -> delivery.getDeliveryState().equals(DeliveryStatus.WAREHOUSE))
+                .forEach(delivery -> {
+                    if (probability.event(1, ProbabilityUtils.TimeUnit.DAY)) {
+                        delivery.setDeliveryState(DeliveryStatus.TRANSIT);
+                    }
+                });
     }
 
     /**

@@ -1,8 +1,8 @@
-package simulator.runner;
+package simulation.runners;
 
 import org.junit.Assert;
 import org.junit.Test;
-import simulator.util.ProbabilityUtils;
+import simulation.util.ProbabilityUtils;
 
 /**
  * Created by Arthur Deschamps on 16.06.17.

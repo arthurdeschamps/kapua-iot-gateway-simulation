@@ -1,10 +1,10 @@
-package simulator.simulator;
+package simulation;
 
 import company.company.Company;
 import economy.Economy;
-import simulator.runner.CompanySimulatorRunner;
-import simulator.runner.DeliveryMovementSimulatorRunner;
-import simulator.runner.EconomySimulatorRunner;
+import simulation.runners.CompanySimulatorRunner;
+import simulation.runners.DeliveryMovementSimulatorRunner;
+import simulation.runners.EconomySimulatorRunner;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  * @author Arthur Deschamps
  * @since 1.0
  */
-public class SupplyChainControlSimulator {
+public class SupplyChainControlSimulation {
 
     private  Company company;
     private Economy economy;
@@ -26,9 +26,9 @@ public class SupplyChainControlSimulator {
     private  CompanySimulatorRunner companySimulator;
     private DeliveryMovementSimulatorRunner movementSimulator;
 
-    private  final Logger logger = Logger.getLogger(SupplyChainControlSimulator.class.getName());
+    private  final Logger logger = Logger.getLogger(SupplyChainControlSimulation.class.getName());
 
-    public SupplyChainControlSimulator(Company company, Economy economy, Parametrizer parametrizer) {
+    public SupplyChainControlSimulation(Company company, Economy economy, Parametrizer parametrizer) {
         this.company = company;
         this.economy = economy;
         this.parametrizer = parametrizer;

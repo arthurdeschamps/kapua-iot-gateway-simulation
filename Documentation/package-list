@@ -9,6 +9,6 @@ economy
 kapua.gateway
 simulator.generator
 simulator.main
-simulator.runner
+simulator.simulator.runner
 simulator.util
 storage

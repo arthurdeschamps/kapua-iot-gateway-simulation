@@ -1,4 +1,4 @@
-package simulator.runner;
+package simulation.runners;
 
 import company.address.Coordinates;
 import company.delivery.Delivery;
@@ -8,8 +8,8 @@ import economy.Economy;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import simulator.generator.CompanyGenerator;
-import simulator.generator.DataGenerator;
+import simulation.generator.CompanyGenerator;
+import simulation.generator.DataGenerator;
 
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -40,10 +40,10 @@ public class DeliveryMovementSimulatorRunnerTest {
     public void testMoveDelivery() {
 
         DataGenerator dataGenerator = new DataGenerator(company);
-        Optional<Order> order = dataGenerator.generateRandomOrder(company);
+        Optional<Order> order = dataGenerator.generateRandomOrder();
         Assert.assertTrue(order.isPresent());
         company.newOrder(order.get());
-        Optional<Delivery> delivery = dataGenerator.generateRandomDelivery(company);
+        Optional<Delivery> delivery = dataGenerator.generateRandomDelivery();
         Assert.assertTrue(delivery.isPresent());
         company.newDelivery(delivery.get());
 

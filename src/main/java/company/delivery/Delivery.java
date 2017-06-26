@@ -25,7 +25,6 @@ public class Delivery extends Item {
         this.transporter = transporter;
         this.departure = departure;
         this.currentLocation = departure.getCoordinates();
-        this.departure = departure;
         this.destination = destination;
         this.deliveryState = DeliveryStatus.WAREHOUSE;
     }

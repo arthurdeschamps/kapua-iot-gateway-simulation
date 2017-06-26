@@ -1,12 +1,12 @@
-package simulator.simulator;
+package simulation;
 
 import java.util.concurrent.TimeUnit;
 
 /**
- * Parameters for the SupplyChainControlSimulator.
+ * Parameters for the SupplyChainControlSimulation.
  * @author Arthur Deschamps
  * @since 1.0
- * @see SupplyChainControlSimulator
+ * @see SupplyChainControlSimulation
  */
 public class Parametrizer {
 
@@ -17,7 +17,7 @@ public class Parametrizer {
     private TimeUnit timeUnit;
 
     Parametrizer() {
-        // Default timeFlow: 1 sec = 10 sec
+        // Default timeFlow: 1 sec (real life) = 10 sec (virtually)
         this.timeFlow = 10;
         this.timeUnit = TimeUnit.SECONDS;
     }

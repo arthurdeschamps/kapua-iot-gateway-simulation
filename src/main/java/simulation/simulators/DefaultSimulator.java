@@ -1,11 +1,11 @@
-package simulator.main;
+package simulation.simulators;
 
 import company.company.Company;
 import economy.Economy;
 import kapua.gateway.KapuaGatewayClient;
-import simulator.generator.CompanyGenerator;
-import simulator.simulator.SupplyChainControlSimulator;
-import simulator.simulator.Parametrizer;
+import simulation.generator.CompanyGenerator;
+import simulation.SupplyChainControlSimulation;
+import simulation.Parametrizer;
 
 import java.util.concurrent.TimeUnit;
 
@@ -26,7 +26,7 @@ public class DefaultSimulator {
         Company company = new CompanyGenerator().generateRandomCompany();
 
         // Starts the simulation
-        new SupplyChainControlSimulator(company,economy,parametrizer).start(false);
+        new SupplyChainControlSimulation(company,economy,parametrizer).start(false);
 
         // Starts the communication with kapua
         KapuaGatewayClient kapuaGatewayClient = new KapuaGatewayClient(company, 3);

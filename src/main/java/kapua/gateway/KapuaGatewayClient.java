@@ -1,8 +1,6 @@
 package kapua.gateway;
 
 import company.company.Company;
-import company.delivery.Delivery;
-import company.delivery.DeliveryStatus;
 import org.eclipse.kapua.gateway.client.Application;
 import org.eclipse.kapua.gateway.client.Payload;
 import org.eclipse.kapua.gateway.client.Topic;
@@ -10,7 +8,6 @@ import org.eclipse.kapua.gateway.client.mqtt.fuse.FuseClient;
 import org.eclipse.kapua.gateway.client.profile.kura.KuraMqttProfile;
 
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -59,11 +56,14 @@ public class KapuaGatewayClient {
             // Wait for connection
             waitForConnection(application.transport());
 
+            // Start subscribing to all topics
             startSubscriptions();
 
-            ScheduledExecutorService executorService = Executors.newScheduledThreadPool(2);
-            executorService.scheduleWithFixedDelay(this::updateDeliveries,0,
-                    communicationsDelay, TimeUnit.SECONDS);
+            // Schedule an execution to periodically send data to Kapua
+            Executors.newSingleThreadScheduledExecutor()
+                     .scheduleWithFixedDelay(
+                             new Sender(company,application)::updateData,0, communicationsDelay, TimeUnit.SECONDS
+                     );
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,23 +78,7 @@ public class KapuaGatewayClient {
         application.data(Topic.of("company","deliveries","locations")).subscribe(this::subscriptionHandler);
     }
 
-    /**
-     * Sends deliveries' locations
-     */
-    private void updateDeliveries() {
-        final Payload.Builder payload = new Payload.Builder();
 
-        for (final Delivery delivery : company.getDeliveries())
-            if (delivery.getDeliveryState().equals(DeliveryStatus.TRANSIT))
-                payload.put(delivery.getId(),delivery.getCurrentLocation().toString());
-
-        // Sends everything
-        try {
-            application.data(Topic.of("company","deliveries","locations")).send(payload);
-        } catch (Exception e) {
-            logger.warning(e.getMessage());
-        }
-    }
 
     /**
      * Handles message reception

@@ -1,7 +1,7 @@
-package simulator.runner;
+package simulation.runners;
 
 import economy.Economy;
-import simulator.util.ProbabilityUtils;
+import simulation.util.ProbabilityUtils;
 
 import java.util.Random;
 

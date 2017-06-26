@@ -1,22 +1,18 @@
-package simulator.generator;
+package simulation.generator;
 
 import com.github.javafaker.Faker;
 import com.github.javafaker.Name;
 import company.address.Address;
-import company.address.Coordinates;
+import company.company.Company;
 import company.customer.Customer;
 import company.delivery.Delivery;
-import company.company.Company;
 import company.order.Order;
 import company.product.Product;
 import company.product.ProductType;
 import company.transportation.Transportation;
 import company.transportation.TransportationMode;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by Arthur Deschamps on 01.06.17.
@@ -45,20 +41,27 @@ public final class DataGenerator {
      */
     public Customer generateRandomCustomer() {
         Name name = faker.name();
-        return new Customer(name.firstName(),name.lastName(), generateRandomAddress(),
-                faker.internet().emailAddress(),faker.phoneNumber().phoneNumber());
-    }
 
-    /**
-     * Generates a random address.
-     * @return
-     * The newly generated address.
-     */
-    public static Address generateRandomAddress() {
-        Faker faker = new Faker();
-        com.github.javafaker.Address address = faker.address();
-        return new Address(address.streetAddress(),address.cityName(),address.state(),address.country(),
-                address.zipCode(),new Coordinates(address.latitude(),address.longitude()));
+        // Generate address considering the type of company
+        Address address;
+        switch (company.getType()) {
+            case LOCAL:
+                address = AddressGenerator.generateLocalAddress(company.getHeadquarters().getCity());
+                break;
+            case NATIONAL:
+                // TODO: generate a local given the company's address
+                address = AddressGenerator.generateNationalAddress(new Locale("en-US"));
+                break;
+            case INTERNATIONAL:
+                address = AddressGenerator.generateInternationalAddress();
+                break;
+            default:
+                address = AddressGenerator.generateInternationalAddress();
+                break;
+        }
+
+        return new Customer(name.firstName(),name.lastName(), address,
+                faker.internet().emailAddress(),faker.phoneNumber().phoneNumber());
     }
 
     /**
@@ -90,7 +93,7 @@ public final class DataGenerator {
      * @return
      * A optional object of type Order. If the company doesn't have products or customers, the result is null.
      */
-    public Optional<Order> generateRandomOrder(Company company) {
+    public Optional<Order> generateRandomOrder() {
         if (company != null && company.getProductStore().getRandom().isPresent() && company.getCustomerStore().getRandom().isPresent()) {
             Customer customer = company.getCustomerStore().getRandom().get();
             List<Product> productList = new ArrayList<>();
@@ -118,7 +121,7 @@ public final class DataGenerator {
      * @return
      * The newly generated delivery or an empty optional if the conditions are not met.
      */
-    public Optional<Delivery> generateRandomDelivery(Company company) {
+    public Optional<Delivery> generateRandomDelivery() {
         if (company.getOrders().size() > 0 && company.getAvailableTransportation().isPresent() &&
                 company.getCustomerStore().getRandom().isPresent() && company.getOrderStore().getRandom().isPresent()) {
             return Optional.of(new Delivery(company.getOrderStore().getRandom().get(), company.getAvailableTransportation().get(),
@@ -158,6 +161,7 @@ public final class DataGenerator {
             default:
                 capacity = 500;
                 maxSpeed = 200;
+                break;
         }
         return new Transportation(capacity,maxSpeed,transportationMode);
     }
@@ -167,7 +171,8 @@ public final class DataGenerator {
      * There shall be at least one product type, one product, one customer and one transportation generated.
      */
     void generateData() {
-        // TODO: generate regarding to the company business type
+        // Different quantities considering the company's type will be generated.
+
         generateProductTypes();
         generateProducts();
         generateTransportation();
@@ -175,23 +180,92 @@ public final class DataGenerator {
     }
 
     private  void generateProductTypes() {
-        for (int i = 0; i < random.nextInt(10)+1; i++)
+        int nbrProductTypes;
+        switch (company.getType()) {
+            case LOCAL:
+                // From 10 to 20
+                nbrProductTypes = random.nextInt(10)+10;
+                break;
+            case NATIONAL:
+                // From 50 to 100
+                nbrProductTypes = random.nextInt(50)+50;
+                break;
+            case INTERNATIONAL:
+                // From 100 to 200
+                nbrProductTypes = random.nextInt(100)+100;
+                break;
+            default:
+                nbrProductTypes = 20;
+                break;
+        }
+
+        for (int i = 0; i < nbrProductTypes; i++)
             company.newProductType(generateRandomProductType());
     }
 
     private  void generateProducts() {
-        for (final ProductType productType : company.getProductTypes())
-            for (int i = 0; i < random.nextInt(100)+1; i++)
+        int nbrProducts;
+        switch (company.getType()) {
+            case LOCAL:
+                nbrProducts = random.nextInt(60)+40;
+                break;
+            case NATIONAL:
+                nbrProducts = random.nextInt(300)+200;
+                break;
+            case INTERNATIONAL:
+                nbrProducts = random.nextInt(1000)+1000;
+                break;
+            default:
+                nbrProducts = 100;
+                break;
+        }
+
+        for (final ProductType productType : company.getProductTypes()) {
+            // Product type base price influences the initial stock (the more expensive, the less quantity)
+            for (int i = 0; i < (int) (nbrProducts * (100.0f / productType.getBasePrice())); i++)
                 company.newProduct(this.generateProductFromProductType(productType));
+        }
     }
 
     private  void generateTransportation() {
-        for (int i = 0; i < random.nextInt(50)+1; i++)
+        int nbrTransportation;
+        switch (company.getType()) {
+            case LOCAL:
+                nbrTransportation = random.nextInt(5)+5;
+                break;
+            case NATIONAL:
+                nbrTransportation = random.nextInt(50)+50;
+                break;
+            case INTERNATIONAL:
+                nbrTransportation = random.nextInt(500)+500;
+                break;
+            default:
+                nbrTransportation = 50;
+                break;
+        }
+
+        for (int i = 0; i < nbrTransportation; i++)
             company.newTransportation(generateRandomTransportation());
     }
 
     private  void generateCustomers() {
-        for (int i = 0; i < random.nextInt(50)+1; i++)
+        int nbrCustomers;
+        switch (company.getType()) {
+            case LOCAL:
+                nbrCustomers = random.nextInt(50)+50;
+                break;
+            case NATIONAL:
+                nbrCustomers = random.nextInt(300)+700;
+                break;
+            case INTERNATIONAL:
+                nbrCustomers = random.nextInt(10000)+40000;
+                break;
+            default:
+                nbrCustomers = 1000;
+                break;
+        }
+
+        for (int i = 0; i < nbrCustomers; i++)
             company.newCustomer(generateRandomCustomer());
     }
 

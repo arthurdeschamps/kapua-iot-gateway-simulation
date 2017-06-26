@@ -1,14 +1,18 @@
-package simulator.runner;
+package simulation.runners;
 
 import company.company.Company;
+import company.delivery.Delivery;
+import company.delivery.DeliveryStatus;
+import company.order.Order;
 import economy.Economy;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import simulator.generator.CompanyGenerator;
-import simulator.generator.DataGenerator;
-import simulator.simulator.SupplyChainControlSimulator;
+import simulation.SupplyChainControlSimulation;
+import simulation.generator.CompanyGenerator;
+import simulation.generator.DataGenerator;
 
+import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -25,7 +29,7 @@ public class CompanySimulatorTest {
     private static CompanySimulatorRunner companySimulator;
     private static Company company;
     private static Economy economy;
-    private static final Logger logger = Logger.getLogger(SupplyChainControlSimulator.class.getName());
+    private static final Logger logger = Logger.getLogger(SupplyChainControlSimulation.class.getName());
 
 
     @BeforeClass
@@ -71,7 +75,7 @@ public class CompanySimulatorTest {
                 totalAmountOfProducts = company.getProducts().size();
             }
 
-            Assert.fail();
+            Assert.fail("No product ever created.");
 
         } catch (Exception e) {
             Assert.fail();
@@ -91,7 +95,7 @@ public class CompanySimulatorTest {
                 productTypesSize = company.getProductTypes().size();
             }
 
-            Assert.fail();
+            Assert.fail("No product type ever created.");
 
         } catch (Exception e) {
             Assert.fail();
@@ -111,7 +115,7 @@ public class CompanySimulatorTest {
                 currentSize = company.getProductTypes().size();
             }
 
-            Assert.fail();
+            Assert.fail("No product type ever destroyed.");
 
         } catch (Exception e) {
             Assert.fail();
@@ -130,7 +134,7 @@ public class CompanySimulatorTest {
                 orderAmount = company.getOrders().size();
             }
 
-            Assert.fail();
+            Assert.fail("No order ever made by any customer.");
         } catch (Exception e) {
             Assert.fail();
             e.printStackTrace();
@@ -138,17 +142,24 @@ public class CompanySimulatorTest {
     }
 
     @Test
-    public void testProductMovement() {
+    public void testDeliveryStatusUpdate() {
         try {
-            int numberOfDeliveries = company.getDeliveries().size();
-            for (int i = 0; i < Math.pow(10, 8); i++) {
+            DataGenerator dataGenerator = new DataGenerator(company);
+            final Optional<Order> orderOptional = dataGenerator.generateRandomOrder();
+            Assert.assertTrue(orderOptional.isPresent());
+            company.newOrder(orderOptional.get());
+            final Delivery delivery = dataGenerator.generateRandomDelivery().get();
+            Assert.assertEquals(DeliveryStatus.WAREHOUSE,delivery.getDeliveryState());
+            company.newDelivery(delivery);
+            Assert.assertTrue(company.getDeliveries().contains(delivery));
+
+            for (int i = 0; i < Math.pow(10, 7); i++) {
                 run();
-                if (numberOfDeliveries > company.getDeliveries().size())
+                if (delivery.getDeliveryState().equals(DeliveryStatus.TRANSIT))
                     return;
-                numberOfDeliveries = company.getDeliveries().size();
             }
 
-            Assert.fail();
+            Assert.fail("Delivery status never passed from 'warehouse' to 'shipped'.");
         } catch (Exception e) {
             Assert.fail();
             e.printStackTrace();

@@ -11,12 +11,13 @@ public class Transportation extends Item {
     private float capacity; // in tonnes
     private int maxSpeed; // km/h
     private TransportationMode transportationMode;
-
+    private TransportationHealthState healthState;
 
     public Transportation(float capacity, int maxSpeed, TransportationMode transportationMode) {
         this.capacity = capacity;
         this.maxSpeed = maxSpeed;
         this.transportationMode = transportationMode;
+        this.healthState = TransportationHealthState.PERFECT;
     }
 
     @Override
@@ -43,5 +44,13 @@ public class Transportation extends Item {
 
     public TransportationMode getTransportationMode() {
         return transportationMode;
+    }
+
+    public TransportationHealthState getHealthState() {
+        return healthState;
+    }
+
+    public void setHealthState(TransportationHealthState healthState) {
+        this.healthState = healthState;
     }
 }

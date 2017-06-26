@@ -1,8 +1,9 @@
-package simulator.runner;
+package simulation.runners;
 
 import company.address.Coordinates;
 import company.delivery.Delivery;
 import company.company.Company;
+import company.delivery.DeliveryStatus;
 import company.transportation.Transportation;
 
 import java.util.Random;
@@ -22,7 +23,8 @@ public class DeliveryMovementSimulatorRunner implements Runnable {
 
     @Override
     public void run() {
-        company.getDeliveries().forEach(this::moveDelivery);
+        company.getDeliveries().stream().filter(delivery -> delivery.getDeliveryState().equals(DeliveryStatus.TRANSIT))
+                .forEach(this::moveDelivery);
     }
 
     /**
