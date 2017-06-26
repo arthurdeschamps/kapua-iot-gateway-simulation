@@ -3,14 +3,14 @@ package simulation.util;
 import java.util.Random;
 
 /**
- * Created by Arthur Deschamps on 13.06.17.
+ * Probability utility for simulators.
  * @author Arthur Deschamps
  * @since 1.0
  */
 public class ProbabilityUtils {
     /**
-     * This method simulates if an event that occurs at the given frequency in the given time unit has occurred in 1 second.
-     * For instance, if the event has frequency 1 per hour, the method might be called on average 3600 times in order to return true
+     * This method simulates if an event that occurs at the given frequency in the given time unit has occurred in 1 hour.
+     * For instance, if the event has frequency 1 per day, the method should be called on average 24 times in order to return true
      * at least once.
      * @param frequency
      * Frequency at which the event occurs.
@@ -29,8 +29,8 @@ public class ProbabilityUtils {
         double normalizedFrequency = TimeUnit.scaleToBiggestUnit(frequency,timeUnit);
         // Convert frequency per second to number of favorable outcomes for a uniform law of probability
         long nbrFavorableOutcomes = (long) normalizedFrequency;
-        // We are simulating one second, so the total number of outcomes one second converted to the biggest unit
-        final double nbrTotalOutcomes = TimeUnit.scaleToBiggestUnit(1,TimeUnit.SECOND);
+        // We are simulating one hour, so the total number of outcomes is one hour converted to the biggest unit
+        final double nbrTotalOutcomes = TimeUnit.scaleToBiggestUnit(1,TimeUnit.HOUR);
         // Simulate event using a uniform law of probability
         Random random = new Random();
         return random.nextInt((int)(nbrTotalOutcomes/nbrFavorableOutcomes)) == 0;

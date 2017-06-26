@@ -60,11 +60,9 @@ public class KapuaGatewayClient {
             startSubscriptions();
 
             // Schedule an execution to periodically send data to Kapua
-            Executors.newSingleThreadScheduledExecutor()
-                     .scheduleWithFixedDelay(
-                             new Sender(company,application)::updateData,0, communicationsDelay, TimeUnit.SECONDS
-                     );
-
+            Executors.newSingleThreadScheduledExecutor().scheduleWithFixedDelay(
+                    new Sender(company,application),0, communicationsDelay, TimeUnit.SECONDS
+            );
         } catch (Exception e) {
             e.printStackTrace();
         }

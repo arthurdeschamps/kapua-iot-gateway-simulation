@@ -2,6 +2,7 @@ package simulation.simulators.telemetry;
 
 import company.company.Company;
 import company.delivery.Delivery;
+import company.delivery.DeliveryStatus;
 
 /**
  * Simulates product movement during deliveries.
@@ -16,7 +17,10 @@ public class DeliveryMovementSimulator extends AbstractTelemetryComponentSimulat
 
     @Override
     public void run() {
-        company.getDeliveries().forEach(this::moveDelivery);
+        company.getDeliveries()
+                .stream()
+                .filter(delivery -> delivery.getDeliveryState().equals(DeliveryStatus.TRANSIT))
+                .forEach(this::moveDelivery);
     }
 
     /**

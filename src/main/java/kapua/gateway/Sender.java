@@ -1,9 +1,7 @@
 package kapua.gateway;
 
 import company.company.Company;
-import company.delivery.Delivery;
 import company.delivery.DeliveryStatus;
-import company.transportation.Transportation;
 import org.eclipse.kapua.gateway.client.Application;
 import org.eclipse.kapua.gateway.client.Payload;
 import org.eclipse.kapua.gateway.client.Topic;
@@ -15,7 +13,7 @@ import java.util.logging.Logger;
  * @since 1.0
  * @author Arthur Deschamps
  */
-class Sender {
+class Sender implements Runnable {
 
     private Company company;
     private Application application;
@@ -29,7 +27,8 @@ class Sender {
     /**
      * Sends all telemetry data to Kapua
      */
-    void updateData() {
+    @Override
+    public void run() {
         updateDeliveriesLocations();
         updateTransportationHealthState();
     }
@@ -39,10 +38,10 @@ class Sender {
      */
     private void updateDeliveriesLocations() {
         payload = new Payload.Builder();
-
-        for (final Delivery delivery : company.getDeliveries())
-            if (delivery.getDeliveryState().equals(DeliveryStatus.TRANSIT))
-                payload.put(delivery.getId(),delivery.getCurrentLocation().toString());
+        company.getDeliveries()
+                .stream()
+                .filter(delivery -> delivery.getDeliveryState().equals(DeliveryStatus.TRANSIT))
+                .forEach(delivery -> payload.put(delivery.getId(),delivery.getCurrentLocation().toString()));
         send(payload,"Deliveries","Locations");
     }
 
@@ -51,10 +50,10 @@ class Sender {
      */
     private void updateTransportationHealthState() {
         payload = new Payload.Builder();
-
-        for(final Transportation transportation : company.getAllTransportation())
-            if (!transportation.isAvailable())
-                payload.put(transportation.getId(),transportation.getHealthState());
+        company.getDeliveries()
+                .stream()
+                .filter(delivery -> delivery.getDeliveryState().equals(DeliveryStatus.TRANSIT))
+                .forEach(delivery -> payload.put(delivery.getTransporter().getId(),delivery.getTransporter().getHealthState().name()));
         send(payload,"Transportation","Health states");
     }
 

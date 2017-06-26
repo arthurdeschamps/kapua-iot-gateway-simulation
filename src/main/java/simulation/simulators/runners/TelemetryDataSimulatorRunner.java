@@ -6,8 +6,7 @@ import simulation.simulators.telemetry.TransportationHealthStateSimulator;
 import simulation.simulators.telemetry.DeliveryMovementSimulator;
 
 /**
- * The base time unit of this class is 1 hour, that is every execution of run is equivalent to 3600 seconds elapsed in
- * simulation time.
+ * Simulates different events related to telemetry data.
  * @author Arthur Deschamps
  * @since 1.0
  */

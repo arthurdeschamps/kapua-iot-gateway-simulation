@@ -51,14 +51,11 @@ public class SupplyChainControlSimulator {
         try {
             ScheduledExecutorService executor = Executors.newScheduledThreadPool(threadsNbr);
 
-            // EconomySimulatorRunner and CompanySimulatorRunner are made to simulate 1 second per execution
             executor.scheduleWithFixedDelay(economySimulator,0,parametrizer.getExecutorDelay(),
                     parametrizer.getTimeUnit());
             executor.scheduleWithFixedDelay(companySimulator,0,parametrizer.getExecutorDelay(),
                     parametrizer.getTimeUnit());
-
-            // TelemetryDataSimulatorRunner is made to simulate 1 hour per execution. We multiply therefore by 3600.
-            executor.scheduleWithFixedDelay(telemetrySimulator,0,parametrizer.getExecutorDelay()*3600,
+            executor.scheduleWithFixedDelay(telemetrySimulator,0,parametrizer.getExecutorDelay(),
                     parametrizer.getTimeUnit());
 
             if (showMetrics) {

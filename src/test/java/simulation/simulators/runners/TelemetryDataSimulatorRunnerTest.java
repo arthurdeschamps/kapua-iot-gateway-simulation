@@ -27,7 +27,7 @@ public class TelemetryDataSimulatorRunnerTest {
 
     @BeforeClass
     public static void setUp() {
-        company = new CompanyGenerator().generateRandomCompany();
+        company = CompanyGenerator.generateLocalCompany();
         telemetryDataSimulatorRunner = new TelemetryDataSimulatorRunner(company);
     }
 

@@ -18,7 +18,7 @@ public class DefaultSimulationWithMetrics {
 
     public static void main(String[] args) {
         // Create a default parametrizer
-        Parametrizer parametrizer = new Parametrizer(100, TimeUnit.MICROSECONDS);
+        Parametrizer parametrizer = new Parametrizer(100, TimeUnit.SECONDS);
         // Generates an economy with default initial metrics
         Economy economy = new Economy();
         // Generates a random company with random data

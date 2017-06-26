@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 /**
  * Model of a runner, that is an object that shall be called periodically in this application.
- *
+ * A call to "run" is equivalent to 1 hour elapsed in virtual time.
  * @author Arthur Deschamps
  * @since 1.0
  */

@@ -4,9 +4,9 @@ import economy.Economy;
 import simulation.simulators.economy.*;
 
 /**
- * Created by Arthur Deschamps on 02.06.17.
- * This class gives a frame to the simulation. The economy determines the sales made by the simulated company.
- * 1 call to run is equivalent to 1 second in "real" time
+ * Simulates economy.
+ * @author Arthur Deschamps
+ * @since 1.0
  */
 public class EconomySimulatorRunner extends AbstractRunner<AbstractEconomyComponentSimulator> {
 

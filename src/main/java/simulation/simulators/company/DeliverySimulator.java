@@ -37,9 +37,12 @@ public class DeliverySimulator extends AbstractCompanyComponentSimulator {
                 final Order order = iterator.next();
                 // We need to directly add to DeliveryStore because the "newDelivery" method of Company will raise
                 // an exception of concurrent accessing because of the iterator
-                company.getAvailableTransportation().ifPresent(transportation -> company.getDeliveryStore().add(
-                        new Delivery(order,transportation,company.getHeadquarters(),order.getBuyer().getAddress())
-                ));
+                company.getAvailableTransportation().ifPresent(transportation -> {
+                    company.getDeliveryStore().add(
+                            new Delivery(order, transportation, company.getHeadquarters(), order.getBuyer().getAddress())
+                    );
+                    transportation.setAvailable(false);
+                });
                 iterator.remove();
             }
         }
