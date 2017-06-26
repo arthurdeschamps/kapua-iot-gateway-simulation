@@ -1,7 +1,8 @@
-package simulation.runners;
+package simulation.simulators.runners;
 
 import company.company.Company;
 import simulation.simulators.telemetry.AbstractTelemetryComponentSimulator;
+import simulation.simulators.telemetry.DeliveryHealthStateSimulator;
 import simulation.simulators.telemetry.DeliveryMovementSimulator;
 
 /**
@@ -14,7 +15,8 @@ public class TelemetryDataSimulatorRunner extends AbstractRunner<AbstractTelemet
 
     public TelemetryDataSimulatorRunner(Company company) {
         super(new AbstractTelemetryComponentSimulator[] {
-                new DeliveryMovementSimulator(company)
+                new DeliveryMovementSimulator(company),
+                new DeliveryHealthStateSimulator(company)
         });
     }
 }
