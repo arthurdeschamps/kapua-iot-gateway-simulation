@@ -6,8 +6,8 @@ import company.product.ProductType;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import simulation.generator.CompanyGenerator;
-import simulation.generator.DataGenerator;
+import simulation.generators.CompanyGenerator;
+import simulation.generators.DataGenerator;
 
 import java.util.Optional;
 

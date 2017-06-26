@@ -39,6 +39,58 @@ public class Delivery extends Item {
         return Coordinates.calculateDistance(this.getCurrentLocation(),this.getDestination().getCoordinates());
     }
 
+    /**
+     * Determines if the current location of a delivery is "close enough" to its destination to mark it as "delivered"
+     * @return
+     * True if current location can be considered as destination, false otherwise.
+     */
+    public boolean isAtDestination() {
+        // Maximum tolerated distance from destination
+        final int toleranceInKm = 30;
+        return Coordinates.calculateDistance(this.getDestination().getCoordinates(),this.getCurrentLocation()) < toleranceInKm;
+    }
+
+    /**
+     * Determines the route to take to minimize the distance between the current location and the destination.
+     * @param distance
+     * Total distance that the delivery shall move to.
+     * @return
+     * New coordinates that are as close as possible to the destination considering the traveled destination.
+     */
+    public Coordinates minimizeDistanceFromDestination(final float distance) {
+
+        // Min is the base point at first
+        Coordinates minCoordinates = this.getCurrentLocation();
+        Coordinates intermediateCoordinates;
+        double minDistance = Coordinates.calculateDistance(minCoordinates,this.getDestination().getCoordinates());
+        double distanceX = -distance;
+        double distanceY, intermediateDistance;
+        // Step size
+        final double eps = 1;
+
+        // Evaluation with each possible x and y distances
+        while (distanceX <= distance) {
+            distanceY = -distance;
+            while (distanceY <= distance) {
+                // Constraint of our optimization problem
+                if (Math.abs(distanceX) + Math.abs(distanceY) <= distance) {
+                    intermediateCoordinates = Coordinates.applyDistance(this.getCurrentLocation(),(float)distanceX,(float)distanceY);
+                    intermediateDistance = Coordinates.calculateDistance(intermediateCoordinates,this.getDestination().getCoordinates());
+                    if (minDistance >= intermediateDistance) {
+                        minCoordinates = intermediateCoordinates;
+                        minDistance = intermediateDistance;
+                    }
+                }
+
+                distanceY += eps;
+            }
+            distanceX += eps;
+        }
+
+        return minCoordinates;
+
+    }
+
     public boolean isDelivered() {
         return deliveryState.equals(DeliveryStatus.DELIVERED);
     }
@@ -46,8 +98,6 @@ public class Delivery extends Item {
     public boolean isInTransit() {
         return !getCurrentLocation().equals(getDeparture().getCoordinates());
     }
-
-
 
     public Order getOrder() {
         return order;

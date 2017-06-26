@@ -44,7 +44,7 @@ public class KapuaGatewayClient {
             e.printStackTrace();
         }
 
-        application = client.buildApplication("Supply Chain Control Simulator").build();
+        application = client.buildApplication("Supply Chain Control AbstractSimulatorInterface").build();
 
     }
 
