@@ -1,4 +1,4 @@
-package simulation.runners;
+package simulation.simulators.runners;
 
 import economy.Economy;
 import simulation.util.ProbabilityUtils;

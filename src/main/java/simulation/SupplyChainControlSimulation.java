@@ -2,9 +2,9 @@ package simulation;
 
 import company.company.Company;
 import economy.Economy;
-import simulation.runners.CompanySimulatorRunner;
-import simulation.runners.DeliveryMovementSimulatorRunner;
-import simulation.runners.EconomySimulatorRunner;
+import simulation.simulators.runners.CompanySimulatorRunner;
+import simulation.simulators.runners.DeliveryMovementSimulatorRunner;
+import simulation.simulators.runners.EconomySimulatorRunner;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
