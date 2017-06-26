@@ -31,6 +31,7 @@ public class DeliverySimulator extends AbstractCompanyComponentSimulator {
      * @since 1.0
      */
     private void simulateNewDeliveries() {
+        //TODO assign multiple orders to one delivery (check total weight against transportation capacity)
         Iterator<Order> iterator = company.getOrders().iterator();
         while (iterator.hasNext()) {
             if (probabilityUtils.event(3, ProbabilityUtils.TimeUnit.DAY)) {
@@ -42,8 +43,8 @@ public class DeliverySimulator extends AbstractCompanyComponentSimulator {
                             new Delivery(order, transportation, company.getHeadquarters(), order.getBuyer().getAddress())
                     );
                     transportation.setAvailable(false);
+                    iterator.remove();
                 });
-                iterator.remove();
             }
         }
     }

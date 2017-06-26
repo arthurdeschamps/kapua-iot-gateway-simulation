@@ -33,7 +33,7 @@ public class ProbabilityUtils {
         final double nbrTotalOutcomes = TimeUnit.scaleToBiggestUnit(1,TimeUnit.HOUR);
         // Simulate event using a uniform law of probability
         Random random = new Random();
-        return random.nextInt((int)(nbrTotalOutcomes/nbrFavorableOutcomes)) == 0;
+        return nbrTotalOutcomes < nbrFavorableOutcomes || random.nextInt((int) (nbrTotalOutcomes / nbrFavorableOutcomes)) == 0;
     }
 
     /**

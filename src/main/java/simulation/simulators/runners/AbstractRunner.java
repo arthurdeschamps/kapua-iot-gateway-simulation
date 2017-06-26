@@ -19,11 +19,15 @@ public abstract class AbstractRunner<T extends AbstractSimulatorInterface> imple
     }
 
     /**
-     * Calls every simulators.
+     * Calls every simulator.
      */
     @Override
     public void run() {
-        Arrays.stream(simulators).forEach(AbstractSimulatorInterface::run);
+        try {
+            Arrays.stream(simulators).forEach(AbstractSimulatorInterface::run);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

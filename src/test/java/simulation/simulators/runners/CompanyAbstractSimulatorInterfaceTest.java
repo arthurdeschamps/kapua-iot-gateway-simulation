@@ -68,7 +68,7 @@ public class CompanyAbstractSimulatorInterfaceTest {
          */
         try {
             int totalAmountOfProducts = company.getProducts().size();
-            for (int i = 0; i < Math.pow(10, 10); i++) {
+            for (int i = 0; i < Math.pow(10, 7); i++) {
                 run();
                 if (totalAmountOfProducts < company.getProducts().size())
                     return;

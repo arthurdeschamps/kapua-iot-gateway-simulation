@@ -35,7 +35,7 @@ public class OrderSimulator extends AbstractCompanyComponentSimulator {
             // A product has probability nbrCustomers/(price*10^4) to be ordered
             List<Product> orderedProducts = new ArrayList<>();
             for (final Product product : company.getProducts()) {
-                if (probabilityUtils.event(company.getCustomers().size(), ProbabilityUtils.TimeUnit.HOUR))
+                if (probabilityUtils.event(company.getCustomers().size(), ProbabilityUtils.TimeUnit.MONTH))
                     orderedProducts.add(product);
             }
             // Make sure the order is not empty
