@@ -10,6 +10,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import simulation.generator.CompanyGenerator;
 import simulation.generator.DataGenerator;
+import simulation.simulators.runners.company.CompanySimulatorRunner;
+import simulation.simulators.runners.economy.EconomySimulatorRunner;
+import simulation.simulators.runners.telemetry.DeliveryMovementSimulatorRunner;
 
 import java.util.Optional;
 import java.util.logging.Logger;

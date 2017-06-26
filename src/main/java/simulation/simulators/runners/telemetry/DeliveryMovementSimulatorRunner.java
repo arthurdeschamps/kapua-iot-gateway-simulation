@@ -1,4 +1,4 @@
-package simulation.simulators.runners;
+package simulation.simulators.runners.telemetry;
 
 import company.address.Coordinates;
 import company.delivery.Delivery;
