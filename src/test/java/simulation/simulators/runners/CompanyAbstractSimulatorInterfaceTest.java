@@ -35,7 +35,7 @@ public class CompanyAbstractSimulatorInterfaceTest {
     @BeforeClass
     public static void setUp() {
 
-        company = new CompanyGenerator().generateDefaultCompany();
+        company = CompanyGenerator.generateLocalCompany();
         economy = new Economy();
         // Make sure company has client to speed up the tests
         for (int i = 0; i < 10; i++) {

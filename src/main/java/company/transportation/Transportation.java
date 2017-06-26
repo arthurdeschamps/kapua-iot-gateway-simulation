@@ -14,12 +14,14 @@ public class Transportation extends Item {
     private int maxSpeed; // km/h
     private TransportationMode transportationMode;
     private TransportationHealthState healthState;
+    private boolean isAvailable;
 
     public Transportation(float capacity, int maxSpeed, TransportationMode transportationMode) {
         this.capacity = capacity;
         this.maxSpeed = maxSpeed;
         this.transportationMode = transportationMode;
         this.healthState = TransportationHealthState.PERFECT;
+        this.isAvailable = true;
     }
 
     /**
@@ -37,6 +39,13 @@ public class Transportation extends Item {
         final int randomFactor = (int) Math.pow(-1,random.nextInt(2))*(random.nextInt(5)+1);
 
         return (float) (speed+speed*randomFactor/100);
+    }
+
+    /**
+     * Deteriorate transportation health state.
+     */
+    public void degradeHealthState() {
+        this.setHealthState(TransportationHealthState.degrade(this.getHealthState()));
     }
 
     @Override
@@ -71,5 +80,13 @@ public class Transportation extends Item {
 
     public void setHealthState(TransportationHealthState healthState) {
         this.healthState = healthState;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
     }
 }

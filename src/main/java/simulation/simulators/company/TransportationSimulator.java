@@ -2,6 +2,7 @@ package simulation.simulators.company;
 
 import company.company.Company;
 import company.transportation.Transportation;
+import company.transportation.TransportationHealthState;
 import economy.Economy;
 import simulation.generators.DataGenerator;
 import simulation.util.ProbabilityUtils;
@@ -43,14 +44,20 @@ public class TransportationSimulator extends AbstractCompanyComponentSimulator {
      * @since 1.0
      */
     private void simulateTransportationDestruction() {
-        // If number of transportation surpasses number of orders, there is a surplus of transportation
-        if (company.getOrders().size() <= company.getAllTransportation().size()) {
-            // Takes on average two weeks to get rid of
-            if (probabilityUtils.event(2, ProbabilityUtils.TimeUnit.WEEK)) {
-                company.getAvailableTransportation().ifPresent(transportation ->
-                        company.deleteTransportation(transportation));
-            }
-        }
+        // A transportation is destructed when its in a bad state or worse
+        company.getAllTransportation()
+                .stream()
+                .filter(transportation -> transportation.isAvailable())
+                .forEach(transportation -> {
+                    final TransportationHealthState state = transportation.getHealthState();
+
+                    if ((state.equals(TransportationHealthState.BAD) &&
+                            probabilityUtils.event(1, ProbabilityUtils.TimeUnit.DAY)) ||
+                            state.equals(TransportationHealthState.CRITICAL))
+                    {
+                       company.deleteTransportation(transportation);
+                    }
+                });
     }
 
 }

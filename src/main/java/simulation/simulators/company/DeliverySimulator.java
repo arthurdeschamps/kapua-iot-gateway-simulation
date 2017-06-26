@@ -33,8 +33,10 @@ public class DeliverySimulator extends AbstractCompanyComponentSimulator {
     private void simulateNewDeliveries() {
         Iterator<Order> iterator = company.getOrders().iterator();
         while (iterator.hasNext()) {
-            if (probabilityUtils.event(1, ProbabilityUtils.TimeUnit.HOUR)) {
+            if (probabilityUtils.event(3, ProbabilityUtils.TimeUnit.DAY)) {
                 final Order order = iterator.next();
+                // We need to directly add to DeliveryStore because the "newDelivery" method of Company will raise
+                // an exception of concurrent accessing because of the iterator
                 company.getAvailableTransportation().ifPresent(transportation -> company.getDeliveryStore().add(
                         new Delivery(order,transportation,company.getHeadquarters(),order.getBuyer().getAddress())
                 ));

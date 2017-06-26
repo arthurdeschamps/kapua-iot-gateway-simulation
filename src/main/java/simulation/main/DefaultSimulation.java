@@ -22,7 +22,7 @@ public class DefaultSimulation {
         // Generates an economy with default initial metrics
         Economy economy = new Economy();
         // Generates a random company with random data
-        Company company = new CompanyGenerator().generateRandomCompany();
+        Company company = CompanyGenerator.generateLocalCompany();
 
         // Starts the simulation
         new SupplyChainControlSimulator(company,economy,parametrizer).start(false);

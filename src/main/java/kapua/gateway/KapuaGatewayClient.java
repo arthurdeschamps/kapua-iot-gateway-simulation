@@ -44,7 +44,7 @@ public class KapuaGatewayClient {
             e.printStackTrace();
         }
 
-        application = client.buildApplication("Supply Chain Control AbstractSimulatorInterface").build();
+        application = client.buildApplication("Supply Chain Control Simulator").build();
 
     }
 
@@ -75,7 +75,8 @@ public class KapuaGatewayClient {
      * @throws Exception
      */
     private void startSubscriptions() throws Exception {
-        application.data(Topic.of("company","deliveries","locations")).subscribe(this::subscriptionHandler);
+        application.data(Topic.of("Deliveries","Locations")).subscribe(this::subscriptionHandler);
+        application.data(Topic.of("Transportation","Health states")).subscribe(this::subscriptionHandler);
     }
 
 

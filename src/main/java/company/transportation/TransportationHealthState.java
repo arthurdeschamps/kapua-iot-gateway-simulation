@@ -16,7 +16,7 @@ public enum TransportationHealthState {
      * Next state of degradation from @healthState. If this last parameter is already the worse health state, returns
      * the same state.
      */
-    public TransportationHealthState degrade(TransportationHealthState healthState) {
+     static TransportationHealthState degrade(TransportationHealthState healthState) {
         switch (healthState) {
             case PERFECT:
                 return GOOD;

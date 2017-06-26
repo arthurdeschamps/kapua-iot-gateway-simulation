@@ -1,62 +1,27 @@
 package simulation.generators;
 
 import com.github.javafaker.Faker;
-import company.address.Address;
-import company.address.Coordinates;
 import company.company.Company;
 import company.company.CompanyType;
 
 import java.util.Random;
 
 /**
- * Created by Arthur Deschamps on 02.06.17.
- * TODO: use this class through DataGenerator exclusively
+ * Generates different kind of companies.
+ * @author Arthur Deschamps
+ * @since 1.0
+ * @see Company
  */
 public class CompanyGenerator {
 
     private final static Faker faker = new Faker();
 
     /**
-     * Generates a "default" company without any data.
+     * Generates a random company with random data.
      * @return
      * Object of type Company
      */
-    public Company generateDefaultCompanyWithNoData() {
-        com.github.javafaker.Address address = faker.address();
-
-        final String defaultStreet = address.streetAddress();
-        final String defaultCity = address.city();
-        final String defaultRegion = address.state();
-        final String defaultCountry = address.country();
-        final String defaultPostalCode = address.zipCode();
-        final Coordinates defaultHeadquartersLocation = new Coordinates(address.latitude(),address.longitude());
-        final String defaultCompanyName = faker.company().name();
-        final Address defaultAddress = new Address(defaultStreet,defaultCity,defaultRegion,defaultCountry,defaultPostalCode,
-                defaultHeadquartersLocation);
-        final CompanyType defaultCompanyType = CompanyType.LOCAL;
-
-        return new Company(defaultCompanyType, defaultCompanyName, defaultAddress);
-    }
-
-
-    /**
-     * Generates a "default" company with random data.
-     * @return
-     * Object of type Company
-     */
-    public Company generateDefaultCompany() {
-        Company company = generateDefaultCompanyWithNoData();
-        new DataGenerator(company).generateData();
-        return company;
-    }
-
-    /**
-     * Generates a random company with no data.
-     * @return
-     * Object of type Company
-     */
-    public Company generateRandomCompanyWithNoData() {
-        // Determines random company type
+    public static Company generateRandomCompany() {
         CompanyType companyType;
         Random random = new Random();
         int rand = random.nextInt(3);
@@ -74,18 +39,40 @@ public class CompanyGenerator {
                 companyType = CompanyType.INTERNATIONAL;
                 break;
         }
-
-        return new Company(companyType,faker.company().name(), AddressGenerator.generateInternationalAddress());
+        return makeCompany(companyType);
     }
 
     /**
-     * Generates a random company with random data.
+     * Generates a company of type local.
      * @return
-     * Object of type Company
+     * Newly generated company.
      */
-    public Company generateRandomCompany() {
-        Company company = generateRandomCompanyWithNoData();
+    public static Company generateLocalCompany() {
+        return makeCompany(CompanyType.LOCAL);
+    }
+
+    /**
+     * Generates a company of type national.
+     * @return
+     * Newly generated company.
+     */
+    public static Company generateNationalCompany() {
+        return makeCompany(CompanyType.NATIONAL);
+    }
+
+    /**
+     * Generates a company of type international.
+     * @return
+     * Newly generated company.
+     */
+    public static Company generateInternationalCompany() {
+        return makeCompany(CompanyType.INTERNATIONAL);
+    }
+
+    private static Company makeCompany(CompanyType companyType) {
+        Company company = new Company(companyType,faker.company().name(),AddressGenerator.generateInternationalAddress());
         new DataGenerator(company).generateData();
         return company;
     }
+
 }

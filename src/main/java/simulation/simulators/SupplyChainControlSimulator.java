@@ -25,7 +25,7 @@ public class SupplyChainControlSimulator {
 
     private  EconomySimulatorRunner economySimulator;
     private  CompanySimulatorRunner companySimulator;
-    private TelemetryDataSimulatorRunner movementSimulator;
+    private TelemetryDataSimulatorRunner telemetrySimulator;
 
     private  final Logger logger = Logger.getLogger(SupplyChainControlSimulator.class.getName());
 
@@ -36,7 +36,7 @@ public class SupplyChainControlSimulator {
 
         economySimulator = new EconomySimulatorRunner(economy);
         companySimulator = new CompanySimulatorRunner(company,economy);
-        movementSimulator = new TelemetryDataSimulatorRunner(company);
+        telemetrySimulator = new TelemetryDataSimulatorRunner(company);
 
     }
 
@@ -51,12 +51,14 @@ public class SupplyChainControlSimulator {
         try {
             ScheduledExecutorService executor = Executors.newScheduledThreadPool(threadsNbr);
 
-            // EconomySimulator and CompanySimulator are made to simulate 1 second per execution
+            // EconomySimulatorRunner and CompanySimulatorRunner are made to simulate 1 second per execution
             executor.scheduleWithFixedDelay(economySimulator,0,parametrizer.getExecutorDelay(),
                     parametrizer.getTimeUnit());
             executor.scheduleWithFixedDelay(companySimulator,0,parametrizer.getExecutorDelay(),
                     parametrizer.getTimeUnit());
-            executor.scheduleWithFixedDelay(movementSimulator,0,parametrizer.getExecutorDelay(),
+
+            // TelemetryDataSimulatorRunner is made to simulate 1 hour per execution. We multiply therefore by 3600.
+            executor.scheduleWithFixedDelay(telemetrySimulator,0,parametrizer.getExecutorDelay()*3600,
                     parametrizer.getTimeUnit());
 
             if (showMetrics) {

@@ -10,6 +10,7 @@ import company.product.ProductType;
 import company.transportation.Transportation;
 import storage.ItemStore;
 
+import java.security.InvalidParameterException;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Optional;
@@ -156,19 +157,12 @@ public class Company {
     }
 
     /**
-     * Tries to find an available transportation (not assigned to a delivery) and returns it. If there is no available
-     * transportation, null is returned.
+     * Tries to find an available transportation (not assigned to a delivery) and returns it.
      * @return
      * Optional object of type Transportation.
      */
     public Optional<Transportation> getAvailableTransportation() {
-        for (final Transportation candidate : transportationStore.getStorage()) {
-            if (deliveryStore.getStorage().stream().noneMatch(delivery -> delivery.getTransporter().equals(candidate))) {
-                return Optional.of(candidate);
-            }
-
-        }
-        return Optional.empty();
+        return transportationStore.getStorage().stream().filter(Transportation::isAvailable).findFirst();
     }
 
     public void newTransportation(Transportation transportation) {
@@ -180,24 +174,28 @@ public class Company {
      * given transportation is deleted from the transportation store of the company.
      */
     public boolean deleteTransportation(Transportation transportation) {
-        if (deliveryStore.getStorage().stream().anyMatch(delivery -> delivery.getTransporter().equals(transportation)))
-            return false;
-        transportationStore.delete(transportation);
-        return true;
+        if (transportation.isAvailable()) {
+            transportationStore.delete(transportation);
+            return true;
+        }
+        return false;
     }
 
     /**
      * Creates a new delivery and stores it in the delivery store of the company. The order that shall be delivered is
-     * taken off of the order store.
+     * taken off of the order store. The transport assigned to the delivery is marked as not available.
      * @throws ConcurrentModificationException
      * The passed delivery should not be tighten up is any way to an Iterator, otherwise it will throw a
      * ConcurrentModificationException due to the delete
      * @param delivery
      * Object of type Delivery.
      */
-    public void newDelivery(Delivery delivery) throws ConcurrentModificationException {
+    public void newDelivery(Delivery delivery) {
         try {
+            if (!delivery.getTransporter().isAvailable())
+                throw new InvalidParameterException("Transporter assigned to delivery not available. Can't add delivery.");
             deliveryStore.add(delivery);
+            delivery.getTransporter().setAvailable(false);
             orderStore.delete(delivery.getOrder());
         } catch (ConcurrentModificationException e) {
             deliveryStore.delete(delivery);
@@ -212,6 +210,7 @@ public class Company {
      */
     public void confirmDelivery(Delivery delivery) {
         delivery.setDeliveryState(DeliveryStatus.DELIVERED);
+        delivery.getTransporter().setAvailable(true);
     }
 
     /**
@@ -221,6 +220,7 @@ public class Company {
      */
     public void cancelDelivery(Delivery delivery) {
         delivery.setDeliveryState(DeliveryStatus.CANCELLED);
+        delivery.getTransporter().setAvailable(true);
     }
 
     public CompanyType getType() {

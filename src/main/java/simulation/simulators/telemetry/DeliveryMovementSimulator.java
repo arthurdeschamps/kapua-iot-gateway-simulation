@@ -20,9 +20,9 @@ public class DeliveryMovementSimulator extends AbstractTelemetryComponentSimulat
     }
 
     /**
-     * Simulates delivery movement during one second. A delivery moves toward the direction of its destination.
+     * Simulates delivery movement during one hour. A delivery moves toward the direction of its destination.
      * @param delivery
-     * Delivery to be moved
+     * Delivery to be moved.
      */
     private void moveDelivery(Delivery delivery) {
         // Get speed in km/s
