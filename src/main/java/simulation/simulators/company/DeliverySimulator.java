@@ -36,21 +36,6 @@ public class DeliverySimulator extends AbstractCompanyComponentSimulator {
                 company.getAvailableTransportation().ifPresent(transportation ->
                     company.newDelivery(new Delivery(order, transportation, company.getHeadquarters(), order.getBuyer().getAddress()))
                 );
-//        Iterator<Order> iterator = company.getOrders().iterator();
-//        while (iterator.hasNext()) {
-//            if (probabilityUtils.event(3, ProbabilityUtils.TimeUnit.DAY)) {
-//                final Order order = iterator.next();
-//                // We need to directly add to DeliveryStore because the "newDelivery" method of Company will raise
-//                // an exception of concurrent accessing because of the iterator
-//                company.getAvailableTransportation().ifPresent(transportation -> {
-//                    company.getDeliveryStore().add(
-//                            new Delivery(order, transportation, company.getHeadquarters(), order.getBuyer().getAddress())
-//                    );
-//                    transportation.setAvailable(false);
-//                    iterator.remove();
-//                });
-//            }
-//        }
     }
 
     /**
@@ -62,7 +47,7 @@ public class DeliverySimulator extends AbstractCompanyComponentSimulator {
                 .filter(delivery -> delivery.getDeliveryState().equals(DeliveryStatus.WAREHOUSE))
                 .forEach(delivery -> {
                     if (probabilityUtils.event(1, ProbabilityUtils.TimeUnit.DAY)) {
-                        delivery.setDeliveryState(DeliveryStatus.TRANSIT);
+                        company.startDeliveryShipping(delivery);
                     }
                 });
     }

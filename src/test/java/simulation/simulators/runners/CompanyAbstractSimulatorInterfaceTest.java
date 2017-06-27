@@ -89,6 +89,11 @@ public class CompanyAbstractSimulatorInterfaceTest {
         try {
             int productTypesSize = company.getProductTypes().size();
             for (int i = 0; i < Math.pow(10, 6); i++) {
+                // Speed up the test by augmenting chances for type creation
+                economy.setDemand(1);
+                economy.setGrowth(10);
+                economy.setSectorConcurrency(0);
+
                 run();
                 if (productTypesSize < company.getProductTypes().size())
                     return;
@@ -110,6 +115,8 @@ public class CompanyAbstractSimulatorInterfaceTest {
 
             for (int i = 0; i < Math.pow(10, 7); i++) {
                 run();
+                // Removes every orders (higher chance that a type is going to be destructed)
+                company.getOrders().removeAll(company.getOrders());
                 if (currentSize > company.getProductTypes().size())
                     return;
                 currentSize = company.getProductTypes().size();

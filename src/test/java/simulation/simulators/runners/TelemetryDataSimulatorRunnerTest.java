@@ -3,6 +3,7 @@ package simulation.simulators.runners;
 import company.address.Coordinates;
 import company.company.Company;
 import company.delivery.Delivery;
+import company.delivery.DeliveryStatus;
 import company.order.Order;
 import company.transportation.Transportation;
 import company.transportation.TransportationHealthState;
@@ -34,6 +35,7 @@ public class TelemetryDataSimulatorRunnerTest {
     @Test
     public void testMoveDelivery() {
 
+        // Makes sure that company has a delivery
         DataGenerator dataGenerator = new DataGenerator(company);
         Optional<Order> order = dataGenerator.generateRandomOrder();
         Assert.assertTrue(order.isPresent());
@@ -43,15 +45,22 @@ public class TelemetryDataSimulatorRunnerTest {
         company.newDelivery(delivery.get());
 
         Assert.assertTrue(company.getDeliveries().contains(delivery.get()));
+
+        // Start shipping
+        company.startDeliveryShipping(delivery.get());
+        Assert.assertEquals(DeliveryStatus.TRANSIT,delivery.get().getDeliveryState());
+
+        // Retain initial position
         Coordinates coordinatesBefore, coordinatesAfter, destination;
 
         destination = delivery.get().getDestination().getCoordinates();
 
         coordinatesBefore = delivery.get().getCurrentLocation();
+
         Logger.getGlobal().info("Distance to achieve: "+Double.toString(Coordinates.calculateDistance(coordinatesBefore, destination)));
         Logger.getGlobal().info("Transportation speed:"+delivery.get().getTransporter().getActualSpeed());
         // Test that the delivery arrives at some point
-        for (int i = 0; i < 500; i++)
+        for (int i = 0; i < 1000; i++)
             telemetryDataSimulatorRunner.run();
 
         coordinatesAfter = delivery.get().getCurrentLocation();

@@ -1,11 +1,8 @@
 package simulation.generators;
 
 import com.github.javafaker.Faker;
-import company.address.Address;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.Locale;
 
 /**
  * Created by Arthur Deschamps on 09.06.17.
@@ -19,9 +16,9 @@ public class GeneratorsTest {
         Assert.assertNotNull(AddressGenerator.generateLocalAddress(new Faker().address().cityName()));
     }
 
-    @Test
-    public void testLocaleAddressGeneration() {
-        Address address = AddressGenerator.generateNationalAddress(new Locale("fr","FR"));
-        Assert.assertEquals(address.getCountry(),"France");
-    }
+//    @Test
+//    public void testLocaleAddressGeneration() {
+//        Address address = AddressGenerator.generateNationalAddress(new Locale("fr","FR"));
+//        Assert.assertEquals(address.getCountry(),"France");
+//    }
 }

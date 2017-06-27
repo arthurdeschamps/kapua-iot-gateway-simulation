@@ -69,7 +69,7 @@ public class Customer extends Item {
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
     }
-    
+
     public String getPhoneNumber() {
         return phoneNumber;
     }

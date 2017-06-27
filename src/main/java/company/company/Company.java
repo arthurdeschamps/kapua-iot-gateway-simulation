@@ -214,6 +214,15 @@ public class Company {
     }
 
     /**
+     * Updates delivery status to "transit".
+     * @param delivery
+     * The delivery to start shipping.
+     */
+    public void  startDeliveryShipping(Delivery delivery) {
+       delivery.setDeliveryState(DeliveryStatus.TRANSIT);
+    }
+
+    /**
      * Cancels a delivery and sets state to "cancelled".
      * @param delivery
      * Delivery to be cancelled.

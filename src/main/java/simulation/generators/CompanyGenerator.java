@@ -22,24 +22,7 @@ public class CompanyGenerator {
      * Object of type Company
      */
     public static Company generateRandomCompany() {
-        CompanyType companyType;
-        Random random = new Random();
-        int rand = random.nextInt(3);
-        switch (rand) {
-            case 0:
-                companyType = CompanyType.LOCAL;
-                break;
-            case 1:
-                companyType = CompanyType.NATIONAL;
-                break;
-            case 2:
-                companyType = CompanyType.INTERNATIONAL;
-                break;
-            default:
-                companyType = CompanyType.INTERNATIONAL;
-                break;
-        }
-        return makeCompany(companyType);
+        return makeCompany(generateRandomCompanyType());
     }
 
     /**
@@ -69,10 +52,34 @@ public class CompanyGenerator {
         return makeCompany(CompanyType.INTERNATIONAL);
     }
 
+    /**
+     * Generates a company of random type without data.
+     * @return
+     * Newly generated company.
+     */
+    public static Company generateEmptyRandomCompany() {
+        return new Company(generateRandomCompanyType(),faker.company().name(),AddressGenerator.generateInternationalAddress());
+    }
+
     private static Company makeCompany(CompanyType companyType) {
         Company company = new Company(companyType,faker.company().name(),AddressGenerator.generateInternationalAddress());
         new DataGenerator(company).generateData();
         return company;
+    }
+
+    private static CompanyType generateRandomCompanyType() {
+        Random random = new Random();
+        int rand = random.nextInt(3);
+        switch (rand) {
+            case 0:
+                return CompanyType.LOCAL;
+            case 1:
+                return CompanyType.NATIONAL;
+            case 2:
+                return CompanyType.INTERNATIONAL;
+            default:
+                return CompanyType.INTERNATIONAL;
+        }
     }
 
 }

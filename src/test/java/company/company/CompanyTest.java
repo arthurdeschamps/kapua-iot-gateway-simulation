@@ -24,7 +24,7 @@ public class CompanyTest {
 
     @BeforeClass
     public static void setUp() {
-        company = CompanyGenerator.generateLocalCompany();
+        company = CompanyGenerator.generateEmptyRandomCompany();
         Assert.assertNotNull(company);
         dataGenerator = new DataGenerator(company);
     }
