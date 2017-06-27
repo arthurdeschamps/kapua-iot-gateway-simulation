@@ -1,11 +1,12 @@
 package company.customer;
 
-import com.sun.istack.internal.Nullable;
 import company.address.Address;
 import storage.Item;
 
 /**
- * Created by Arthur Deschamps on 03.06.17.
+ * Describes a customer.
+ * @author Arthur Deschamps
+ * @since 1.0
  */
 public class Customer extends Item {
 
@@ -13,7 +14,6 @@ public class Customer extends Item {
     private String lastName;
     private Address address;
     private String emailAddress;
-    @Nullable
     private String phoneNumber;
 
     public Customer(String firstName, String lastName, Address address, String emailAddress, String phoneNumber) {
@@ -69,13 +69,12 @@ public class Customer extends Item {
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
     }
-
-    @Nullable
+    
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(@Nullable String phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 }
