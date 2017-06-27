@@ -1,6 +1,7 @@
 package simulation.simulators.runners;
 
 import simulation.simulators.AbstractSimulatorInterface;
+import simulation.util.ProbabilityUtils;
 
 import java.util.Arrays;
 
@@ -31,16 +32,12 @@ public abstract class AbstractRunner<T extends AbstractSimulatorInterface> imple
     }
 
     /**
-     * Every simulator that shall be called in the "run" method shall be in the returned array.
+     * A runner has a time unit: the virtual time theoretically elapsed at each of their execution.
      * @return
-     * An array of simulators.
+     * The time unit the runners have been thought for. Currently Hour.
      */
-    public T[] getSimulators() {
-        return simulators;
-    }
-
-    public void setSimulators(T[] simulators) {
-        this.simulators = simulators;
+    public static ProbabilityUtils.TimeUnit getTimeUnit() {
+        return ProbabilityUtils.TimeUnit.HOUR;
     }
 }
 

@@ -13,13 +13,13 @@ import java.util.logging.Logger;
  * @since 1.0
  * @author Arthur Deschamps
  */
-class Sender implements Runnable {
+class DataSenderRunner implements Runnable {
 
     private Company company;
     private Application application;
     private Payload.Builder payload;
 
-    Sender(Company company, Application application) {
+    DataSenderRunner(Company company, Application application) {
         this.company = company;
         this.application = application;
     }
@@ -71,7 +71,7 @@ class Sender implements Runnable {
             try {
                 application.data(Topic.of(mainTopic,subCategories)).send(payload);
             } catch (Exception e) {
-                Logger.getLogger(Sender.class.getName()).warning(e.getMessage());
+                Logger.getLogger(DataSenderRunner.class.getName()).warning(e.getMessage());
             }
         }
     }

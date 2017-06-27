@@ -7,8 +7,6 @@ import company.order.Order;
 import economy.Economy;
 import simulation.util.ProbabilityUtils;
 
-import java.util.Iterator;
-
 /**
  * Simulates everything related to deliveries (except telemetry data)
  * @since 1.0
@@ -32,21 +30,27 @@ public class DeliverySimulator extends AbstractCompanyComponentSimulator {
      */
     private void simulateNewDeliveries() {
         //TODO assign multiple orders to one delivery (check total weight against transportation capacity)
-        Iterator<Order> iterator = company.getOrders().iterator();
-        while (iterator.hasNext()) {
-            if (probabilityUtils.event(3, ProbabilityUtils.TimeUnit.DAY)) {
-                final Order order = iterator.next();
-                // We need to directly add to DeliveryStore because the "newDelivery" method of Company will raise
-                // an exception of concurrent accessing because of the iterator
-                company.getAvailableTransportation().ifPresent(transportation -> {
-                    company.getDeliveryStore().add(
-                            new Delivery(order, transportation, company.getHeadquarters(), order.getBuyer().getAddress())
-                    );
-                    transportation.setAvailable(false);
-                    iterator.remove();
-                });
-            }
-        }
+        Order[] orders = company.getOrders().toArray(new Order[company.getOrders().size()]);
+        for (Order order : orders)
+            if (probabilityUtils.event(3, ProbabilityUtils.TimeUnit.DAY))
+                company.getAvailableTransportation().ifPresent(transportation ->
+                    company.newDelivery(new Delivery(order, transportation, company.getHeadquarters(), order.getBuyer().getAddress()))
+                );
+//        Iterator<Order> iterator = company.getOrders().iterator();
+//        while (iterator.hasNext()) {
+//            if (probabilityUtils.event(3, ProbabilityUtils.TimeUnit.DAY)) {
+//                final Order order = iterator.next();
+//                // We need to directly add to DeliveryStore because the "newDelivery" method of Company will raise
+//                // an exception of concurrent accessing because of the iterator
+//                company.getAvailableTransportation().ifPresent(transportation -> {
+//                    company.getDeliveryStore().add(
+//                            new Delivery(order, transportation, company.getHeadquarters(), order.getBuyer().getAddress())
+//                    );
+//                    transportation.setAvailable(false);
+//                    iterator.remove();
+//                });
+//            }
+//        }
     }
 
     /**

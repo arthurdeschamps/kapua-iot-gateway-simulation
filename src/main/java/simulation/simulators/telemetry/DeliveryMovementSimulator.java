@@ -17,10 +17,14 @@ public class DeliveryMovementSimulator extends AbstractTelemetryComponentSimulat
 
     @Override
     public void run() {
-        company.getDeliveries()
-                .stream()
-                .filter(delivery -> delivery.getDeliveryState().equals(DeliveryStatus.TRANSIT))
-                .forEach(this::moveDelivery);
+        company.getDeliveries().forEach(delivery -> {
+            if (delivery.getDeliveryState().equals(DeliveryStatus.TRANSIT))
+                moveDelivery(delivery);
+        });
+//        company.getDeliveries()
+//                .stream()
+//                .filter(delivery -> delivery.getDeliveryState().equals(DeliveryStatus.TRANSIT))
+//                .forEach(this::moveDelivery);
     }
 
     /**

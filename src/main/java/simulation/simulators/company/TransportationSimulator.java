@@ -30,9 +30,9 @@ public class TransportationSimulator extends AbstractCompanyComponentSimulator {
      */
     private void simulateTransportationAcquisitions() {
         // If orders >= nbr transportation * 100, new transportation should be acquired
-        if (company.getOrders().size() >= company.getAllTransportation().size()*100) {
+        if (company.getOrders().size() >= company.getAllTransportation().size()*10) {
             // On average takes 2 weeks to be done
-            if (probabilityUtils.event(0.5d, ProbabilityUtils.TimeUnit.WEEK)) {
+            if (probabilityUtils.event(5, ProbabilityUtils.TimeUnit.WEEK)) {
                 Transportation transportation = DataGenerator.generateRandomTransportation();
                 company.newTransportation(transportation);
             }

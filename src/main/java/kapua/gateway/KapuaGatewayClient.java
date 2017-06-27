@@ -49,20 +49,22 @@ public class KapuaGatewayClient {
     }
 
     /**
-     * Initialize all publications and subscriptions. Every data created in the simulation will be transferred to Kapua.
-     */
-    public void startCommunications() {
+     * Initialize all subscriptions starts data sending to kapua.
+    **/
+    public void startCommunication() {
         try {
             // Wait for connection
             waitForConnection(application.transport());
-
             // Start subscribing to all topics
             startSubscriptions();
-
-            // Schedule an execution to periodically send data to Kapua
-            Executors.newSingleThreadScheduledExecutor().scheduleWithFixedDelay(
-                    new Sender(company,application),0, communicationsDelay, TimeUnit.SECONDS
-            );
+            // Start sending data
+            Executors.newSingleThreadScheduledExecutor()
+                    .scheduleWithFixedDelay(
+                            new DataSenderRunner(company,application),
+                            0,
+                            communicationsDelay,
+                            TimeUnit.SECONDS
+                    );
         } catch (Exception e) {
             e.printStackTrace();
         }

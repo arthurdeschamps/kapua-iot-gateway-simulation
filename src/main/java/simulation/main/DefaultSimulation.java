@@ -6,8 +6,6 @@ import kapua.gateway.KapuaGatewayClient;
 import simulation.generators.CompanyGenerator;
 import simulation.simulators.SupplyChainControlSimulator;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * Default simulation. Runs economy, company and delivery transport simulations and sends data to kapua.
  * @author Arthur Deschamps
@@ -16,8 +14,8 @@ import java.util.concurrent.TimeUnit;
 public class DefaultSimulation {
 
     public static void main(String[] args) {
-        // Create a default parametrizer (1 second = 100 executions = 100 virtual hours)
-        Parametrizer parametrizer = new Parametrizer(100, TimeUnit.SECONDS);
+        // Create a default parametrizer with virtual time 100 times faster than real time
+        Parametrizer parametrizer = new Parametrizer(100,3);
         // Generates an economy with default initial metrics
         Economy economy = new Economy();
         // Generates a random company with random data
@@ -26,8 +24,8 @@ public class DefaultSimulation {
         // Starts the simulation
         new SupplyChainControlSimulator(company,economy,parametrizer).start(false);
 
-        // Starts the communication with kapua
-        new KapuaGatewayClient(company, 3).startCommunications();
+        // Start sending data
+        new KapuaGatewayClient(company,parametrizer.getDataSendingDelay()).startCommunication();
     }
 
 }

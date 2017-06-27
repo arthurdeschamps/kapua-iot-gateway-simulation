@@ -4,8 +4,8 @@ import company.company.Company;
 import economy.Economy;
 import simulation.main.Parametrizer;
 import simulation.simulators.runners.CompanySimulatorRunner;
-import simulation.simulators.runners.TelemetryDataSimulatorRunner;
 import simulation.simulators.runners.EconomySimulatorRunner;
+import simulation.simulators.runners.TelemetryDataSimulatorRunner;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -34,10 +34,9 @@ public class SupplyChainControlSimulator {
         this.economy = economy;
         this.parametrizer = parametrizer;
 
-        economySimulator = new EconomySimulatorRunner(economy);
-        companySimulator = new CompanySimulatorRunner(company,economy);
-        telemetrySimulator = new TelemetryDataSimulatorRunner(company);
-
+        this.economySimulator = new EconomySimulatorRunner(economy);
+        this.companySimulator = new CompanySimulatorRunner(company,economy);
+        this.telemetrySimulator = new TelemetryDataSimulatorRunner(company);
     }
 
     /**
@@ -49,14 +48,16 @@ public class SupplyChainControlSimulator {
         final int threadsNbr = showMetrics ? 5 : 3;
 
         try {
-            ScheduledExecutorService executor = Executors.newScheduledThreadPool(threadsNbr);
+            ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+            Logger.getGlobal().info(Long.toString(parametrizer.getDelayInMicroSeconds()));
 
-            executor.scheduleWithFixedDelay(economySimulator,0,parametrizer.getExecutorDelay(),
-                    parametrizer.getTimeUnit());
-            executor.scheduleWithFixedDelay(companySimulator,0,parametrizer.getExecutorDelay(),
-                    parametrizer.getTimeUnit());
-            executor.scheduleWithFixedDelay(telemetrySimulator,0,parametrizer.getExecutorDelay(),
-                    parametrizer.getTimeUnit());
+            executor.scheduleWithFixedDelay(economySimulator,0,parametrizer.getDelayInMicroSeconds(),
+                    TimeUnit.MICROSECONDS);
+            executor.scheduleWithFixedDelay(companySimulator,0,parametrizer.getDelayInMicroSeconds(),
+                    TimeUnit.MICROSECONDS);
+            executor.scheduleWithFixedDelay(telemetrySimulator,0,parametrizer.getDelayInMicroSeconds(),
+                    TimeUnit.MICROSECONDS);
+
 
             if (showMetrics) {
                 displayEconomicalData(executor);
@@ -67,7 +68,6 @@ public class SupplyChainControlSimulator {
         }
 
     }
-
 
     /**
      * Display information on economics (growth, demand, etc).

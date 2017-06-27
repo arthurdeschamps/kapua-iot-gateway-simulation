@@ -1,8 +1,7 @@
 package simulation.main;
 
 import simulation.simulators.SupplyChainControlSimulator;
-
-import java.util.concurrent.TimeUnit;
+import simulation.simulators.runners.AbstractRunner;
 
 /**
  * Parameters for the SupplyChainControlSimulator.
@@ -11,46 +10,47 @@ import java.util.concurrent.TimeUnit;
  * @see SupplyChainControlSimulator
  */
 public class Parametrizer {
+    // Speed of virtual time compare to real time
+    private int timeFlow;
 
-    //TODO parametrize everything
+    // Delay for periodic data sending to kapua
+    private int dataSendingDelay;
 
-    // Time flow speediness in seconds per second
-    private long timeFlow;
-    private TimeUnit timeUnit;
-
-    Parametrizer() {
-        // Default timeFlow: 1 sec (real life) = 10 sec (virtually)
-        this.timeFlow = 10;
-        this.timeUnit = TimeUnit.SECONDS;
+    public Parametrizer() {
+        // Default time flow is 10 times faster
+        timeFlow = 10;
+        // Default data sending delay is 1 second
+        dataSendingDelay = 1;
     }
 
-    public Parametrizer(long timeFlow, TimeUnit timeUnit) {
+    public Parametrizer(int timeFlow, int dataSendingDelay) {
         this.timeFlow = timeFlow;
-        this.timeUnit = timeUnit;
+        this.dataSendingDelay = dataSendingDelay;
     }
 
-    /**
-     * Convert time flow (speed of time flow for the simulation) to delay for the runnable objects.
-     * @return
-     * timeFlow converted to a delay for the runnable objects. This delay is used to indicate the frequency at which
-     * an Executor shall run our simulators.
-     */
-    public long getExecutorDelay() {
-        long delay = (long) ((1/(double)timeFlow * Math.pow(10,6)));
-        if (delay < 1)
-            delay = 1;
-        return delay;
+    public long getDelayInMicroSeconds() {
+        switch (AbstractRunner.getTimeUnit()) {
+            case HOUR:
+                // If one run represents 1 hour, then the time is already multiplied by 60^2
+                return ((long)(Math.pow(10,6))*(long)timeFlow)/(long)(Math.pow(60,2));
+            default:
+                throw new UnsupportedOperationException("The only supported time unit for runners is Hour.");
+        }
     }
 
-    public TimeUnit getTimeUnit() {
-        return timeUnit;
+    public int getDataSendingDelay() {
+        return dataSendingDelay;
     }
 
-    public long getTimeFlow() {
+    public void setDataSendingDelay(int dataSendingDelay) {
+        this.dataSendingDelay = dataSendingDelay;
+    }
+
+    public int getTimeFlow() {
         return timeFlow;
     }
 
-    public void setTimeFlow(long timeFlow) {
+    public void setTimeFlow(int timeFlow) {
         this.timeFlow = timeFlow;
     }
 }
