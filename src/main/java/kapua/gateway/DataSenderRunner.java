@@ -1,7 +1,9 @@
 package kapua.gateway;
 
 import company.company.Company;
+import company.delivery.Delivery;
 import company.delivery.DeliveryStatus;
+import company.transportation.Transportation;
 import org.eclipse.kapua.gateway.client.Application;
 import org.eclipse.kapua.gateway.client.Payload;
 import org.eclipse.kapua.gateway.client.Topic;
@@ -29,32 +31,43 @@ class DataSenderRunner implements Runnable {
      */
     @Override
     public void run() {
-        updateDeliveriesLocations();
-        updateTransportationHealthState();
+        company.getDeliveries()
+                .forEach(delivery -> {
+                    if (delivery.getDeliveryState().equals(DeliveryStatus.TRANSIT)) {
+                        updateDeliveryLocation(delivery);
+                        updateTransportationHealthState(delivery.getTransporter());
+                    }
+                });
     }
 
     /**
-     * Sends deliveries' locations when they are in transit
+     * Sends delivery location
+     * @param delivery
+     * A delivery that is in transit
      */
-    private void updateDeliveriesLocations() {
+    private void updateDeliveryLocation(final Delivery delivery) {
         payload = new Payload.Builder();
-        company.getDeliveries()
-                .stream()
-                .filter(delivery -> delivery.getDeliveryState().equals(DeliveryStatus.TRANSIT))
-                .forEach(delivery -> payload.put(delivery.getId(),delivery.getCurrentLocation().toString()));
-        send(payload,"Deliveries","Locations");
+
+        // Sends latitude
+        payload.put("latitude",Float.toString(delivery.getCurrentLocation().getLatitude()));
+        send(payload,"deliveries","locations","coordinates",delivery.getId(),"latitudes");
+
+        payload = new Payload.Builder();
+
+        // Sends longitude
+        payload.put("longitude",Float.toString(delivery.getCurrentLocation().getLongitude()));
+        send(payload,"deliveries","locations","coordinates",delivery.getId(),"longitudes");
     }
 
     /**
-     * Sends transportation health states when they are active (attached to a delivery)
+     * Sends transportation health state
+     * @param transportation
+     * A transportation that is attached to a delivery in transit
      */
-    private void updateTransportationHealthState() {
+    private void updateTransportationHealthState(final Transportation transportation) {
         payload = new Payload.Builder();
-        company.getDeliveries()
-                .stream()
-                .filter(delivery -> delivery.getDeliveryState().equals(DeliveryStatus.TRANSIT))
-                .forEach(delivery -> payload.put(delivery.getTransporter().getId(),delivery.getTransporter().getHealthState().name()));
-        send(payload,"Transportation","Health states");
+        payload.put("health",transportation.getHealthState().name());
+        send(payload, "transports","health-state", transportation.getId());
     }
 
     /**
@@ -71,7 +84,8 @@ class DataSenderRunner implements Runnable {
             try {
                 application.data(Topic.of(mainTopic,subCategories)).send(payload);
             } catch (Exception e) {
-                Logger.getLogger(DataSenderRunner.class.getName()).warning(e.getMessage());
+               // e.printStackTrace();
+                Logger.getGlobal().info(e.getMessage());
             }
         }
     }

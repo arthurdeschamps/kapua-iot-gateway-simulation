@@ -75,8 +75,9 @@ public class KapuaGatewayClient {
      * @throws Exception
      */
     private void startSubscriptions() throws Exception {
-        application.data(Topic.of("Deliveries","Locations")).subscribe(this::subscriptionHandler);
-        application.data(Topic.of("Transportation","Health states")).subscribe(this::subscriptionHandler);
+        //TODO
+        application.data(Topic.of("Deliveries","Locations","Coordinates")).subscribe(this::subscriptionHandler);
+        application.data(Topic.of("Transportation","Health-state")).subscribe(this::subscriptionHandler);
     }
 
 
