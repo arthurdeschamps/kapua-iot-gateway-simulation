@@ -24,11 +24,11 @@ public class KapuaGatewayClient {
     private Company company;
     private org.eclipse.kapua.gateway.client.Client client;
     private Application application;
-    private int communicationsDelay;
+    private long communicationsDelay;
 
     private static final Logger logger = Logger.getLogger(KapuaGatewayClient.class.getName());
 
-    public KapuaGatewayClient(Company company, int communicationsDelay) {
+    public KapuaGatewayClient(Company company, long communicationsDelay) {
         this.company = company;
         this.communicationsDelay = communicationsDelay;
 

@@ -1,20 +1,36 @@
 package simulation.main;
 
+import company.company.CompanyType;
+import org.jetbrains.annotations.Nullable;
 import simulation.simulators.SupplyChainControlSimulator;
 import simulation.simulators.runners.AbstractRunner;
 
 /**
- * Parameters for the SupplyChainControlSimulator.
+ * The class allows to totally parametrize the whole simulation at will.
  * @author Arthur Deschamps
  * @since 1.0
  * @see SupplyChainControlSimulator
  */
 public class Parametrizer {
+
     // Speed of virtual time compare to real time
     private int timeFlow;
 
-    // Delay for periodic data sending to kapua
-    private int dataSendingDelay;
+    // Delay for periodic data sending to kapua in seconds
+    private long dataSendingDelay;
+
+    // Decides if data from the company and the economy will be displayed
+    private boolean displayMetrics;
+
+    // If displayMetrics is true, delay at which metrics are displayed in seconds
+    private long displayMetricsDelay;
+
+    private CompanyType companyType;
+
+    @Nullable
+    private String companyName;
+
+
 
     public Parametrizer() {
         // Default time flow is 10 times faster
@@ -38,19 +54,12 @@ public class Parametrizer {
         }
     }
 
-    public int getDataSendingDelay() {
+    public long getDataSendingDelay() {
         return dataSendingDelay;
-    }
-
-    public void setDataSendingDelay(int dataSendingDelay) {
-        this.dataSendingDelay = dataSendingDelay;
     }
 
     public int getTimeFlow() {
         return timeFlow;
     }
 
-    public void setTimeFlow(int timeFlow) {
-        this.timeFlow = timeFlow;
-    }
 }
