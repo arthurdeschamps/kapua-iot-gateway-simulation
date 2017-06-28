@@ -3,7 +3,6 @@ package kapua.gateway;
 import company.company.Company;
 import org.eclipse.kapua.gateway.client.Application;
 import org.eclipse.kapua.gateway.client.Payload;
-import org.eclipse.kapua.gateway.client.Topic;
 import org.eclipse.kapua.gateway.client.mqtt.fuse.FuseClient;
 import org.eclipse.kapua.gateway.client.profile.kura.KuraMqttProfile;
 import org.slf4j.Logger;
@@ -77,8 +76,6 @@ public class KapuaGatewayClient {
      */
     private void startSubscriptions() throws Exception {
         //TODO
-        application.data(Topic.of("Deliveries","Locations","Coordinates")).subscribe(this::subscriptionHandler);
-        application.data(Topic.of("Transportation","Health-state")).subscribe(this::subscriptionHandler);
     }
 
 

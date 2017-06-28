@@ -32,6 +32,7 @@ class DataSenderRunner implements Runnable {
     public void run() {
         company.getDeliveries()
                 .forEach(delivery -> {
+                    updateDeliveryStatus(delivery);
                     if (delivery.getDeliveryState().equals(DeliveryStatus.TRANSIT)) {
                         updateDeliveryLocation(delivery);
                         updateTransportationHealthState(delivery.getTransporter());
@@ -70,6 +71,17 @@ class DataSenderRunner implements Runnable {
     }
 
     /**
+     * Updates all deliveries status.
+     * @param delivery
+     * Any delivery.
+     */
+    private void updateDeliveryStatus(final Delivery delivery) {
+        payload = new Payload.Builder();
+        payload.put("status",delivery.getDeliveryState().name());
+        send(payload,"deliveries","status",delivery.getId());
+    }
+
+    /**
      * Actually sends data to Kapua
      * @param payload
      * Payload filled with the data to be sent.
@@ -83,7 +95,6 @@ class DataSenderRunner implements Runnable {
             try {
                 application.data(Topic.of(mainTopic,subCategories)).send(payload);
             } catch (Exception e) {
-               // e.printStackTrace();
                 LoggerFactory.getLogger(DataSenderRunner.class).info(e.getMessage());
             }
         }

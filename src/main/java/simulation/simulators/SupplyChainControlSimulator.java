@@ -45,7 +45,6 @@ public class SupplyChainControlSimulator {
     public void start() {
         try {
             ScheduledExecutorService simulatorsExecutor = Executors.newSingleThreadScheduledExecutor();
-            LoggerFactory.getLogger(SupplyChainControlSimulator.class).info(Long.toString(parametrizer.getDelayInMicroSeconds()));
 
             simulatorsExecutor.scheduleWithFixedDelay(economySimulator,0,parametrizer.getDelayInMicroSeconds(),
                     TimeUnit.MICROSECONDS);

@@ -1,7 +1,6 @@
 package simulation.simulators.economy;
 
 import economy.Economy;
-import simulation.simulators.AbstractSimulatorInterface;
 import simulation.util.ProbabilityUtils;
 
 import java.util.Random;
@@ -11,7 +10,7 @@ import java.util.Random;
  * @since 1.0
  * @author Arthur Deschamps
  */
-public abstract class AbstractEconomyComponentSimulator implements AbstractSimulatorInterface {
+public abstract class AbstractEconomyComponentSimulator implements Runnable {
 
     protected Economy economy;
     protected final Random random = new Random();

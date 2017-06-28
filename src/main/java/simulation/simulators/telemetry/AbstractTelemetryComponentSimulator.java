@@ -1,7 +1,6 @@
 package simulation.simulators.telemetry;
 
 import company.company.Company;
-import simulation.simulators.AbstractSimulatorInterface;
 import simulation.util.ProbabilityUtils;
 
 /**
@@ -9,7 +8,7 @@ import simulation.util.ProbabilityUtils;
  * @since 1.0
  * @author Arthur Deschamps
  */
-public abstract class AbstractTelemetryComponentSimulator implements AbstractSimulatorInterface {
+public abstract class AbstractTelemetryComponentSimulator implements Runnable {
 
     protected Company company;
     protected final ProbabilityUtils probabilityUtils = new ProbabilityUtils();

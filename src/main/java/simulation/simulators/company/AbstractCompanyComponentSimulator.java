@@ -2,7 +2,6 @@ package simulation.simulators.company;
 
 import company.company.Company;
 import economy.Economy;
-import simulation.simulators.AbstractSimulatorInterface;
 import simulation.util.ProbabilityUtils;
 
 /**
@@ -10,7 +9,7 @@ import simulation.util.ProbabilityUtils;
  * @since 1.0
  * @author Arthur Deschamps
  */
-public abstract class AbstractCompanyComponentSimulator implements AbstractSimulatorInterface {
+public abstract class AbstractCompanyComponentSimulator implements Runnable {
 
     protected ProbabilityUtils probabilityUtils;
     protected Company company;

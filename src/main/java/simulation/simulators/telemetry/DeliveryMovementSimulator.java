@@ -21,10 +21,6 @@ public class DeliveryMovementSimulator extends AbstractTelemetryComponentSimulat
             if (delivery.getDeliveryState().equals(DeliveryStatus.TRANSIT))
                 moveDelivery(delivery);
         });
-//        company.getDeliveries()
-//                .stream()
-//                .filter(delivery -> delivery.getDeliveryState().equals(DeliveryStatus.TRANSIT))
-//                .forEach(this::moveDelivery);
     }
 
     /**
@@ -41,10 +37,6 @@ public class DeliveryMovementSimulator extends AbstractTelemetryComponentSimulat
 
         // Move in the distance from destination minimising direction
         delivery.setCurrentLocation(delivery.minimizeDistanceFromDestination(distance));
-
-        // Check if arrived at destination
-        if (delivery.isAtDestination())
-            company.confirmDelivery(delivery);
     }
 
 }

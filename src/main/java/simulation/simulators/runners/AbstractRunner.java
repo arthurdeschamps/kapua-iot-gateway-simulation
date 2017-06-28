@@ -1,6 +1,5 @@
 package simulation.simulators.runners;
 
-import simulation.simulators.AbstractSimulatorInterface;
 import simulation.util.ProbabilityUtils;
 
 import java.util.Arrays;
@@ -11,7 +10,7 @@ import java.util.Arrays;
  * @author Arthur Deschamps
  * @since 1.0
  */
-public abstract class AbstractRunner<T extends AbstractSimulatorInterface> implements Runnable {
+public abstract class AbstractRunner<T extends Runnable> implements Runnable {
 
     protected T[] simulators;
 
@@ -25,7 +24,7 @@ public abstract class AbstractRunner<T extends AbstractSimulatorInterface> imple
     @Override
     public void run() {
         try {
-            Arrays.stream(simulators).forEach(AbstractSimulatorInterface::run);
+            Arrays.stream(simulators).forEach(Runnable::run);
         } catch (Exception e) {
             e.printStackTrace();
         }

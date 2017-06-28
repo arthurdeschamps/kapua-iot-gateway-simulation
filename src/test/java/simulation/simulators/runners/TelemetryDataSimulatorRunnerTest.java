@@ -36,39 +36,30 @@ public class TelemetryDataSimulatorRunnerTest {
     @Test
     public void testMoveDelivery() {
 
-        // Makes sure that company has a delivery
-        DataGenerator dataGenerator = new DataGenerator(company);
-        Optional<Order> order = dataGenerator.generateRandomOrder();
-        Assert.assertTrue(order.isPresent());
-        company.newOrder(order.get());
-        Optional<Delivery> delivery = dataGenerator.generateRandomDelivery();
-        Assert.assertTrue(delivery.isPresent());
-        company.newDelivery(delivery.get());
-
-        Assert.assertTrue(company.getDeliveries().contains(delivery.get()));
+        Delivery delivery = addDelivery();
 
         // Start shipping
-        company.startDeliveryShipping(delivery.get());
-        Assert.assertEquals(DeliveryStatus.TRANSIT,delivery.get().getDeliveryState());
+        company.startDeliveryShipping(delivery);
+        Assert.assertEquals(DeliveryStatus.TRANSIT,delivery.getDeliveryState());
 
         // Retain initial position
         Coordinates coordinatesBefore, coordinatesAfter, destination;
 
-        destination = delivery.get().getDestination().getCoordinates();
+        destination = delivery.getDestination().getCoordinates();
 
-        coordinatesBefore = delivery.get().getCurrentLocation();
+        coordinatesBefore = delivery.getCurrentLocation();
         Logger logger = LoggerFactory.getLogger(TelemetryDataSimulatorRunnerTest.class);
         logger.info("Distance to achieve: "+Double.toString(Coordinates.calculateDistance(coordinatesBefore, destination)));
-        logger.info("Transportation speed:"+delivery.get().getTransporter().getActualSpeed());
+        logger.info("Transportation speed:"+delivery.getTransporter().getActualSpeed());
         // Test that the delivery arrives at some point
         for (int i = 0; i < 1000; i++)
             telemetryDataSimulatorRunner.run();
 
-        coordinatesAfter = delivery.get().getCurrentLocation();
+        coordinatesAfter = delivery.getCurrentLocation();
 
         Assert.assertNotEquals(coordinatesBefore, coordinatesAfter);
 
-        logger.info(Double.toString(Coordinates.calculateDistance(coordinatesAfter,delivery.get().getDestination().getCoordinates())));
+        logger.info(Double.toString(Coordinates.calculateDistance(coordinatesAfter,delivery.getDestination().getCoordinates())));
 
         Assert.assertEquals(0,
                 Coordinates.calculateDistance(coordinatesAfter,destination),
@@ -89,5 +80,47 @@ public class TelemetryDataSimulatorRunnerTest {
         Assert.fail("Health state never changed.");
     }
 
+    @Test
+    public void testDeliveryShipping() {
+        Delivery delivery = addDelivery();
+        Assert.assertEquals(DeliveryStatus.WAREHOUSE,delivery.getDeliveryState());
+        for (int i = 0; i < Math.pow(10, 8); i++) {
+            telemetryDataSimulatorRunner.run();
+            if (delivery.getDeliveryState().equals(DeliveryStatus.TRANSIT))
+                return;
+            // Precaution if delivery gets cancelled
+            if (delivery.getDeliveryState().equals(DeliveryStatus.CANCELLED))
+                delivery.setDeliveryState(DeliveryStatus.WAREHOUSE);
+        }
+        Assert.fail("Delivery state never went from warehouse to transit");
+    }
+
+    @Test
+    public void testDeliveryCancellation() {
+        Delivery delivery = addDelivery();
+        Assert.assertEquals(DeliveryStatus.WAREHOUSE,delivery.getDeliveryState());
+        for (int i = 0; i < Math.pow(10, 8); i++) {
+            telemetryDataSimulatorRunner.run();
+            if (delivery.getDeliveryState().equals(DeliveryStatus.CANCELLED))
+                return;
+            if (!delivery.getDeliveryState().equals(DeliveryStatus.WAREHOUSE))
+                delivery.setDeliveryState(DeliveryStatus.WAREHOUSE);
+        }
+        Assert.fail("Delivery was never cancelled.");
+    }
+
+    private Delivery addDelivery() {
+        // Makes sure that company has a delivery
+        DataGenerator dataGenerator = new DataGenerator(company);
+        Optional<Order> order = dataGenerator.generateRandomOrder();
+        Assert.assertTrue(order.isPresent());
+        company.newOrder(order.get());
+        Optional<Delivery> delivery = dataGenerator.generateRandomDelivery();
+        Assert.assertTrue(delivery.isPresent());
+        company.newDelivery(delivery.get());
+
+        Assert.assertTrue(company.getDeliveries().contains(delivery.get()));
+        return delivery.get();
+    }
 
 }
