@@ -10,11 +10,12 @@ import company.transportation.TransportationHealthState;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import simulation.generators.CompanyGenerator;
 import simulation.generators.DataGenerator;
 
 import java.util.Optional;
-import java.util.logging.Logger;
 
 /**
  * Test for TelemetryDataSimulatorRunner class
@@ -56,9 +57,9 @@ public class TelemetryDataSimulatorRunnerTest {
         destination = delivery.get().getDestination().getCoordinates();
 
         coordinatesBefore = delivery.get().getCurrentLocation();
-
-        Logger.getGlobal().info("Distance to achieve: "+Double.toString(Coordinates.calculateDistance(coordinatesBefore, destination)));
-        Logger.getGlobal().info("Transportation speed:"+delivery.get().getTransporter().getActualSpeed());
+        Logger logger = LoggerFactory.getLogger(TelemetryDataSimulatorRunnerTest.class);
+        logger.info("Distance to achieve: "+Double.toString(Coordinates.calculateDistance(coordinatesBefore, destination)));
+        logger.info("Transportation speed:"+delivery.get().getTransporter().getActualSpeed());
         // Test that the delivery arrives at some point
         for (int i = 0; i < 1000; i++)
             telemetryDataSimulatorRunner.run();
@@ -67,7 +68,7 @@ public class TelemetryDataSimulatorRunnerTest {
 
         Assert.assertNotEquals(coordinatesBefore, coordinatesAfter);
 
-        Logger.getGlobal().info(Double.toString(Coordinates.calculateDistance(coordinatesAfter,delivery.get().getDestination().getCoordinates())));
+        logger.info(Double.toString(Coordinates.calculateDistance(coordinatesAfter,delivery.get().getDestination().getCoordinates())));
 
         Assert.assertEquals(0,
                 Coordinates.calculateDistance(coordinatesAfter,destination),

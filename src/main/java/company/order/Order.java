@@ -2,11 +2,11 @@ package company.order;
 
 import company.customer.Customer;
 import company.product.Product;
+import org.slf4j.LoggerFactory;
 import storage.Item;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Created by Arthur Deschamps on 03.06.17.
@@ -32,7 +32,7 @@ public class Order extends Item {
     @Override
     public boolean validate() {
         if (buyer == null) {
-            Logger.getGlobal().warning("null buyer on order");
+            LoggerFactory.getLogger(Order.class).error("null buyer on order");
         }
         return buyer != null && orderedProducts.size() > 0;
     }

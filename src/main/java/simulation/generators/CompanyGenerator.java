@@ -3,6 +3,7 @@ package simulation.generators;
 import com.github.javafaker.Faker;
 import company.company.Company;
 import company.company.CompanyType;
+import org.slf4j.LoggerFactory;
 
 import java.util.Random;
 
@@ -22,6 +23,7 @@ public class CompanyGenerator {
      * Object of type Company
      */
     public static Company generateRandomCompany() {
+        LoggerFactory.getLogger(CompanyGenerator.class).info("Generating company...");
         return makeCompany(generateRandomCompanyType());
     }
 
@@ -58,11 +60,11 @@ public class CompanyGenerator {
      * Newly generated company.
      */
     public static Company generateEmptyRandomCompany() {
-        return new Company(generateRandomCompanyType(),faker.company().name(),AddressGenerator.generateInternationalAddress());
+        return new Company(generateRandomCompanyType(),generateRandomCompanyName(),AddressGenerator.generateInternationalAddress());
     }
 
     private static Company makeCompany(CompanyType companyType) {
-        Company company = new Company(companyType,faker.company().name(),AddressGenerator.generateInternationalAddress());
+        Company company = new Company(companyType,generateRandomCompanyName(),AddressGenerator.generateInternationalAddress());
         new DataGenerator(company).generateData();
         return company;
     }
@@ -80,6 +82,10 @@ public class CompanyGenerator {
             default:
                 return CompanyType.INTERNATIONAL;
         }
+    }
+
+    private static String generateRandomCompanyName() {
+        return faker.company().name();
     }
 
 }

@@ -8,6 +8,7 @@ import company.order.Order;
 import company.product.Product;
 import company.product.ProductType;
 import company.transportation.Transportation;
+import org.slf4j.LoggerFactory;
 import storage.ItemStore;
 
 import java.security.InvalidParameterException;
@@ -15,7 +16,6 @@ import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -93,7 +93,7 @@ public class Company {
         // Delete all products of same type
         List<Product> products = productStore.getStorage().stream().filter(product -> {
             if (product.getProductType() == null)
-                Logger.getGlobal().info("product type null for product..");
+                LoggerFactory.getLogger(Company.class).info("product type null for product..");
             return product.getProductType().equals(productType);
         }).collect(Collectors.toList());
         for (final Product product: products)

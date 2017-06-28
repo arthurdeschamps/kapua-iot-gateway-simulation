@@ -2,6 +2,8 @@ package simulation.simulators;
 
 import company.company.Company;
 import economy.Economy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import simulation.main.Parametrizer;
 import simulation.simulators.runners.CompanySimulatorRunner;
 import simulation.simulators.runners.EconomySimulatorRunner;
@@ -10,7 +12,6 @@ import simulation.simulators.runners.TelemetryDataSimulatorRunner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 /**
  * Simulates the supply chain control for a company.
@@ -27,13 +28,12 @@ public class SupplyChainControlSimulator {
     private  CompanySimulatorRunner companySimulator;
     private TelemetryDataSimulatorRunner telemetrySimulator;
 
-    private  final Logger logger = Logger.getLogger(SupplyChainControlSimulator.class.getName());
+    private  final Logger logger = LoggerFactory.getLogger(SupplyChainControlSimulator.class);
 
-    public SupplyChainControlSimulator(Company company, Economy economy, Parametrizer parametrizer) {
-        this.company = company;
-        this.economy = economy;
+    public SupplyChainControlSimulator(Parametrizer parametrizer) {
         this.parametrizer = parametrizer;
-
+        this.economy = parametrizer.getEconomy();
+        this.company = parametrizer.getCompany();
         this.economySimulator = new EconomySimulatorRunner(economy);
         this.companySimulator = new CompanySimulatorRunner(company,economy);
         this.telemetrySimulator = new TelemetryDataSimulatorRunner(company);
@@ -42,31 +42,29 @@ public class SupplyChainControlSimulator {
     /**
      * Starts simulations. If showMetrics is true, also starts threads that will display data.
      */
-    public void start(boolean showMetrics) {
-
-        // Number of threads to handle for the executor
-        final int threadsNbr = showMetrics ? 5 : 3;
-
+    public void start() {
         try {
-            ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-            Logger.getGlobal().info(Long.toString(parametrizer.getDelayInMicroSeconds()));
+            ScheduledExecutorService simulatorsExecutor = Executors.newSingleThreadScheduledExecutor();
+            LoggerFactory.getLogger(SupplyChainControlSimulator.class).info(Long.toString(parametrizer.getDelayInMicroSeconds()));
 
-            executor.scheduleWithFixedDelay(economySimulator,0,parametrizer.getDelayInMicroSeconds(),
+            simulatorsExecutor.scheduleWithFixedDelay(economySimulator,0,parametrizer.getDelayInMicroSeconds(),
                     TimeUnit.MICROSECONDS);
-            executor.scheduleWithFixedDelay(companySimulator,0,parametrizer.getDelayInMicroSeconds(),
+            simulatorsExecutor.scheduleWithFixedDelay(companySimulator,0,parametrizer.getDelayInMicroSeconds(),
                     TimeUnit.MICROSECONDS);
-            executor.scheduleWithFixedDelay(telemetrySimulator,0,parametrizer.getDelayInMicroSeconds(),
+            simulatorsExecutor.scheduleWithFixedDelay(telemetrySimulator,0,parametrizer.getDelayInMicroSeconds(),
                     TimeUnit.MICROSECONDS);
 
+            logger.info("Simulation started");
 
-            if (showMetrics) {
-                displayEconomicalData(executor);
-                displayCompanyData(executor);
+            if (parametrizer.isDisplayMetrics()) {
+                ScheduledExecutorService metricsExecutorService = Executors.newScheduledThreadPool(2);
+                displayEconomicalData(metricsExecutorService);
+                displayCompanyData(metricsExecutorService);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     /**

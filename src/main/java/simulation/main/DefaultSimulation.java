@@ -1,9 +1,8 @@
 package simulation.main;
 
-import company.company.Company;
-import economy.Economy;
 import kapua.gateway.KapuaGatewayClient;
-import simulation.generators.CompanyGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import simulation.simulators.SupplyChainControlSimulator;
 
 /**
@@ -14,18 +13,26 @@ import simulation.simulators.SupplyChainControlSimulator;
 public class DefaultSimulation {
 
     public static void main(String[] args) {
-        // Create a default parametrizer with virtual time 100 times faster than real time
-        Parametrizer parametrizer = new Parametrizer(100,3);
-        // Generates an economy with default initial metrics
-        Economy economy = new Economy();
-        // Generates a random company with random data
-        Company company = CompanyGenerator.generateLocalCompany();
+
+        Logger logger = LoggerFactory.getLogger(DefaultSimulation.class);
+
+        logger.info("Creating parametrizer... ");
+        // Uncomment the two lines below to parametrize the simulation
+        // Parametrizer parametrizer = new Parametrizer(timeFlow, dataSendingDelay, displayMetrics, displayMetricsDelay,
+        //       companyType, companyName, economy);
+
+        // Comment the line below if you don't want the default parameters for the simulation
+        Parametrizer parametrizer = new Parametrizer();
+
+        // Or use the default parametrizer and set the things you want:
+        // parametrizer.setDisplayMetrics(false);
 
         // Starts the simulation
-        new SupplyChainControlSimulator(company,economy,parametrizer).start(false);
+        new SupplyChainControlSimulator(parametrizer).start();
 
         // Start sending data
-        new KapuaGatewayClient(company,parametrizer.getDataSendingDelay()).startCommunication();
+        logger.info("Initializing communication with Kapua...");
+        new KapuaGatewayClient(parametrizer.getCompany(),parametrizer.getDataSendingDelay()).startCommunication();
     }
 
 }

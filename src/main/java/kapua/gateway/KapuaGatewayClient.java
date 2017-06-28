@@ -6,10 +6,11 @@ import org.eclipse.kapua.gateway.client.Payload;
 import org.eclipse.kapua.gateway.client.Topic;
 import org.eclipse.kapua.gateway.client.mqtt.fuse.FuseClient;
 import org.eclipse.kapua.gateway.client.profile.kura.KuraMqttProfile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 import static org.eclipse.kapua.gateway.client.Credentials.userAndPassword;
 import static org.eclipse.kapua.gateway.client.Transport.waitForConnection;
@@ -26,7 +27,7 @@ public class KapuaGatewayClient {
     private Application application;
     private long communicationsDelay;
 
-    private static final Logger logger = Logger.getLogger(KapuaGatewayClient.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(KapuaGatewayClient.class);
 
     public KapuaGatewayClient(Company company, long communicationsDelay) {
         this.company = company;

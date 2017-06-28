@@ -7,8 +7,7 @@ import company.transportation.Transportation;
 import org.eclipse.kapua.gateway.client.Application;
 import org.eclipse.kapua.gateway.client.Payload;
 import org.eclipse.kapua.gateway.client.Topic;
-
-import java.util.logging.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Sends telemetry data to Kapua.
@@ -85,7 +84,7 @@ class DataSenderRunner implements Runnable {
                 application.data(Topic.of(mainTopic,subCategories)).send(payload);
             } catch (Exception e) {
                // e.printStackTrace();
-                Logger.getGlobal().info(e.getMessage());
+                LoggerFactory.getLogger(DataSenderRunner.class).info(e.getMessage());
             }
         }
     }

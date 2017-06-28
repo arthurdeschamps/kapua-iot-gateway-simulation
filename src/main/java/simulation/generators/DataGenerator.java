@@ -88,8 +88,6 @@ public final class DataGenerator {
 
     /**
      * Returns a randomly generated order
-     * @param company
-     * An object of type Company is required to be able to access the products and customers.
      * @return
      * A optional object of type Order. If the company doesn't have products or customers, the result is null.
      */
@@ -116,8 +114,6 @@ public final class DataGenerator {
     /**
      * Generates a random delivery if the number of orders of the company is strictly greater than 0 and there is
      * an available transportation.
-     * @param company
-     * Company to generate the delivery for.
      * @return
      * The newly generated delivery or an empty optional if the conditions are not met.
      */
