@@ -49,8 +49,6 @@ public class TelemetryDataSimulatorRunnerTest {
 
         coordinatesBefore = delivery.getCurrentLocation();
         Logger logger = LoggerFactory.getLogger(TelemetryDataSimulatorRunnerTest.class);
-        logger.info("Distance to achieve: "+Double.toString(Coordinates.calculateDistance(coordinatesBefore, destination)));
-        logger.info("Transportation speed:"+delivery.getTransporter().getActualSpeed());
         // Test that the delivery arrives at some point
         for (int i = 0; i < 1000; i++)
             telemetryDataSimulatorRunner.run();
@@ -58,9 +56,6 @@ public class TelemetryDataSimulatorRunnerTest {
         coordinatesAfter = delivery.getCurrentLocation();
 
         Assert.assertNotEquals(coordinatesBefore, coordinatesAfter);
-
-        logger.info(Double.toString(Coordinates.calculateDistance(coordinatesAfter,delivery.getDestination().getCoordinates())));
-
         Assert.assertEquals(0,
                 Coordinates.calculateDistance(coordinatesAfter,destination),
                 50);

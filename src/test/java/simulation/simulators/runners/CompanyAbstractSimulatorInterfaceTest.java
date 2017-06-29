@@ -10,14 +10,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import simulation.simulators.SupplyChainControlSimulator;
 import simulation.generators.CompanyGenerator;
 import simulation.generators.DataGenerator;
+import simulation.simulators.SupplyChainControlSimulator;
 
 import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Arthur Deschamps on 14.06.17.
@@ -47,14 +46,6 @@ public class CompanyAbstractSimulatorInterfaceTest {
         companySimulator = new CompanySimulatorRunner(company, economy);
 
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
-        // Display data
-        executor.scheduleWithFixedDelay(() -> logger.info("Growth: "+economy.getGrowth()+", Demand: "+economy.getDemand()
-               +", Sector concurrency: "+economy.getSectorConcurrency()),1,30,TimeUnit.SECONDS);
-        executor.scheduleWithFixedDelay(() -> logger.info("Products: "+Integer.toString(company.getProducts().size())+", Types: "+
-                Integer.toString(company.getProductTypes().size())+
-        ", Orders: "+Integer.toString(company.getOrders().size())+", Deliveries: "+Integer.toString(company.getDeliveries().size())
-                +", Transportation: "+Integer.toString(company.getAllTransportation().size())+
-        ", Customers:"+Integer.toString(company.getCustomers().size())),0,5,TimeUnit.SECONDS);
     }
 
     private void run() {

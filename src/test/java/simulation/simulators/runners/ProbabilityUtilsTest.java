@@ -14,39 +14,39 @@ public class ProbabilityUtilsTest {
     @Test
     public void testEvent() {
         // Converts units to seconds (what "event" simulates) makes sure "true" is returned at the actual frequency
-        boolean occured = false;
+        boolean occurred = false;
 
         // Test once an hour = 3600 seconds
         for (int i = 0; i < 3600 * 2; i++) {
             if (proba.event(1, ProbabilityUtils.TimeUnit.HOUR)) {
-                occured = true;
+                occurred = true;
                 break;
             }
         }
 
-        Assert.assertTrue(occured);
-        occured = false;
+        Assert.assertTrue(occurred);
+        occurred = false;
 
         // Test once a day = 3600 * 24
         for (int i = 0; i < 3600 * 24 * 2; i++) {
             if (proba.event(1, ProbabilityUtils.TimeUnit.DAY)) {
-                occured = true;
+                occurred = true;
                 break;
             }
         }
 
-        Assert.assertTrue(occured);
-        occured = false;
+        Assert.assertTrue(occurred);
+        occurred = false;
 
         // Test once a week = 3600*24*7
         for (int i = 0; i < 3600*24*7*2; i++) {
             if (proba.event(1, ProbabilityUtils.TimeUnit.WEEK)) {
-                occured = true;
+                occurred = true;
                 break;
             }
         }
 
-        Assert.assertTrue(occured);
+        Assert.assertTrue(occurred);
     }
 
 }
