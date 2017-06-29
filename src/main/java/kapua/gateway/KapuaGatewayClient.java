@@ -41,7 +41,7 @@ public class KapuaGatewayClient {
                     .build();
 
         } catch (Exception e) {
-            e.printStackTrace();
+           logger.error(e.getMessage());
         }
 
         application = client.buildApplication("Supply Chain Control Simulator").build();
@@ -66,7 +66,7 @@ public class KapuaGatewayClient {
                             TimeUnit.SECONDS
                     );
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 

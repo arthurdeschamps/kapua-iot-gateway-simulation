@@ -12,12 +12,15 @@ import java.util.Locale;
  * @author Arthur Deschamps
  */
 class AddressGenerator {
+
+    private static final Faker faker = new Faker();
+
     /**
      * Generates a random address with the given Faker. Faker can use a Local object to generate more specific addresses.
      * @return
      * The newly generated address.
      */
-    private static Address generateRandomAddress(Faker faker) {
+    private static Address generateRandomAddress() {
         com.github.javafaker.Address address = faker.address();
         return new Address(address.streetAddress(),address.cityName(),address.state(),address.country(),
                 address.zipCode(),new Coordinates(address.latitude(),address.longitude()));
@@ -32,7 +35,7 @@ class AddressGenerator {
      */
     static Address generateLocalAddress(String city) {
         //TODO
-        return generateRandomAddress(new Faker());
+        return generateRandomAddress();
     }
 
     /**
@@ -43,7 +46,7 @@ class AddressGenerator {
      * An address in the given country.
      */
     static Address generateNationalAddress(Locale locale) {
-        return generateRandomAddress(new Faker(locale));
+        return generateRandomAddress();
     }
 
     /**
@@ -52,6 +55,6 @@ class AddressGenerator {
      * An address.
      */
     static Address generateInternationalAddress() {
-        return generateRandomAddress(new Faker());
+        return generateRandomAddress();
     }
 }

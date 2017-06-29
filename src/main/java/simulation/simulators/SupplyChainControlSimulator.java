@@ -53,8 +53,6 @@ public class SupplyChainControlSimulator {
             simulatorsExecutor.scheduleWithFixedDelay(telemetrySimulator,0,parametrizer.getDelayInMicroSeconds(),
                     TimeUnit.MICROSECONDS);
 
-            logger.info("Simulation started");
-
             if (parametrizer.isDisplayMetrics()) {
                 ScheduledExecutorService metricsExecutorService = Executors.newScheduledThreadPool(2);
                 displayEconomicalData(metricsExecutorService);

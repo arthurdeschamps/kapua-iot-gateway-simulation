@@ -3,6 +3,7 @@ package simulation.generators;
 import com.github.javafaker.Faker;
 import com.github.javafaker.Name;
 import company.address.Address;
+import company.address.Coordinates;
 import company.company.Company;
 import company.customer.Customer;
 import company.delivery.Delivery;
@@ -13,6 +14,9 @@ import company.transportation.Transportation;
 import company.transportation.TransportationMode;
 
 import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Arthur Deschamps on 01.06.17.
@@ -22,14 +26,14 @@ public final class DataGenerator {
 
     private Company company;
     private static final Random random = new Random();
-    private  Faker faker;
+    private final Faker faker;
 
     /**
      * DataGenerator allows to create fake data for a company.
      * @param company
      * Company to fill the data with.
      */
-    public DataGenerator(Company company){
+    public DataGenerator(Company company) {
         this.company = company;
         this.faker = new Faker();
     }
@@ -244,25 +248,60 @@ public final class DataGenerator {
             company.newTransportation(generateRandomTransportation());
     }
 
-    private  void generateCustomers() {
+    /**
+     * Generates customers for the company.
+     * This method is delicate in terms of performance and might take long for big amounts of customers.
+     */
+    private void generateCustomers() {
         int nbrCustomers;
         switch (company.getType()) {
             case LOCAL:
                 nbrCustomers = random.nextInt(50)+50;
                 break;
             case NATIONAL:
-                nbrCustomers = random.nextInt(300)+700;
+                nbrCustomers = random.nextInt(2000)+700;
                 break;
             case INTERNATIONAL:
-                nbrCustomers = random.nextInt(10000)+40000;
+                nbrCustomers = random.nextInt(5000)+15000;
                 break;
             default:
                 nbrCustomers = 1000;
                 break;
         }
 
+        // We make use of multi-threading in order to speed up the process, which might be very long otherwise.
+
+        final int nbrThreads = 100;
+        Set<Customer> customers = new HashSet<>(nbrCustomers);
+        final ExecutorService executorService = Executors.newScheduledThreadPool(nbrThreads);
+        Collection<Callable<Void>> tasks = new ArrayList<>(nbrCustomers);
+
+        // This callable self-contains anything that it uses (except for the faker for obvious reasons)
+        // in order to be as efficient as possible.
+        Callable<Void> addUser = () -> {
+            final Name name = faker.name();
+            final com.github.javafaker.Address fakeAddress = faker.address();
+            // Generate address considering the type of company
+            final Address address = new Address(fakeAddress.streetAddress(),fakeAddress.city(),fakeAddress.state(),
+                    fakeAddress.country(),fakeAddress.zipCode(),new Coordinates(fakeAddress.latitude(),fakeAddress.longitude()));
+
+            customers.add(new Customer(name.firstName(),name.lastName(), address,
+                    faker.internet().emailAddress(),faker.phoneNumber().phoneNumber()));
+            return null;
+        };
+
         for (int i = 0; i < nbrCustomers; i++)
-            company.newCustomer(generateRandomCustomer());
+            tasks.add(addUser);
+
+        try {
+            // Executes everything in a blocking way
+            executorService.invokeAll(tasks);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        executorService.shutdown();
+        company.getCustomerStore().setStorage(customers);
     }
 
 }

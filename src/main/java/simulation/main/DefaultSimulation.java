@@ -16,10 +16,10 @@ public class DefaultSimulation {
 
         Logger logger = LoggerFactory.getLogger(DefaultSimulation.class);
 
-        logger.info("Creating parametrizer... ");
-        // Uncomment the two lines below to parametrize the simulation
-        // Parametrizer parametrizer = new Parametrizer(timeFlow, dataSendingDelay, displayMetrics, displayMetricsDelay,
-        //       companyType, companyName, economy);
+        logger.info("Creating parametrizer...");
+        // Uncomment the two lines below and modify the values at will to parametrize the simulation
+        // Parametrizer parametrizer = new Parametrizer(100, 3, false, 0,
+        //         CompanyGenerator.generateInternationalCompany(), false, null);
 
         // Comment the line below if you don't want the default parameters for the simulation
         Parametrizer parametrizer = new Parametrizer();
@@ -28,6 +28,7 @@ public class DefaultSimulation {
         // parametrizer.setDisplayMetrics(false);
 
         // Starts the simulation
+        logger.info("Starting simulators...");
         new SupplyChainControlSimulator(parametrizer).start();
 
         // Start sending data
