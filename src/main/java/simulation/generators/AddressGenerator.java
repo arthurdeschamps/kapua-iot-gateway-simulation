@@ -1,6 +1,5 @@
 package simulation.generators;
 
-import com.github.javafaker.Faker;
 import company.address.Address;
 import company.address.Coordinates;
 
@@ -13,15 +12,13 @@ import java.util.Locale;
  */
 class AddressGenerator {
 
-    private static final Faker faker = new Faker();
-
     /**
      * Generates a random address with the given Faker. Faker can use a Local object to generate more specific addresses.
      * @return
      * The newly generated address.
      */
     private static Address generateRandomAddress() {
-        com.github.javafaker.Address address = faker.address();
+        com.github.javafaker.Address address = Faker.getInstance().address();
         return new Address(address.streetAddress(),address.cityName(),address.state(),address.country(),
                 address.zipCode(),new Coordinates(address.latitude(),address.longitude()));
     }

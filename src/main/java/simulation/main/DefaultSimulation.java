@@ -1,9 +1,8 @@
 package simulation.main;
 
-import kapua.gateway.KapuaGatewayClient;
+import communications.websocket.WebApplicationDataSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import simulation.simulators.SupplyChainControlSimulator;
 
 /**
  * Default simulation. Runs economy, company and delivery transport simulations and sends data to kapua.
@@ -25,15 +24,19 @@ public class DefaultSimulation {
         Parametrizer parametrizer = new Parametrizer();
 
         // Or use the default parametrizer and set the things you want:
-        // parametrizer.setDisplayMetrics(false);
+       // parametrizer.setDisplayMetrics(false);
 
         // Starts the simulation
         logger.info("Starting simulators...");
-        new SupplyChainControlSimulator(parametrizer).start();
+        //new SupplyChainControlSimulator(parametrizer).start();
 
         // Start sending data
         logger.info("Initializing communication with Kapua...");
-        new KapuaGatewayClient(parametrizer.getCompany(),parametrizer.getDataSendingDelay()).startCommunication();
+        //new KapuaGatewayClient(parametrizer.getCompany(),parametrizer.getDataSendingDelay()).startCommunication();
+
+        logger.info("Opening websocket...");
+        WebApplicationDataSender socket = new WebApplicationDataSender(8054);
+        socket.start();
     }
 
 }

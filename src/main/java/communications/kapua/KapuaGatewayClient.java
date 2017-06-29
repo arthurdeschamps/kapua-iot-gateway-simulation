@@ -1,4 +1,4 @@
-package kapua.gateway;
+package communications.kapua;
 
 import company.company.Company;
 import org.eclipse.kapua.gateway.client.Application;

@@ -1,6 +1,5 @@
 package simulation.generators;
 
-import com.github.javafaker.Faker;
 import company.company.Company;
 import company.company.CompanyType;
 import org.slf4j.LoggerFactory;
@@ -14,8 +13,6 @@ import java.util.Random;
  * @see Company
  */
 public class CompanyGenerator {
-
-    private final static Faker faker = new Faker();
 
     /**
      * Generates a random company with random data.
@@ -85,7 +82,7 @@ public class CompanyGenerator {
     }
 
     private static String generateRandomCompanyName() {
-        return faker.company().name();
+        return Faker.getInstance().company().name();
     }
 
 }

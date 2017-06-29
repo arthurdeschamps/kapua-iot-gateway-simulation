@@ -3,7 +3,6 @@ package simulation.generators;
 import com.github.javafaker.Faker;
 import com.github.javafaker.Name;
 import company.address.Address;
-import company.address.Coordinates;
 import company.company.Company;
 import company.customer.Customer;
 import company.delivery.Delivery;
@@ -26,7 +25,6 @@ public final class DataGenerator {
 
     private Company company;
     private static final Random random = new Random();
-    private final Faker faker;
 
     /**
      * DataGenerator allows to create fake data for a company.
@@ -35,7 +33,6 @@ public final class DataGenerator {
      */
     public DataGenerator(Company company) {
         this.company = company;
-        this.faker = new Faker();
     }
 
     /**
@@ -44,6 +41,7 @@ public final class DataGenerator {
      * The newly generated customer.
      */
     public Customer generateRandomCustomer() {
+        Faker faker = simulation.generators.Faker.getInstance();
         Name name = faker.name();
 
         // Generate address considering the type of company
@@ -65,7 +63,8 @@ public final class DataGenerator {
         }
 
         return new Customer(name.firstName(),name.lastName(), address,
-                faker.internet().emailAddress(),faker.phoneNumber().phoneNumber());
+                faker.internet().emailAddress(),
+                faker.phoneNumber().phoneNumber());
     }
 
     /**
@@ -85,7 +84,7 @@ public final class DataGenerator {
      * The newly generated type of product.
      */
     public static ProductType generateRandomProductType() {
-        Faker faker = new Faker();
+        Faker faker = simulation.generators.Faker.getInstance();
         return new ProductType(faker.commerce().productName(),faker.address().country(),
                 (float) Math.random()*1000, (float) Math.log(Math.random()*10000+1), faker.bool().bool());
     }
@@ -275,18 +274,8 @@ public final class DataGenerator {
         Set<Customer> customers = new HashSet<>(nbrCustomers);
         final ExecutorService executorService = Executors.newScheduledThreadPool(nbrThreads);
         Collection<Callable<Void>> tasks = new ArrayList<>(nbrCustomers);
-
-        // This callable self-contains anything that it uses (except for the faker for obvious reasons)
-        // in order to be as efficient as possible.
         Callable<Void> addUser = () -> {
-            final Name name = faker.name();
-            final com.github.javafaker.Address fakeAddress = faker.address();
-            // Generate address considering the type of company
-            final Address address = new Address(fakeAddress.streetAddress(),fakeAddress.city(),fakeAddress.state(),
-                    fakeAddress.country(),fakeAddress.zipCode(),new Coordinates(fakeAddress.latitude(),fakeAddress.longitude()));
-
-            customers.add(new Customer(name.firstName(),name.lastName(), address,
-                    faker.internet().emailAddress(),faker.phoneNumber().phoneNumber()));
+            customers.add(generateRandomCustomer());
             return null;
         };
 
