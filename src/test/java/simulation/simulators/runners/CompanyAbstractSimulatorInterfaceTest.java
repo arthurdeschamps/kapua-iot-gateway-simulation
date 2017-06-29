@@ -5,11 +5,8 @@ import economy.Economy;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import simulation.generators.CompanyGenerator;
 import simulation.generators.DataGenerator;
-import simulation.simulators.SupplyChainControlSimulator;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -25,7 +22,6 @@ public class CompanyAbstractSimulatorInterfaceTest {
     private static CompanySimulatorRunner companySimulator;
     private static Company company;
     private static Economy economy;
-    private static final Logger logger = LoggerFactory.getLogger(SupplyChainControlSimulator.class);
 
 
     @BeforeClass
