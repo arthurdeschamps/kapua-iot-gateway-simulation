@@ -1,9 +1,6 @@
 package simulation.simulators.runners;
 
 import company.company.Company;
-import company.delivery.Delivery;
-import company.delivery.DeliveryStatus;
-import company.order.Order;
 import economy.Economy;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -14,7 +11,6 @@ import simulation.generators.CompanyGenerator;
 import simulation.generators.DataGenerator;
 import simulation.simulators.SupplyChainControlSimulator;
 
-import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -134,31 +130,6 @@ public class CompanyAbstractSimulatorInterfaceTest {
             }
 
             Assert.fail("No order ever made by any customer.");
-        } catch (Exception e) {
-            Assert.fail();
-            e.printStackTrace();
-        }
-    }
-
-    @Test
-    public void testDeliveryStatusUpdate() {
-        try {
-            DataGenerator dataGenerator = new DataGenerator(company);
-            final Optional<Order> orderOptional = dataGenerator.generateRandomOrder();
-            Assert.assertTrue(orderOptional.isPresent());
-            company.newOrder(orderOptional.get());
-            final Delivery delivery = dataGenerator.generateRandomDelivery().get();
-            Assert.assertEquals(DeliveryStatus.WAREHOUSE,delivery.getDeliveryState());
-            company.newDelivery(delivery);
-            Assert.assertTrue(company.getDeliveries().contains(delivery));
-
-            for (int i = 0; i < Math.pow(10, 7); i++) {
-                run();
-                if (delivery.getDeliveryState().equals(DeliveryStatus.TRANSIT))
-                    return;
-            }
-
-            Assert.fail("Delivery status never passed from 'warehouse' to 'shipped'.");
         } catch (Exception e) {
             Assert.fail();
             e.printStackTrace();
