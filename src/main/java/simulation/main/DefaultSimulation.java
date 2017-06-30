@@ -1,6 +1,6 @@
 package simulation.main;
 
-import communications.websocket.WebApplicationDataSender;
+import communications.websocket.WebsocketServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +35,7 @@ public class DefaultSimulation {
         //new KapuaGatewayClient(parametrizer.getCompany(),parametrizer.getDataSendingDelay()).startCommunication();
 
         logger.info("Opening websocket...");
-        WebApplicationDataSender socket = new WebApplicationDataSender(8054);
+        WebsocketServer socket = new WebsocketServer(8054);
         socket.start();
     }
 

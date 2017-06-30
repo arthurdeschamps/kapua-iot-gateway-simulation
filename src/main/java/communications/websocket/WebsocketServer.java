@@ -13,25 +13,25 @@ import java.net.InetSocketAddress;
  * @since 1.0
  * @author Arthur Deschamps
  */
-public class WebApplicationDataSender extends WebSocketServer {
+public class WebsocketServer extends WebSocketServer {
 
     private final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
 
-    public WebApplicationDataSender(int port) {
+    public WebsocketServer(int port) {
         super(new InetSocketAddress(port));
     }
 
-    public WebApplicationDataSender(InetSocketAddress address) {
+    public WebsocketServer(InetSocketAddress address) {
         super(address);
     }
 
-    public WebApplicationDataSender() {
+    public WebsocketServer() {
         super();
     }
 
     @Override
     public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
-        logger.info("New connection: "+clientHandshake.getResourceDescriptor());
+
     }
 
     @Override
