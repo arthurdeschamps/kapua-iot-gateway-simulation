@@ -11,7 +11,7 @@ class AppComponent extends React.Component {
     return (
       <div>
         Hello world
-        <Websocket url='ws://localhost:8054/'
+        <Websocket url='ws://localhost:8054/customer/all'
           onMessage={this.handleData.bind(this)}/>
       </div>
       // <div className="index">

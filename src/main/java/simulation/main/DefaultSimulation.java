@@ -35,7 +35,7 @@ public class DefaultSimulation {
         //new KapuaGatewayClient(parametrizer.getCompany(),parametrizer.getDataSendingDelay()).startCommunication();
 
         logger.info("Opening websocket...");
-        WebsocketServer socket = new WebsocketServer(8054);
+        WebsocketServer socket = new WebsocketServer(parametrizer.getCompany(),8054);
         socket.start();
     }
 

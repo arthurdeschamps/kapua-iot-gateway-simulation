@@ -1,5 +1,6 @@
 package communications.websocket;
 
+import company.company.Company;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -15,28 +16,33 @@ import java.net.InetSocketAddress;
  */
 public class WebsocketServer extends WebSocketServer {
 
+    private WebsocketRouter router;
     private final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
 
-    public WebsocketServer(int port) {
+    public WebsocketServer(Company company, int port) {
         super(new InetSocketAddress(port));
+        this.router = new WebsocketRouter(company);
     }
 
-    public WebsocketServer(InetSocketAddress address) {
+    public WebsocketServer(Company company, InetSocketAddress address) {
         super(address);
+        this.router = new WebsocketRouter(company);
     }
 
-    public WebsocketServer() {
+    public WebsocketServer(Company company) {
         super();
+        this.router = new WebsocketRouter(company);
     }
 
     @Override
     public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
-
+        String response = router.handle(clientHandshake.getResourceDescriptor());
+        webSocket.send(response);
     }
 
     @Override
     public void onClose(WebSocket webSocket, int i, String s, boolean b) {
-        logger.info("Websocket closed");
+        logger.info("Client socket closed");
     }
 
     @Override
