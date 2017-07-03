@@ -2,7 +2,6 @@ package communications.kapua;
 
 import company.company.Company;
 import org.eclipse.kapua.gateway.client.Application;
-import org.eclipse.kapua.gateway.client.Payload;
 import org.eclipse.kapua.gateway.client.mqtt.fuse.FuseClient;
 import org.eclipse.kapua.gateway.client.profile.kura.KuraMqttProfile;
 import org.slf4j.Logger;
@@ -26,6 +25,9 @@ public class KapuaGatewayClient {
     private Application application;
     private long communicationsDelay;
 
+    private final String host = "localhost";
+    private final int port = 1883;
+
     private static final Logger logger = LoggerFactory.getLogger(KapuaGatewayClient.class);
 
     public KapuaGatewayClient(Company company, long communicationsDelay) {
@@ -36,7 +38,7 @@ public class KapuaGatewayClient {
             client = KuraMqttProfile.newProfile(FuseClient.Builder::new)
                     .accountName("kapua-sys")
                     .clientId("supply-chain-control-simulator")
-                    .brokerUrl("tcp://localhost:1883")
+                    .brokerUrl("tcp://"+host+":"+Integer.toString(port))
                     .credentials(userAndPassword("kapua-broker", "kapua-password"))
                     .build();
 
@@ -49,14 +51,14 @@ public class KapuaGatewayClient {
     }
 
     /**
-     * Initialize all subscriptions starts data sending to kapua.
+     * Initialize all subscriptions and starts sending data to kapua.
     **/
-    public void startCommunication() {
+    public void startCommunications() {
         try {
             // Wait for connection
             waitForConnection(application.transport());
             // Start subscribing to all topics
-            startSubscriptions();
+            new MqttSubscriptionsManager(host,port).startListening();
             // Start sending data
             Executors.newSingleThreadScheduledExecutor()
                     .scheduleWithFixedDelay(
@@ -69,26 +71,5 @@ public class KapuaGatewayClient {
             logger.error(e.getMessage());
         }
     }
-
-    /**
-     * Starts all subscriptions.
-     * @throws Exception
-     */
-    private void startSubscriptions() throws Exception {
-        //TODO
-    }
-
-
-
-    /**
-     * Handles message reception
-     * @param message
-     * Message received from Kapua.
-     */
-    private void subscriptionHandler(Payload message) {
-        logger.info("Received: "+message.toString());
-    }
-
-
 
 }
