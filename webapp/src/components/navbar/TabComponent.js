@@ -18,9 +18,9 @@ class TabComponent extends React.Component {
   render() {
     return (
       <li>
-        <a className={this.state.isActive && ' is-active'}>
-          <span className="icon is-medium"><i className={ 'fa fa-'+this.props.faClass }></i></span>
-          <span className="tab-text">{ this.props.text }</span>
+        <a className={'menu-block' + (this.state.isActive && ' is-active')}>
+          <span className="icon is-medium"><i className={'fa fa-'+ this.props.faClass }></i></span>
+          <span className="nav-text">{ this.props.text }</span>
         </a>
       </li>
     );

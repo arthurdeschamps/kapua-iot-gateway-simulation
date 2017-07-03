@@ -6,11 +6,15 @@ import React from 'react';
 import 'bulma/css/bulma.css';
 import 'font-awesome/css/font-awesome.min.css';
 import Navbar from 'components/NavbarComponent';
+import Map from 'components/MapComponent';
 
 class AppComponent extends React.Component {
   render() {
     return (
-      <Navbar/>
+      <div className="columns is-gapless">
+        <div className="column is-one-quarter"><Navbar/></div>
+        <div className="column"><Map/></div>
+      </div>
     );
   }
 }
