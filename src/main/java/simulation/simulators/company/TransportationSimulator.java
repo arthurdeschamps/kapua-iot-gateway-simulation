@@ -45,19 +45,15 @@ public class TransportationSimulator extends AbstractCompanyComponentSimulator {
      */
     private void simulateTransportationDestruction() {
         // A transportation is destructed when its in a bad state or worse
-        company.getAllTransportation()
-                .stream()
-                .filter(transportation -> transportation.isAvailable())
-                .forEach(transportation -> {
-                    final TransportationHealthState state = transportation.getHealthState();
-
-                    if ((state.equals(TransportationHealthState.BAD) &&
-                            probabilityUtils.event(1, ProbabilityUtils.TimeUnit.DAY)) ||
-                            state.equals(TransportationHealthState.CRITICAL))
-                    {
-                       company.deleteTransportation(transportation);
-                    }
-                });
+        company.getAllTransportation().removeIf(transportation ->
+                transportation.isAvailable() &&
+                        (
+                                transportation.getHealthState().equals(TransportationHealthState.BAD)
+                                && probabilityUtils.event(1,ProbabilityUtils.TimeUnit.DAY)
+                        )
+                                ||
+                        transportation.getHealthState().equals(TransportationHealthState.CRITICAL)
+        );
     }
 
 }

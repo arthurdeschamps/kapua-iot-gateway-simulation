@@ -37,15 +37,33 @@ class WebsocketRouter {
         if (request.charAt(0) == '/')
             request = request.substring(1);
         final String args[] = request.split("/");
+
+        // All requests concerning the company uniquely
+        if (args.length > 0 && args[0].equals("company"))
+            return gson.toJson(getCompanyResource(args));
+
+        // All requests concerning telemetry data
         if (args.length != 2) {
             throw new IllegalArgumentException("A request must be of the form /:item-type/(all | :id). Got: "+request);
         }
-
         // Parse request type
         if (args[1].equals("all"))
             return gson.toJson(getStore(args[0]));
         else
             return gson.toJson(getItem(args[0],args[1]));
+    }
+
+    /**
+     * Handles company data requests.
+     * @param args
+     * The full request split in multiple strings by '/' characters.
+     * @return
+     * Either a company resource or an empty optional if the request is malformed.
+     */
+    private Optional<Object> getCompanyResource(String... args) {
+        if (args[1].equals("headquarters"))
+            return Optional.of(company.getHeadquarters().getCoordinates());
+        return Optional.empty();
     }
 
     /**

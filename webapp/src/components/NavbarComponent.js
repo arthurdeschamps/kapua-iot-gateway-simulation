@@ -12,7 +12,7 @@ class NavbarComponent extends React.Component {
     const generalTabs =
       <div>
         <Tab isActive={true} text="Map" faClass="globe" />
-        <Tab isActive={false} text="Data" faClass="database" />
+        <Tab isActive={false} text="Company data" faClass="database" />
       </div>
 
     const parametrizerTabs =

@@ -27,6 +27,7 @@ public class DefaultSimulation {
 
         // Or use the default parametrizer and set the things you want:
         parametrizer.setDisplayMetrics(false);
+        parametrizer.setDataSendingDelay(30);
 
         // Starts the simulation
         logger.info("Starting simulators...");
