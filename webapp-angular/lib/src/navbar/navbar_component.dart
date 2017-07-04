@@ -3,9 +3,9 @@ import 'nav_section_component.dart';
 import 'tab_component.dart';
 
 @Component(
-  selector: 'navbar',
+  selector: 'navbar-component',
   templateUrl: 'templates/navbar_component.html',
-  directives: const [CORE_DIRECTIVES]
+  directives: const [CORE_DIRECTIVES, TabComponent, NavSectionComponent]
 )
 class NavbarComponent {
 

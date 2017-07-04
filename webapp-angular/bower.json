@@ -19,6 +19,7 @@
     "bulma": "^0.4.2",
     "drmonty-leaflet-awesome-markers": "^2.0.2",
     "font-awesome": "Font-Awesome#^4.7.0",
-    "leaflet": "Leaflet#^1.1.0"
+    "leaflet": "Leaflet#^1.1.0",
+    "angular-cli": "^1.2.0"
   }
 }

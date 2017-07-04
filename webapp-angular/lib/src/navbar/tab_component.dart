@@ -2,7 +2,6 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'package:angular2/angular2.dart';
-import 'package:angular_components/angular_components.dart';
 
 // AngularDart info: https://webdev.dartlang.org/angular
 // Components info: https://webdev.dartlang.org/components
@@ -15,10 +14,11 @@ import 'package:angular_components/angular_components.dart';
 )
 class TabComponent {
 
+  @Input()
   bool isActive;
+  @Input()
   String faClass;
+  @Input()
   String text;
-
-  TabComponent(this.isActive, this.faClass, this.text);
 
 }

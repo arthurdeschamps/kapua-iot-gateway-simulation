@@ -11,7 +11,7 @@ import 'src/navbar/navbar_component.dart';
   selector: 'app',
   styleUrls: const ['app_component.css'],
   templateUrl: 'app_component.html',
-  directives: const [CORE_DIRECTIVES],
+  directives: const [CORE_DIRECTIVES, NavbarComponent],
 )
 class AppComponent {
   // Nothing here yet. All logic is in TodoListComponent.

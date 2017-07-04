@@ -9,12 +9,10 @@ import 'package:angular2/angular2.dart';
   selector: 'nav-section',
   styleUrls: const ['styles/nav_section_component.css'],
   templateUrl: 'templates/nav_section_component.html',
-  directives: const [CORE_DIRECTIVES]
+  directives: const [CORE_DIRECTIVES],
+  providers: const [String]
 )
 class NavSectionComponent {
-
+  @Input()
   String sectionTitle;
-
-  NavSectionComponent(this.sectionTitle);
-
 }
