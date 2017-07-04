@@ -4,6 +4,7 @@
 import 'package:angular2/platform/browser.dart';
 
 import 'package:webapp_angular/app_component.dart';
+import 'package:webapp_angular/src/websocket/websocket_client.service.dart';
 
 void main() {
   bootstrap(AppComponent);

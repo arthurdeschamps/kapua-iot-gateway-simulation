@@ -16,28 +16,27 @@ import java.net.InetSocketAddress;
  */
 public class WebsocketServer extends WebSocketServer {
 
-    private WebsocketRouter router;
+    private WebsocketRequestHandler requestHandler;
     private final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
 
     public WebsocketServer(Company company, int port) {
         super(new InetSocketAddress(port));
-        this.router = new WebsocketRouter(company);
+        this.requestHandler = new WebsocketRequestHandler(company);
     }
 
     public WebsocketServer(Company company, InetSocketAddress address) {
         super(address);
-        this.router = new WebsocketRouter(company);
+        this.requestHandler = new WebsocketRequestHandler(company);
     }
 
     public WebsocketServer(Company company) {
         super();
-        this.router = new WebsocketRouter(company);
+        this.requestHandler = new WebsocketRequestHandler(company);
     }
 
     @Override
     public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
-        String response = router.handle(clientHandshake.getResourceDescriptor());
-        webSocket.send(response);
+        logger.info("New client");
     }
 
     @Override
@@ -46,8 +45,9 @@ public class WebsocketServer extends WebSocketServer {
     }
 
     @Override
-    public void onMessage(WebSocket webSocket, String s) {
-        logger.info(s);
+    public void onMessage(WebSocket webSocket, String jsonRequest) {
+        logger.info(jsonRequest);
+        requestHandler.handle(jsonRequest).ifPresent(webSocket::send);
     }
 
     @Override
