@@ -83,7 +83,7 @@ yarn install
 
 ### Making Changes to Leaflet Source
 
-If you're not yet familiar with the way GitHub works (forking, pull requests, etc.),
+If you're not yet familiar with the way GitHub works (forking, pull topics, etc.),
 be sure to check out the awesome [article about forking](https://help.github.com/articles/fork-a-repo)
 on the GitHub Help website &mdash; it will get you started quickly.
 
@@ -192,7 +192,7 @@ jake docs
 and you'll find a `.html` file in the `dist/` directory.
 
 On every release of a new Leaflet version, this file will be generated and copied
-over to `docs/reference.html` - there is no need to send pull requests with changes to this file to update the API documentation.
+over to `docs/reference.html` - there is no need to send pull topics with changes to this file to update the API documentation.
 
 ## Code of Conduct
 

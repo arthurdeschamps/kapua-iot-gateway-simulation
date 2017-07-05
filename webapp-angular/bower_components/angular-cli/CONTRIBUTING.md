@@ -18,7 +18,7 @@ Help us keep Angular open and inclusive. Please read and follow our [Code of Con
 
 ## <a name="question"></a> Got a Question or Problem?
 
-Please, do not open issues for the general support questions as we want to keep GitHub issues for bug reports and feature requests. You've got much better chances of getting your question answered on [StackOverflow](https://stackoverflow.com/questions/tagged/angular-cli) where the questions should be tagged with tag `angular-cli`.
+Please, do not open issues for the general support questions as we want to keep GitHub issues for bug reports and feature topics. You've got much better chances of getting your question answered on [StackOverflow](https://stackoverflow.com/questions/tagged/angular-cli) where the questions should be tagged with tag `angular-cli`.
 
 StackOverflow is a much better place to ask questions since:
 
@@ -26,7 +26,7 @@ StackOverflow is a much better place to ask questions since:
 - questions and answers stay available for public viewing so your question / answer might help someone else
 - StackOverflow's voting system assures that the best answers are prominently visible.
 
-To save your and our time we will be systematically closing all the issues that are requests for general support and redirecting people to StackOverflow.
+To save your and our time we will be systematically closing all the issues that are topics for general support and redirecting people to StackOverflow.
 
 If you would like to chat about the question in real-time, you can reach out via [our gitter channel][gitter].
 
@@ -48,7 +48,7 @@ and help you to craft the change so that it is successfully accepted into the pr
 **All features require a proper design and review by team members.** Before starting work, you might want to
 discuss with us to figure out:
 
-* Is this something we want? Sometimes people make feature requests that make sense for them, but aren't valuable
+* Is this something we want? Sometimes people make feature topics that make sense for them, but aren't valuable
   to the rest of the CLI users, or impede on other people's workflow. We try to always put the greater community
   first.
 * Is the API valid? Does it change currently existing flags, or add new ones?
@@ -237,7 +237,7 @@ A detailed explanation can be found in this [document][commit-message-format].
 
 ## <a name="cla"></a> Signing the CLA
 
-Please sign our Contributor License Agreement (CLA) before sending pull requests. For any code
+Please sign our Contributor License Agreement (CLA) before sending pull topics. For any code
 changes to be accepted, the CLA must be signed. It's a quick process, we promise!
 
 * For individuals we have a [simple click-through form][individual-cla].

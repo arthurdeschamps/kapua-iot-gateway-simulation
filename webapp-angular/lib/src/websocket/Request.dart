@@ -3,20 +3,21 @@
 
 class Request {
   RequestType requestType;
-  List<String> requests;
+  List<String> topics;
 
-  Request(this.requestType, this.requests);
+  Request(this.requestType, this.topics);
 
   Map toJson() {
     Map map = new Map();
     map["requestType"] = _requestTypeToString(requestType);
-    map["requests"] = requests;
+    map["topics"] = topics;
     return map;
   }
 
   String _requestTypeToString(RequestType requestType) {
     return requestType.toString().replaceFirst("RequestType.","");
   }
+
 }
 
 /**

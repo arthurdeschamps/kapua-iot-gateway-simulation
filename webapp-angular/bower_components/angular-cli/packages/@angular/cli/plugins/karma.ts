@@ -180,7 +180,7 @@ const init: any = (config: any, emitter: any, customFileHandlers: any) => {
 
   const middleware = new webpackDevMiddleware(compiler, webpackMiddlewareConfig);
 
-  // Forward requests to webpack server.
+  // Forward topics to webpack server.
   customFileHandlers.push({
     urlRegex: /^\/_karma_webpack_\/.*/,
     handler: function handler(req: any, res: any) {
@@ -216,7 +216,7 @@ init.$inject = ['config', 'emitter', 'customFileHandlers'];
 const preprocessor: any = () => (content: any, _file: string, done: any) => done(null, content);
 preprocessor.$inject = [];
 
-// Block requests until the Webpack compilation is done.
+// Block topics until the Webpack compilation is done.
 function requestBlocker() {
   return function (_request: any, _response: any, next: () => void) {
     if (isBlocked) {

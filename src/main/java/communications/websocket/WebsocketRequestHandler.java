@@ -37,29 +37,33 @@ class WebsocketRequestHandler {
         Response response = new Response();
 
         // Check if conversion failed
-        if (request == null || request.getRequests() == null || request.getRequestType() == null)
+        if (request == null || request.getTopics() == null || request.getRequestType() == null)
             return Optional.empty();
+
+        response.setTopics(request.getTopics());
 
         switch (request.getRequestType()) {
 
             case ALL:
-                if (request.getRequests().length == 1) {
-                    if (request.getRequests()[0].equals("company"))
-                        response = new Response("company",getAll("company"));
+                if (request.getTopics().length == 1) {
+                    if (request.getTopics()[0].equals("company"))
+                        response.setData(getAll("company"));
                 }
 
             case ONE:
-                if (request.getRequests().length == 1) {
-                    response = getCompanyResource(request.getRequests()[0]);
+                if (request.getTopics().length == 2) {
+                    String[] requests = request.getTopics();
+                    if (requests[0].equals("company"))
+                        response.setData(getCompanyResource(requests[1]));
                 }
 
             case SUBSCRIBE:
-                if (request.getRequests().length == 1) {
-                    subscribe(request.getRequests()[0]);
+                if (request.getTopics().length == 1) {
+                    subscribe(request.getTopics()[0]);
                 }
         }
 
-        return response != null ? Optional.of(gson.toJson(response)) : Optional.empty();
+        return response.getData() != null ? Optional.of(gson.toJson(response)) : Optional.empty();
     }
 
     private void subscribe(String topic) {
@@ -71,9 +75,9 @@ class WebsocketRequestHandler {
      * @return
      * All data related to the company.
      */
-    private Response getAll(String topic) {
+    private Object getAll(String topic) {
         if (topic.equals("company"))
-            return new Response("company",gson.toJson(company));
+            return company;
         return null;
     }
 
@@ -84,9 +88,9 @@ class WebsocketRequestHandler {
      * @return
      * Either a company resource or an empty optional if the request is malformed.
      */
-    private Response getCompanyResource(String topic) {
+    private Object getCompanyResource(String topic) {
         if (topic.equals("headquarters"))
-            return new Response("headquarters",company.getHeadquarters().getCoordinates());
+            return company.getHeadquarters().getCoordinates();
         return null;
     }
 
@@ -97,23 +101,23 @@ class WebsocketRequestHandler {
      * @return
      * Either an array of type @T if the request is well formed or an empty optional.
      */
-    private Response getStore(String itemType) {
+    private Object getStore(String itemType) {
         itemType = itemType.toLowerCase();
 
         // Finds a store (or none if itemType does not exist)
         switch (itemType) {
             case "customer":
-                return new Response("customers",company.getCustomers());
+                return company.getCustomers();
             case "delivery":
-                return new Response("deliveries",company.getDeliveries());
+                return company.getDeliveries();
             case "order":
-                return new Response("orders",company.getOrders());
+                return company.getOrders();
             case "product":
-                return new Response("products",company.getProducts());
+                return company.getProducts();
             case "product-type":
-                return new Response("productTypes",company.getProductTypes());
+                return company.getProductTypes();
             case "transportation":
-                return new Response("allTransportation",company.getAllTransportation());
+                return company.getAllTransportation();
             default:
                 logger.info("No class extending Item found for string \""+itemType+"\"");
                 return null;

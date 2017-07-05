@@ -8,7 +8,7 @@ import 'package:angular2/angular2.dart';
 @Component(
   selector: 'nav-section',
   styleUrls: const ['styles/nav_section_component.css'],
-  templateUrl: 'templates/nav_section_component.html',
+  templateUrl: 'templates/nav_section.component.html',
   directives: const [CORE_DIRECTIVES],
   providers: const [String]
 )

@@ -66,7 +66,7 @@ For the example WMS server we're using, there is a `ne:ne_10m_admin_0_countries`
 		layers: 'ne:ne_10m_admin_0_countries,ne:ne_10m_admin_0_boundary_lines_land'
 	}).addTo(map);
 
-Note this will request *one* image to the WMS server. This is different than creating a `L.TileLayer.WMS` for the countries, another one for the boundaries, and adding them both to the map. In the first case, there is one image request and it's the WMS server who decides how to compose (put on top of each other) the image. In the second case, there would be two image requests and it's the Leaflet code running in the web browser who decides how to compose them.
+Note this will request *one* image to the WMS server. This is different than creating a `L.TileLayer.WMS` for the countries, another one for the boundaries, and adding them both to the map. In the first case, there is one image request and it's the WMS server who decides how to compose (put on top of each other) the image. In the second case, there would be two image topics and it's the Leaflet code running in the web browser who decides how to compose them.
 
 If we combine this with the [layers control](/examples/layers-control.html), then we can build a simple map to see the difference:
 

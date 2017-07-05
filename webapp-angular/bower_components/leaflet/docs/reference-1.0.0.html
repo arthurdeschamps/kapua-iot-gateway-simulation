@@ -4938,7 +4938,7 @@ WMS server as extra parameters in each request URL. This can be useful for
 		<td><code><b>crs</b></code></td>
 		<td><code><a href='#crs'>CRS</a></code>
 		<td><code>null</code></td>
-		<td>Coordinate Reference System to use for the WMS requests, defaults to
+		<td>Coordinate Reference System to use for the WMS topics, defaults to
 map CRS. Don&#39;t change this if you&#39;re not sure what it means.</td>
 	</tr>
 	<tr id='tilelayer-wms-uppercase'>
@@ -5300,7 +5300,7 @@ effect when the <a href="#map-crs">map CRS</a> doesn&#39;t wrap around.</td>
 	<tr id='tilelayer-wms-setparams'>
 		<td><code><b>setParams</b>(<nobr>&lt;Object&gt;</nobr> <i>params</i>, <nobr>&lt;Boolean&gt;</nobr> <i>noRedraw?</i>)</nobr></code></td>
 		<td><code>this</code></td>
-		<td><p>Merges an object with the new parameters and re-requests tiles on the current screen (unless <code>noRedraw</code> was set to true).</p>
+		<td><p>Merges an object with the new parameters and re-topics tiles on the current screen (unless <code>noRedraw</code> was set to true).</p>
 </td>
 	</tr>
 </tbody></table>
@@ -15409,7 +15409,7 @@ bounds = L.latLngBounds(southWest, northEast);
 	<tr id='latlngbounds-tobboxstring'>
 		<td><code><b>toBBoxString</b>()</nobr></code></td>
 		<td><code>String</code></td>
-		<td><p>Returns a string with bounding box coordinates in a &#39;southwest_lng,southwest_lat,northeast_lng,northeast_lat&#39; format. Useful for sending requests to web services that return geo data.</p>
+		<td><p>Returns a string with bounding box coordinates in a &#39;southwest_lng,southwest_lat,northeast_lng,northeast_lat&#39; format. Useful for sending topics to web services that return geo data.</p>
 </td>
 	</tr>
 	<tr id='latlngbounds-equals'>

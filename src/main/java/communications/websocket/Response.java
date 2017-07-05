@@ -8,23 +8,23 @@ package communications.websocket;
  */
 public class Response {
 
-    private String topic;
+    private String[] topics;
     private Object data;
 
-    public Response(String topic, Object data) {
-        this.topic = topic;
+    public Response(String[] topics, Object data) {
+        this.topics = topics;
         this.data = data;
     }
 
     public Response() {
     }
 
-    public String getTopic() {
-        return topic;
+    public String[] getTopics() {
+        return topics;
     }
 
-    public void setTopic(String topic) {
-        this.topic = topic;
+    public void setTopics(String[] topics) {
+        this.topics = topics;
     }
 
     public Object getData() {

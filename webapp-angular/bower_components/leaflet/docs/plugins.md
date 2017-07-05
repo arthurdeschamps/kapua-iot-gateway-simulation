@@ -845,7 +845,7 @@ Load dynamic data which is updated in the map, or load GIS vector data in non-st
 		<td>
 			<a href="https://github.com/BenjaminVadant/leaflet-ugeojson">Leaflet uGeoJSON</a>
 		</td><td>
-			Add an auto updating GeoJSON data Layer via ajax post requests.
+			Add an auto updating GeoJSON data Layer via ajax post topics.
 		</td><td>
 			<a href="https://github.com/BenjaminVadant/">Benjamin VADANT</a>
 		</td>
@@ -2935,7 +2935,7 @@ These plugins extend Leaflet event handling.
 	        </td>
 	        <td>
 	            Adds visual feedback when user clicks/taps the map (<a href="https://github.com/MazeMap/Leaflet.VisualClick/">demo</a>).
-	            Useful when further action is delayed by server requests, or implementation of Leaflet.singleclick.
+	            Useful when further action is delayed by server topics, or implementation of Leaflet.singleclick.
 	            Or just because it looks cool :)
 	            Only tested with Leaflet 1.0.0-beta1.
 	        </td><td>

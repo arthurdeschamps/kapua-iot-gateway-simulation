@@ -1,5 +1,5 @@
 <!--
-Thanks for taking the time to open an issue! Help us have good bug requests:
+Thanks for taking the time to open an issue! Help us have good bug topics:
 
 - [ ] I'm reporting a bug, not asking for help; support questions like "How can I do X with Leaflet?" will be closed (use [Stack Overflow](http://stackoverflow.com/) or [gis.stackexchange.com](http://gis.stackexchange.com/) for questions)
 - [ ] I've looked at the [documentation](http://leafletjs.com/reference-1.0.3.html) to make sure the behaviour is documented and expected

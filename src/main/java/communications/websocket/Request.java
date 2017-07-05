@@ -7,11 +7,11 @@ package communications.websocket;
  */
 class Request {
     private RequestType requestType;
-    private String[] requests;
+    private String[] topics;
 
-    public Request(RequestType requestType, String[] requests) {
+    public Request(RequestType requestType, String[] topics) {
         this.requestType = requestType;
-        this.requests = requests;
+        this.topics = topics;
     }
 
     public Request() {
@@ -32,11 +32,11 @@ class Request {
         this.requestType = requestType;
     }
 
-    public String[] getRequests() {
-        return requests;
+    public String[] getTopics() {
+        return topics;
     }
 
-    public void setRequests(String[] requests) {
-        this.requests = requests;
+    public void setTopics(String[] topics) {
+        this.topics = topics;
     }
 }

@@ -9,7 +9,7 @@ import 'package:angular2/angular2.dart';
 @Component(
   selector: 'tab',
   styleUrls: const ['styles/tab_component.css'],
-  templateUrl: 'templates/tab_component.html',
+  templateUrl: 'templates/tab.component.html',
   directives: const [CORE_DIRECTIVES]
 )
 class TabComponent {

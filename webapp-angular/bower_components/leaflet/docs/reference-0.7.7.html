@@ -1815,7 +1815,7 @@ var map = L.map('map', {
 
 <pre><code class="javascript">'http://{s}.somedomain.com/blabla/{z}/{x}/{y}.png'</code></pre>
 
-<p><code>{s}</code> means one of the available subdomains (used sequentially to help with browser parallel requests per domain limitation; subdomain values are specified in options; <code>a</code>, <code>b</code> or <code>c</code> by default, can be omitted), <code>{z}</code> &mdash; zoom level, <code>{x}</code> and <code>{y}</code> &mdash; tile coordinates.</p>
+<p><code>{s}</code> means one of the available subdomains (used sequentially to help with browser parallel topics per domain limitation; subdomain values are specified in options; <code>a</code>, <code>b</code> or <code>c</code> by default, can be omitted), <code>{z}</code> &mdash; zoom level, <code>{x}</code> and <code>{y}</code> &mdash; tile coordinates.</p>
 
 <p>You can use custom keys in the template, which will be <a href="#util-template">evaluated</a> from TileLayer options, like this:</p>
 
@@ -2128,7 +2128,7 @@ var map = L.map('map', {
 		<td><code><b>crs</b></code></td>
 		<td><code><a href="#icrs">CRS</a></code></td>
 		<td><code><span class="hljs-literal">null</span></code></td>
-		<td>Coordinate Reference System to use for the WMS requests, defaults to map CRS. Don't change this if you're not sure what it means.</td>
+		<td>Coordinate Reference System to use for the WMS topics, defaults to map CRS. Don't change this if you're not sure what it means.</td>
 	</tr>
 </table>
 
@@ -2146,7 +2146,7 @@ var map = L.map('map', {
 			<nobr>&lt;Boolean&gt; <i>noRedraw?</i> )</nobr>
 		</code></td>
 		<td><code><span class="hljs-keyword">this</span></code></td>
-		<td>Merges an object with the new parameters and re-requests tiles on the current screen (unless <code>noRedraw</code> was set to <code><span class="hljs-literal">true</span></code>).</td>
+		<td>Merges an object with the new parameters and re-topics tiles on the current screen (unless <code>noRedraw</code> was set to <code><span class="hljs-literal">true</span></code>).</td>
 	</tr>
 </table>
 
@@ -3712,7 +3712,7 @@ map.panTo(L.latLng(50, 30));</code></pre>
 	<tr>
 		<td><code><b>toBBoxString</b>()</code></td>
 		<td><code>String</code></td>
-		<td>Returns a string with bounding box coordinates in a <code><span class="hljs-string">'southwest_lng,southwest_lat,northeast_lng,northeast_lat'</span></code> format. Useful for sending requests to web services that return geo data.</td>
+		<td>Returns a string with bounding box coordinates in a <code><span class="hljs-string">'southwest_lng,southwest_lat,northeast_lng,northeast_lat'</span></code> format. Useful for sending topics to web services that return geo data.</td>
 	</tr>
 	<tr>
 		<td><code><b>pad</b>(
