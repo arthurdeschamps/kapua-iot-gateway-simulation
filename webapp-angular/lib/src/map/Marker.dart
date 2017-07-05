@@ -26,8 +26,7 @@ class Marker {
     if (riseOffset != null) m['riseOffset'] = riseOffset;
 
     if (altitude == null) altitude = 9;
-
-    var args = [new L.LatLng(coordinates.latitude,coordinates.longitude, altitude), new JS.JsObject.jsify(m)];
+    var args = [coordinates.latlng, new JS.JsObject.jsify(m)];
     var layer = leaflet.callMethod('marker', args);
     if (layer == null) {
       throw new ArgumentError.notNull(layer);
