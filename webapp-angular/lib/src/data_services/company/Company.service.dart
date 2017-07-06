@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:angular2/angular2.dart';
 import 'package:logging/logging.dart';
 import 'package:webapp_angular/src/data_services/DataAbstract.service.dart';
+import 'package:webapp_angular/src/data_services/DataTransformer.service.dart';
 import 'package:webapp_angular/src/data_services/company/Coordinates.dart';
 import 'package:webapp_angular/src/data_services/company/Delivery.dart';
 import 'package:webapp_angular/src/websocket/WebSocketClient.service.dart';
@@ -13,32 +14,27 @@ import 'package:webapp_angular/src/websocket/WebSocketClient.service.dart';
 class CompanyService extends DataService {
   Coordinates _headquarters;
   final WebSocketClientService _sock;
+  final DataTransformerService _dataTransformer;
   static final Logger logger = new Logger("CompanyService");
 
-  CompanyService(this._sock) : super(_sock);
+  CompanyService(this._sock, this._dataTransformer) : super(_sock);
 
-  void setHeadquarters(Map coordinates) {
-    _headquarters = new Coordinates(coordinates["latitude"], coordinates["longitude"]);
+  void _setHeadquarters(Map coordinates) {
+    _headquarters = _dataTransformer.coordinates(coordinates);
   }
 
-  Future<Coordinates> getHeadquarters() async {
-    var complete = new Completer<Coordinates>();
-    if (_headquarters == null) {
-      _sock.requestOne(["company","headquarters"]).then<Coordinates>((Map rawCoord) {
-        setHeadquarters(rawCoord);
-        complete.complete(_headquarters);
-      });
-    } else {
-      logger.fine(_headquarters);
-      complete.complete(_headquarters);
-    }
 
-    return complete.future;
+  Future<Coordinates> getHeadquarters() async {
+    Map rawCoord = await _sock.requestOne(["company","headquarters"]);
+    _setHeadquarters(rawCoord);
+    return _headquarters;
   }
 
   Future<List<Delivery>> getDeliveries() async {
-    return _sock.requestMultiple(["company","delivery"]).then((List result) {
-      logger.info(result);
-    });
+    List result = await _sock.requestMultiple(["company","delivery"]);
+    // Transforms into a new list of well defined deliveries
+    List<Delivery> deliveries = new List();
+    result.forEach((Map rawDelivery) => deliveries.add(_dataTransformer.delivery(rawDelivery)));
+    return deliveries;
   }
 }

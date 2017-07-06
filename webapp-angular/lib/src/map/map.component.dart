@@ -4,12 +4,13 @@
 import 'dart:async';
 import 'package:angular2/angular2.dart';
 import 'package:leaflet/leaflet.dart' as L;
+import 'dart:js' as JS;
 import 'package:webapp_angular/src/data_services/company/Company.service.dart';
 import 'package:webapp_angular/src/data_services/company/Coordinates.dart';
 import 'package:logging/logging.dart';
 import 'package:webapp_angular/src/data_services/company/Delivery.dart';
-import 'package:webapp_angular/src/map/Icon.dart';
 import 'package:webapp_angular/src/map/Marker.dart';
+import 'package:webapp_angular/src/map/Icons.service.dart';
 
 @Component(
   selector: 'map',
@@ -19,7 +20,9 @@ import 'package:webapp_angular/src/map/Marker.dart';
 class MapComponent implements AfterViewInit, OnDestroy {
 
   L.LeafletMap _map;
-  // create the tile layer with correct attribution
+  List<Marker> _placedMarkers;
+
+  // Tile layer attributions
   static final String _osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
   static final String _osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
   static final L.TileLayer _osm = new L.TileLayer(url: _osmUrl, minZoom: 1, maxZoom: 12, attribution: _osmAttrib);
@@ -27,9 +30,13 @@ class MapComponent implements AfterViewInit, OnDestroy {
   final CompanyService _companyService;
   Coordinates _headquarters;
 
+  final IconsService _iconsService;
+
   static final Logger logger = new Logger("MapComponent");
 
-  MapComponent(this._companyService);
+  MapComponent(this._companyService, this._iconsService) {
+    _placedMarkers = new List();
+  }
 
   @override
   void ngOnDestroy() {
@@ -53,10 +60,17 @@ class MapComponent implements AfterViewInit, OnDestroy {
     _map = new L.LeafletMap.selector('map');
     _setMapView(coordinates.latitude, coordinates.longitude, 9);
     _map.addLayer(_osm);
-    _putHeadquartersMarker();
-    _getDeliveries().then((List<Delivery> deliveries) {
-      logger.fine(deliveries);
-    });
+    _placeHeadquartersMarker();
+    _startDeliveriesDisplay();
+    _setMapView(_headquarters.latitude,_headquarters.longitude,9);
+  }
+
+  void _startDeliveriesDisplay() {
+    new Timer.periodic(new Duration(seconds: 10),(Timer timer) =>
+      _getDeliveries().then((List<Delivery> deliveries) {
+          _placeDeliveryMarkers(deliveries);
+        })
+    );
   }
 
   void _setMapView(num lat, num long, num zoom) {
@@ -77,13 +91,31 @@ class MapComponent implements AfterViewInit, OnDestroy {
     this._headquarters = coordinates;
   }
 
+  // Places a marker on company's headquarters
+  void _placeHeadquartersMarker() {
+    _setMarker(new Marker(_iconsService.headquarters(),
+        _headquarters,title: 'Company\'s headquarters',
+        alt: 'This is your company\'s headquarters\' current location',
+        zIndexOffset: 9999, riseOnHover: true));
+  }
 
-  // place a marker on company's headquarters
-  void _putHeadquartersMarker() {
-    Marker marker = new Marker(new Icon("home","black"),_headquarters,title: 'Company\'s headquarters',
-      alt: 'This is your company\'s headquarters\' current location');
-    _map.addLayer(marker.leafletMarker);
-    _setMapView(_headquarters.latitude,_headquarters.longitude,9);
+  // Places markers for each delivery
+  void _placeDeliveryMarkers(List<Delivery> deliveries) {
+    deliveries.forEach((Delivery delivery) {
+      _setMarker(new Marker(_iconsService.delivery(delivery),delivery.currentPosition,
+      title: "Current position: "+delivery.currentPosition.toString()));
+    });
+  }
+
+  // If the marker is not yet placed on the map, then we add it. Otherwise,
+  // we simply replace it to the given position (in the marker).
+  void _setMarker(Marker marker) {
+    if (_placedMarkers.contains(marker)) {
+      marker.leafletMarker.layer.callMethod("removeLayer",[marker.leafletMarker]);
+    } else {
+      _map.addLayer(marker.leafletMarker);
+      _placedMarkers.add(marker);
+    }
   }
 
 }

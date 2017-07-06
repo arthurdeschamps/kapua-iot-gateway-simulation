@@ -15,4 +15,9 @@ class Coordinates {
     latlng = _L.callMethod('latLng', args);
   }
 
+  @override
+  String toString() {
+    return "(lat: "+latitude.toString()+",long: "+longitude.toString()+")";
+  }
+
 }

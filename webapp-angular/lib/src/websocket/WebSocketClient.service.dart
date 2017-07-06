@@ -46,12 +46,6 @@ class WebSocketClientService {
     return _request<List>(RequestType.MULTIPLE, topics);
   }
 
-  Future<dynamic> _connected(execAfter(WebSocket sock)) async {
-    if (_sock.readyState == WebSocket.OPEN)
-      return execAfter(_sock);
-    return _sock.onOpen.first.then<dynamic>((Event e) => execAfter(_sock));
-  }
-
   Future<T> _request<T>(RequestType requestType, List<String> topics) async {
     return _connected((WebSocket sock) {
       // Sends the request
@@ -61,17 +55,19 @@ class WebSocketClientService {
     });
   }
 
-  Future<T> _waitData<T>(WebSocket sock, List<String> requestTopics) {
-    var complete = new Completer<T>();
-    Response response;
-    sock.onMessage.listen((MessageEvent e) {
-      response = _decode(e.data);
+  Future<dynamic> _connected(execAfter(WebSocket sock)) async {
+    if (_sock.readyState == WebSocket.OPEN)
+      return execAfter(_sock);
+    return _sock.onOpen.first.then<dynamic>((Event e) => execAfter(_sock));
+  }
+
+  Future<T> _waitData<T>(WebSocket sock, List<String> requestTopics) async {
+    MessageEvent result = await sock.onMessage.firstWhere((MessageEvent e) {
+      Response response = _decode(e.data);
       Function equals = const ListEquality().equals;
-      if (response != null && equals(response.topics, requestTopics)) {
-        complete.complete(response.data);
-      }
+      return (response != null && equals(response.topics, requestTopics));
     });
-    return complete.future;
+    return _decode(result.data).data;
   }
 
   void _send(WebSocket sock, Request request) {

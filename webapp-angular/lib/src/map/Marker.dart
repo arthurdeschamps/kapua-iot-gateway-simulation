@@ -6,12 +6,14 @@ import 'dart:js' as JS;
 class Marker {
 
   L.Marker leafletMarker;
+  Coordinates position;
 
   Marker(Icon icon,Coordinates coordinates,{ num altitude, bool clickable, bool draggable,
     bool keyboard, String title, String alt, num zIndexOffset, num opacity,
     bool riseOnHover, num riseOffset}) {
 
     var leaflet = JS.context['L'];
+    position = coordinates;
 
     var m = {};
     m["icon"] = icon.leafletIcon;
