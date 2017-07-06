@@ -4,10 +4,10 @@
 import 'dart:async';
 import 'package:angular2/angular2.dart';
 import 'package:leaflet/leaflet.dart' as L;
-import 'dart:js' as JS;
 import 'package:webapp_angular/src/data_services/company/Company.service.dart';
 import 'package:webapp_angular/src/data_services/company/Coordinates.dart';
 import 'package:logging/logging.dart';
+import 'package:webapp_angular/src/data_services/company/Delivery.dart';
 import 'package:webapp_angular/src/map/Icon.dart';
 import 'package:webapp_angular/src/map/Marker.dart';
 
@@ -39,42 +39,51 @@ class MapComponent implements AfterViewInit, OnDestroy {
   @override
   void ngAfterViewInit() {
     // Set up the map
-    getHeadquarters().then((Coordinates coordinates) {
+    _getHeadquarters().then((Coordinates coordinates) {
       if (coordinates != null) {
-        this.setHeadquarters(coordinates);
-        _map = new L.LeafletMap.selector('map');
-        setMapView(coordinates.latitude, coordinates.longitude, 9);
-        _map.addLayer(_osm);
-        putHeadquartersMarker();
+        _initMap(coordinates);
       } else {
         throw new Exception("Company's headquarters' coordinates not recieved by the server");
       }
     });
   }
 
-  void setMapView(num lat, num long, num zoom) {
+  void _initMap(Coordinates coordinates) {
+    this._setHeadquarters(coordinates);
+    _map = new L.LeafletMap.selector('map');
+    _setMapView(coordinates.latitude, coordinates.longitude, 9);
+    _map.addLayer(_osm);
+    _putHeadquartersMarker();
+    _getDeliveries().then((List<Delivery> deliveries) {
+      logger.fine(deliveries);
+    });
+  }
+
+  void _setMapView(num lat, num long, num zoom) {
     _map.setView(new L.LatLng(lat,long),zoom);
   }
 
   // Retrieves company's headquarters' coordinates
-  Future<Coordinates> getHeadquarters() async {
+  Future<Coordinates> _getHeadquarters() async {
     return _companyService.getHeadquarters();
   }
 
-  void setHeadquarters(Coordinates coordinates) {
+  // Retrieves company's deliveries
+  Future<List<Delivery>> _getDeliveries() async {
+    return _companyService.getDeliveries();
+  }
+
+  void _setHeadquarters(Coordinates coordinates) {
     this._headquarters = coordinates;
   }
 
 
   // place a marker on company's headquarters
-  void putHeadquartersMarker() {
+  void _putHeadquartersMarker() {
     Marker marker = new Marker(new Icon("home","black"),_headquarters,title: 'Company\'s headquarters',
-    alt: 'This is your company\'s headquarters\' current location', riseOnHover: true,
-    riseOffset: 9999);
+      alt: 'This is your company\'s headquarters\' current location');
     _map.addLayer(marker.leafletMarker);
-
-
-    setMapView(_headquarters.latitude,_headquarters.longitude,9);
+    _setMapView(_headquarters.latitude,_headquarters.longitude,9);
   }
 
 }

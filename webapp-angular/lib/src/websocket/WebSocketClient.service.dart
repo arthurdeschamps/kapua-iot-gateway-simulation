@@ -36,38 +36,41 @@ class WebSocketClientService {
     });
   }
 
+
+
+  Future<Map> requestOne(List<String> topics) async {
+    return _request<Map>(RequestType.ONE, topics);
+  }
+
+  Future<List> requestMultiple(List<String> topics) async {
+    return _request<List>(RequestType.MULTIPLE, topics);
+  }
+
   Future<dynamic> _connected(execAfter(WebSocket sock)) async {
     if (_sock.readyState == WebSocket.OPEN)
       return execAfter(_sock);
     return _sock.onOpen.first.then<dynamic>((Event e) => execAfter(_sock));
   }
 
-  Future<Null> subscribe(List<String> request) async {
-    _connected((WebSocket sock) {
-      _send(sock, new Request(RequestType.SUBSCRIBE,request));
+  Future<T> _request<T>(RequestType requestType, List<String> topics) async {
+    return _connected((WebSocket sock) {
+      // Sends the request
+      _send(sock,new Request(requestType, topics));
+      // Waits for the response
+      return _waitData<T>(sock, topics);
     });
   }
 
-  Future<Map> requestOne(List<String> topics) async {
-    var complete = new Completer<Map>();
-
-    _connected((WebSocket sock) {
-      // Sends the request
-      Request request = new Request(RequestType.ONE, topics);
-      _send(sock, request);
-
-      // Waits for the response
-      Response response;
-      _sock.onMessage.listen((MessageEvent e) {
-        response = _decode(e.data);
-        // We need to use this new function to compare the inner elements of the lists
-        Function equals = const ListEquality().equals;
-        if (response != null && equals(response.topics, request.topics)) {
-          complete.complete(response.data);
-        }
-      });
+  Future<T> _waitData<T>(WebSocket sock, List<String> requestTopics) {
+    var complete = new Completer<T>();
+    Response response;
+    sock.onMessage.listen((MessageEvent e) {
+      response = _decode(e.data);
+      Function equals = const ListEquality().equals;
+      if (response != null && equals(response.topics, requestTopics)) {
+        complete.complete(response.data);
+      }
     });
-
     return complete.future;
   }
 

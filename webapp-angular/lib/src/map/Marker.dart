@@ -32,5 +32,6 @@ class Marker {
       throw new ArgumentError.notNull(layer);
     }
     leafletMarker = new L.Marker.wrap(layer);
+    leafletMarker.bindPopup(title);
   }
 }

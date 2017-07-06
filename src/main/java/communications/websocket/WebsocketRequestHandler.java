@@ -42,13 +42,22 @@ class WebsocketRequestHandler {
 
         response.setTopics(request.getTopics());
 
+        String[] topics = request.getTopics();
+
         switch (request.getRequestType()) {
 
             case ALL:
-                if (request.getTopics().length == 1) {
-                    if (request.getTopics()[0].equals("company"))
+                if (topics.length == 1) {
+                    if (topics[0].equals("company"))
                         response.setData(getAll("company"));
                 }
+                break;
+
+            case MULTIPLE:
+                if (topics.length == 2 && topics[0].equals("company")) {
+                    response.setData(getStore(topics[1]));
+                }
+                break;
 
             case ONE:
                 if (request.getTopics().length == 2) {
@@ -56,18 +65,11 @@ class WebsocketRequestHandler {
                     if (requests[0].equals("company"))
                         response.setData(getCompanyResource(requests[1]));
                 }
+                break;
 
-            case SUBSCRIBE:
-                if (request.getTopics().length == 1) {
-                    subscribe(request.getTopics()[0]);
-                }
         }
 
         return response.getData() != null ? Optional.of(gson.toJson(response)) : Optional.empty();
-    }
-
-    private void subscribe(String topic) {
-        //TODO
     }
 
     /**
@@ -76,8 +78,7 @@ class WebsocketRequestHandler {
      * All data related to the company.
      */
     private Object getAll(String topic) {
-        if (topic.equals("company"))
-            return company;
+        if (topic.equals("company")) return company;
         return null;
     }
 

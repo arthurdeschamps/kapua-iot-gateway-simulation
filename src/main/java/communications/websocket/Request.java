@@ -21,7 +21,7 @@ class Request {
      * Type of request for data. "MULTIPLE" for multiple values (stores), "ONE" for a unique value. "ALL" for anything.
      */
     enum RequestType {
-        MULTIPLE,ONE,ALL,SUBSCRIBE
+        MULTIPLE,ONE,ALL
     }
 
     public RequestType getRequestType() {
