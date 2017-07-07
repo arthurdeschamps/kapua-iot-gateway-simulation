@@ -67,14 +67,21 @@ public class Coordinates {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        try {
-            Coordinates coordinates = (Coordinates) obj;
-            return coordinates.getLatitude() == this.getLatitude() && coordinates.getLongitude() == this.getLongitude();
-        } catch (ClassCastException e) {
-            e.printStackTrace();
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Coordinates that = (Coordinates) o;
+
+        if (Float.compare(that.getLatitude(), getLatitude()) != 0) return false;
+        return Float.compare(that.getLongitude(), getLongitude()) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (getLatitude() != +0.0f ? Float.floatToIntBits(getLatitude()) : 0);
+        result = 31 * result + (getLongitude() != +0.0f ? Float.floatToIntBits(getLongitude()) : 0);
+        return result;
     }
 
     @Override

@@ -10,7 +10,6 @@ environment:
 dependencies:
   angular2: ^3.0.0
   angular_components: ^0.5.1
-  leaflet: ^0.0.1
   js: any
   logging: ^0.11.3+1
 

@@ -47,7 +47,9 @@ public class WebsocketServer extends WebSocketServer {
     @Override
     public void onMessage(WebSocket webSocket, String jsonRequest) {
         logger.info(jsonRequest);
-        requestHandler.handle(jsonRequest).ifPresent(webSocket::send);
+        requestHandler.handle(jsonRequest).ifPresent((String data) -> {
+                if (webSocket != null) webSocket.send(data);
+        });
     }
 
     @Override

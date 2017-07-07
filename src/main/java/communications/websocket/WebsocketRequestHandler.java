@@ -105,24 +105,35 @@ class WebsocketRequestHandler {
     private Object getStore(String itemType) {
         itemType = itemType.toLowerCase();
 
+        Object store;
+
         // Finds a store (or none if itemType does not exist)
         switch (itemType) {
             case "customer":
-                return company.getCustomers();
+                store = company.getCustomers();
+                break;
             case "delivery":
-                return company.getDeliveries();
+                store = company.getDeliveries();
+                break;
             case "order":
-                return company.getOrders();
+                store = company.getOrders();
+                break;
             case "product":
-                return company.getProducts();
+                store = company.getProducts();
+                break;
             case "product-type":
-                return company.getProductTypes();
+                store = company.getProductTypes();
+                break;
             case "transportation":
-                return company.getAllTransportation();
+                store = company.getAllTransportation();
+                break;
             default:
+                store = null;
                 logger.info("No class extending Item found for string \""+itemType+"\"");
-                return null;
+                break;
         }
+
+        return store;
     }
 
     /**

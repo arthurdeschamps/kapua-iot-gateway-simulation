@@ -25,7 +25,7 @@
             popupAnchor: [1, -32],
             shadowAnchor: [10, 12],
             shadowSize: [36, 16],
-            className: 'awesome-marker',
+            className: 'awesome-markers',
             prefix: 'glyphicon',
             spinClass: 'fa-spin',
             extraClasses: '',
@@ -94,7 +94,7 @@
                 anchor = size.divideBy(2, true);
             }
 
-            img.className = 'awesome-marker-' + name + ' ' + options.className;
+            img.className = 'awesome-markers-' + name + ' ' + options.className;
 
             if (anchor) {
                 img.style.marginLeft = (-anchor.x) + 'px';

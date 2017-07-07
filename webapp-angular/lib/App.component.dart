@@ -4,10 +4,10 @@
 import 'package:angular2/angular2.dart';
 import 'package:webapp_angular/src/data_services/DataTransformer.service.dart';
 import 'package:webapp_angular/src/data_services/company/Company.service.dart';
-import 'package:webapp_angular/src/map/Icons.service.dart';
+import 'package:webapp_angular/src/map/Map.component.dart';
+import 'package:webapp_angular/src/map/markers/Icons.service.dart';
 import 'package:webapp_angular/src/utils/EnumConverter.service.dart';
-import 'src/navbar/navbar.component.dart';
-import 'src/map/map.component.dart';
+import 'src/navbar/Navbar.component.dart';
 import 'src/websocket/WebSocketClient.service.dart';
 import 'package:logging/logging.dart';
 

@@ -1,6 +1,6 @@
 import 'package:angular2/angular2.dart';
-import 'nav_section.component.dart';
-import 'tab.component.dart';
+import 'NavSection.component.dart';
+import 'Tab.component.dart';
 
 @Component(
   selector: 'navbar-component',

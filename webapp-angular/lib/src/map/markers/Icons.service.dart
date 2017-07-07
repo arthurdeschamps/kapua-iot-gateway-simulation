@@ -4,10 +4,10 @@
 import 'package:angular2/angular2.dart';
 import 'package:webapp_angular/src/data_services/company/Delivery.dart';
 import 'package:webapp_angular/src/data_services/company/Transportation.dart';
-import 'package:webapp_angular/src/map/Icon.dart';
+import 'package:webapp_angular/src/map/markers/Icon.dart';
 
 /**
- * Any available marker is accesible through this class.
+ * Any available markers is accesible through this class.
  */
 @Injectable()
 class IconsService {

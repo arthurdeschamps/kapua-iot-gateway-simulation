@@ -32,15 +32,27 @@ public class ProductType extends Item {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        try {
-            ProductType productType = (ProductType) obj;
-            return (productType.getName().equals(this.getName()) && productType.getBasePrice() == this.getBasePrice()
-            && productType.getProductionCountry().equals(this.getProductionCountry()) && productType.getWeight() == this.getWeight());
-        } catch (ClassCastException e) {
-            e.printStackTrace();
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ProductType that = (ProductType) o;
+
+        if (Float.compare(that.getBasePrice(), getBasePrice()) != 0) return false;
+        if (Float.compare(that.getWeight(), getWeight()) != 0) return false;
+        if (isFragile() != that.isFragile()) return false;
+        if (!getName().equals(that.getName())) return false;
+        return getProductionCountry().equals(that.getProductionCountry());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getName().hashCode();
+        result = 31 * result + getProductionCountry().hashCode();
+        result = 31 * result + (getBasePrice() != +0.0f ? Float.floatToIntBits(getBasePrice()) : 0);
+        result = 31 * result + (getWeight() != +0.0f ? Float.floatToIntBits(getWeight()) : 0);
+        result = 31 * result + (isFragile() ? 1 : 0);
+        return result;
     }
 
     public String getName() {

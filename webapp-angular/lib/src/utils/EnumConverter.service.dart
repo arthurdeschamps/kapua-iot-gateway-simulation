@@ -2,6 +2,7 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'package:angular2/angular2.dart';
+@MirrorsUsed(targets: EnumConverterService)
 import 'dart:mirrors';
 
 @Injectable()

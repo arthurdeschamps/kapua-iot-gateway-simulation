@@ -29,17 +29,28 @@ public class Address {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj.getClass().equals(Address.class)) {
-            Address addr = (Address) obj;
-            return (this.getCity().equals(addr.getCity())) && (this.getCountry().equals(addr.getCountry())) &&
-                    (this.getZip() == addr.getZip()) && (this.getRegion().equals(addr.getRegion()))
-                    && (this.getStreet().equals(addr.getStreet()));
-        }
-        return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Address address = (Address) o;
+
+        if (!getStreet().equals(address.getStreet())) return false;
+        if (!getCity().equals(address.getCity())) return false;
+        if (!getRegion().equals(address.getRegion())) return false;
+        if (!getCountry().equals(address.getCountry())) return false;
+        return getZip().equals(address.getZip());
     }
 
-
+    @Override
+    public int hashCode() {
+        int result = getStreet().hashCode();
+        result = 31 * result + getCity().hashCode();
+        result = 31 * result + getRegion().hashCode();
+        result = 31 * result + getCountry().hashCode();
+        result = 31 * result + getZip().hashCode();
+        return result;
+    }
 
     public String getStreet() {
         return street;

@@ -37,7 +37,8 @@ class DataTransformerService {
   }
 
   Delivery delivery(Map rawDelivery) {
+    bool inTransit = (rawDelivery["deliveryState"] == "TRANSIT");
     return new Delivery(coordinates(rawDelivery["currentLocation"]),
-        transportation(rawDelivery["transporter"]));
+        transportation(rawDelivery["transporter"]),inTransit,rawDelivery["id"]);
   }
 }

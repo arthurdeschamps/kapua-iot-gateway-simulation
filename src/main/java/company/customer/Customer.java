@@ -25,12 +25,23 @@ public class Customer extends Item {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj.getClass().equals(Customer.class)) {
-            Customer customer = ((Customer) obj);
-            return this.firstName.equals(customer.getFirstName()) && this.lastName.equals(customer.getLastName()) && this.address.equals(customer.getAddress());
-        }
-        return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Customer customer = (Customer) o;
+
+        if (!getFirstName().equals(customer.getFirstName())) return false;
+        if (!getLastName().equals(customer.getLastName())) return false;
+        return getAddress().equals(customer.getAddress());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getFirstName().hashCode();
+        result = 31 * result + getLastName().hashCode();
+        result = 31 * result + getAddress().hashCode();
+        return result;
     }
 
     @Override

@@ -30,11 +30,15 @@ class CompanyService extends DataService {
     return _headquarters;
   }
 
-  Future<List<Delivery>> getDeliveries() async {
+  Future<List<Delivery>> getDeliveriesInTransit() async {
     List result = await _sock.requestMultiple(["company","delivery"]);
     // Transforms into a new list of well defined deliveries
     List<Delivery> deliveries = new List();
-    result.forEach((Map rawDelivery) => deliveries.add(_dataTransformer.delivery(rawDelivery)));
+    result.forEach((Map rawDelivery) {
+      Delivery delivery = _dataTransformer.delivery(rawDelivery);
+      if (delivery.inTransit)
+        deliveries.add(delivery);
+    });
     return deliveries;
   }
 }

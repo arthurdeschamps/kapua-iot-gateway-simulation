@@ -4727,7 +4727,7 @@ Map.include({
  * };
  *
  * var overlays = {
- * 	"Marker": marker,
+ * 	"Marker": markers,
  * 	"Roads": roadsLayer
  * };
  *
@@ -5592,7 +5592,7 @@ var Mixin = {Events: Events};
  * @inherits Evented
  *
  * A class for making DOM elements draggable (including touch support).
- * Used internally for map and marker dragging. Only works for elements
+ * Used internally for map and markers dragging. Only works for elements
  * that were positioned with [`L.DomUtil.setPosition`](#domutil-setposition).
  *
  * @example
@@ -6816,7 +6816,7 @@ var featureGroup = function (layers) {
  * @class Icon
  * @aka L.Icon
  *
- * Represents an icon to provide when creating a marker.
+ * Represents an icon to provide when creating a markers.
  *
  * @example
  *
@@ -6833,7 +6833,7 @@ var featureGroup = function (layers) {
  *     shadowAnchor: [22, 94]
  * });
  *
- * L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);
+ * L.markers([50.505, 30.57], {icon: myIcon}).addTo(map);
  * ```
  *
  * `L.Icon.Default` extends `L.Icon` and is the blue icon Leaflet uses for markers by default.
@@ -6857,7 +6857,7 @@ var Icon = Class.extend({
 	 *
 	 * @option iconAnchor: Point = null
 	 * The coordinates of the "tip" of the icon (relative to its top left corner). The icon
-	 * will be aligned so that this point is at the marker's geographical location. Centered
+	 * will be aligned so that this point is at the markers's geographical location. Centered
 	 * by default if size is specified, also can be set in CSS with negative margins.
 	 *
 	 * @option popupAnchor: Point = null
@@ -6924,7 +6924,7 @@ var Icon = Class.extend({
 		    anchor = toPoint(name === 'shadow' && options.shadowAnchor || options.iconAnchor ||
 		            size && size.divideBy(2, true));
 
-		img.className = 'leaflet-marker-' + name + ' ' + (options.className || '');
+		img.className = 'leaflet-markers-' + name + ' ' + (options.className || '');
 
 		if (anchor) {
 			img.style.marginLeft = (-anchor.x) + 'px';
@@ -6961,7 +6961,7 @@ function icon(options) {
  * @section
  *
  * A trivial subclass of `Icon`, represents the icon to use in `Marker`s when
- * no icon is specified. Points to the blue marker image distributed with Leaflet
+ * no icon is specified. Points to the blue markers image distributed with Leaflet
  * releases.
  *
  * In order to customize the default icon, just change the properties of `L.Icon.Default.prototype.options`
@@ -6974,9 +6974,9 @@ function icon(options) {
 var IconDefault = Icon.extend({
 
 	options: {
-		iconUrl:       'marker-icon.png',
-		iconRetinaUrl: 'marker-icon-2x.png',
-		shadowUrl:     'marker-shadow.png',
+		iconUrl:       'markers-icon.png',
+		iconRetinaUrl: 'markers-icon-2x.png',
+		shadowUrl:     'markers-shadow.png',
 		iconSize:    [25, 41],
 		iconAnchor:  [12, 41],
 		popupAnchor: [1, -34],
@@ -7021,14 +7021,14 @@ var IconDefault = Icon.extend({
 /* @namespace Marker
  * @section Interaction handlers
  *
- * Interaction handlers are properties of a marker instance that allow you to control interaction behavior in runtime, enabling or disabling certain features such as dragging (see `Handler` methods). Example:
+ * Interaction handlers are properties of a markers instance that allow you to control interaction behavior in runtime, enabling or disabling certain features such as dragging (see `Handler` methods). Example:
  *
  * ```js
- * marker.dragging.disable();
+ * markers.dragging.disable();
  * ```
  *
  * @property dragging: Handler
- * Marker dragging handler (by both mouse and touch). Only valid when the marker is on the map (Otherwise set [`marker.options.draggable`](#marker-draggable)).
+ * Marker dragging handler (by both mouse and touch). Only valid when the markers is on the map (Otherwise set [`markers.options.draggable`](#markers-draggable)).
  */
 
 var MarkerDrag = Handler.extend({
@@ -7049,7 +7049,7 @@ var MarkerDrag = Handler.extend({
 			dragend: this._onDragEnd
 		}, this).enable();
 
-		addClass(icon, 'leaflet-marker-draggable');
+		addClass(icon, 'leaflet-markers-draggable');
 	},
 
 	removeHooks: function () {
@@ -7060,7 +7060,7 @@ var MarkerDrag = Handler.extend({
 		}, this).disable();
 
 		if (this._marker._icon) {
-			removeClass(this._marker._icon, 'leaflet-marker-draggable');
+			removeClass(this._marker._icon, 'leaflet-markers-draggable');
 		}
 	},
 
@@ -7071,10 +7071,10 @@ var MarkerDrag = Handler.extend({
 	_onDragStart: function () {
 		// @section Dragging events
 		// @event dragstart: Event
-		// Fired when the user starts dragging the marker.
+		// Fired when the user starts dragging the markers.
 
 		// @event movestart: Event
-		// Fired when the marker starts moving (because of dragging).
+		// Fired when the markers starts moving (because of dragging).
 
 		this._oldLatLng = this._marker.getLatLng();
 		this._marker
@@ -7099,7 +7099,7 @@ var MarkerDrag = Handler.extend({
 		e.oldLatLng = this._oldLatLng;
 
 		// @event drag: Event
-		// Fired repeatedly while the user drags the marker.
+		// Fired repeatedly while the user drags the markers.
 		marker
 		    .fire('move', e)
 		    .fire('drag', e);
@@ -7107,10 +7107,10 @@ var MarkerDrag = Handler.extend({
 
 	_onDragEnd: function (e) {
 		// @event dragend: DragEndEvent
-		// Fired when the user stops dragging the marker.
+		// Fired when the user stops dragging the markers.
 
 		// @event moveend: Event
-		// Fired when the marker stops moving (because of dragging).
+		// Fired when the markers stops moving (because of dragging).
 		delete this._oldLatLng;
 		this._marker
 		    .fire('moveend')
@@ -7127,7 +7127,7 @@ var MarkerDrag = Handler.extend({
  * @example
  *
  * ```js
- * L.marker([50.5, 30.5]).addTo(map);
+ * L.markers([50.5, 30.5]).addTo(map);
  * ```
  */
 
@@ -7137,8 +7137,8 @@ var Marker = Layer.extend({
 	// @aka Marker options
 	options: {
 		// @option icon: Icon = *
-		// Icon instance to use for rendering the marker.
-		// See [Icon documentation](#L.Icon) for details on how to customize the marker icon.
+		// Icon instance to use for rendering the markers.
+		// See [Icon documentation](#L.Icon) for details on how to customize the markers icon.
 		// If not specified, a common instance of `L.Icon.Default` is used.
 		icon: new IconDefault(),
 
@@ -7146,15 +7146,15 @@ var Marker = Layer.extend({
 		interactive: true,
 
 		// @option draggable: Boolean = false
-		// Whether the marker is draggable with mouse/touch or not.
+		// Whether the markers is draggable with mouse/touch or not.
 		draggable: false,
 
 		// @option keyboard: Boolean = true
-		// Whether the marker can be tabbed to with a keyboard and clicked by pressing enter.
+		// Whether the markers can be tabbed to with a keyboard and clicked by pressing enter.
 		keyboard: true,
 
 		// @option title: String = ''
-		// Text for the browser tooltip that appear on marker hover (no tooltip by default).
+		// Text for the browser tooltip that appear on markers hover (no tooltip by default).
 		title: '',
 
 		// @option alt: String = ''
@@ -7162,15 +7162,15 @@ var Marker = Layer.extend({
 		alt: '',
 
 		// @option zIndexOffset: Number = 0
-		// By default, marker images zIndex is set automatically based on its latitude. Use this option if you want to put the marker on top of all others (or below), specifying a high value like `1000` (or high negative value, respectively).
+		// By default, markers images zIndex is set automatically based on its latitude. Use this option if you want to put the markers on top of all others (or below), specifying a high value like `1000` (or high negative value, respectively).
 		zIndexOffset: 0,
 
 		// @option opacity: Number = 1.0
-		// The opacity of the marker.
+		// The opacity of the markers.
 		opacity: 1,
 
 		// @option riseOnHover: Boolean = false
-		// If `true`, the marker will get on top of others when you hover the mouse over it.
+		// If `true`, the markers will get on top of others when you hover the mouse over it.
 		riseOnHover: false,
 
 		// @option riseOffset: Number = 250
@@ -7182,7 +7182,7 @@ var Marker = Layer.extend({
 		pane: 'markerPane',
 
 		// @option bubblingMouseEvents: Boolean = false
-		// When `true`, a mouse event on this marker will trigger the same event on the map
+		// When `true`, a mouse event on this markers will trigger the same event on the map
 		// (unless [`L.DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
 		bubblingMouseEvents: false
 	},
@@ -7231,32 +7231,32 @@ var Marker = Layer.extend({
 	},
 
 	// @method getLatLng: LatLng
-	// Returns the current geographical position of the marker.
+	// Returns the current geographical position of the markers.
 	getLatLng: function () {
 		return this._latlng;
 	},
 
 	// @method setLatLng(latlng: LatLng): this
-	// Changes the marker position to the given point.
+	// Changes the markers position to the given point.
 	setLatLng: function (latlng) {
 		var oldLatLng = this._latlng;
 		this._latlng = toLatLng(latlng);
 		this.update();
 
 		// @event move: Event
-		// Fired when the marker is moved via [`setLatLng`](#marker-setlatlng) or by [dragging](#marker-dragging). Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`.
+		// Fired when the markers is moved via [`setLatLng`](#markers-setlatlng) or by [dragging](#markers-dragging). Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`.
 		return this.fire('move', {oldLatLng: oldLatLng, latlng: this._latlng});
 	},
 
 	// @method setZIndexOffset(offset: Number): this
-	// Changes the [zIndex offset](#marker-zindexoffset) of the marker.
+	// Changes the [zIndex offset](#markers-zindexoffset) of the markers.
 	setZIndexOffset: function (offset) {
 		this.options.zIndexOffset = offset;
 		return this.update();
 	},
 
 	// @method setIcon(icon: Icon): this
-	// Changes the marker icon.
+	// Changes the markers icon.
 	setIcon: function (icon) {
 
 		this.options.icon = icon;
@@ -7420,7 +7420,7 @@ var Marker = Layer.extend({
 	},
 
 	// @method setOpacity(opacity: Number): this
-	// Changes the opacity of the marker.
+	// Changes the opacity of the markers.
 	setOpacity: function (opacity) {
 		this.options.opacity = opacity;
 		if (this._map) {
@@ -7458,9 +7458,9 @@ var Marker = Layer.extend({
 });
 
 
-// factory L.marker(latlng: LatLng, options? : Marker options)
+// factory L.markers(latlng: LatLng, options? : Marker options)
 
-// @factory L.marker(latlng: LatLng, options? : Marker options)
+// @factory L.markers(latlng: LatLng, options? : Marker options)
 // Instantiates a Marker object given a geographical point and optionally an options object.
 function marker(latlng, options) {
 	return new Marker(latlng, options);
@@ -7624,7 +7624,7 @@ var CircleMarker = Path.extend({
 		fill: true,
 
 		// @option radius: Number = 10
-		// Radius of the circle marker, in pixels
+		// Radius of the circle markers, in pixels
 		radius: 10
 	},
 
@@ -7635,7 +7635,7 @@ var CircleMarker = Path.extend({
 	},
 
 	// @method setLatLng(latLng: LatLng): this
-	// Sets the position of a circle marker to a new location.
+	// Sets the position of a circle markers to a new location.
 	setLatLng: function (latlng) {
 		this._latlng = toLatLng(latlng);
 		this.redraw();
@@ -7643,13 +7643,13 @@ var CircleMarker = Path.extend({
 	},
 
 	// @method getLatLng(): LatLng
-	// Returns the current geographical position of the circle marker
+	// Returns the current geographical position of the circle markers
 	getLatLng: function () {
 		return this._latlng;
 	},
 
 	// @method setRadius(radius: Number): this
-	// Sets the radius of a circle marker. Units are in pixels.
+	// Sets the radius of a circle markers. Units are in pixels.
 	setRadius: function (radius) {
 		this.options.radius = this._radius = radius;
 		return this.redraw();
@@ -7703,7 +7703,7 @@ var CircleMarker = Path.extend({
 
 
 // @factory L.circleMarker(latlng: LatLng, options?: CircleMarker options)
-// Instantiates a circle marker object given a geographical point, and an optional options object.
+// Instantiates a circle markers object given a geographical point, and an optional options object.
 function circleMarker(latlng, options) {
 	return new CircleMarker(latlng, options);
 }
@@ -8340,7 +8340,7 @@ var GeoJSON = FeatureGroup.extend({
 	 * The default is to spawn a default `Marker`:
 	 * ```js
 	 * function(geoJsonPoint, latlng) {
-	 * 	return L.marker(latlng);
+	 * 	return L.markers(latlng);
 	 * }
 	 * ```
 	 *
@@ -8597,12 +8597,12 @@ var PointToGeoJSON = {
 
 // @namespace Marker
 // @method toGeoJSON(): Object
-// Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the marker (as a GeoJSON `Point` Feature).
+// Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the markers (as a GeoJSON `Point` Feature).
 Marker.include(PointToGeoJSON);
 
 // @namespace CircleMarker
 // @method toGeoJSON(): Object
-// Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the circle marker (as a GeoJSON `Point` Feature).
+// Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the circle markers (as a GeoJSON `Point` Feature).
 Circle.include(PointToGeoJSON);
 CircleMarker.include(PointToGeoJSON);
 
@@ -9241,10 +9241,10 @@ var DivOverlay = Layer.extend({
  *
  * @example
  *
- * If you want to just bind a popup to marker click and then open it, it's really easy:
+ * If you want to just bind a popup to markers click and then open it, it's really easy:
  *
  * ```js
- * marker.bindPopup(popupContent).openPopup();
+ * markers.bindPopup(popupContent).openPopup();
  * ```
  * Path overlays like polylines also have a `bindPopup` method.
  * Here's a more complicated way to open a popup on a map:
@@ -9729,7 +9729,7 @@ Layer.include({
 			return;
 		}
 
-		// otherwise treat it like a marker and figure out
+		// otherwise treat it like a markers and figure out
 		// if we should toggle it open/closed
 		if (this._map.hasLayer(this._popup) && this._popup._source === layer) {
 			this.closePopup();
@@ -9758,7 +9758,7 @@ Layer.include({
  * @example
  *
  * ```js
- * marker.bindTooltip("my tooltip text").openTooltip();
+ * markers.bindTooltip("my tooltip text").openTooltip();
  * ```
  * Note about tooltip offset. Leaflet takes two options in consideration
  * for computing tooltip offseting:
@@ -10171,7 +10171,7 @@ Layer.include({
  * var myIcon = L.divIcon({className: 'my-div-icon'});
  * // you can set .my-div-icon styles in CSS
  *
- * L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);
+ * L.markers([50.505, 30.57], {icon: myIcon}).addTo(map);
  * ```
  *
  * By default, it has a 'leaflet-div-icon' CSS class and is styled as a little white square with a shadow.
