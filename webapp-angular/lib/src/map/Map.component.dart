@@ -8,8 +8,8 @@ import 'package:logging/logging.dart';
 import 'package:webapp_angular/src/data_services/company/Company.service.dart';
 import 'package:webapp_angular/src/data_services/company/Coordinates.dart';
 import 'package:webapp_angular/src/map/DeliveryDisplay.dart';
-
-// AngularDart info: https://webdev.dartlang.org/angular
+import 'package:webapp_angular/src/map/icons/Icon.service.dart';
+import 'package:webapp_angular/src/map/markers/Marker.service.dart';
 
 @Component(
     selector: 'map',
@@ -25,7 +25,11 @@ class MapComponent implements AfterViewInit {
   static final Logger logger = new Logger("MapComponent");
 
   MapComponent(this._companyService) {
-    _deliveryDisplay = new DeliveryDisplay(_companyService, map);
+    _deliveryDisplay = new DeliveryDisplay
+      (
+        _companyService,new MarkerService(new IconService()),
+        map
+      );
   }
 
   @override

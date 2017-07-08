@@ -5,7 +5,8 @@ import 'package:angular2/angular2.dart';
 import 'package:webapp_angular/src/data_services/DataTransformer.service.dart';
 import 'package:webapp_angular/src/data_services/company/Company.service.dart';
 import 'package:webapp_angular/src/map/Map.component.dart';
-import 'package:webapp_angular/src/map/markers/Icons.service.dart';
+import 'package:webapp_angular/src/map/icons/Icon.service.dart';
+import 'package:webapp_angular/src/map/markers/Marker.service.dart';
 import 'package:webapp_angular/src/utils/EnumConverter.service.dart';
 import 'src/navbar/Navbar.component.dart';
 import 'src/websocket/WebSocketClient.service.dart';
@@ -17,7 +18,7 @@ import 'package:logging/logging.dart';
   templateUrl: 'app_component.html',
   directives: const [CORE_DIRECTIVES, NavbarComponent, MapComponent],
   providers: const [WebSocketClientService, CompanyService, DataTransformerService,
-  EnumConverterService, IconsService]
+  EnumConverterService, IconService, MarkerService]
 )
 class AppComponent implements OnInit {
   @override

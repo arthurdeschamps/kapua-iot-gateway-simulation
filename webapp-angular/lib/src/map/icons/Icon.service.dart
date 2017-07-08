@@ -4,16 +4,16 @@
 import 'package:angular2/angular2.dart';
 import 'package:webapp_angular/src/data_services/company/Delivery.dart';
 import 'package:webapp_angular/src/data_services/company/Transportation.dart';
-import 'package:webapp_angular/src/map/markers/Icon.dart';
-
+import '../Leaflet.interop.dart';
+import '../LeafletAwesomeMarkers.interop.dart';
 /**
- * Any available markers is accesible through this class.
+ * Any available markers is accessible through this class.
  */
 @Injectable()
-class IconsService {
+class IconService {
 
 
-  Icon headquarters() => new Icon("home","black");
+  Icon headquarters() => AwesomeMarkers.icon(new AwesomeIconOptions(markerColor: "black"));
 
   Icon delivery(Delivery delivery) {
 
@@ -60,7 +60,7 @@ class IconsService {
         break;
     }
 
-    return new Icon(iconName, color);
+    return AwesomeMarkers.icon(new AwesomeIconOptions(icon: iconName, markerColor: color));
   }
 
 }

@@ -6,16 +6,17 @@ import 'dart:collection';
 import 'Leaflet.interop.dart';
 import 'package:webapp_angular/src/data_services/company/Company.service.dart';
 import 'package:webapp_angular/src/data_services/company/Delivery.dart';
-import 'package:webapp_angular/src/map/markers/Marker.dart';
+import 'package:webapp_angular/src/map/markers/Marker.service.dart';
 
 class DeliveryDisplay {
 
-  CompanyService _companyService;
+  final CompanyService _companyService;
+  final MarkerService _markerService;
   Map<Delivery, Marker> _deliveriesWithMarkers;
   LeafletMap _map;
 
 
-  DeliveryDisplay(this._companyService, this._map) {
+  DeliveryDisplay(this._companyService, this._markerService, this._map) {
     _deliveriesWithMarkers = new HashMap();
   }
 
@@ -53,12 +54,12 @@ class DeliveryDisplay {
     deliveries.forEach((Delivery delivery) {
       if (_deliveriesWithMarkers.containsKey(delivery)) {
         // Delivery markers is already on the map, we just move it
-        _deliveriesWithMarkers[delivery].move(delivery.currentPosition.latlng);
+        _deliveriesWithMarkers[delivery].setLatLng(delivery.currentPosition.latlng);
       } else {
         // Delivery markers is not yet on the map
-        Marker marker = Marker.deliveryMarker(delivery);
+        Marker marker = _markerService.deliveryMarker(delivery);
         _deliveriesWithMarkers.putIfAbsent(delivery, () => marker);
-        marker.place(_map);
+        marker.addTo(_map);
       }
     });
   }
