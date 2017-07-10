@@ -17,7 +17,6 @@ class MqttSubscriptionsManager {
 
     private String host;
     private int port;
-    MQTT mqtt;
 
     private static final Logger logger = LoggerFactory.getLogger(MqttSubscriptionsManager.class);
 
@@ -30,7 +29,7 @@ class MqttSubscriptionsManager {
      * Starts listening the gateway to Kapua and subscribes to every data.
      */
     void startListening() {
-        mqtt = new MQTT();
+        MQTT mqtt = new MQTT();
         try {
             mqtt.setHost(host,port);
             mqtt.setClientId("supply-chain-control-simulator-listener");

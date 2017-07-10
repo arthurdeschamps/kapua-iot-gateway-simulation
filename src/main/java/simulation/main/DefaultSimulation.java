@@ -1,5 +1,6 @@
 package simulation.main;
 
+import communications.kapua.KapuaClient;
 import communications.websocket.WebsocketServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,10 @@ public class DefaultSimulation {
 
         Logger logger = LoggerFactory.getLogger(DefaultSimulation.class);
 
+        // Modify port here if already taken
+        final int port = 8054;
+        final String host = "localhost";
+
         logger.info("Creating parametrizer...");
         // Uncomment the two lines below and modify the values at will to parametrize the simulation
         // Parametrizer parametrizer = new Parametrizer(100, 3, false, 0,
@@ -25,20 +30,21 @@ public class DefaultSimulation {
         Parametrizer parametrizer = new Parametrizer();
 
         // Or use the default parametrizer and set the things you want:
-        parametrizer.setDataSendingDelay(30);
+        parametrizer.setDataSendingDelay(5);
         parametrizer.setTimeFlow(3600);
+        parametrizer.setDisplayMetrics(false);
 
         // Starts the simulation
         logger.info("Starting simulators...");
         new SupplyChainControlSimulator(parametrizer).start();
 
-        logger.info("Opening websocket...");
-        WebsocketServer socket = new WebsocketServer(parametrizer.getCompany(),8054);
-        socket.start();
-
         // Start sending data and subscribing
-      //  logger.info("Initializing communication with Kapua...");
-       // new KapuaGatewayClient(parametrizer.getCompany(),parametrizer.getDataSendingDelay()).startCommunications();
+        logger.info("Initializing communications with Kapua...");
+        new KapuaClient(parametrizer, host, port).start();
+
+        logger.info("Opening websocket...");
+        new WebsocketServer(parametrizer.getCompany(),port).start();
+
     }
 
 }

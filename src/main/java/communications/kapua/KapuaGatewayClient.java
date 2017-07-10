@@ -18,7 +18,7 @@ import static org.eclipse.kapua.gateway.client.Transport.waitForConnection;
  * @author Arthur Deschamps
  * @since 1.0
  */
-public class KapuaGatewayClient {
+class KapuaGatewayClient {
 
     private Company company;
     private org.eclipse.kapua.gateway.client.Client client;
@@ -30,7 +30,7 @@ public class KapuaGatewayClient {
 
     private static final Logger logger = LoggerFactory.getLogger(KapuaGatewayClient.class);
 
-    public KapuaGatewayClient(Company company, long communicationsDelay) {
+    KapuaGatewayClient(Company company, long communicationsDelay) {
         this.company = company;
         this.communicationsDelay = communicationsDelay;
 
@@ -51,14 +51,12 @@ public class KapuaGatewayClient {
     }
 
     /**
-     * Initialize all subscriptions and starts sending data to kapua.
+     * Starts sending data to kapua.
     **/
-    public void startCommunications() {
+    void startCommunications() {
         try {
             // Wait for connection
             waitForConnection(application.transport());
-            // Start subscribing to all topics
-            new MqttSubscriptionsManager(host,port).startListening();
             // Start sending data
             Executors.newSingleThreadScheduledExecutor()
                     .scheduleWithFixedDelay(
