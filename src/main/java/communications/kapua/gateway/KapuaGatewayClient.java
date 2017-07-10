@@ -1,4 +1,4 @@
-package communications.kapua;
+package communications.kapua.gateway;
 
 import company.company.Company;
 import org.eclipse.kapua.gateway.client.Application;
@@ -18,19 +18,16 @@ import static org.eclipse.kapua.gateway.client.Transport.waitForConnection;
  * @author Arthur Deschamps
  * @since 1.0
  */
-class KapuaGatewayClient {
+public class KapuaGatewayClient {
 
     private Company company;
     private org.eclipse.kapua.gateway.client.Client client;
     private Application application;
     private long communicationsDelay;
 
-    private final String host = "localhost";
-    private final int port = 1883;
-
     private static final Logger logger = LoggerFactory.getLogger(KapuaGatewayClient.class);
 
-    KapuaGatewayClient(Company company, long communicationsDelay) {
+    public KapuaGatewayClient(Company company, final long communicationsDelay, final String host, final int port) {
         this.company = company;
         this.communicationsDelay = communicationsDelay;
 
@@ -53,7 +50,7 @@ class KapuaGatewayClient {
     /**
      * Starts sending data to kapua.
     **/
-    void startCommunications() {
+    public void startCommunications() {
         try {
             // Wait for connection
             waitForConnection(application.transport());

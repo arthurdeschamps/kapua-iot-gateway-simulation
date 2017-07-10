@@ -1,5 +1,7 @@
-package communications.kapua;
+package communications.kapua.subscriptions;
 
+import communications.kapua.gateway.DataSenderRunner;
+import communications.kapua.gateway.KapuaGatewayClient;
 import org.fusesource.mqtt.client.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,14 +15,14 @@ import java.net.URISyntaxException;
  * @see KapuaGatewayClient
  * @author Arthur Deschamps
  */
-class MqttSubscriptionsManager {
+public class MqttSubscriptionsManager {
 
     private String host;
     private int port;
 
     private static final Logger logger = LoggerFactory.getLogger(MqttSubscriptionsManager.class);
 
-    MqttSubscriptionsManager(String host, int port) {
+    public MqttSubscriptionsManager(String host, int port) {
         this.host = host;
         this.port = port;
     }
@@ -28,7 +30,7 @@ class MqttSubscriptionsManager {
     /**
      * Starts listening the gateway to Kapua and subscribes to every data.
      */
-    void startListening() {
+    public void startListening() {
         MQTT mqtt = new MQTT();
         try {
             mqtt.setHost(host,port);

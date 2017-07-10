@@ -1,5 +1,7 @@
 package communications.kapua;
 
+import communications.kapua.gateway.KapuaGatewayClient;
+import communications.kapua.subscriptions.MqttSubscriptionsManager;
 import simulation.main.Parametrizer;
 
 /**
@@ -10,18 +12,16 @@ import simulation.main.Parametrizer;
 public class KapuaClient {
 
     private Parametrizer parametrizer;
-    private String host;
-    private int port;
+    private final int port = 1883;
+    private final String host = "localhost";
 
-    public KapuaClient(Parametrizer parametrizer, String host, int port) {
+    public KapuaClient(Parametrizer parametrizer) {
         this.parametrizer = parametrizer;
-        this.host = host;
-        this.port = port;
     }
 
     public void start() {
         // Start sending telemetry data to kapua
-        new KapuaGatewayClient(parametrizer.getCompany(),parametrizer.getDataSendingDelay()).startCommunications();
+        new KapuaGatewayClient(parametrizer.getCompany(),parametrizer.getDataSendingDelay(), host, port).startCommunications();
         // Start subscriptions manager
         new MqttSubscriptionsManager(host, port).startListening();
     }

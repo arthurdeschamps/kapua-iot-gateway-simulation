@@ -1,4 +1,4 @@
-package communications.kapua;
+package communications.kapua.subscriptions;
 
 import org.fusesource.hawtbuf.Buffer;
 import org.fusesource.hawtbuf.UTF8Buffer;
@@ -14,12 +14,12 @@ import org.slf4j.LoggerFactory;
  * @see MqttSubscriptionsManager
  * @author Arthur Deschamps
  */
-public class MqttSubscriptionsListener implements ExtendedListener {
+class MqttSubscriptionsListener implements ExtendedListener {
 
     private CallbackConnection connection;
     private static final Logger logger = LoggerFactory.getLogger(MqttSubscriptionsListener.class);
 
-    public MqttSubscriptionsListener(CallbackConnection connection) {
+    MqttSubscriptionsListener(CallbackConnection connection) {
         this.connection = connection;
     }
 

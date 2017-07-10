@@ -4,7 +4,7 @@
 import 'package:angular2/angular2.dart';
 import 'package:webapp_angular/src/data_services/company/Delivery.dart';
 import 'package:webapp_angular/src/data_services/company/Transportation.dart';
-import 'package:webapp_angular/src/map/interop/LeafletAwesomeMarkers.interop.dart';
+import 'package:webapp_angular/src/sections/map/interop/LeafletAwesomeMarkers.interop.dart';
 
 /**
  * Any available markers is accessible through this class.

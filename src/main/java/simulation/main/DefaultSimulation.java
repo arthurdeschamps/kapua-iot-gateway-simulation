@@ -17,10 +17,6 @@ public class DefaultSimulation {
 
         Logger logger = LoggerFactory.getLogger(DefaultSimulation.class);
 
-        // Modify port here if already taken
-        final int port = 8054;
-        final String host = "localhost";
-
         logger.info("Creating parametrizer...");
         // Uncomment the two lines below and modify the values at will to parametrize the simulation
         // Parametrizer parametrizer = new Parametrizer(100, 3, false, 0,
@@ -40,10 +36,11 @@ public class DefaultSimulation {
 
         // Start sending data and subscribing
         logger.info("Initializing communications with Kapua...");
-        new KapuaClient(parametrizer, host, port).start();
+        new KapuaClient(parametrizer).start();
 
         logger.info("Opening websocket...");
-        new WebsocketServer(parametrizer.getCompany(),port).start();
+        final int wsPort = 8054;
+        new WebsocketServer(parametrizer.getCompany(),wsPort).start();
 
     }
 

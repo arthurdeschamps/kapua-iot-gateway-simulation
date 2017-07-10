@@ -1,4 +1,7 @@
 <div class="columns is-gapless">
     <div class="column is-one-quarter"><navbar-component></navbar-component></div>
-    <div class="column"><map></map></div>
+    <div class="column">
+        <map *ngIf="isActive('map')"></map>
+        <company-data *ngIf="isActive('company-data')"></company-data>
+    </div>
 </div>

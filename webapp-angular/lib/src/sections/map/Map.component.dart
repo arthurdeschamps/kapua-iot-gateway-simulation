@@ -3,13 +3,13 @@
 
 import 'dart:async';
 import 'package:angular2/angular2.dart';
-import 'package:webapp_angular/src/map/interop/Leaflet.interop.dart';
+import 'package:webapp_angular/src/sections/map/interop/Leaflet.interop.dart';
 import 'package:logging/logging.dart';
 import 'package:webapp_angular/src/data_services/company/Company.service.dart';
 import 'package:webapp_angular/src/data_services/company/Coordinates.dart';
-import 'package:webapp_angular/src/map/DeliveryDisplay.dart';
-import 'package:webapp_angular/src/map/icons/Icon.service.dart';
-import 'package:webapp_angular/src/map/markers/Marker.service.dart';
+import 'package:webapp_angular/src/sections/map/DeliveryDisplay.dart';
+import 'package:webapp_angular/src/sections/map/icons/Icon.service.dart';
+import 'package:webapp_angular/src/sections/map/markers/Marker.service.dart';
 
 @Component(
     selector: 'map',

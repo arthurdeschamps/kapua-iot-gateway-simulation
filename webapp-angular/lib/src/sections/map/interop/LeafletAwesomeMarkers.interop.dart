@@ -3,7 +3,8 @@
 
 @JS()
 library leafletAwesomeMarkersDart;
-import 'package:webapp_angular/src/map/interop/Leaflet.interop.dart' as L;
+
+import 'package:webapp_angular/src/sections/map/interop/Leaflet.interop.dart' as L;
 
 import 'package:js/js.dart';
 

@@ -1,4 +1,4 @@
-package communications.kapua;
+package communications.kapua.gateway;
 
 import company.company.Company;
 import company.delivery.Delivery;
@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
  * @since 1.0
  * @author Arthur Deschamps
  */
-class DataSenderRunner implements Runnable {
+public class DataSenderRunner implements Runnable {
 
     private Company company;
     private Application application;
