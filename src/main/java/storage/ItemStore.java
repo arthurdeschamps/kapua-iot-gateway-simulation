@@ -11,7 +11,7 @@ import java.util.*;
  * @since 1.0
  * @see Item
  */
-public class ItemStore<T extends Item>{
+public class ItemStore<T extends Item> {
 
     private Set<T> storage;
 

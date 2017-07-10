@@ -1,7 +1,9 @@
 package communications.websocket;
 
+import company.address.Coordinates;
 import company.company.Company;
 import gherkin.deps.com.google.gson.Gson;
+import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import storage.Item;
@@ -78,7 +80,7 @@ class WebsocketRequestHandler {
      * All data related to the company.
      */
     private Object getAll(String topic) {
-        if (topic.equals("company")) return company;
+        if (topic.equals("company")) return SerializationUtils.clone(company);
         return null;
     }
 
@@ -91,7 +93,7 @@ class WebsocketRequestHandler {
      */
     private Object getCompanyResource(String topic) {
         if (topic.equals("headquarters"))
-            return company.getHeadquarters().getCoordinates();
+            return new Coordinates(company.getHeadquarters().getCoordinates());
         return null;
     }
 
@@ -110,22 +112,22 @@ class WebsocketRequestHandler {
         // Finds a store (or none if itemType does not exist)
         switch (itemType) {
             case "customer":
-                store = company.getCustomers();
+                store = company.getCustomers().toArray();
                 break;
             case "delivery":
-                store = company.getDeliveries();
+                store = company.getDeliveries().toArray();
                 break;
             case "order":
-                store = company.getOrders();
+                store = company.getOrders().toArray();
                 break;
             case "product":
-                store = company.getProducts();
+                store = company.getProducts().toArray();
                 break;
             case "product-type":
-                store = company.getProductTypes();
+                store = company.getProductTypes().toArray();
                 break;
             case "transportation":
-                store = company.getAllTransportation();
+                store = company.getAllTransportation().toArray();
                 break;
             default:
                 store = null;

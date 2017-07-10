@@ -27,6 +27,16 @@ public class Coordinates {
     }
 
     /**
+     * Used to clone the coordinates.
+     * @param coordinates
+     * Coordinates to clone.
+     */
+    public Coordinates(Coordinates coordinates) {
+        this.latitude = coordinates.getLatitude();
+        this.longitude = coordinates.getLongitude();
+    }
+
+    /**
      * Calculate new coordinates by moving the given distance from basePoint.
      * @param distanceX
      * An east/west distance in kilometers.

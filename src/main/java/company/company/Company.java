@@ -11,6 +11,7 @@ import company.transportation.Transportation;
 import org.slf4j.LoggerFactory;
 import storage.ItemStore;
 
+import java.io.Serializable;
 import java.security.InvalidParameterException;
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -19,9 +20,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Created by Arthur Deschamps on 30.05.17.
+ * Full description of a company that is used during the simulation.
+ * @author Arthur Deschamps
+ * @since 1.0
  */
-public class Company {
+public class Company implements Serializable {
 
     private CompanyType type;
     private String name;
