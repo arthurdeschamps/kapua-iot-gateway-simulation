@@ -27,7 +27,7 @@ public class Parametrizer {
     /**
      * Call this constructor to parametrize the whole simulation.
      * @param timeFlow
-     * Speed of virtual time compare to real time.
+     * Speed of virtual time compare to real time. If timeFlow = 1, then 1 virtual second = 1 real second.
      * @param dataSendingDelay
      * Delay for periodic data sending to kapua in seconds.
      * @param displayMetrics
@@ -61,7 +61,7 @@ public class Parametrizer {
      * Default parametrizer.
      */
     public Parametrizer() {
-        this.timeFlow = 100;
+        this.timeFlow = 3600;
         this.dataSendingDelay = 3;
         this.displayMetrics = true;
         this.displayMetricsDelay = 5;
@@ -70,15 +70,15 @@ public class Parametrizer {
     }
 
     /**
-     * Converts the time flow to a delay in microseconds to execute the runners
+     * Converts the time flow to a delay in milliseconds to execute the runners
      * @return
      * A delay in microseconds.
      */
-    public long getDelayInMicroSeconds() {
+    public long getDelayInMilliSeconds() {
         switch (AbstractRunner.getTimeUnit()) {
             case HOUR:
-                // If one run represents 1 hour, then the time is already multiplied by 60^2
-                return ((long)(Math.pow(10,6))*(long)timeFlow)/(long)(Math.pow(60,2));
+                // One execution of the simulation = 1 real hour = 3.6e6 ms
+                return (long)(3.6*Math.pow(10,6)/this.getTimeFlow());
             default:
                 throw new UnsupportedOperationException("The only supported time unit for runners is Hour.");
         }

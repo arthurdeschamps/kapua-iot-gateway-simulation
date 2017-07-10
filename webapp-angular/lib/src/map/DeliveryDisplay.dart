@@ -24,7 +24,7 @@ class DeliveryDisplay {
   }
 
   void _startDeliveriesDisplay(LeafletMap map) {
-    new Timer.periodic(new Duration(seconds: 5),(Timer timer) => _deliveriesDisplay(map));
+    new Timer.periodic(new Duration(seconds: 2),(Timer timer) => _deliveriesDisplay(map));
   }
 
   void _deliveriesDisplay(LeafletMap map) {

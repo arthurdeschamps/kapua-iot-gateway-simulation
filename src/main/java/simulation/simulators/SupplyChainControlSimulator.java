@@ -46,12 +46,12 @@ public class SupplyChainControlSimulator {
         try {
             ScheduledExecutorService simulatorsExecutor = Executors.newSingleThreadScheduledExecutor();
 
-            simulatorsExecutor.scheduleWithFixedDelay(economySimulator,0,parametrizer.getDelayInMicroSeconds(),
-                    TimeUnit.MICROSECONDS);
-            simulatorsExecutor.scheduleWithFixedDelay(companySimulator,0,parametrizer.getDelayInMicroSeconds(),
-                    TimeUnit.MICROSECONDS);
-            simulatorsExecutor.scheduleWithFixedDelay(telemetrySimulator,0,parametrizer.getDelayInMicroSeconds(),
-                    TimeUnit.MICROSECONDS);
+            simulatorsExecutor.scheduleWithFixedDelay(economySimulator,0,parametrizer.getDelayInMilliSeconds(),
+                    TimeUnit.MILLISECONDS);
+            simulatorsExecutor.scheduleWithFixedDelay(companySimulator,0,parametrizer.getDelayInMilliSeconds(),
+                    TimeUnit.MILLISECONDS);
+            simulatorsExecutor.scheduleWithFixedDelay(telemetrySimulator,0,parametrizer.getDelayInMilliSeconds(),
+                    TimeUnit.MILLISECONDS);
 
             if (parametrizer.isDisplayMetrics()) {
                 ScheduledExecutorService metricsExecutorService = Executors.newScheduledThreadPool(2);
