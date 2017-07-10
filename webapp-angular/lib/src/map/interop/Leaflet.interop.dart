@@ -10,14 +10,12 @@ import 'package:js/js.dart';
 class Leaflet {
   external static LeafletMap map(String id, MapOptions options);
   external static TileLayer tileLayer(String urlTemplate, TileLayerOptions options);
-  external static LatLng latLng(num latitude, num longitude, {
-    num altitude
-  });
+  external static LatLng latLng(num latitude, num longitude, num altitude);
   external static Marker marker(LatLng latlng, MarkerOptions options);
   external static Icon icon(IconOptions options);
 }
 
-@JS('Map')
+@JS('L.Map')
 class LeafletMap {
   external String get id;
   external set id(String mapId);
@@ -25,22 +23,18 @@ class LeafletMap {
   external MapOptions get mapOptions;
   external set mapOptions(MapOptions mapOptions);
 
-  external setView(LatLng center, num zoom, {
-    ZoomPanOptions options
-  });
+  external setView(LatLng center, num zoom, ZoomPanOptions options);
 }
 
-@JS('Layer')
+@JS('L.Layer')
 class Layer {
   external addTo(LeafletMap map);
-  external Layer bindPopup(dynamic content, {
-    PopupOptions options
-  });
+  external Layer bindPopup(dynamic content, PopupOptions options);
   external Marker setLatLng(LatLng latlng);
   external Marker remove();
 }
 
-@JS('TileLayer')
+@JS('L.TileLayer')
 class TileLayer extends Layer {
   external String get urlTemplate;
   external set urlTemplate(String urlTemplate);
@@ -50,7 +44,7 @@ class TileLayer extends Layer {
 
 }
 
-@JS("LatLng")
+@JS("L.LatLng")
 class LatLng {
   external num get latitude;
   external set latitude(num latitude);
@@ -62,7 +56,7 @@ class LatLng {
   external set altitude(num altitude);
 }
 
-@JS('Icon')
+@JS('L.Icon')
 class Icon {
   external String get iconUrl;
   external set iconUrl(String iconUrl);
@@ -86,7 +80,7 @@ class Icon {
   external set shadowAnchor(NumPair shadowAnchor);
 }
 
-@JS('Marker')
+@JS('L.Marker')
 class Marker extends Layer {
   external LatLng get latlng;
   external set latlng(LatLng latlng);
@@ -103,12 +97,20 @@ class LayerOptions {
 
   external String get attribution;
   external set attribution(String attribution);
+
+  external factory LayerOptions({
+    String pane,
+    String attribution
+  });
 }
 
 @JS()
 @anonymous
 class PopupOptions extends LayerOptions {
-  // TODO
+  external factory PopupOptions({
+    num maxWidth,
+    num minWidth
+  });
 }
 
 @JS()

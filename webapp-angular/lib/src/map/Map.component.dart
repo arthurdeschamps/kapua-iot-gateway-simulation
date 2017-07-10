@@ -3,7 +3,7 @@
 
 import 'dart:async';
 import 'package:angular2/angular2.dart';
-import 'Leaflet.interop.dart';
+import 'package:webapp_angular/src/map/interop/Leaflet.interop.dart';
 import 'package:logging/logging.dart';
 import 'package:webapp_angular/src/data_services/company/Company.service.dart';
 import 'package:webapp_angular/src/data_services/company/Coordinates.dart';
@@ -14,22 +14,21 @@ import 'package:webapp_angular/src/map/markers/Marker.service.dart';
 @Component(
     selector: 'map',
     templateUrl: 'templates/map.component.html',
-    directives: const [CORE_DIRECTIVES]
+    directives: const [CORE_DIRECTIVES],
+    encapsulation: ViewEncapsulation.None
 )
 class MapComponent implements AfterViewInit {
 
   LeafletMap map;
   final CompanyService _companyService;
+  final MarkerService _markerService;
   DeliveryDisplay _deliveryDisplay;
 
   static final Logger logger = new Logger("MapComponent");
 
-  MapComponent(this._companyService) {
+  MapComponent(this._companyService,this._markerService) {
     _deliveryDisplay = new DeliveryDisplay
-      (
-        _companyService,new MarkerService(new IconService()),
-        map
-      );
+      (_companyService,new MarkerService(new IconService()));
   }
 
   @override
@@ -52,17 +51,18 @@ class MapComponent implements AfterViewInit {
 
     Coordinates headquarters = await _companyService.getHeadquarters();
     _placeHeadquartersMarker(headquarters);
-    _deliveryDisplay.start();
+    _deliveryDisplay.start(map);
     _setMapView(headquarters.latitude,headquarters.longitude,9);
   }
 
   void _setMapView(num lat, num long, num zoom) {
-    map.setView(Leaflet.latLng(lat, long, altitude: zoom), 9);
+    map.setView(Leaflet.latLng(lat, long, zoom), 9, null);
   }
 
   // Places a markers on company's headquarters
   void _placeHeadquartersMarker(Coordinates headquarters) {
-   // Marker.headquartersMarker(headquarters).place(_map);
+    Marker marker = _markerService.headquartersMarker(headquarters);
+    marker.addTo(map);
   }
 
 }

@@ -3,13 +3,17 @@
 
 @JS()
 library leafletAwesomeMarkersDart;
+import 'package:webapp_angular/src/map/interop/Leaflet.interop.dart' as L;
 
 import 'package:js/js.dart';
-import 'Leaflet.interop.dart';
 
 @JS('L.AwesomeMarkers')
 class AwesomeMarkers {
   external static Icon icon(AwesomeIconOptions options);
+}
+
+@JS('L.AwesomeMarkers.Icon')
+class Icon extends L.Icon {
 }
 
 @JS()
@@ -34,11 +38,11 @@ class AwesomeIconOptions {
   external set extraClasses(String extraClasses);
 
   external factory AwesomeIconOptions({
-    String icon = "home",
-    String prefix = "glyphicon",
-    String markerColor = "blue",
-    String iconColor = "white",
-    bool spin = false,
-    String extraClasses = ""
+    String icon,
+    String prefix,
+    String markerColor,
+    String iconColor,
+    bool spin,
+    String extraClasses
   });
 }

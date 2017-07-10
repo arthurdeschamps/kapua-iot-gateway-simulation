@@ -3,7 +3,7 @@
 
 import 'dart:async';
 import 'dart:collection';
-import 'Leaflet.interop.dart';
+import 'package:webapp_angular/src/map/interop/Leaflet.interop.dart';
 import 'package:webapp_angular/src/data_services/company/Company.service.dart';
 import 'package:webapp_angular/src/data_services/company/Delivery.dart';
 import 'package:webapp_angular/src/map/markers/Marker.service.dart';
@@ -13,44 +13,43 @@ class DeliveryDisplay {
   final CompanyService _companyService;
   final MarkerService _markerService;
   Map<Delivery, Marker> _deliveriesWithMarkers;
-  LeafletMap _map;
 
 
-  DeliveryDisplay(this._companyService, this._markerService, this._map) {
+  DeliveryDisplay(this._companyService, this._markerService) {
     _deliveriesWithMarkers = new HashMap();
   }
 
-  void start() {
-    _startDeliveriesDisplay();
+  void start(LeafletMap map) {
+    _startDeliveriesDisplay(map);
   }
 
-  void _startDeliveriesDisplay() {
-    new Timer.periodic(new Duration(seconds: 5),(Timer timer) => _deliveriesDisplay());
+  void _startDeliveriesDisplay(LeafletMap map) {
+    new Timer.periodic(new Duration(seconds: 5),(Timer timer) => _deliveriesDisplay(map));
   }
 
-  void _deliveriesDisplay() {
+  void _deliveriesDisplay(LeafletMap map) {
     _companyService.getDeliveriesInTransit().then((List<Delivery> deliveries) {
-      _placeDeliveryMarkers(deliveries);
+      _placeDeliveryMarkers(deliveries, map);
       _deleteTerminatedDeliveriesMarkers(deliveries);
     });
   }
 
   // Deletes markers for delivered deliveries
   void _deleteTerminatedDeliveriesMarkers(List<Delivery> deliveries) {
-    // Removes markers from the map
-    _deliveriesWithMarkers.forEach((Delivery delivery, Marker deliveryMarker) {
-       // if (!deliveries.contains(deliveries)) deliveryMarker.remove();
-     });
-
      // Removes deliveries that are not in transit anymore
     _deliveriesWithMarkers.keys
         .where((Delivery delivery) => !deliveries.contains(delivery))
         .toList()
-        .forEach((Delivery delivery) => _deliveriesWithMarkers.remove(delivery));
+        .forEach((Delivery delivery) {
+            // Removes marker
+            _deliveriesWithMarkers[delivery].remove();
+            // Suppress from hashmap
+           _deliveriesWithMarkers.remove(delivery);
+        });
   }
 
   // Places markers for each delivery
-  void _placeDeliveryMarkers(List<Delivery> deliveries) {
+  void _placeDeliveryMarkers(List<Delivery> deliveries, LeafletMap map) {
     deliveries.forEach((Delivery delivery) {
       if (_deliveriesWithMarkers.containsKey(delivery)) {
         // Delivery markers is already on the map, we just move it
@@ -59,7 +58,7 @@ class DeliveryDisplay {
         // Delivery markers is not yet on the map
         Marker marker = _markerService.deliveryMarker(delivery);
         _deliveriesWithMarkers.putIfAbsent(delivery, () => marker);
-        marker.addTo(_map);
+        marker.addTo(map);
       }
     });
   }

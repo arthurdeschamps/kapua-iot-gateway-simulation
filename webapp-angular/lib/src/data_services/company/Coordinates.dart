@@ -1,6 +1,6 @@
 // Copyright (c) 2017, arthurdeschamps. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
-import '../../map/Leaflet.interop.dart';
+import 'package:webapp_angular/src/map/interop/Leaflet.interop.dart';
 class Coordinates {
   num latitude;
   num longitude;
@@ -8,7 +8,7 @@ class Coordinates {
   LatLng latlng;
 
   Coordinates(this.latitude, this.longitude, {this.altitude = 8}) {
-    latlng = Leaflet.latLng(latitude, longitude, altitude: altitude);
+    latlng = Leaflet.latLng(latitude, longitude, altitude);
   }
 
   @override
