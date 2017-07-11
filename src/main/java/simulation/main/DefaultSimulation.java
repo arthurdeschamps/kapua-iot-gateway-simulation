@@ -1,6 +1,5 @@
 package simulation.main;
 
-import communications.kapua.KapuaClient;
 import communications.websocket.WebsocketServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +27,7 @@ public class DefaultSimulation {
         // Or use the default parametrizer and set the things you want:
         parametrizer.setDataSendingDelay(5);
         parametrizer.setTimeFlow(3600);
-        parametrizer.setDisplayMetrics(false);
+        parametrizer.setDisplayMetrics(true);
 
         // Starts the simulation
         logger.info("Starting simulators...");
@@ -36,7 +35,7 @@ public class DefaultSimulation {
 
         // Start sending data and subscribing
         logger.info("Initializing communications with Kapua...");
-        new KapuaClient(parametrizer).start();
+        //new KapuaClient(parametrizer).start();
 
         logger.info("Opening websocket...");
         final int wsPort = 8054;

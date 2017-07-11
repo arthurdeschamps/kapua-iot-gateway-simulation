@@ -41,4 +41,8 @@ class DataTransformerService {
     return new Delivery(coordinates(rawDelivery["currentLocation"]),
         transportation(rawDelivery["transporter"]),inTransit,rawDelivery["id"]);
   }
+
+  int number(Map map) {
+    return map["number"];
+  }
 }

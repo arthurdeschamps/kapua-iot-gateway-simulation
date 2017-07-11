@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import storage.Item;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 /**
@@ -62,10 +63,12 @@ class WebsocketRequestHandler {
                 break;
 
             case ONE:
-                if (request.getTopics().length == 2) {
-                    String[] requests = request.getTopics();
-                    if (requests[0].equals("company"))
+                String[] requests = request.getTopics();
+                if (requests[0].equals("company")) {
+                    if (request.getTopics().length == 2)
                         response.setData(getCompanyResource(requests[1]));
+                    else if (request.getTopics().length == 3)
+                        response.setData(getCompanyResource(Arrays.copyOfRange(requests,1,3)));
                 }
                 break;
 
@@ -98,6 +101,21 @@ class WebsocketRequestHandler {
     }
 
     /**
+     * Handles misc company requests (such as number of ...)
+     * @param topics
+     * Type of data and property
+     * @return
+     * Can be multiple things.
+     */
+    private Object getCompanyResource(String... topics) {
+        Object[] store = getStoreAsArray(topics[0]);
+        if (topics[1].equals("number"))
+            return store.length;
+        else
+            throw new IllegalArgumentException("Request ”"+topics.toString()+"” is invalid");
+    }
+
+    /**
      * Parses the second argument of a request and returns the requested data (if the request is well formed).
      * @param itemType
      * A string that corresponds to a class extending Item (e.g. "customer","Customer","order",etc)
@@ -106,36 +124,7 @@ class WebsocketRequestHandler {
      */
     private Object getStore(String itemType) {
         itemType = itemType.toLowerCase();
-
-        Object store;
-
-        // Finds a store (or none if itemType does not exist)
-        switch (itemType) {
-            case "customer":
-                store = company.getCustomers().toArray();
-                break;
-            case "delivery":
-                store = company.getDeliveries().toArray();
-                break;
-            case "order":
-                store = company.getOrders().toArray();
-                break;
-            case "product":
-                store = company.getProducts().toArray();
-                break;
-            case "product-type":
-                store = company.getProductTypes().toArray();
-                break;
-            case "transportation":
-                store = company.getAllTransportation().toArray();
-                break;
-            default:
-                store = null;
-                logger.info("No class extending Item found for string \""+itemType+"\"");
-                break;
-        }
-
-        return store;
+        return getStoreAsArray(itemType);
     }
 
     /**
@@ -161,5 +150,38 @@ class WebsocketRequestHandler {
 
     private Request getRequest(String jsonRequest) {
         return gson.fromJson(jsonRequest,Request.class);
+    }
+
+    private Object[] getStoreAsArray(String which) {
+        Object[] store;
+
+
+        // Finds a store (or none if itemType does not exist)
+        switch (which) {
+            case "customers":
+                store = company.getCustomers().toArray();
+                break;
+            case "deliveries":
+                store = company.getDeliveries().toArray();
+                break;
+            case "orders":
+                store = company.getOrders().toArray();
+                break;
+            case "products":
+                store = company.getProducts().toArray();
+                break;
+            case "productTypes":
+                store = company.getProductTypes().toArray();
+                break;
+            case "transportation":
+                store = company.getAllTransportation().toArray();
+                break;
+            default:
+                store = null;
+                logger.info("No class extending Item found for string \""+which+"\"");
+                break;
+        }
+
+        return store;
     }
 }

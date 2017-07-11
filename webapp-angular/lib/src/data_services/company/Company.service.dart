@@ -31,7 +31,7 @@ class CompanyService extends DataService {
   }
 
   Future<List<Delivery>> getDeliveriesInTransit() async {
-    List result = await _sock.requestMultiple(["company","delivery"]);
+    List result = await _sock.requestMultiple(["company","deliveries"]);
     // Transforms into a new list of well defined deliveries
     List<Delivery> deliveries = new List();
     result.forEach((Map rawDelivery) {
@@ -40,5 +40,9 @@ class CompanyService extends DataService {
         deliveries.add(delivery);
     });
     return deliveries;
+  }
+
+  Future<int> getNumber(String of) async {
+    return (await _sock.requestOne(["company",of,"number"]) as int);
   }
 }
