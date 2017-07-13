@@ -74,7 +74,7 @@ export function bootstrapItem(
 * @param fileToEdit (file we want to add import to)
 * @param symbolName (item to import)
 * @param fileName (path to the file)
-* @param isDefault (if true, import follows style for importing default exports)
+* @param isDefault (if true, import follows styles for importing default exports)
 * @return Change
 */
 

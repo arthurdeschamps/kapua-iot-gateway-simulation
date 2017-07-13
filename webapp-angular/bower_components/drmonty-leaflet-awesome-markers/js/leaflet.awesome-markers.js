@@ -72,7 +72,7 @@
                 if(options.iconColor === 'white' || options.iconColor === 'black') {
                     iconColorClass = "icon-" + options.iconColor;
                 } else {
-                    iconColorStyle = "style='color: " + options.iconColor + "' ";
+                    iconColorStyle = "styles='color: " + options.iconColor + "' ";
                 }
             }
 

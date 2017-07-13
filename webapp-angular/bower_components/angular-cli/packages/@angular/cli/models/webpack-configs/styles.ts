@@ -17,7 +17,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
  * know they are used.
  *
  * require('exports-loader')
- * require('style-loader')
+ * require('styles-loader')
  * require('postcss-loader')
  * require('css-loader')
  * require('stylus')
@@ -35,7 +35,7 @@ export function getStylesConfig(wco: WebpackConfigOptions) {
   const entryPoints: { [key: string]: string[] } = {};
   const globalStylePaths: string[] = [];
   const extraPlugins: any[] = [];
-  // style-loader does not support sourcemaps without absolute publicPath, so it's
+  // styles-loader does not support sourcemaps without absolute publicPath, so it's
   // better to disable them when not extracting css
   // https://github.com/webpack-contrib/style-loader#recommended-configuration
   const cssSourceMap = buildOptions.extractCss && buildOptions.sourcemaps;
@@ -47,7 +47,7 @@ export function getStylesConfig(wco: WebpackConfigOptions) {
   const deployUrl = wco.buildOptions.deployUrl || '';
 
   const postcssPluginCreator = function() {
-    // safe settings based on: https://github.com/ben-eb/cssnano/issues/358#issuecomment-283696193
+    // safe parametrizer based on: https://github.com/ben-eb/cssnano/issues/358#issuecomment-283696193
     const importantCommentRe = /@preserve|@license|[@#]\s*source(?:Mapping)?URL|^!/i;
     const minimizeOptions = {
       autoprefixer: false, // full pass with autoprefixer is run separately
@@ -109,7 +109,7 @@ export function getStylesConfig(wco: WebpackConfigOptions) {
   // process global styles
   if (appConfig.styles.length > 0) {
     const globalStyles = extraEntryParser(appConfig.styles, appRoot, 'styles');
-    // add style entry points
+    // add styles entry points
     globalStyles.forEach(style =>
       entryPoints[style.entry]
         ? entryPoints[style.entry].push(style.path)
@@ -192,7 +192,7 @@ export function getStylesConfig(wco: WebpackConfigOptions) {
         include: globalStylePaths,
         test,
         use: buildOptions.extractCss ? ExtractTextPlugin.extract(extractTextPlugin)
-                                     : ['style-loader', ...extractTextPlugin.use]
+                                     : ['styles-loader', ...extractTextPlugin.use]
       };
       // Save the original options as arguments for eject.
       if (buildOptions.extractCss) {

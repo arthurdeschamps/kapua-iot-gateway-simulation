@@ -185,7 +185,7 @@ const init: any = (config: any, emitter: any, customFileHandlers: any) => {
     urlRegex: /^\/_karma_webpack_\/.*/,
     handler: function handler(req: any, res: any) {
       middleware(req, res, function () {
-        // Ensure script and style bundles are served.
+        // Ensure script and styles bundles are served.
         // They are mentioned in the custom karma context page and we don't want them to 404.
         const alwaysServe = [
           '/_karma_webpack_/inline.bundle.js',

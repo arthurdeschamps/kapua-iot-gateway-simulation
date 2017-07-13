@@ -2480,7 +2480,7 @@ var DomEvent = (Object.freeze || Object)({
 
 
 // @property TRANSFORM: String
-// Vendor-prefixed transform style name (e.g. `'webkitTransform'` for WebKit).
+// Vendor-prefixed transform styles name (e.g. `'webkitTransform'` for WebKit).
 var TRANSFORM = testProp(
 	['transform', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']);
 
@@ -2488,7 +2488,7 @@ var TRANSFORM = testProp(
 // the same for the transitionend event, in particular the Android 4.1 stock browser
 
 // @property TRANSITION: String
-// Vendor-prefixed transition style name.
+// Vendor-prefixed transition styles name.
 var TRANSITION = testProp(
 	['webkitTransition', 'transition', 'OTransition', 'MozTransition', 'msTransition']);
 
@@ -2506,7 +2506,7 @@ function get(id) {
 }
 
 // @function getStyle(el: HTMLElement, styleAttrib: String): String
-// Returns the value for a certain style attribute on an element,
+// Returns the value for a certain styles attribute on an element,
 // including computed values or values set through CSS.
 function getStyle(el, style) {
 	var value = el.style[style] || (el.currentStyle && el.currentStyle[style]);
@@ -2651,8 +2651,8 @@ function _setOpacityIE(el, value) {
 }
 
 // @function testProp(props: String[]): String|false
-// Goes through the array of style names and returns the first name
-// that is a valid style name for an element. If no such name is found,
+// Goes through the array of styles names and returns the first name
+// that is a valid styles name for an element. If no such name is found,
 // it returns false. Useful for vendor-prefixed styles like `transform`.
 function testProp(props) {
 	var style = document.documentElement.style;
@@ -6775,7 +6775,7 @@ var FeatureGroup = LayerGroup.extend({
 		return this.fire('layerremove', {layer: layer});
 	},
 
-	// @method setStyle(style: Path options): this
+	// @method setStyle(styles: Path options): this
 	// Sets the given path options to each layer of the group that has a `setStyle` method.
 	setStyle: function (style) {
 		return this.invoke('setStyle', style);
@@ -7564,7 +7564,7 @@ var Path = Layer.extend({
 		return this;
 	},
 
-	// @method setStyle(style: Path options): this
+	// @method setStyle(styles: Path options): this
 	// Changes the appearance of a Path based on the options in the `Path options` object.
 	setStyle: function (style) {
 		setOptions(this, style);
@@ -8320,7 +8320,7 @@ function polygon(latlngs, options) {
  *
  * ```js
  * L.geoJSON(data, {
- * 	style: function (feature) {
+ * 	styles: function (feature) {
  * 		return {color: feature.properties.color};
  * 	}
  * }).bindPopup(function (layer) {
@@ -8344,7 +8344,7 @@ var GeoJSON = FeatureGroup.extend({
 	 * }
 	 * ```
 	 *
-	 * @option style: Function = *
+	 * @option styles: Function = *
 	 * A `Function` defining the `Path options` for styling GeoJSON lines and polygons,
 	 * called internally when data is added.
 	 * The default value is to not override any defaults:
@@ -8426,7 +8426,7 @@ var GeoJSON = FeatureGroup.extend({
 	},
 
 	// @method resetStyle( <Path> layer ): this
-	// Resets the given vector layer's style to the original GeoJSON style, useful for resetting style after hover events.
+	// Resets the given vector layer's styles to the original GeoJSON styles, useful for resetting styles after hover events.
 	resetStyle: function (layer) {
 		// reset any custom styles
 		layer.options = extend({}, layer.defaultOptions);
@@ -8434,8 +8434,8 @@ var GeoJSON = FeatureGroup.extend({
 		return this;
 	},
 
-	// @method setStyle( <Function> style ): this
-	// Changes styles of GeoJSON vector layers with the given style function.
+	// @method setStyle( <Function> styles ): this
+	// Changes styles of GeoJSON vector layers with the given styles function.
 	setStyle: function (style) {
 		return this.eachLayer(function (layer) {
 			this._setLayerStyle(layer, style);
@@ -11916,7 +11916,7 @@ var Canvas = Renderer.extend({
 
 		this._fillStroke(ctx, layer);
 
-		// TODO optimization: 1 fill/stroke for all features with equal style instead of 1 for each feature
+		// TODO optimization: 1 fill/stroke for all features with equal styles instead of 1 for each feature
 	},
 
 	_updateCircle: function (layer) {

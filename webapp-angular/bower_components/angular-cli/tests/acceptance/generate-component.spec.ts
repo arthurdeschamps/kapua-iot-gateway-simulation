@@ -216,8 +216,8 @@ describe('Acceptance: ng generate component', function () {
     });
   });
 
-  it('my-comp --inline-style', function () {
-    return ng(['generate', 'component', 'my-comp', '--inline-style']).then(() => {
+  it('my-comp --inline-styles', function () {
+    return ng(['generate', 'component', 'my-comp', '--inline-styles']).then(() => {
       const testPath =
         path.join(root, 'tmp', 'foo', 'src', 'app', 'my-comp', 'my-comp.component.css');
       expect(pathExistsSync(testPath)).to.equal(false);

@@ -1,3 +1,18 @@
 :host .hero-body {
     padding:0;
 }
+
+:host #companyName {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    padding-left: 10px;
+}
+
+:host #companyName span {
+    font-weight:bolder;
+}
+
+:host #badges {
+    margin-bottom:20px;
+    padding-left: 10px;
+}

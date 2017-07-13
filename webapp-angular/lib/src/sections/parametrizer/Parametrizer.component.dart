@@ -2,14 +2,15 @@
 // is governed by a BSD-styles license that can be found in the LICENSE file.
 
 import 'package:angular2/angular2.dart';
-import 'package:webapp_angular/src/websocket/WebSocketClient.service.dart';
+import 'dart:html';
 
 // AngularDart info: https://webdev.dartlang.org/angular
 
-abstract class DataService {
-
-  final WebSocketClientService _sock;
-
-  DataService(this._sock);
-
+@Component(
+  selector: 'parametrizer',
+  styleUrls: const ['styles/parametrizer.component.css'],
+  templateUrl: 'templates/parametrizer.component.html',
+  directives: const [CORE_DIRECTIVES]
+)
+class ParametrizerComponent {
 }

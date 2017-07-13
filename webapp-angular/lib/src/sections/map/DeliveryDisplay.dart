@@ -1,5 +1,5 @@
 // Copyright (c) 2017, arthurdeschamps. All rights reserved. Use of this source code
-// is governed by a BSD-style license that can be found in the LICENSE file.
+// is governed by a BSD-styles license that can be found in the LICENSE file.
 
 import 'dart:async';
 import 'dart:collection';
@@ -24,7 +24,8 @@ class DeliveryDisplay {
   }
 
   void _startDeliveriesDisplay(LeafletMap map) {
-    new Timer.periodic(new Duration(seconds: 5),(Timer timer) => _deliveriesDisplay(map));
+    _deliveriesDisplay(map);
+    new Timer.periodic(new Duration(seconds: 1),(Timer timer) => _deliveriesDisplay(map));
   }
 
   void _deliveriesDisplay(LeafletMap map) {

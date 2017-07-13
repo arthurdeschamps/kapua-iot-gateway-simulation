@@ -4,6 +4,6 @@
         <tab [isActive]="isActive('company-data')" (click)="setActive('company-data')" text="Company data" faClass="database"></tab>
     </nav-section>
     <nav-section sectionTitle="Parametrizer">
-        <tab [isActive]="isActive('parametrizer')" text="Settings" faClass="sliders"></tab>
+        <tab [isActive]="isActive('parametrizer')" (click)="setActive('parametrizer')" text="Settings" faClass="sliders"></tab>
     </nav-section>
 </aside>

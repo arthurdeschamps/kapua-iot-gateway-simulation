@@ -1,18 +1,32 @@
-<section class="hero is-info is-fullheight">
-    <div class="hero-body">
-        <div class="container is-fluid">
-            <div *ngFor="let storage of getStorage()" class="columns">
-                <div class="column is-fullwidth has-text-centered">
-                    <h2  class="title is-2">
-                        {{ storage.name }}: {{ storage.size }}
-                        <span>
-                            <i *ngIf="storage.percentage >= 0" class="fa fa-arrow-up lime" aria-hidden="true"></i>
-                            <i *ngIf="storage.percentage < 0" class="fa fa-arrow-down red" aria-hidden="true"></i>
-                        </span>
-                        {{storage.percentage | number:'1.2-2'}}
-                    </h2>
-                </div>
-            </div>
-        </div>
+<div class="company-data">
+    <h3 id="companyName" class="is-3 title">
+        Name of your company: <span>Company name</span>
+    </h3>
+    <div id="badges">
+        <span class="tag is-info">International Business</span>
+        <span class="tag is-info">National Business</span>
+        <span class="tag is-info">Local Business</span>
     </div>
-</section>
+    <table class="table is-bordered is-striped">
+        <thead>
+        <tr>
+            <th>Store</th>
+            <th>Current quantity</th>
+            <th>Evolution</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let storage of getStorage()">
+            <td>{{ storage.name | firstLetterUppercase }}</td>
+            <td>{{ storage.size }}</td>
+            <td>
+                                <span>
+                                    <i *ngIf="storage.percentage > 0" class="fa fa-arrow-up lime" aria-hidden="true"></i>
+                                    <i *ngIf="storage.percentage < 0" class="fa fa-arrow-down red" aria-hidden="true"></i>
+                                </span>
+                {{ storage.percentage | number:'1.2-2' }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+

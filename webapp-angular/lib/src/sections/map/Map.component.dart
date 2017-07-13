@@ -1,5 +1,5 @@
 // Copyright (c) 2017, arthurdeschamps. All rights reserved. Use of this source code
-// is governed by a BSD-style license that can be found in the LICENSE file.
+// is governed by a BSD-styles license that can be found in the LICENSE file.
 
 import 'dart:async';
 import 'package:angular2/angular2.dart';
@@ -48,7 +48,6 @@ class MapComponent implements AfterViewInit {
       attribution: _osmAttrib
     )).addTo(map);
 
-
     Coordinates headquarters = await _companyService.getHeadquarters();
     _placeHeadquartersMarker(headquarters);
     _deliveryDisplay.start(map);
@@ -64,5 +63,4 @@ class MapComponent implements AfterViewInit {
     Marker marker = _markerService.headquartersMarker(headquarters);
     marker.addTo(map);
   }
-
 }

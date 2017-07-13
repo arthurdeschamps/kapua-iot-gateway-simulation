@@ -13,7 +13,7 @@ export default Blueprint.extend({
     { name: 'prefix', type: String, default: 'app', aliases: ['p'] },
     { name: 'style', type: String },
     { name: 'routing', type: Boolean, default: false },
-    { name: 'inline-style', type: Boolean, default: false, aliases: ['is'] },
+    { name: 'inline-styles', type: Boolean, default: false, aliases: ['is'] },
     { name: 'inline-template', type: Boolean, default: false, aliases: ['it'] },
     { name: 'skip-git', type: Boolean, default: false, aliases: ['sg'] },
     { name: 'minimal',

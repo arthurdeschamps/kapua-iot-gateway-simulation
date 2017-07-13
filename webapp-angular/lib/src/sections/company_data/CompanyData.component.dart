@@ -1,9 +1,10 @@
 // Copyright (c) 2new SotrageInformation(0,"")17, arthurdeschamps. All rights reserved. Use of this source code
-// is governed by a BSD-style license that can be found in the LICENSE file.
+// is governed by a BSD-styles license that can be found in the LICENSE file.
 
 import 'dart:async';
 import 'package:angular2/angular2.dart';
 import 'package:webapp_angular/src/data_services/company/Company.service.dart';
+import 'package:webapp_angular/src/pipes/FirstLetterUppercase.pipe.dart';
 import 'package:webapp_angular/src/sections/company_data/utils/StorageInformation.dart';
 
 @Component(
@@ -11,9 +12,9 @@ import 'package:webapp_angular/src/sections/company_data/utils/StorageInformatio
   templateUrl: 'templates/companyData.component.html',
   styleUrls: const ["styles/companyData.component.css"],
   directives: const [CORE_DIRECTIVES],
-  pipes: const [COMMON_PIPES]
+  pipes: const [COMMON_PIPES, FirstLetterUppercase]
 )
-class CompanyDataComponent implements AfterViewInit {
+class CompanyDataComponent implements AfterViewInit, OnInit {
 
   @Input() StorageInformation customers = new StorageInformation(0,"customers");
   @Input() StorageInformation orders = new StorageInformation(0,"orders");
@@ -27,9 +28,18 @@ class CompanyDataComponent implements AfterViewInit {
   CompanyDataComponent(this._companyService);
 
   @override
+  ngOnInit() {
+    _setStoreSizes();
+  }
+
+  @override
   ngAfterViewInit() {
-    List<String> stores = ["customers", "orders", "deliveries", "products", "productTypes", "transportation"];
-    new Timer.periodic(new Duration(seconds: 2),(timer) => stores.forEach((String store) => _setNumber(store)));
+    new Timer.periodic(new Duration(seconds: 2),(timer) => _setStoreSizes());
+  }
+
+  void _setStoreSizes() {
+    final List<String> stores = ["customers", "orders", "deliveries", "products", "productTypes", "transportation"];
+    stores.forEach((val) => _setNumber(val));
   }
 
   void _setNumber(String of) {

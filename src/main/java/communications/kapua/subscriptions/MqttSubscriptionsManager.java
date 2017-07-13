@@ -2,11 +2,9 @@ package communications.kapua.subscriptions;
 
 import communications.kapua.gateway.DataSenderRunner;
 import communications.kapua.gateway.KapuaGatewayClient;
-import org.fusesource.mqtt.client.*;
+import org.eclipse.paho.client.mqttv3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.net.URISyntaxException;
 
 /**
  * Mqtt client wrapper. This class only deals manages subscriptions.
@@ -31,41 +29,51 @@ public class MqttSubscriptionsManager {
      * Starts listening the gateway to Kapua and subscribes to every data.
      */
     public void startListening() {
-        MQTT mqtt = new MQTT();
+        String topic = "foo";
+        String broker = "tcp://"+host+":"+Integer.toString(port);
+        String clientId = "supply-chain-control-simulation-listener";
+        String username = "kapua-broker";
+        String password = "kapua-password";
+
         try {
-            mqtt.setHost(host,port);
-            mqtt.setClientId("supply-chain-control-simulator-listener");
-            mqtt.setUserName("kapua-broker");
-            mqtt.setPassword("kapua-password");
-        } catch (URISyntaxException e) {
-            logger.error(e.getMessage());
+            MqttClient client = new MqttClient(broker, clientId);
+            MqttConnectOptions connOpts = new MqttConnectOptions();
+            connOpts.setCleanSession(true);
+            connOpts.setUserName(username);
+            connOpts.setPassword(password.toCharArray());
+            connOpts.setCleanSession(true);
+            logger.info("Connecting to broker: "+broker);
+            client.setCallback(new MqttCallback() {
+                @Override
+                public void connectionLost(Throwable throwable) {
+                    logger.info("Subscriptions stopped");
+                }
+
+                @Override
+                public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
+                    logger.info(s);
+                    logger.info(mqttMessage.getPayload().toString());
+                }
+
+                @Override
+                public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
+
+                }
+            });
+            client.connect(connOpts);
+            if (client.isConnected())
+                logger.info("Connected");
+            else
+                logger.error(client.getDebug().toString());
+            client.subscribe(topic,2);
+        } catch(MqttException me) {
+            logger.error("reason "+me.getReasonCode());
+            logger.error("msg "+me.getMessage());
+            logger.error("loc "+me.getLocalizedMessage());
+            logger.error("cause "+me.getCause());
+            logger.error("excep "+me);
+            me.printStackTrace();
         }
-        final CallbackConnection connection = mqtt.callbackConnection();
-        connection.listener(new MqttSubscriptionsListener(connection));
-        connection.connect(new Callback<Void>() {
-            @Override
-            public void onSuccess(Void value) {
-                Topic[] allTopics = {new Topic("deliveries/locations/#",QoS.AT_LEAST_ONCE)};
-                connection.subscribe(allTopics, new Callback<byte[]>() {
-                    @Override
-                    public void onSuccess(byte[] value) {
-                        logger.info("Subscriptions started");
-                    }
 
-                    @Override
-                    public void onFailure(Throwable value) {
-                        logger.error(value.getMessage());
-                        value.printStackTrace();
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(Throwable value) {
-                logger.error(value.getMessage());
-                value.printStackTrace();
-            }
-        });
     }
-
 }

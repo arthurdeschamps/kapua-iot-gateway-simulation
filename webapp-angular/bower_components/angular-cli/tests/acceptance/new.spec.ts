@@ -164,8 +164,8 @@ describe('Acceptance: ng new', function () {
       });
   });
 
-  it('ng new --inline-style does not gener a style file', () => {
-    return ng(['new', 'foo', '--skip-install', '--skip-git', '--inline-style'])
+  it('ng new --inline-styles does not gener a styles file', () => {
+    return ng(['new', 'foo', '--skip-install', '--skip-git', '--inline-styles'])
       .then(() => {
         const styleFile = path.join('src', 'app', 'app.component.css');
         expect(fs.pathExistsSync(styleFile)).to.equal(false);
