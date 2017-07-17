@@ -60,5 +60,13 @@ class CompanyDataComponent {
     }
   }
 
+  double getOverallEvolution(String of) {
+    if (stores != null && of != null) {
+      final int currentVal = stores[of];
+      return (currentVal - _companyService.initialQuantities[of])/_companyService.initialQuantities[of]*100;
+    } else {
+      return 0.0;
+    }
+  }
 
 }

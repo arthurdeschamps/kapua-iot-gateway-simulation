@@ -12,8 +12,6 @@ class ChartDataService {
 
   List<String> time;
   Map<String, List<int>> storesQuantities;
-  @Input()
-
   final CompanyService _companyService;
   final Logger logger = new Logger("DataChart");
 
@@ -36,9 +34,17 @@ class ChartDataService {
   }
 
   void _updateChartData() {
+    final int maxValues = 20;
+    // We limit x-axis to 50 values
+    if (time.length >= maxValues)
+      time.removeAt(0);
     time.add(_now);
-    _companyService.getStoresWithSizes().then((val) => val.forEach((name, quantity) =>
-        storesQuantities[name].add(quantity)
-    ));
+
+    // Same limit for values
+    _companyService.getStoresWithSizes().then((val) => val.forEach((name, quantity) {
+      if (storesQuantities[name].length >= maxValues)
+        storesQuantities[name].removeAt(0);
+      storesQuantities[name].add(quantity);
+    }));
   }
 }

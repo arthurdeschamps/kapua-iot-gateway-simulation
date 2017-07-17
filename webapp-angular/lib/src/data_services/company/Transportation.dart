@@ -8,6 +8,13 @@ class Transportation {
 
   Transportation(this.transportationType, this.healthState);
 
+  String get healthStateString {
+    return healthState.toString().replaceAll("TransportationHealthState.","").toLowerCase();
+  }
+
+  String get transportationTypeString {
+    return transportationType.toString().replaceAll("TransportationType.","").toLowerCase();
+  }
 }
 
 enum TransportationType  {

@@ -17,13 +17,18 @@ import 'package:webapp_angular/src/websocket/WebSocketClient.service.dart';
 class CompanyService extends DataService {
   Coordinates _headquarters;
   final List<String> storesNames = ["customers", "orders", "deliveries", "products", "productTypes", "transportation"];
+  Map<String, int> initialQuantities;
 
   final WebSocketClientService _sock;
   final DataTransformerService _dataTransformer;
 
   static final Logger logger = new Logger("CompanyService");
 
-  CompanyService(this._sock, this._dataTransformer) : super(_sock);
+  CompanyService(this._sock, this._dataTransformer) : super(_sock) {
+    initialQuantities = new HashMap();
+    for (final String name in storesNames)
+      getNumber(name).then((val) => initialQuantities.putIfAbsent(name, () => val));
+  }
 
   void _setHeadquarters(Map coordinates) {
     _headquarters = _dataTransformer.coordinates(coordinates);

@@ -14,6 +14,7 @@ public class KapuaClient {
     private Parametrizer parametrizer;
     private final int port = 1883;
     private final String host = "localhost";
+    private final String accountName = "kapua-sys";
 
     public KapuaClient(Parametrizer parametrizer) {
         this.parametrizer = parametrizer;
@@ -21,9 +22,9 @@ public class KapuaClient {
 
     public void start() {
         // Start sending telemetry data to kapua
-        new KapuaGatewayClient(parametrizer.getCompany(),parametrizer.getDataSendingDelay(), host, port).startCommunications();
+        new KapuaGatewayClient(parametrizer.getCompany(),accountName, parametrizer.getDataSendingDelay(), host, port).startCommunications();
         // Start subscriptions manager
-        new MqttSubscriptionsManager(host, port).startListening();
+        new MqttSubscriptionsManager(accountName, host, port).startListening();
     }
 
 }

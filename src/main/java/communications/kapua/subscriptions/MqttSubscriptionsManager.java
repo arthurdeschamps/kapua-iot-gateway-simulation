@@ -2,7 +2,10 @@ package communications.kapua.subscriptions;
 
 import communications.kapua.gateway.DataSenderRunner;
 import communications.kapua.gateway.KapuaGatewayClient;
-import org.eclipse.paho.client.mqttv3.*;
+import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
+import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,10 +20,17 @@ public class MqttSubscriptionsManager {
 
     private String host;
     private int port;
+    private final String clientId = "supply-chain-control-simulation-listener";
+    private final String broker = "tcp://"+host+":"+Integer.toString(port);
+    private final String username = "kapua-broker";
+    private final String password = "kapua-password";
+    private final String applicationId = ""; // TODO
+    private String accountName;
 
     private static final Logger logger = LoggerFactory.getLogger(MqttSubscriptionsManager.class);
 
-    public MqttSubscriptionsManager(String host, int port) {
+    public MqttSubscriptionsManager(final String accountName, final String host, final int port) {
+        this.accountName = accountName;
         this.host = host;
         this.port = port;
     }
@@ -29,12 +39,6 @@ public class MqttSubscriptionsManager {
      * Starts listening the gateway to Kapua and subscribes to every data.
      */
     public void startListening() {
-        String topic = "foo";
-        String broker = "tcp://"+host+":"+Integer.toString(port);
-        String clientId = "supply-chain-control-simulation-listener";
-        String username = "kapua-broker";
-        String password = "kapua-password";
-
         try {
             IMqttAsyncClient client = new MqttAsyncClient(broker, clientId);
             MqttConnectOptions connOpts = new MqttConnectOptions();
@@ -43,34 +47,7 @@ public class MqttSubscriptionsManager {
             connOpts.setPassword(password.toCharArray());
             connOpts.setCleanSession(true);
             logger.info("Connecting to broker: "+broker);
-            client.setCallback(new MqttCallbackExtended() {
-                @Override
-                public void connectComplete(boolean b, String s) {
-                    logger.info("Connected");
-                    try {
-                        client.subscribe(topic,2);
-                        logger.info("Subscriptions started");
-                    } catch (MqttException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void connectionLost(Throwable throwable) {
-                    logger.info("Subscriptions stopped");
-                }
-
-                @Override
-                public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
-                    logger.info(s);
-                    logger.info(mqttMessage.getPayload().toString());
-                }
-
-                @Override
-                public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-
-                }
-            });
+            client.setCallback(new MqttListener(client,clientId,applicationId,accountName));
             client.connect(connOpts);
         } catch(MqttException me) {
             logger.error("reason "+me.getReasonCode());

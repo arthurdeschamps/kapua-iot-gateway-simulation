@@ -21,6 +21,10 @@
     padding-left: 10px;
 }
 
+:host #badges > span {
+    background-color: #3D9970;
+}
+
 :host .wrapper {
     margin: 0 auto;
     text-align: center;

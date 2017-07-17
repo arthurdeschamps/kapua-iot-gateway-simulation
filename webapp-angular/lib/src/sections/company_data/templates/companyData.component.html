@@ -18,7 +18,8 @@
                 <tr>
                     <th>Store</th>
                     <th>Current quantity</th>
-                    <th>Evolution</th>
+                    <th>Immediate evolution</th>
+                    <th>Overall evolution</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -30,7 +31,15 @@
                                     <i *ngIf="storage.percentage > 0" class="fa fa-arrow-up lime" aria-hidden="true"></i>
                                     <i *ngIf="storage.percentage < 0" class="fa fa-arrow-down red" aria-hidden="true"></i>
                                 </span>
-                        {{ storage.percentage | number:'1.2-2' }} %</td>
+                        {{ storage.percentage | number:'1.2-2' }} %
+                    </td>
+                    <td>
+                        <span>
+                            <i *ngIf="getOverallEvolution(storage.name) > 0" class="fa fa-arrow-up lime" aria-hidden="true"></i>
+                            <i *ngIf="getOverallEvolution(storage.name) < 0" class="fa fa-arrow-down red" aria-hidden="true"></i>
+                        </span>
+                        {{ getOverallEvolution(storage.name) | number:'1.2-2' }} %
+                    </td>
                 </tr>
                 </tbody>
             </table>

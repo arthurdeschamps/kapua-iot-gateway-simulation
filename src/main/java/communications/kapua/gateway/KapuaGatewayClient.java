@@ -27,13 +27,13 @@ public class KapuaGatewayClient {
 
     private static final Logger logger = LoggerFactory.getLogger(KapuaGatewayClient.class);
 
-    public KapuaGatewayClient(Company company, final long communicationsDelay, final String host, final int port) {
+    public KapuaGatewayClient(Company company,final String accountName, final long communicationsDelay, final String host, final int port) {
         this.company = company;
         this.communicationsDelay = communicationsDelay;
 
         try {
             client = KuraMqttProfile.newProfile(FuseClient.Builder::new)
-                    .accountName("kapua-sys")
+                    .accountName(accountName)
                     .clientId("supply-chain-control-simulator")
                     .brokerUrl("tcp://"+host+":"+Integer.toString(port))
                     .credentials(userAndPassword("kapua-broker", "kapua-password"))
