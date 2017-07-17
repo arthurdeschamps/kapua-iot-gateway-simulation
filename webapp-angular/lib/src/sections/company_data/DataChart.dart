@@ -22,8 +22,10 @@ class DataChartComponent implements AfterViewInit {
   final CompanyService _companyService;
   final Logger logger = new Logger("DataChart");
 
-  @Input() List<String> time;
-  @Input() Map<String, List<int>> storesQuantities;
+  List<String> time;
+  Map<String, List<int>> storesQuantities;
+  @Input()
+  Chart _companyDataChart;
 
   DataChartComponent(this._companyService) {
     time = <String>[_now];
@@ -37,7 +39,7 @@ class DataChartComponent implements AfterViewInit {
         storesQuantities.putIfAbsent(name, () => [quantity]);
       });
       _initChart();
-      new Timer.periodic(new Duration(seconds: 2),(_) => _updateChartData());
+      new Timer.periodic(new Duration(seconds: 5),(_) => _updateChartData());
     });
   }
 
@@ -52,9 +54,11 @@ class DataChartComponent implements AfterViewInit {
         type: "line",
         data: data,
         options: new ChartOptions(
+          animation: new ChartAnimationOptions(duration: 0),
           responsive: true,
-          scales: new LinearScale(
+          scales: new LogarithmicScale(
             yAxes: [new ChartYAxe(
+              type: "logarithmic",
               scaleLabel: new ScaleTitleOptions(
                 display: true,
                 labelString: "Quantity in store"
@@ -69,21 +73,26 @@ class DataChartComponent implements AfterViewInit {
           )
         )
     );
-    new Chart(querySelector('#chart') as CanvasElement, config);
+    _companyDataChart = new Chart(querySelector('#chart') as CanvasElement, config);
   }
 
   List<ChartDataSets> _getDataSets() {
     // Map of background colors for lines
     Map<String, String> colorOf = {
-      
-
+      "customers" : "#001f3f",
+      "products" : "#FF4136",
+      "productTypes" : "#B10DC9",
+      "deliveries" : "#FF851B",
+      "orders" : "#AAAAAA",
+      "transportation" : "#DDDDDD"
     };
 
     List<ChartDataSets> data = new List<ChartDataSets>();
     storesQuantities.forEach((name, quantities) =>
       data.add(new ChartDataSets(
           data: quantities,
-          label: name
+          label: name,
+          borderColor: colorOf[name]
       ))
     );
     return data;
@@ -94,6 +103,11 @@ class DataChartComponent implements AfterViewInit {
     _companyService.getStoresWithSizes().then((val) => val.forEach((name, quantity) =>
       storesQuantities[name].add(quantity)
     ));
+    _companyDataChart.data = new LinearChartData(
+      labels: time,
+      datasets: _getDataSets()
+    );
+    _companyDataChart.update();
   }
 
   static String get _now {
