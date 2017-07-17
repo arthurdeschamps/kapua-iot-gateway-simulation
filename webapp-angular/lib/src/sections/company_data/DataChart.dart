@@ -2,12 +2,10 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async';
-import 'dart:collection';
 import 'dart:html';
 import 'package:angular2/angular2.dart';
 import 'package:chartjs/chartjs.dart';
-import 'package:logging/logging.dart';
-import 'package:webapp_angular/src/data_services/company/Company.service.dart';
+import 'package:webapp_angular/src/data_services/company/ChartData.service.dart';
 
 // AngularDart info: https://webdev.dartlang.org/angular
 
@@ -19,35 +17,23 @@ import 'package:webapp_angular/src/data_services/company/Company.service.dart';
 )
 class DataChartComponent implements AfterViewInit {
 
-  final CompanyService _companyService;
-  final Logger logger = new Logger("DataChart");
-
-  List<String> time;
-  Map<String, List<int>> storesQuantities;
-  @Input()
+  final ChartDataService _chartDataService;
   Chart _companyDataChart;
 
-  DataChartComponent(this._companyService) {
-    time = <String>[_now];
-    storesQuantities = new HashMap();
-  }
+  DataChartComponent(this._chartDataService);
 
   @override
   ngAfterViewInit() {
-    _companyService.getStoresWithSizes().then((val) {
-      val.forEach((name, quantity) {
-        storesQuantities.putIfAbsent(name, () => [quantity]);
-      });
+    _chartDataService.initChartData().then((_) {
       _initChart();
-      new Timer.periodic(new Duration(seconds: 5),(_) => _updateChartData());
+      new Timer.periodic(new Duration(seconds: 1), (_) => _updateChart());
     });
   }
 
   void _initChart() {
     // Initiate the chart
-    logger.info(time);
     var data = new LinearChartData(
-        labels: time,
+        labels: _chartDataService.time,
         datasets: _getDataSets()
     );
     var config = new ChartConfiguration(
@@ -88,7 +74,7 @@ class DataChartComponent implements AfterViewInit {
     };
 
     List<ChartDataSets> data = new List<ChartDataSets>();
-    storesQuantities.forEach((name, quantities) =>
+    _chartDataService.storesQuantities.forEach((name, quantities) =>
       data.add(new ChartDataSets(
           data: quantities,
           label: name,
@@ -98,19 +84,13 @@ class DataChartComponent implements AfterViewInit {
     return data;
   }
 
-  void _updateChartData() {
-    time.add(_now);
-    _companyService.getStoresWithSizes().then((val) => val.forEach((name, quantity) =>
-      storesQuantities[name].add(quantity)
-    ));
+  void _updateChart() {
     _companyDataChart.data = new LinearChartData(
-      labels: time,
-      datasets: _getDataSets()
+        labels: _chartDataService.time,
+        datasets: _getDataSets()
     );
     _companyDataChart.update();
   }
 
-  static String get _now {
-    return new DateTime.now().second.toString();
-  }
+
 }

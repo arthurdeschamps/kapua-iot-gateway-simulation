@@ -3,6 +3,7 @@
 
 import 'package:angular2/angular2.dart';
 import 'package:webapp_angular/src/data_services/DataTransformer.service.dart';
+import 'package:webapp_angular/src/data_services/company/ChartData.service.dart';
 import 'package:webapp_angular/src/data_services/company/Company.service.dart';
 import 'package:webapp_angular/src/sections/ActiveSection.service.dart';
 import 'package:webapp_angular/src/sections/company_data/CompanyData.component.dart';
@@ -22,7 +23,8 @@ import 'package:logging/logging.dart';
   directives: const [CORE_DIRECTIVES, NavbarComponent, MapComponent, CompanyDataComponent,
   ParametrizerComponent],
   providers: const [WebSocketClientService, CompanyService, DataTransformerService,
-  EnumConverterService, IconService, MarkerService, ActiveSectionService]
+  EnumConverterService, IconService, MarkerService, ActiveSectionService,
+  ChartDataService]
 )
 class AppComponent implements OnInit {
 
