@@ -21,6 +21,7 @@
     "font-awesome": "Font-Awesome#^4.7.0",
     "leaflet": "Leaflet#^1.1.0",
     "angular-cli": "^1.2.0",
-    "angular": "^1.6.5"
+    "angular": "^1.6.5",
+    "chart.js": "^2.6.0"
   }
 }

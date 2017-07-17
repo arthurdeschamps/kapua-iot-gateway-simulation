@@ -36,14 +36,25 @@ public class MqttSubscriptionsManager {
         String password = "kapua-password";
 
         try {
-            MqttClient client = new MqttClient(broker, clientId);
+            IMqttAsyncClient client = new MqttAsyncClient(broker, clientId);
             MqttConnectOptions connOpts = new MqttConnectOptions();
             connOpts.setCleanSession(true);
             connOpts.setUserName(username);
             connOpts.setPassword(password.toCharArray());
             connOpts.setCleanSession(true);
             logger.info("Connecting to broker: "+broker);
-            client.setCallback(new MqttCallback() {
+            client.setCallback(new MqttCallbackExtended() {
+                @Override
+                public void connectComplete(boolean b, String s) {
+                    logger.info("Connected");
+                    try {
+                        client.subscribe(topic,2);
+                        logger.info("Subscriptions started");
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 @Override
                 public void connectionLost(Throwable throwable) {
                     logger.info("Subscriptions stopped");
@@ -61,11 +72,6 @@ public class MqttSubscriptionsManager {
                 }
             });
             client.connect(connOpts);
-            if (client.isConnected())
-                logger.info("Connected");
-            else
-                logger.error(client.getDebug().toString());
-            client.subscribe(topic,2);
         } catch(MqttException me) {
             logger.error("reason "+me.getReasonCode());
             logger.error("msg "+me.getMessage());

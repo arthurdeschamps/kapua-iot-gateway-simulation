@@ -12,6 +12,7 @@ dependencies:
   angular_components: ^0.5.1
   js: any
   logging: ^0.11.3+1
+  chartjs: ^0.4.0
 
 dev_dependencies:
   angular_test: ^1.0.0-beta+2

@@ -1,5 +1,9 @@
-:host #parametrizer {
+:host #parametrizer > .container {
     margin-top: 20px;
     padding-right:50px;
     padding-left:50px;
+}
+
+:host #parametrizer {
+    background-color: #f9f9f9;
 }

@@ -2,19 +2,25 @@
 // is governed by a BSD-styles license that can be found in the LICENSE file.
 
 import 'dart:async';
+import 'dart:collection';
+import 'dart:mirrors';
 import 'package:angular2/angular2.dart';
 import 'package:logging/logging.dart';
 import 'package:webapp_angular/src/data_services/DataAbstract.service.dart';
 import 'package:webapp_angular/src/data_services/DataTransformer.service.dart';
 import 'package:webapp_angular/src/data_services/company/Coordinates.dart';
 import 'package:webapp_angular/src/data_services/company/Delivery.dart';
+import 'package:webapp_angular/src/data_services/company/utils/StorageInformation.dart';
 import 'package:webapp_angular/src/websocket/WebSocketClient.service.dart';
 
 @Injectable()
 class CompanyService extends DataService {
   Coordinates _headquarters;
+  final List<String> storesNames = ["customers", "orders", "deliveries", "products", "productTypes", "transportation"];
+
   final WebSocketClientService _sock;
   final DataTransformerService _dataTransformer;
+
   static final Logger logger = new Logger("CompanyService");
 
   CompanyService(this._sock, this._dataTransformer) : super(_sock);
@@ -44,5 +50,14 @@ class CompanyService extends DataService {
 
   Future<int> getNumber(String of) async {
     return (await _sock.requestOne(["company",of,"number"]) as int);
+  }
+
+  Future<Map<String, int>> getStoresWithSizes() async {
+    Map<String, int> storesWithInformation = new HashMap();
+    await Future.forEach(storesNames, (name) async {
+      int quantity = await getNumber(name);
+      storesWithInformation.putIfAbsent(name, () => quantity);
+    });
+    return storesWithInformation;
   }
 }
