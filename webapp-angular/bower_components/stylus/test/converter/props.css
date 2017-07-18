@@ -1,6 +1,6 @@
 body {
-  color: red;
-  color: blue;
-  /* comment */
-  color: green !important;
+  color: #f00;
+  color: #00f;
+/* comment */
+  color: #008000 !important;
 }

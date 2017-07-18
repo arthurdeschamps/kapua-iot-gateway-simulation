@@ -1,47 +1,47 @@
-button.prefix-login {
+button.login {
   border: 1px solid #000;
 }
-button.prefix-login {
+button.login {
   background: #f00;
 }
-a.prefix-link:hover,
-a.prefix-error:hover {
+a.link:hover,
+a.error:hover {
   color: #f00;
 }
-.prefix-error {
+.error {
   background: #0f0;
 }
-.prefix-hello {
+.hello {
   width: 10px;
 }
-.prefix-hello .prefix-bar {
+.hello .bar {
   height: 10px;
 }
-.prefix-lol {
+.lol {
   padding: 10px;
 }
-.prefix-hello:hover {
+.hello:hover {
   background: #000;
 }
-.prefix-barbaz_1 {
+.barbaz_1 {
   margin: 10px;
 }
-.prefix-foolector,
-.prefix-barbaz_2 {
+.foolector,
+.barbaz_2 {
   margin: 20px;
 }
-.prefix-barbaz_3 {
+.barbaz_3 {
   margin: 30px;
 }
 @media (max-width: 640px) {
-  .prefix-helloing,
-  .prefix-boo {
+  .helloing,
+  .boo {
     display: none;
   }
 }
-.prefix-helloing {
+.helloing {
   background: #0f0;
 }
-.prefix-boo {
+.boo {
   background: #f00;
 }

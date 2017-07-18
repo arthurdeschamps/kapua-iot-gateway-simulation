@@ -3,7 +3,6 @@
 
 import 'package:angular2/angular2.dart';
 import 'dart:html';
-
 // AngularDart info: https://webdev.dartlang.org/angular
 
 @Component(
@@ -16,6 +15,7 @@ class ParametrizerComponent implements AfterViewInit {
 
   @override
   ngAfterViewInit() {
+
     querySelector("#settings").onSubmit.listen((event) => onSubmit(event));
     Element input = querySelector(".input-field");
     Element para;

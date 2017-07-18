@@ -1,3 +1,1 @@
-.a {
-  color: #f00;
-}
+@import url("import.include.resolver.css-file/a.css");

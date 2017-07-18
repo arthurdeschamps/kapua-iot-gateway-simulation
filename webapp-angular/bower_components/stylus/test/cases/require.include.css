@@ -1,8 +1,4 @@
-.c {
-  height: 100px;
-  background: #fff;
-}
-
+@import "require/include/nested/c.css";
 b {
   foo: bob;
 }

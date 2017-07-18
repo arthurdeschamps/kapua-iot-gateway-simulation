@@ -22,7 +22,7 @@
 }
 
 :host #badges > span {
-    background-color: #3D9970;
+    background-color: dimgrey;
 }
 
 :host .wrapper {

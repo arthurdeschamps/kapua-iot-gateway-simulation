@@ -54,12 +54,19 @@
 }
 :host #parametrizer #settings .slider input {
   max-width: 300px;
-  min-width: 50%;
+  min-width: 70%;
   margin-top: 40px;
   background: transparent;
 }
-:host #parametrizer #settings .slider input::-webkit-slider-thumb {
-  -webkit-appearance: none;
+:host #parametrizer #settings .slider input:before {
+  content: "1x";
+  margin-right: 10px;
+  font-size: 13px;
+}
+:host #parametrizer #settings .slider input:after {
+  content: "10000x";
+  margin-left: 10px;
+  font-size: 13px;
 }
 :host #parametrizer #settings .slider input::-ms-track {
   width: 100%;
@@ -71,30 +78,67 @@
 }
 :host #parametrizer #settings .slider input::-webkit-slider-thumb {
   -webkit-appearance: none;
-  border: 1px solid #000;
-  height: 36px;
-  width: 16px;
-  border-radius: 3px;
-  background: #fff;
+  border: 1px solid #00d1b2;
+  height: 30px;
+  width: 30px;
+  border-radius: 100%;
+  background: #00d1b2;
   cursor: pointer;
   margin-top: -14px;
-  box-shadow: 1px 1px 1px #000, 0 0 1px #0d0d0d;
 }
 :host #parametrizer #settings .slider input::-moz-range-thumb {
-  box-shadow: 1px 1px 1px #000, 0 0 1px #0d0d0d;
-  border: 1px solid #000;
-  height: 36px;
-  width: 16px;
-  border-radius: 3px;
-  background: #fff;
+  border: 1px solid #00d1b2;
+  height: 30px;
+  width: 30px;
+  border-radius: 100%;
+  background: #00d1b2;
   cursor: pointer;
 }
 :host #parametrizer #settings .slider input::-ms-thumb {
-  box-shadow: 1px 1px 1px #000, 0 0 1px #0d0d0d;
-  border: 1px solid #000;
-  height: 36px;
-  width: 16px;
-  border-radius: 3px;
-  background: #fff;
+  border: 1px solid #00d1b2;
+  height: 30px;
+  width: 30px;
+  border-radius: 100%;
+  background: #00d1b2;
   cursor: pointer;
+}
+:host #parametrizer #settings .slider input::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 1px;
+  cursor: pointer;
+  background: #4a4a4a;
+  border-radius: 1.3px;
+}
+:host #parametrizer #settings .slider input:focus::-webkit-slider-runnable-track {
+  background: #4a4a4a;
+}
+:host #parametrizer #settings .slider input:focus::-ms-fill-lower {
+  background: #4a4a4a;
+}
+:host #parametrizer #settings .slider input:focus::-ms-fill-upper {
+  background: #4a4a4a;
+}
+:host #parametrizer #settings .slider input::-moz-range-track {
+  width: 100%;
+  height: 1px;
+  cursor: pointer;
+  background: #4a4a4a;
+  border-radius: 1.3px;
+}
+:host #parametrizer #settings .slider input::-ms-track {
+  width: 100%;
+  height: 1px;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  border-width: 16px 0;
+  color: transparent;
+}
+:host #parametrizer #settings .slider input::-ms-fill-lower {
+  background: #4a4a4a;
+  border-radius: 2.6px;
+}
+:host #parametrizer #settings .slider input::-ms-fill-upper {
+  background: #4a4a4a;
+  border-radius: 2.6px;
 }

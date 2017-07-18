@@ -23,6 +23,7 @@
     "angular-cli": "^1.2.0",
     "angular": "^1.6.5",
     "chart.js": "^2.6.0",
-    "stylus": "^0.54.5"
+    "stylus": "^0.54.5",
+    "jquery-awesome-cursor": "^0.3.1"
   }
 }

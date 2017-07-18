@@ -2,13 +2,12 @@
 .b,
 .b:before,
 .b:after {
-    color: red;
+  color: #f00;
 }
-
 @media print {
-    .c,
-    .c:before,
-    .c:after {
-        color: green;
-    }
+  .c,
+  .c:before,
+  .c:after {
+    color: #008000;
+  }
 }
