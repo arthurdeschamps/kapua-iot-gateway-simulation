@@ -1,9 +1,100 @@
-:host #parametrizer > .container {
-    margin-top: 20px;
-    padding-right:50px;
-    padding-left:50px;
-}
-
 :host #parametrizer {
-    background-color: #f9f9f9;
+  background-color: #f9f9f9;
+  text-align: center;
+  color: #4a4a4a;
+}
+:host #parametrizer > .container {
+  margin-top: 50px;
+}
+:host #parametrizer #settings .input-field {
+  max-width: 60%;
+  min-width: 60%;
+  margin-bottom: 40px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
+}
+:host #parametrizer #settings .input-field input {
+  -webkit-appearance: none;
+}
+:host #parametrizer #settings .input-field input:focus {
+  outline: none;
+}
+:host #parametrizer #settings .input-field .input-title,
+:host #parametrizer #settings .input-field .input-subtitle {
+  text-align: left;
+  min-width: 100%;
+}
+:host #parametrizer #settings .input-field .input-title {
+  min-width: 100%;
+  font-size: 1.2em;
+  color: #5c5c5c;
+}
+:host #parametrizer #settings .input-field .input-subtitle {
+  font-size: 0.8em;
+  font-style: italic;
+  color: #6e6e6e;
+}
+:host #parametrizer #settings .text-input input {
+  min-width: 100%;
+  font-size: 20px;
+  color: #535353;
+  border: none;
+  border-bottom: 1px solid #9e9e9e;
+  padding: 0;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  background-color: #fafafa;
+}
+:host #parametrizer #settings .text-input input:hover,
+:host #parametrizer #settings .text-input input:active,
+:host #parametrizer #settings .text-input input:focus {
+  border-bottom-color: #00d1b2;
+}
+:host #parametrizer #settings .slider input {
+  max-width: 300px;
+  min-width: 50%;
+  margin-top: 40px;
+  background: transparent;
+}
+:host #parametrizer #settings .slider input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+:host #parametrizer #settings .slider input::-ms-track {
+  width: 100%;
+  cursor: pointer;
+/* Hides the slider so custom styles can be added */
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+:host #parametrizer #settings .slider input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: 1px solid #000;
+  height: 36px;
+  width: 16px;
+  border-radius: 3px;
+  background: #fff;
+  cursor: pointer;
+  margin-top: -14px;
+  box-shadow: 1px 1px 1px #000, 0 0 1px #0d0d0d;
+}
+:host #parametrizer #settings .slider input::-moz-range-thumb {
+  box-shadow: 1px 1px 1px #000, 0 0 1px #0d0d0d;
+  border: 1px solid #000;
+  height: 36px;
+  width: 16px;
+  border-radius: 3px;
+  background: #fff;
+  cursor: pointer;
+}
+:host #parametrizer #settings .slider input::-ms-thumb {
+  box-shadow: 1px 1px 1px #000, 0 0 1px #0d0d0d;
+  border: 1px solid #000;
+  height: 36px;
+  width: 16px;
+  border-radius: 3px;
+  background: #fff;
+  cursor: pointer;
 }

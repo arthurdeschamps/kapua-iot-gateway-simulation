@@ -173,9 +173,16 @@ class TileLayerOptions extends LayerOptions {
     external num get maxZoom;
     external set maxZoom(num maxZoom);
 
+    external bool get noWrap;
+    external set noWrap(bool noWrap);
+
+    external String get attribution;
+    external set attribution(String attribution);
+
     external factory TileLayerOptions({
       num minZoom,
       num maxZoom,
+      bool noWrap,
       String attribution
     });
 }

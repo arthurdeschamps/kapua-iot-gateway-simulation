@@ -21,18 +21,20 @@ public class MqttSubscriptionsManager {
     private String host;
     private int port;
     private final String clientId = "supply-chain-control-simulation-listener";
-    private final String broker = "tcp://"+host+":"+Integer.toString(port);
-    private final String username = "kapua-broker";
+    private String broker;
+    private final String username = "kapua-sys";
     private final String password = "kapua-password";
-    private final String applicationId = ""; // TODO
+    private String applicationId;
     private String accountName;
 
     private static final Logger logger = LoggerFactory.getLogger(MqttSubscriptionsManager.class);
 
-    public MqttSubscriptionsManager(final String accountName, final String host, final int port) {
+    public MqttSubscriptionsManager(final String accountName, final String applicationId, final String host, final int port) {
         this.accountName = accountName;
+        this.applicationId = applicationId;
         this.host = host;
         this.port = port;
+        this.broker = "tcp://"+host+":"+Integer.toString(port);
     }
 
     /**

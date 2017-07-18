@@ -11,7 +11,6 @@
             </div>
             <!-- Charts for stores' size evolution -->
             <data-chart></data-chart>
-
             <!-- Table with immediate stores' size -->
             <table style="table-layout:fixed;" class="table is-bordered is-striped">
                 <thead>
@@ -27,17 +26,17 @@
                     <td>{{ storage.name | firstLetterUppercase | splitUppercases }}</td>
                     <td>{{ storage.size }}</td>
                     <td>
-                                <span>
-                                    <i *ngIf="storage.percentage > 0" class="fa fa-arrow-up lime" aria-hidden="true"></i>
-                                    <i *ngIf="storage.percentage < 0" class="fa fa-arrow-down red" aria-hidden="true"></i>
-                                </span>
+                        <span>
+                            <i *ngIf="storage.percentage > 0" class="fa fa-arrow-up lime" aria-hidden="true"></i>
+                            <i *ngIf="storage.percentage < 0" class="fa fa-arrow-down red" aria-hidden="true"></i>
+                        </span>
                         {{ storage.percentage | number:'1.2-2' }} %
                     </td>
                     <td>
-                        <span>
-                            <i *ngIf="getOverallEvolution(storage.name) > 0" class="fa fa-arrow-up lime" aria-hidden="true"></i>
-                            <i *ngIf="getOverallEvolution(storage.name) < 0" class="fa fa-arrow-down red" aria-hidden="true"></i>
-                        </span>
+                <span>
+                    <i *ngIf="getOverallEvolution(storage.name) > 0" class="fa fa-arrow-up lime" aria-hidden="true"></i>
+                    <i *ngIf="getOverallEvolution(storage.name) < 0" class="fa fa-arrow-down red" aria-hidden="true"></i>
+                </span>
                         {{ getOverallEvolution(storage.name) | number:'1.2-2' }} %
                     </td>
                 </tr>

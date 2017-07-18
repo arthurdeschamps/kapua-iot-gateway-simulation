@@ -45,7 +45,8 @@ class MapComponent implements AfterViewInit {
     Leaflet.tileLayer(_osmUrl, new TileLayerOptions(
       minZoom: 1,
       maxZoom: 12,
-      attribution: _osmAttrib
+      attribution: _osmAttrib,
+      noWrap: true
     )).addTo(map);
 
     Coordinates headquarters = await _companyService.getHeadquarters();

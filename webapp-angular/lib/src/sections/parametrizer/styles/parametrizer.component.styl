@@ -1,0 +1,107 @@
+teal = #00d1b2
+
+:host
+    #parametrizer
+        background-color #f9f9f9
+        text-align center
+        color #4a4a4a
+
+        > .container
+            margin-top 50px
+
+        #settings
+
+            .input-field
+                max-width 60%
+                min-width 60%
+                margin-bottom 40px
+                margin-left auto
+                margin-right auto
+                padding 0
+
+                input
+                    -webkit-appearance none
+                input:focus
+                    outline none
+
+
+                .input-title
+                .input-subtitle
+                    text-align left
+                    min-width 100%
+
+                .input-title
+                    min-width 100%
+                    font-size 1.2em
+                    color lighten(@color, 10%)
+
+                .input-subtitle
+                    font-size 0.8em
+                    font-style italic
+                    color lighten(@color, 20%)
+
+            .text-input
+                input
+                    min-width 100%
+                    font-size 20px
+                    color lighten(@color, 5%)
+                    border none
+                    border-bottom 1px solid #9e9e9e
+                    padding 0
+                    height 40px
+                    line-height 40px
+                    text-align center
+                    background-color lighten(@background-color, 15%)
+
+                    &:hover, &:active, &:focus
+                        border-bottom-color teal
+
+            .slider
+                input
+                    max-width 300px
+                    min-width 50%
+                    margin-top 40px
+                    background transparent
+
+                input::-webkit-slider-thumb
+                    -webkit-appearance none
+
+                input::-ms-track
+                    width 100%
+                    cursor pointer
+
+                    /* Hides the slider so custom styles can be added */
+                    background transparent
+                    border-color transparent
+                    color transparent
+
+                input::-webkit-slider-thumb
+                    -webkit-appearance none
+                    border 1px solid #000000
+                    height 36px
+                    width 16px
+                    border-radius 3px
+                    background #ffffff
+                    cursor pointer
+                    margin-top -14px
+                    box-shadow 1px 1px 1px #000000, 0 0 1px #0d0d0d
+
+                input::-moz-range-thumb
+                    box-shadow 1px 1px 1px #000000, 0 0 1px #0d0d0d
+                    border 1px solid #000000
+                    height 36px
+                    width 16px
+                    border-radius 3px
+                    background #ffffff
+                    cursor pointer
+
+                input::-ms-thumb
+                    box-shadow 1px 1px 1px #000000, 0 0 1px #0d0d0d
+                    border 1px solid #000000
+                    height 36px
+                    width 16px
+                    border-radius 3px
+                    background #ffffff
+                    cursor pointer
+
+

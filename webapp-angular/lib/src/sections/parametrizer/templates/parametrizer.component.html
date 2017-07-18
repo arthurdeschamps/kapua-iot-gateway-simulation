@@ -1,51 +1,14 @@
 <div id="parametrizer" class="hero is-fullheight">
     <div class="container is-fluid">
         <form id="settings">
-            <div class="field">
-                <label class="label">Company's name</label>
-                <p class="control">
-                    <input class="input" type="text" value="Company's name">
-                </p>
+            <div class="input-field text-input">
+                <p class="input-title">Name of your company</p>
+                <input type="text">
             </div>
-            <div class="field">
-                <label class="label">Time flow</label>
+            <div class="input-field slider">
+                <p class="input-title">Time flow</p>
+                <p class="input-subtitle">Speed of virtual time against real time speed</p>
                 <input type="range" min="1" max="10000">
-            </div>
-            <div class="field">
-                <label class="label">Delay between publications to Kapua</label>
-                <p class="control">
-                    <input class="input" type="number" value="10">
-                </p>
-            </div>
-            <div class="field">
-                <label class="label">Display metrics in console</label>
-                <p class="control">
-                    <label class="radio">
-                        <input type="radio" name="question">
-                        Yes
-                    </label>
-                    <label class="radio">
-                        <input type="radio" name="question">
-                        No
-                    </label>
-                </p>
-            </div>
-            <div class="field">
-                <label class="label">Business type</label>
-                <p class="control">
-                    <label class="radio">
-                        <input type="radio" name="question">
-                        International
-                    </label>
-                    <label class="radio">
-                        <input type="radio" name="question">
-                        National
-                    </label>
-                    <label class="radio">
-                        <input type="radio" name="question">
-                        Local
-                    </label>
-                </p>
             </div>
         </form>
     </div>

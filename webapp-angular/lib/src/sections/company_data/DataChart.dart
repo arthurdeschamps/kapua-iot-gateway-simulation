@@ -11,7 +11,7 @@ import 'package:webapp_angular/src/data_services/company/ChartData.service.dart'
 
 @Component(
   selector: 'data-chart',
-  styleUrls: const ['styles/dataChart.component.css'],
+  styleUrls: const ["styles/dataChart.component.css"],
   templateUrl: 'templates/dataChart.component.html',
   directives: const [CORE_DIRECTIVES]
 )

@@ -27,7 +27,7 @@ public class KapuaGatewayClient {
 
     private static final Logger logger = LoggerFactory.getLogger(KapuaGatewayClient.class);
 
-    public KapuaGatewayClient(Company company,final String accountName, final long communicationsDelay, final String host, final int port) {
+    public KapuaGatewayClient(Company company, final String applicationId, final String accountName, final long communicationsDelay, final String host, final int port) {
         this.company = company;
         this.communicationsDelay = communicationsDelay;
 
@@ -43,7 +43,7 @@ public class KapuaGatewayClient {
            logger.error(e.getMessage());
         }
 
-        application = client.buildApplication("Supply Chain Control Simulator").build();
+        application = client.buildApplication(applicationId).build();
 
     }
 
