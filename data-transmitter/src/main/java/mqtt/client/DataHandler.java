@@ -22,14 +22,14 @@ public class DataHandler {
     private String publisherAccountName;
     private WebsocketServer wsServer;
 
-    public DataHandler(String applicationId, String publisherId, String publisherAccountName, WebsocketServer wsServer) {
+    DataHandler(String applicationId, String publisherId, String publisherAccountName, WebsocketServer wsServer) {
         this.applicationId = applicationId;
         this.publisherId = publisherId;
         this.publisherAccountName = publisherAccountName;
         this.wsServer = wsServer;
     }
 
-    public void handle(String topic, Map<String, Object> data) {
+    void handle(String topic, Map<String, Object> data) {
         if (data == null || topic == null)
             return;
 
@@ -45,6 +45,7 @@ public class DataHandler {
      * A list of strings representing the main and sub topics.
      */
     private String[] getSegments(String topic) {
+        logger.info(topic);
         final String kapuaMeta = Stream.of(publisherAccountName, publisherId, applicationId).collect(Collectors.joining("/"))+"/";
         return topic.replace(kapuaMeta,"").split("/");
     }

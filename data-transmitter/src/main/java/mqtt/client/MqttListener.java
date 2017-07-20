@@ -1,8 +1,12 @@
 package mqtt.client;
 
+import org.eclipse.kapua.gateway.client.Payload;
+import org.eclipse.kapua.gateway.client.kura.internal.Metrics;
+import org.eclipse.kapua.gateway.client.kura.payload.KuraPayloadProto.KuraPayload;
 import org.eclipse.paho.client.mqttv3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import websocket.server.WebsocketServer;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -10,11 +14,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import org.eclipse.kapua.gateway.client.Payload;
-import org.eclipse.kapua.gateway.client.kura.internal.Metrics;
-import org.eclipse.kapua.gateway.client.kura.payload.KuraPayloadProto.KuraPayload;
-import websocket.server.WebsocketServer;
 
 
 /**

@@ -2,9 +2,9 @@ package simulation.simulators.runners;
 
 import company.company.Company;
 import simulation.simulators.telemetry.AbstractTelemetryComponentSimulator;
+import simulation.simulators.telemetry.DeliveryMovementSimulator;
 import simulation.simulators.telemetry.DeliveryStatusSimulator;
 import simulation.simulators.telemetry.TransportationHealthStateSimulator;
-import simulation.simulators.telemetry.DeliveryMovementSimulator;
 
 /**
  * Simulates different events related to telemetry data.

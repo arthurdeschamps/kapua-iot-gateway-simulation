@@ -6,31 +6,27 @@
 .idea
 *.iml
 out
-gen### Java template
-# Compiled class file
-*.class
+gen
+### Example user template template
+### Example user template
 
-# Log file
-*.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.ear
-*.zip
-*.tar.gz
-*.rar
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-
-/Class-diagrams/
-src/META-INF/
-src/main/resources/
-target/
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+.idea/compiler.xml
+.idea/dbnavigator.xml
+.idea/dictionaries/
+.idea/misc.xml
+.idea/modules.xml
+.idea/uiDesigner.xml
+.idea/vcs.xml
+.idea/workspace.xml
+data-transmitter/.idea/
+data-transmitter/Data Transmitter.iml
+data-transmitter/src/main/resources/
+data-transmitter/target/
+kapua-iot-gateway-simulation-scm.iml
+webapp-angular/.idea/
+webapp-angular/lib/src/sections/map/styles/
