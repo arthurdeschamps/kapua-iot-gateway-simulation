@@ -1,4 +1,6 @@
-package communications.websocket;
+package websocket.server;
+
+import com.google.gson.Gson;
 
 /**
  * Describes a response that can be sent to the client and understood by this latter.
@@ -17,6 +19,11 @@ public class Response {
     }
 
     public Response() {
+    }
+
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
     }
 
     public String[] getTopics() {

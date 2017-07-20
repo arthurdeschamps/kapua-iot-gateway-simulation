@@ -1,6 +1,7 @@
 package storage;
 
-import gherkin.deps.com.google.gson.Gson;
+
+import com.google.gson.Gson;
 
 import java.util.UUID;
 
@@ -27,8 +28,7 @@ public abstract class Item {
      * The item converted into Json format.
      */
     public String toJson() {
-        Gson gson = new Gson();
-        return gson.toJson(this);
+        return new Gson().toJson(this);
     }
 
     /**

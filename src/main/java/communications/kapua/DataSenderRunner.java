@@ -2,6 +2,7 @@ package communications.kapua;
 
 import company.company.Company;
 import company.delivery.Delivery;
+import company.delivery.DeliveryStatus;
 import company.transportation.Transportation;
 import org.eclipse.kapua.gateway.client.Application;
 import org.eclipse.kapua.gateway.client.Payload;
@@ -29,15 +30,14 @@ public class DataSenderRunner implements Runnable {
      */
     @Override
     public void run() {
-        send(new Payload.Builder().put("testKey","testVal"),"foo");
-//        company.getDeliveries()
-//                .forEach(delivery -> {
-//                    updateDeliveryStatus(delivery);
-//                    if (delivery.getDeliveryState().equals(DeliveryStatus.TRANSIT)) {
-//                        updateDeliveryLocation(delivery);
-//                        updateTransportationHealthState(delivery.getTransporter());
-//                    }
-//                });
+        company.getDeliveries()
+                .forEach(delivery -> {
+                    updateDeliveryStatus(delivery);
+                    if (delivery.getDeliveryState().equals(DeliveryStatus.TRANSIT)) {
+                        updateDeliveryLocation(delivery);
+                        updateTransportationHealthState(delivery.getTransporter());
+                    }
+                });
     }
 
     /**

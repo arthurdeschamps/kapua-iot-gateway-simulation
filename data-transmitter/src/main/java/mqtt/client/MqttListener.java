@@ -1,3 +1,5 @@
+package mqtt.client;
+
 import org.eclipse.paho.client.mqttv3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,40 +14,36 @@ import java.util.stream.Stream;
 import org.eclipse.kapua.gateway.client.Payload;
 import org.eclipse.kapua.gateway.client.kura.internal.Metrics;
 import org.eclipse.kapua.gateway.client.kura.payload.KuraPayloadProto.KuraPayload;
+import websocket.server.WebsocketServer;
+
 
 /**
- * Mqtt client callback handler.
+ * Mqtt server callback handler.
  * @author Arthur Deschamps
  */
 class MqttListener implements MqttCallbackExtended {
 
     private static final Logger logger = LoggerFactory.getLogger(MqttListener.class);
 
-    private DataHandler dataHandler;
-
     private IMqttAsyncClient client;
     private String publisherId;
     private String applicationId;
     private String publisherAccountName;
+    private DataHandler dataHandler;
 
-    public MqttListener(IMqttAsyncClient client, String clientId, String publisherId, String applicationId, String publisherAccountName) {
+    MqttListener(IMqttAsyncClient client, String publisherId, String applicationId,
+                        String publisherAccountName, WebsocketServer wsServer) {
         this.client = client;
         this.publisherId = publisherId;
         this.applicationId = applicationId;
         this.publisherAccountName = publisherAccountName;
-        this.dataHandler = new DataHandler();
+        this.dataHandler = new DataHandler(applicationId,publisherId,publisherAccountName,wsServer);
     }
 
     @Override
     public void connectComplete(boolean b, String s) {
         logger.info("Connected");
-        try {
-            logger.info(topic("foo"));
-            client.subscribe(topic("foo"),1);
-            logger.info("Subscriptions started");
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
+        subscribeAll();
     }
 
     @Override
@@ -58,8 +56,7 @@ class MqttListener implements MqttCallbackExtended {
     @Override
     public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
         // Decode the key-value pair
-        Payload payload = decode(mqttMessage.getPayload());
-        logger.info(s);
+        dataHandler.handle(s, decode(mqttMessage.getPayload()).getValues());
     }
 
     @Override
@@ -69,6 +66,18 @@ class MqttListener implements MqttCallbackExtended {
         } catch (MqttException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Subscribes to every topic.
+     */
+    private void subscribeAll() {
+        try {
+            client.subscribe(topic("#"),1);
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+        logger.info("Subscriptions started");
     }
 
     /**

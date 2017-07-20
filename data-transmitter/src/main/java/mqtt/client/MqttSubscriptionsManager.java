@@ -1,9 +1,12 @@
+package mqtt.client;
+
 import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import websocket.server.WebsocketServer;
 
 /**
  * Handles subscriptions to Kapua topics.
@@ -13,11 +16,15 @@ import org.slf4j.LoggerFactory;
 public class MqttSubscriptionsManager {
 
     private String broker;
+    private WebsocketServer wsServer;
 
     private static final Logger logger = LoggerFactory.getLogger(MqttSubscriptionsManager.class);
 
-    public MqttSubscriptionsManager(final String host, final int port) {
+    public MqttSubscriptionsManager(final String host, final int port, WebsocketServer wsServer) {
+        if (wsServer == null)
+            throw new IllegalArgumentException("Websocket server can't be null.");
         this.broker = "tcp://"+host+":"+Integer.toString(port);
+        this.wsServer = wsServer;
     }
 
     /**
@@ -33,8 +40,8 @@ public class MqttSubscriptionsManager {
             connOpts.setPassword("kapua-password".toCharArray());
             connOpts.setCleanSession(true);
             logger.info("Connecting to broker: "+broker);
-            client.setCallback(new MqttListener(client,clientId,"supply-chain-control-simulation",
-                    "kapua-iot-gateway-simulation-scm","kapua-sys"));
+            client.setCallback(new MqttListener(client,"supply-chain-control-simulation",
+                    "kapua-iot-gateway-simulation-scm","kapua-sys", wsServer));
             client.connect(connOpts);
         } catch(MqttException me) {
             logger.error("Reason: "+me.getReasonCode());

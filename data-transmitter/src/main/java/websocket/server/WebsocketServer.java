@@ -1,6 +1,5 @@
-package communications.websocket;
+package websocket.server;
 
-import company.company.Company;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -8,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
+import java.util.Map;
 
 /**
  * Communicates with the frontend app
@@ -16,40 +16,29 @@ import java.net.InetSocketAddress;
  */
 public class WebsocketServer extends WebSocketServer {
 
-    private WebsocketRequestHandler requestHandler;
     private final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
+    private final Sender sender = new Sender();
 
-    public WebsocketServer(Company company, int port) {
+    public WebsocketServer(int port) {
         super(new InetSocketAddress(port));
-        this.requestHandler = new WebsocketRequestHandler(company);
     }
 
-    public WebsocketServer(Company company, InetSocketAddress address) {
-        super(address);
-        this.requestHandler = new WebsocketRequestHandler(company);
-    }
-
-    public WebsocketServer(Company company) {
-        super();
-        this.requestHandler = new WebsocketRequestHandler(company);
+    public void send(String[] segments, Map<String, Object> data) {
+        sender.send(segments,data);
     }
 
     @Override
     public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
-        logger.info("New client");
+        sender.addSubscriber(webSocket);
     }
 
     @Override
     public void onClose(WebSocket webSocket, int i, String s, boolean b) {
-        logger.info("Client socket closed");
+        sender.removeSubscriber(webSocket);
     }
 
     @Override
     public void onMessage(WebSocket webSocket, String jsonRequest) {
-        logger.info(jsonRequest);
-        requestHandler.handle(jsonRequest).ifPresent((String data) -> {
-                if (webSocket != null) webSocket.send(data);
-        });
     }
 
     @Override

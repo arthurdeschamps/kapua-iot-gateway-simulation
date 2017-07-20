@@ -1,7 +1,6 @@
 package simulation.main;
 
 import communications.kapua.KapuaClient;
-import communications.websocket.WebsocketServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import simulation.simulators.SupplyChainControlSimulator;
@@ -37,11 +36,6 @@ public class DefaultSimulation {
         // Start sending data and subscribing
         logger.info("Initializing communications with Kapua...");
         new KapuaClient(parametrizer.getCompany(),parametrizer.getDataSendingDelay()).startCommunications();
-
-        logger.info("Opening websocket...");
-        final int wsPort = 8054;
-        new WebsocketServer(parametrizer.getCompany(),wsPort).start();
-
     }
 
 }
