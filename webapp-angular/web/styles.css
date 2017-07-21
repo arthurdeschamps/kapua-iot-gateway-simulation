@@ -8,3 +8,7 @@ body {
 
 * {
 }
+
+.fa-4x {
+  font-size: 4em !important;
+}

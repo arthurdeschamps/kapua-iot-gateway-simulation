@@ -41,7 +41,6 @@ class Sender {
     }
 
     void send(String[] segments, Map<String, Object> data) {
-        logger.info("Sending data with topic: "+Arrays.toString(segments));
         for (final WebSocket subscriber : subscribers)
             subscriber.send(new Response(segments,data).toString());
     }

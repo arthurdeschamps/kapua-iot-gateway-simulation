@@ -15,8 +15,6 @@ import java.util.stream.Stream;
  */
 public class DataHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(DataHandler.class);
-
     private String applicationId;
     private String publisherId;
     private String publisherAccountName;
@@ -34,6 +32,7 @@ public class DataHandler {
             return;
 
         String[] segments = getSegments(topic);
+
         wsServer.send(segments, data);
     }
 
@@ -45,7 +44,6 @@ public class DataHandler {
      * A list of strings representing the main and sub topics.
      */
     private String[] getSegments(String topic) {
-        logger.info(topic);
         final String kapuaMeta = Stream.of(publisherAccountName, publisherId, applicationId).collect(Collectors.joining("/"))+"/";
         return topic.replace(kapuaMeta,"").split("/");
     }

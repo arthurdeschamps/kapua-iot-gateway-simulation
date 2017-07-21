@@ -39,6 +39,7 @@ public class WebsocketServer extends WebSocketServer {
 
     @Override
     public void onMessage(WebSocket webSocket, String jsonRequest) {
+        logger.info(jsonRequest);
     }
 
     @Override
@@ -49,6 +50,6 @@ public class WebsocketServer extends WebSocketServer {
 
     @Override
     public void onStart() {
-        logger.info("Websocket started on port " + +this.getAddress().getPort()+"...");
+        logger.info("Websocket started on port " +this.getAddress().getPort()+"...");
     }
 }

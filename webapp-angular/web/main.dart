@@ -2,7 +2,7 @@
 // is governed by a BSD-styles license that can be found in the LICENSE file.
 
 import 'package:angular2/platform/browser.dart';
-import 'package:webapp_angular/App.component.dart';
+import 'package:webapp_angular/app_component.dart';
 import 'package:logging/logging.dart';
 
 void main() {

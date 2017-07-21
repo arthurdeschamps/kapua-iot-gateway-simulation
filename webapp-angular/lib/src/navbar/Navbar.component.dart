@@ -1,8 +1,7 @@
-import 'dart:async';
 import 'package:angular2/angular2.dart';
 import 'NavSection.component.dart';
 import 'Tab.component.dart';
-import 'package:webapp_angular/App.component.dart';
+import 'package:webapp_angular/app_component.dart';
 import 'package:webapp_angular/src/sections/ActiveSection.service.dart';
 
 @Component(

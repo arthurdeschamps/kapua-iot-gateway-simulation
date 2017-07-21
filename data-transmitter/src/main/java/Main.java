@@ -10,7 +10,6 @@ import websocket.server.WebsocketServer;
 public class Main {
 
     public static void main(String[] args) {
-
         LoggerFactory.getLogger("data-transmitter").info("Opening websocket...");
         final int wsPort = 8054;
         WebsocketServer wsServer = new WebsocketServer(wsPort);

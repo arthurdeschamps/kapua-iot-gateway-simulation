@@ -36,13 +36,13 @@ class CompanyService extends DataService {
 
 
   Future<Coordinates> getHeadquarters() async {
-    Map rawCoord = await _sock.requestOne(["company","headquarters"]);
+    Map rawCoord = await _sock.request(["company","headquarters"]);
     _setHeadquarters(rawCoord);
     return _headquarters;
   }
 
   Future<List<Delivery>> getDeliveriesInTransit() async {
-    List result = await _sock.requestMultiple(["company","deliveries"]);
+    List result = await _sock.request(["company","deliveries"]);
     // Transforms into a new list of well defined deliveries
     List<Delivery> deliveries = new List();
     result.forEach((Map rawDelivery) {
@@ -54,7 +54,7 @@ class CompanyService extends DataService {
   }
 
   Future<int> getNumber(String of) async {
-    return (await _sock.requestOne(["company",of,"number"]) as int);
+    return (await _sock.request(["company",of,"number"]) as int);
   }
 
   Future<Map<String, int>> getStoresWithSizes() async {
