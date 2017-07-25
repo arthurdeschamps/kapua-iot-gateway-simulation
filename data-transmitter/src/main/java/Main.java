@@ -1,6 +1,6 @@
 import mqtt.client.MqttSubscriptionsManager;
 import org.slf4j.LoggerFactory;
-import websocket.server.WebsocketServer;
+import websocket.server.IotDataServer;
 
 /**
  * @since 1.0
@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args) {
         LoggerFactory.getLogger("data-transmitter").info("Opening websocket...");
         final int wsPort = 8054;
-        WebsocketServer wsServer = new WebsocketServer(wsPort);
+        IotDataServer wsServer = new IotDataServer(wsPort);
         wsServer.start();
 
         final int mqttPort = 1883;

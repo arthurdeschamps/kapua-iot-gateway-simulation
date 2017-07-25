@@ -9,10 +9,9 @@ class Delivery {
 
   String id;
   Coordinates currentPosition;
-  Transportation transportation;
-  bool inTransit;
+  String transporterId;
 
-  Delivery(this.currentPosition, this.transportation,this.inTransit,this.id);
+  Delivery(this.id,{ this.transporterId, this.currentPosition });
 
   @override
   bool operator ==(Object other) =>
@@ -23,7 +22,5 @@ class Delivery {
 
   @override
   int get hashCode => id.hashCode;
-
-
 
 }

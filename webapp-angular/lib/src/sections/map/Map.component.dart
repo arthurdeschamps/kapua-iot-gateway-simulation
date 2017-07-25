@@ -26,18 +26,16 @@ class MapComponent implements AfterViewInit {
 
   static final Logger logger = new Logger("MapComponent");
 
-  MapComponent(this._companyService,this._markerService) {
-    _deliveryDisplay = new DeliveryDisplay
-      (_companyService,new MarkerService(new IconService()));
-  }
+  MapComponent(this._companyService,this._markerService);
 
   @override
   void ngAfterViewInit() {
+    _deliveryDisplay = new DeliveryDisplay(_companyService,new MarkerService(new IconService()));
     // Set up the map
     _initMap();
   }
 
-  Future<Null> _initMap() async {
+  void _initMap() {
     map = Leaflet.map("map", null);
     // Tile layer attributions
     final String _osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -49,7 +47,7 @@ class MapComponent implements AfterViewInit {
       noWrap: true
     )).addTo(map);
 
-    Coordinates headquarters = await _companyService.getHeadquarters();
+    Coordinates headquarters = _companyService.getHeadquarters();
     _placeHeadquartersMarker(headquarters);
     _deliveryDisplay.start(map);
     _setMapView(headquarters.latitude,headquarters.longitude,9);

@@ -6,7 +6,7 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import websocket.server.WebsocketServer;
+import websocket.server.IotDataServer;
 
 /**
  * Handles subscriptions to Kapua topics.
@@ -16,11 +16,11 @@ import websocket.server.WebsocketServer;
 public class MqttSubscriptionsManager {
 
     private String broker;
-    private WebsocketServer wsServer;
+    private IotDataServer wsServer;
 
     private static final Logger logger = LoggerFactory.getLogger(MqttSubscriptionsManager.class);
 
-    public MqttSubscriptionsManager(final String host, final int port, WebsocketServer wsServer) {
+    public MqttSubscriptionsManager(final String host, final int port, IotDataServer wsServer) {
         if (wsServer == null)
             throw new IllegalArgumentException("Websocket server can't be null.");
         this.broker = "tcp://"+host+":"+Integer.toString(port);

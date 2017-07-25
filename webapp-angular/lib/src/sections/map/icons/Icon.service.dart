@@ -18,11 +18,11 @@ class IconService {
     markerColor: "black"
   ));
 
-  Icon delivery(Delivery delivery) {
+  Icon transportation(Transportation transportation) {
 
     String color;
 
-    switch (delivery.transportation.healthState) {
+    switch (transportation.healthState) {
       case TransportationHealthState.PERFECT:
         color = "darkgreen";
         break;
@@ -45,7 +45,7 @@ class IconService {
     }
 
     String iconName;
-    switch (delivery.transportation.transportationType) {
+    switch (transportation.transportationType) {
       case TransportationType.AIR:
         iconName = "plane";
         break;
@@ -60,6 +60,10 @@ class IconService {
 
       case TransportationType.WATER:
         iconName = "ship";
+        break;
+
+      default:
+        iconName = "question";
         break;
     }
 

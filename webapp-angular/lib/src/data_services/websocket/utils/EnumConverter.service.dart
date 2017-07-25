@@ -10,6 +10,7 @@ class EnumConverterService {
 
   // Converts a string to an element of the given enumeration
   dynamic fromString(String value, t) {
+    if (value == null) return null;
     return (reflectType(t) as ClassMirror).getField(#values).reflectee.firstWhere((e)=>e.toString().split('.')[1].toUpperCase()==value.toUpperCase());
   }
 }

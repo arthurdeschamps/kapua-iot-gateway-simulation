@@ -30,9 +30,10 @@ class Sender {
     }
 
     void addSubscriber(WebSocket client) {
-        logger.info("New subscriber");
-        if (client != null)
+        if (client != null) {
+            logger.info("New subscriber");
             subscribers.add(client);
+        }
     }
 
     void removeSubscriber(WebSocket client) {

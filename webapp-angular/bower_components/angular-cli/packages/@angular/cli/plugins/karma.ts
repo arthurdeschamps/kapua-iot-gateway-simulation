@@ -8,6 +8,14 @@ import { Pattern } from './glob-copy-webpack-plugin';
 import { WebpackTestConfig, WebpackTestOptions } from '../models/webpack-test-config';
 import { KarmaWebpackThrowError } from './karma-webpack-throw-error';
 
+/**
+ * Enumerate needed (but not require/imported) dependencies from this file
+ *  to let the dependency validator know they are used.
+ *
+ * require('karma-source-map-support')
+ */
+
+
 const getAppFromConfig = require('../utilities/app-utils').getAppFromConfig;
 
 let blocked: any[] = [];
@@ -53,6 +61,22 @@ const init: any = (config: any, emitter: any, customFileHandlers: any) => {
     sourcemaps: true,
     progress: true,
   }, config.angularCli);
+
+  if (testConfig.sourcemaps) {
+    // Add a reporter that fixes sourcemap urls.
+    config.reporters.unshift('@angular/cli');
+
+    // Code taken from https://github.com/tschaub/karma-source-map-support.
+    // We can't use it directly because we need to add it conditionally in this file, and karma
+    // frameworks cannot be added dynamically.
+    const smsPath = path.dirname(require.resolve('source-map-support'));
+    const ksmsPath = path.dirname(require.resolve('karma-source-map-support'));
+
+    addKarmaFiles(config.files, [
+      { pattern: path.join(smsPath, 'browser-source-map-support.js'), watched: false },
+      { pattern: path.join(ksmsPath, 'client.js'), watched: false }
+    ], true);
+  }
 
   // Add assets. This logic is mimics the one present in GlobCopyWebpackPlugin.
   if (appConfig.assets) {
@@ -180,12 +204,12 @@ const init: any = (config: any, emitter: any, customFileHandlers: any) => {
 
   const middleware = new webpackDevMiddleware(compiler, webpackMiddlewareConfig);
 
-  // Forward topics to webpack server.
+  // Forward requests to webpack server.
   customFileHandlers.push({
     urlRegex: /^\/_karma_webpack_\/.*/,
     handler: function handler(req: any, res: any) {
       middleware(req, res, function () {
-        // Ensure script and styles bundles are served.
+        // Ensure script and style bundles are served.
         // They are mentioned in the custom karma context page and we don't want them to 404.
         const alwaysServe = [
           '/_karma_webpack_/inline.bundle.js',
@@ -216,7 +240,7 @@ init.$inject = ['config', 'emitter', 'customFileHandlers'];
 const preprocessor: any = () => (content: any, _file: string, done: any) => done(null, content);
 preprocessor.$inject = [];
 
-// Block topics until the Webpack compilation is done.
+// Block requests until the Webpack compilation is done.
 function requestBlocker() {
   return function (_request: any, _response: any, next: () => void) {
     if (isBlocked) {
@@ -227,9 +251,25 @@ function requestBlocker() {
   };
 }
 
-// Also export karma-webpack and karma-sourcemap-loader.
+// Strip the server address and webpack scheme (webpack://) from error log.
+const initSourcemapReporter: any = function (baseReporterDecorator: any) {
+  baseReporterDecorator(this);
+  const urlRegexp = /\(http:\/\/localhost:\d+\/_karma_webpack_\/webpack:\//gi;
+
+  this.onSpecComplete = function (_browser: any, result: any) {
+    if (!result.success && result.log.length > 0) {
+      result.log.forEach((log: string, idx: number) => {
+        result.log[idx] = log.replace(urlRegexp, '');
+      });
+    }
+  };
+};
+
+initSourcemapReporter.$inject = ['baseReporterDecorator'];
+
 module.exports = Object.assign({
   'framework:@angular/cli': ['factory', init],
   'preprocessor:@angular/cli': ['factory', preprocessor],
+  'reporter:@angular/cli': ['type', initSourcemapReporter],
   'middleware:angularCliBlocker': ['factory', requestBlocker]
 });

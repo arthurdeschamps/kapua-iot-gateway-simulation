@@ -4,11 +4,10 @@ import 'package:webapp_angular/src/sections/map/interop/Leaflet.interop.dart';
 class Coordinates {
   num latitude;
   num longitude;
-  num altitude;
   LatLng latlng;
 
-  Coordinates(this.latitude, this.longitude, {this.altitude = 8}) {
-    latlng = Leaflet.latLng(latitude, longitude, altitude);
+  Coordinates(this.latitude, this.longitude) {
+    latlng = Leaflet.latLng(latitude, longitude, 1);
   }
 
   @override

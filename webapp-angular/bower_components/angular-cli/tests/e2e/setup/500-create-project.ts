@@ -1,6 +1,6 @@
 import {join} from 'path';
 import {git, ng, silentNpm} from '../utils/process';
-import {expectFileToExist} from '../utils/fs';
+import {expectFileToExist, replaceInFile} from '../utils/fs';
 import {updateTsConfig, updateJsonFile, useNg2} from '../utils/project';
 import {gitClean, gitCommit} from '../utils/git';
 import {getGlobalVariable} from '../utils/env';
@@ -33,9 +33,19 @@ export default function() {
     .then(() => createProject)
     .then(() => updateJsonFile('package.json', json => {
       Object.keys(packages).forEach(pkgName => {
-        json['dependencies'][pkgName] = packages[pkgName].dist;
+        json['dependencies'][pkgName] = packages[pkgName].tar;
       });
     }))
+    // There's a race condition happening in Chrome. Enabling logging in chrome used by
+    // protractor actually fixes it. Logging is piped to a file so it doesn't affect our setup.
+    .then(() => replaceInFile('protractor.conf.js', `'browserName': 'chrome'`,
+      `'browserName': 'chrome',
+        chromeOptions: {
+          args: [
+            "--enable-logging",
+          ]
+        }
+      `))
     .then(() => argv['ng2'] ? useNg2() : Promise.resolve())
     .then(() => {
       if (argv['nightly'] || argv['ng-sha']) {
@@ -66,6 +76,18 @@ export default function() {
         });
       }
     })
+    .then(() => updateJsonFile('.angular-cli.json', configJson => {
+      // Auto-add some flags to ng commands that build or test the app.
+      // --no-progress disables progress logging, which in CI logs thousands of lines.
+      // --no-sourcemaps disables sourcemaps, making builds faster.
+      // We add these flags before other args so that they can be overriden.
+      // e.g. `--no-sourcemaps --sourcemaps` will still generate sourcemaps.
+      const defaults = configJson.defaults;
+      defaults.build = {
+        sourcemaps: false,
+        progress: false
+      };
+    }))
     .then(() => silentNpm('install'))
     // Force sourcemaps to be from the root of the filesystem.
     .then(() => updateTsConfig(json => {

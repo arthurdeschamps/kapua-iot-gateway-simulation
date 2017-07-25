@@ -41,10 +41,10 @@ class ChartDataService {
     time.add(_now);
 
     // Same limit for values
-    _companyService.getStoresWithSizes().then((val) => val.forEach((name, quantity) {
+    _companyService.getStoresWithSizes().forEach((name, quantity) {
       if (storesQuantities[name].length >= maxValues)
         storesQuantities[name].removeAt(0);
       storesQuantities[name].add(quantity);
-    }));
+    });
   }
 }

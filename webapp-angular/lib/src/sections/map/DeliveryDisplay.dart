@@ -3,6 +3,8 @@
 
 import 'dart:async';
 import 'dart:collection';
+import 'package:logging/logging.dart';
+import 'package:webapp_angular/src/data_services/company/Transportation.dart';
 import 'package:webapp_angular/src/sections/map/interop/Leaflet.interop.dart';
 import 'package:webapp_angular/src/data_services/company/Company.service.dart';
 import 'package:webapp_angular/src/data_services/company/Delivery.dart';
@@ -14,6 +16,7 @@ class DeliveryDisplay {
   final MarkerService _markerService;
   Map<Delivery, Marker> _deliveriesWithMarkers;
 
+  final Logger logger = new Logger("DeliveryDisplay");
 
   DeliveryDisplay(this._companyService, this._markerService) {
     _deliveriesWithMarkers = new HashMap();
@@ -29,10 +32,9 @@ class DeliveryDisplay {
   }
 
   void _deliveriesDisplay(LeafletMap map) {
-    _companyService.getDeliveriesInTransit().then((List<Delivery> deliveries) {
-      _placeDeliveryMarkers(deliveries, map);
-      _deleteTerminatedDeliveriesMarkers(deliveries);
-    });
+    List<Delivery> deliveries = _companyService.getDeliveries();
+    _placeDeliveryMarkers(deliveries, _companyService.getTransportation(), map);
+    _deleteTerminatedDeliveriesMarkers(deliveries);
   }
 
   // Deletes markers for delivered deliveries
@@ -50,16 +52,21 @@ class DeliveryDisplay {
   }
 
   // Places markers for each delivery
-  void _placeDeliveryMarkers(List<Delivery> deliveries, LeafletMap map) {
+  void _placeDeliveryMarkers(List<Delivery> deliveries, List<Transportation> transports, LeafletMap map) {
     deliveries.forEach((Delivery delivery) {
       if (_deliveriesWithMarkers.containsKey(delivery)) {
         // Delivery markers is already on the map, we just move it
         _deliveriesWithMarkers[delivery].setLatLng(delivery.currentPosition.latlng);
       } else {
         // Delivery markers is not yet on the map
-        Marker marker = _markerService.deliveryMarker(delivery);
-        _deliveriesWithMarkers.putIfAbsent(delivery, () => marker);
-        marker.addTo(map);
+        final Transportation assignedTransportation = transports
+            .firstWhere((transport) => transport.id == delivery.transporterId,
+            orElse: () => null);
+        if (assignedTransportation != null) {
+          Marker marker = _markerService.deliveryMarker(delivery, assignedTransportation);
+          _deliveriesWithMarkers.putIfAbsent(delivery, () => marker);
+          marker.addTo(map);
+        }
       }
     });
   }

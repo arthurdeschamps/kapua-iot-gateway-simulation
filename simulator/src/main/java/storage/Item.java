@@ -13,7 +13,7 @@ import java.util.UUID;
  */
 public abstract class Item {
 
-    protected String id = UUID.randomUUID().toString();
+    private String id = UUID.randomUUID().toString();
 
     /**
      * Validate that object conforms to the schema

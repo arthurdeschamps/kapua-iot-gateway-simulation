@@ -19,7 +19,7 @@ const InitCommand: any = Command.extend({
     { name: 'style', type: String, default: 'css' },
     { name: 'prefix', type: String, default: 'app', aliases: ['p'] },
     { name: 'routing', type: Boolean, default: false },
-    { name: 'inline-styles', type: Boolean, default: false, aliases: ['is'] },
+    { name: 'inline-style', type: Boolean, default: false, aliases: ['is'] },
     { name: 'inline-template', type: Boolean, default: false, aliases: ['it'] },
     {
       name: 'minimal',

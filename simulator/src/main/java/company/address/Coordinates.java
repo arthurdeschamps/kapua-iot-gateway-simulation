@@ -1,5 +1,7 @@
 package company.address;
 
+import com.google.gson.Gson;
+
 /**
  * Describes a coordinate. Can be instantiated with integers or string with the appropriate format.
  * @author Arthur Deschamps
@@ -96,7 +98,7 @@ public class Coordinates {
 
     @Override
     public String toString() {
-        return "Latitude: "+this.getLatitude()+", Longitude: "+this.getLongitude();
+        return new Gson().toJson(this);
     }
 
     public float getLatitude() {

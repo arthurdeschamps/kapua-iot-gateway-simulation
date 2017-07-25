@@ -6,7 +6,7 @@ import org.eclipse.kapua.gateway.client.kura.payload.KuraPayloadProto.KuraPayloa
 import org.eclipse.paho.client.mqttv3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import websocket.server.WebsocketServer;
+import websocket.server.IotDataServer;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -31,7 +31,7 @@ class MqttListener implements MqttCallbackExtended {
     private DataHandler dataHandler;
 
     MqttListener(IMqttAsyncClient client, String publisherId, String applicationId,
-                        String publisherAccountName, WebsocketServer wsServer) {
+                        String publisherAccountName, IotDataServer wsServer) {
         this.client = client;
         this.publisherId = publisherId;
         this.applicationId = applicationId;
@@ -55,6 +55,7 @@ class MqttListener implements MqttCallbackExtended {
     @Override
     public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
         // Decode the key-value pair
+        logger.info("Message arrived: "+s);
         dataHandler.handle(s, decode(mqttMessage.getPayload()).getValues());
     }
 

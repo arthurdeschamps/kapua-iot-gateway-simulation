@@ -13,14 +13,14 @@ class MarkerService {
 
   MarkerService(this._iconsService);
 
-  Marker deliveryMarker(Delivery delivery) {
+  Marker deliveryMarker(Delivery delivery, Transportation transportation) {
     final popupContent =
-        "<b>Health state:</b> "+delivery.transportation.healthStateString+
-        "</br><b>Transportation type:</b> "+delivery.transportation.transportationTypeString;
+        "<b>Health state:</b> "+transportation.healthStateString+
+        "</br><b>Transportation type:</b> "+transportation.transportationTypeString;
 
     return Leaflet.marker(
         delivery.currentPosition.latlng,
-        new MarkerOptions(icon:  _iconsService.delivery(delivery))
+        new MarkerOptions(icon:  _iconsService.transportation(transportation))
     ).bindPopup(popupContent, null);
   }
 

@@ -2,18 +2,21 @@
 // is governed by a BSD-styles license that can be found in the LICENSE file.
 
 import 'package:angular2/angular2.dart';
-import 'package:webapp_angular/src/data_services/DataTransformer.service.dart';
 import 'package:webapp_angular/src/data_services/company/ChartData.service.dart';
 import 'package:webapp_angular/src/data_services/company/Company.service.dart';
+import 'package:webapp_angular/src/data_services/websocket/app/AppDataClient.service.dart';
+import 'package:webapp_angular/src/data_services/websocket/app/AppDataStore.service.dart';
+import 'package:webapp_angular/src/data_services/websocket/iot/IotDataStore.service.dart';
+import 'package:webapp_angular/src/data_services/websocket/iot/IotDataClient.service.dart';
+import 'package:webapp_angular/src/data_services/websocket/utils/DataTransformer.service.dart';
+import 'package:webapp_angular/src/data_services/websocket/utils/EnumConverter.service.dart';
 import 'package:webapp_angular/src/sections/ActiveSection.service.dart';
 import 'package:webapp_angular/src/sections/company_data/CompanyData.component.dart';
 import 'package:webapp_angular/src/sections/map/Map.component.dart';
 import 'package:webapp_angular/src/sections/map/icons/Icon.service.dart';
 import 'package:webapp_angular/src/sections/map/markers/Marker.service.dart';
 import 'package:webapp_angular/src/sections/parametrizer/Parametrizer.component.dart';
-import 'package:webapp_angular/src/utils/EnumConverter.service.dart';
 import 'src/navbar/Navbar.component.dart';
-import 'src/websocket/WebSocketClient.service.dart';
 import 'package:logging/logging.dart';
 
 @Component(
@@ -22,15 +25,16 @@ import 'package:logging/logging.dart';
   templateUrl: 'app_component.html',
   directives: const [CORE_DIRECTIVES, NavbarComponent, MapComponent, CompanyDataComponent,
   ParametrizerComponent],
-  providers: const [WebSocketClientService, CompanyService, DataTransformerService,
+  providers: const [IotDataClientService, CompanyService, DataTransformerService,
   EnumConverterService, IconService, MarkerService, ActiveSectionService,
-  ChartDataService]
+  ChartDataService, IotDataStoreService, AppDataClientService, AppDataStoreService]
 )
 class AppComponent implements OnInit {
 
   final ActiveSectionService _activeSectionService;
+  final IotDataClientService _sockService;
 
-  AppComponent(this._activeSectionService);
+  AppComponent(this._activeSectionService, this._sockService);
 
   @override
   void ngOnInit() {

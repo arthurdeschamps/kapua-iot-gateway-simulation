@@ -14,12 +14,12 @@ import java.util.Map;
  * @since 1.0
  * @author Arthur Deschamps
  */
-public class WebsocketServer extends WebSocketServer {
+public class IotDataServer extends WebSocketServer {
 
     private final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
     private final Sender sender = new Sender();
 
-    public WebsocketServer(int port) {
+    public IotDataServer(int port) {
         super(new InetSocketAddress(port));
     }
 
@@ -50,6 +50,6 @@ public class WebsocketServer extends WebSocketServer {
 
     @Override
     public void onStart() {
-        logger.info("Websocket started on port " +this.getAddress().getPort()+"...");
+        logger.info("Websocket for IoT data started on port " +this.getAddress().getPort()+"...");
     }
 }

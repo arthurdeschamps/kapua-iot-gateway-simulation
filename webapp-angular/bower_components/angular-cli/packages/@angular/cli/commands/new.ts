@@ -115,11 +115,11 @@ const NewCommand = Command.extend({
       description: 'Generate a routing module.'
     },
     {
-      name: 'inline-styles',
+      name: 'inline-style',
       type: Boolean,
       default: false,
       aliases: ['is'],
-      description: 'Should have an inline styles.'
+      description: 'Should have an inline style.'
     },
     {
       name: 'inline-template',

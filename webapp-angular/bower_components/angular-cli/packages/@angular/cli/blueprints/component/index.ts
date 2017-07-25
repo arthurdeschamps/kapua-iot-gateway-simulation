@@ -53,10 +53,10 @@ export default Blueprint.extend({
       description: 'Specifies if the template will be in the ts file.'
     },
     {
-      name: 'inline-styles',
+      name: 'inline-style',
       type: Boolean,
       aliases: ['is'],
-      description: 'Specifies if the styles will be in the ts file.'
+      description: 'Specifies if the style will be in the ts file.'
     },
     {
       name: 'prefix',

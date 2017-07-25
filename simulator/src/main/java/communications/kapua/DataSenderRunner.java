@@ -30,14 +30,28 @@ public class DataSenderRunner implements Runnable {
      */
     @Override
     public void run() {
-        company.getDeliveries()
-                .forEach(delivery -> {
-                    updateDeliveryStatus(delivery);
-                    if (delivery.getDeliveryState().equals(DeliveryStatus.TRANSIT)) {
-                        updateDeliveryLocation(delivery);
-                        updateTransportationHealthState(delivery.getTransporter());
-                    }
-                });
+        Delivery[] deliveries = company.getDeliveries()
+                .toArray(new Delivery[company.getDeliveries().size()]);
+        for (final Delivery delivery : deliveries) {
+            updateDeliveryStatus(delivery);
+
+            if (delivery.getDeliveryState().equals(DeliveryStatus.TRANSIT)) {
+                updateDeliveryAssignedTransportation(delivery);
+                updateDeliveryLocation(delivery);
+                updateTransportationHealthState(delivery.getTransporter());
+            }
+        }
+    }
+
+    /**
+     * Sends transportation id for each delivery in transit
+     * @param delivery
+     * A delivery that is has an assigned transportation (that is in transit)
+     */
+    private void updateDeliveryAssignedTransportation(Delivery delivery) {
+        payload = new Payload.Builder();
+        payload.put("transportation-id",delivery.getTransporter().getId());
+        send(payload, "deliveries","assigned-transportation",delivery.getId());
     }
 
     /**
@@ -47,16 +61,8 @@ public class DataSenderRunner implements Runnable {
      */
     private void updateDeliveryLocation(final Delivery delivery) {
         payload = new Payload.Builder();
-
-        // Sends latitude
-        payload.put("latitude",Float.toString(delivery.getCurrentLocation().getLatitude()));
-        send(payload,"deliveries","locations","coordinates",delivery.getId(),"latitudes");
-
-        payload = new Payload.Builder();
-
-        // Sends longitude
-        payload.put("longitude",Float.toString(delivery.getCurrentLocation().getLongitude()));
-        send(payload,"deliveries","locations","coordinates",delivery.getId(),"longitudes");
+        payload.put("coordinates",delivery.getCurrentLocation().toString());
+        send(payload,"deliveries","locations","coordinates",delivery.getId());
     }
 
     /**

@@ -1,8 +1,6 @@
 package mqtt.client;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import websocket.server.WebsocketServer;
+import websocket.server.IotDataServer;
 
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -18,9 +16,9 @@ public class DataHandler {
     private String applicationId;
     private String publisherId;
     private String publisherAccountName;
-    private WebsocketServer wsServer;
+    private IotDataServer wsServer;
 
-    DataHandler(String applicationId, String publisherId, String publisherAccountName, WebsocketServer wsServer) {
+    DataHandler(String applicationId, String publisherId, String publisherAccountName, IotDataServer wsServer) {
         this.applicationId = applicationId;
         this.publisherId = publisherId;
         this.publisherAccountName = publisherAccountName;
@@ -32,7 +30,6 @@ public class DataHandler {
             return;
 
         String[] segments = getSegments(topic);
-
         wsServer.send(segments, data);
     }
 

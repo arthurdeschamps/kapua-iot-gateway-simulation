@@ -5,16 +5,18 @@ class Transportation {
 
   TransportationType transportationType;
   TransportationHealthState healthState;
+  String id;
 
-  Transportation(this.transportationType, this.healthState);
+  Transportation(this.id, this.healthState, this.transportationType);
 
-  String get healthStateString {
-    return healthState.toString().replaceAll("TransportationHealthState.","").toLowerCase();
-  }
+  String get healthStateString =>
+      _parseNull(healthState.toString().replaceAll("TransportationHealthState.","").toLowerCase());
 
-  String get transportationTypeString {
-    return transportationType.toString().replaceAll("TransportationType.","").toLowerCase();
-  }
+
+  String get transportationTypeString =>
+      _parseNull(transportationType.toString().replaceAll("TransportationType.","").toLowerCase()).replaceAll("_"," ");
+
+  String _parseNull(String res) => res == null ? "unkown" : res;
 }
 
 enum TransportationType  {
