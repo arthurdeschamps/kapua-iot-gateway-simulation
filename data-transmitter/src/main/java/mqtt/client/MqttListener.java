@@ -61,6 +61,7 @@ class MqttListener implements MqttCallbackExtended {
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
+        logger.info("Delivery completed");
         try {
             logger.info(iMqttDeliveryToken.getMessage().toString());
         } catch (MqttException e) {

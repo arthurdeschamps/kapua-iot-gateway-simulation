@@ -41,7 +41,7 @@ class ChartDataService {
 
   /// Returns the current time.
   static String get _now {
-    return new DateTime.now().toIso8601String();
+    return new DateTime.now().second.toString();
   }
 
   /// Updates [storesQuantities] values as well as [timeline] values.

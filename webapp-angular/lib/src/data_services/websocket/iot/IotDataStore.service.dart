@@ -45,6 +45,9 @@ class IotDataStoreService {
     Response response = _dataTransformer.decode(data);
     List<String> topics = response.topics;
 
+    print(response.topics);
+    print(response.data);
+
     if (topics.length >= 3) {
       if (topics[0] == "transports")
         if (topics[1] == "health-state")

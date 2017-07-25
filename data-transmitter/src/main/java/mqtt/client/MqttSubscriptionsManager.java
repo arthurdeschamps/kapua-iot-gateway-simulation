@@ -35,10 +35,11 @@ public class MqttSubscriptionsManager {
             final String clientId = "listener";
             IMqttAsyncClient client = new MqttAsyncClient(broker, clientId);
             MqttConnectOptions connOpts = new MqttConnectOptions();
+            connOpts.setAutomaticReconnect(true);
             connOpts.setCleanSession(true);
+            connOpts.setMaxInflight(100000);
             connOpts.setUserName("kapua-sys");
             connOpts.setPassword("kapua-password".toCharArray());
-            connOpts.setCleanSession(true);
             logger.info("Connecting to broker: "+broker);
             client.setCallback(new MqttListener(client,"supply-chain-control-simulation",
                     "kapua-iot-gateway-simulation-scm","kapua-sys", wsServer));

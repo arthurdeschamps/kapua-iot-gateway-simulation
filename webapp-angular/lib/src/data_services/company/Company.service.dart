@@ -53,7 +53,7 @@ class CompanyService {
   /// Returns all the deliveries contained in the IoT data store.
   List<Delivery> getDeliveries() => _iotStore.deliveries.values.toList();
 
-  /// Returns all the transpors contained in the IoT data store.
+  /// Returns all the transports contained in the IoT data store.
   List<Transportation> getTransportation() => _iotStore.transports.values.toList();
 
   /// Returns pairs of (store name, store size).

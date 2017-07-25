@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class IotDataServer extends WebSocketServer {
 
-    private final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
+    private final Logger logger = LoggerFactory.getLogger(IotDataServer.class);
     private final Sender sender = new Sender();
 
     public IotDataServer(int port) {
@@ -39,7 +39,6 @@ public class IotDataServer extends WebSocketServer {
 
     @Override
     public void onMessage(WebSocket webSocket, String jsonRequest) {
-        logger.info(jsonRequest);
     }
 
     @Override
