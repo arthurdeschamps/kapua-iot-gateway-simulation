@@ -13,10 +13,7 @@ import storage.ItemStore;
 
 import java.io.Serializable;
 import java.security.InvalidParameterException;
-import java.util.ConcurrentModificationException;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -37,6 +34,7 @@ public class Company implements Serializable {
     private ItemStore<Transportation> transportationStore;
     private ItemStore<Customer> customerStore;
     private ItemStore<Order> orderStore;
+
 
     public Company(CompanyType companyType, String name, Address headquarters) {
         this.productStore = new ItemStore<>();

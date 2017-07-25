@@ -12,14 +12,26 @@ import 'package:webapp_angular/src/data_services/websocket/utils/DataTransformer
 @Injectable()
 class AppDataStoreService {
 
-  final AppDataClientService _appData;
+  final AppDataClientService _dataClient;
   final DataTransformerService _dataTransformer;
 
-  AppDataStoreService(this._appData, this._dataTransformer);
+  AppDataStoreService(this._dataClient, this._dataTransformer);
 
   Future<TransportationType> getTypeOf(String transportationId) {
-    return _appData.request("transportation/type/"+transportationId).then((response) {
-      return _dataTransformer.transportationType(response);
-    });
+    return _dataClient.request("transportation/type/"+transportationId).then((response) =>
+        _dataTransformer.transportationType(response)
+    );
+  }
+
+  Future<String> getCompanyName() {
+    return _dataClient.request("company/name").then((response) =>
+      _dataTransformer.name(response)
+    );
+  }
+
+  Future<String> getCompanyType() {
+    return _dataClient.request("company/type").then((response) =>
+      _dataTransformer.companyType(response)
+    );
   }
 }

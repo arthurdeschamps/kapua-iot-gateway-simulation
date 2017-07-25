@@ -67,4 +67,10 @@ class CompanyDataComponent {
     }
   }
 
+  @Input()
+  String getCompanyName() => _companyService.companyName;
+
+  @Input()
+  String getCompanyType() => _companyService.companyType;
+
 }

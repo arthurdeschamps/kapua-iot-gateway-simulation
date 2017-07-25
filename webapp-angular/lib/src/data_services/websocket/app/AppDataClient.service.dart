@@ -32,7 +32,6 @@ class AppDataClientService {
 
     _sock.onClose.listen((CloseEvent e) {
       logger.warning("Websocket connection closed. Reason : "+e.reason);
-      logger.warning(e.toString());
     });
 
     _sock.onOpen.listen((Event e) {

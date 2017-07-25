@@ -10,7 +10,7 @@ import 'package:webapp_angular/src/data_services/websocket/iot/IotDataStore.serv
 class IotDataClientService {
 
   final String port = "8054";
-  static final Logger logger = new Logger("WebSocketClientService");
+  static final Logger logger = new Logger("IotDataClientService");
 
   WebSocket _sock;
   final IotDataStoreService _store;

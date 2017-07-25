@@ -40,6 +40,13 @@ class DataChartComponent implements AfterViewInit {
         type: "line",
         data: data,
         options: new ChartOptions(
+          title: new ChartTitleOptions(
+            display: true,
+            text: "Company's evolution over time",
+            fontColor: "#e6e8ed",
+            fontSize: 16,
+            fontStyle: "normal"
+          ),
           animation: new ChartAnimationOptions(duration: 0),
           responsive: true,
           scales: new LogarithmicScale(
@@ -65,7 +72,7 @@ class DataChartComponent implements AfterViewInit {
   List<ChartDataSets> _getDataSets() {
     // Map of background colors for lines
     Map<String, String> colorOf = {
-      "customers" : "#001f3f",
+      "customers" : "#7b93d1",
       "products" : "#FF4136",
       "productTypes" : "#B10DC9",
       "deliveries" : "#FF851B",
@@ -74,12 +81,16 @@ class DataChartComponent implements AfterViewInit {
     };
 
     List<ChartDataSets> data = new List<ChartDataSets>();
-    _chartDataService.storesQuantities.forEach((name, quantities) =>
+    _chartDataService.storesQuantities.forEach((name, quantities) {
+      String labelName = name.replaceRange(0,1,name.substring(0,1).toUpperCase());
+      if (labelName == "ProductTypes")
+        labelName = "Product Types";
       data.add(new ChartDataSets(
           data: quantities,
-          label: name,
+          label: labelName,
           borderColor: colorOf[name]
-      ))
+      ));
+    }
     );
     return data;
   }

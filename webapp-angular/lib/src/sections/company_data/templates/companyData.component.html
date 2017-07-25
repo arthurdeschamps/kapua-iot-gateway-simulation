@@ -2,12 +2,10 @@
     <section class="hero is-fullheight">
         <div class="container is-fluid">
             <h3 id="companyName" class="is-3 title">
-                Name of your company: <span>Company name</span>
+                Name of your company: <span>{{ getCompanyName() }}</span>
             </h3>
             <div id="badges">
-                <span class="tag is-info">International Business</span>
-                <span class="tag is-info">National Business</span>
-                <span class="tag is-info">Local Business</span>
+                <span class="tag is-info">{{ getCompanyType() | firstLetterUppercase }}</span>
             </div>
             <!-- Charts for stores' size evolution -->
             <data-chart></data-chart>

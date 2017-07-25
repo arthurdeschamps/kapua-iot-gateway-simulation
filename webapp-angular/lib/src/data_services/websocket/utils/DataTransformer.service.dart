@@ -42,6 +42,10 @@ class DataTransformerService {
   num numberFromMap(Map map) => map["number"];
   num numberFromString(String rawNum) => int.parse(rawNum);
 
+  String name(Map map) => map["name"];
+
+  String companyType(Map map) => map["company-type"];
+
   /**
    * Converts a raw websocket message into a response object.
    */

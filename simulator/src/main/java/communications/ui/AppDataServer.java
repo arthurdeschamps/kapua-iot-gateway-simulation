@@ -54,6 +54,12 @@ public class AppDataServer extends org.java_websocket.server.WebSocketServer {
         if (segments.length == 3 && segments[0].equals("transportation") && segments[1].equals("type"))
             data.put("transportation-type", getTransportationMode(segments[2]));
 
+        if (segments.length == 2 && segments[0].equals("company") && segments[1].equals("name"))
+            data.put("name", company.getName());
+
+        if (segments.length == 2 && segments[0].equals("company") && segments[1].equals("type"))
+            data.put("company-type", company.getType().name());
+
         result.setData(data);
         return result;
     }

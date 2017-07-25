@@ -8,6 +8,10 @@ import org.eclipse.kapua.gateway.client.Application;
 import org.eclipse.kapua.gateway.client.Payload;
 import org.eclipse.kapua.gateway.client.Topic;
 import org.slf4j.LoggerFactory;
+import storage.ItemStore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Sends telemetry data to Kapua.
@@ -41,6 +45,8 @@ public class DataSenderRunner implements Runnable {
                 updateTransportationHealthState(delivery.getTransporter());
             }
         }
+
+        updateStoresSizes();
     }
 
     /**
@@ -85,6 +91,25 @@ public class DataSenderRunner implements Runnable {
         payload = new Payload.Builder();
         payload.put("status",delivery.getDeliveryState().name());
         send(payload,"deliveries","status",delivery.getId());
+    }
+
+    /**
+     * Sends the size of each company store.
+     */
+    private void updateStoresSizes() {
+        Map<String, Integer> stores = new HashMap<>();
+        stores.put("customers", company.getCustomers().size());
+        stores.put("orders", company.getOrders().size());
+        stores.put("deliveries", company.getDeliveries().size());
+        stores.put("products", company.getProducts().size());
+        stores.put("productTypes", company.getProductTypes().size());
+        stores.put("transportation", company.getAllTransportation().size());
+
+        stores.forEach((name, quantity) -> {
+            payload = new Payload.Builder();
+            payload.put("number", quantity);
+            send(payload, "company", name, "number");
+        });
     }
 
     /**

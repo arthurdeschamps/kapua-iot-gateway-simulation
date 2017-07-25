@@ -4,6 +4,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'package:logging/logging.dart';
+import 'package:webapp_angular/src/data_services/company/Coordinates.dart';
 import 'package:webapp_angular/src/data_services/company/Transportation.dart';
 import 'package:webapp_angular/src/sections/map/interop/Leaflet.interop.dart';
 import 'package:webapp_angular/src/data_services/company/Company.service.dart';
@@ -56,7 +57,9 @@ class DeliveryDisplay {
     deliveries.forEach((Delivery delivery) {
       if (_deliveriesWithMarkers.containsKey(delivery)) {
         // Delivery markers is already on the map, we just move it
-        _deliveriesWithMarkers[delivery].setLatLng(delivery.currentPosition.latlng);
+        Coordinates position = delivery.currentPosition;
+        if (position != null)
+          _deliveriesWithMarkers[delivery].setLatLng(position.latlng);
       } else {
         // Delivery markers is not yet on the map
         final Transportation assignedTransportation = transports

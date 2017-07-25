@@ -3,13 +3,14 @@
 }
 
 :host .hero {
-    background-color: #f9f9f9;
+    background-color: #252525;
 }
 
 :host #companyName {
     margin-bottom: 20px;
     margin-top: 20px;
     padding-left: 10px;
+    color: #e6e8ed;
 }
 
 :host #companyName span {
