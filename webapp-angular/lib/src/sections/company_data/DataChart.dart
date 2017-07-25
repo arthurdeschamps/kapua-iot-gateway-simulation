@@ -33,7 +33,7 @@ class DataChartComponent implements AfterViewInit {
   void _initChart() {
     // Initiate the chart
     var data = new LinearChartData(
-        labels: _chartDataService.time,
+        labels: _chartDataService.timeline,
         datasets: _getDataSets()
     );
     var config = new ChartConfiguration(
@@ -97,7 +97,7 @@ class DataChartComponent implements AfterViewInit {
 
   void _updateChart() {
     _companyDataChart.data = new LinearChartData(
-        labels: _chartDataService.time,
+        labels: _chartDataService.timeline,
         datasets: _getDataSets()
     );
     _companyDataChart.update();

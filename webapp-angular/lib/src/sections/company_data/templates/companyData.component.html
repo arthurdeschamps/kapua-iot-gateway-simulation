@@ -1,9 +1,11 @@
 <div class="company-data">
-    <section class="hero is-fullheight">
+    <section class="hero is-fullheight is-large">
         <div class="container is-fluid">
-            <h3 id="companyName" class="is-3 title">
-                Name of your company: <span>{{ getCompanyName() }}</span>
-            </h3>
+            <div>
+                <h3 id="companyName" class="is-3 title">
+                    Name of your company: <span>{{ getCompanyName() }}</span>
+                </h3>
+            </div>
             <div id="badges">
                 <span class="tag is-info">{{ getCompanyType() | firstLetterUppercase }}</span>
             </div>
