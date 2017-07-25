@@ -5,10 +5,11 @@ import 'package:angular2/angular2.dart';
 @MirrorsUsed(targets: EnumConverterService)
 import 'dart:mirrors';
 
+/// String to enumeration converter.
 @Injectable()
 class EnumConverterService {
 
-  // Converts a string to an element of the given enumeration
+  /// Converts [value] to an literal of the enumeration type [t].
   dynamic fromString(String value, t) {
     if (value == null) return null;
     return (reflectType(t) as ClassMirror).getField(#values).reflectee.firstWhere((e)=>e.toString().split('.')[1].toUpperCase()==value.toUpperCase());

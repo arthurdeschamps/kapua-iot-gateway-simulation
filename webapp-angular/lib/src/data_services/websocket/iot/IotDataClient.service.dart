@@ -6,15 +6,22 @@ import 'dart:html';
 import 'package:logging/logging.dart';
 import 'package:webapp_angular/src/data_services/websocket/iot/IotDataStore.service.dart';
 
+/// This service is responsible for receiving any message from the websocket server
+/// and transmit it to [IotDataStoreService].
+///
+/// This websocket should be exclusively used for IoT-related data.
 @Injectable()
 class IotDataClientService {
 
+  /// Port used by the websocket server (started in the Mqtt application).
   final String port = "8054";
-  static final Logger logger = new Logger("IotDataClientService");
 
   WebSocket _sock;
   final IotDataStoreService _store;
 
+  static final Logger logger = new Logger("IotDataClientService");
+
+  /// Starts a websocket client at localhost on port [port].
   IotDataClientService(this._store) {
 
     logger.info("Opening websocket for iot data client...");

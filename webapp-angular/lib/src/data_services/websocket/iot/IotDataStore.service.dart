@@ -9,9 +9,18 @@ import 'package:webapp_angular/src/data_services/websocket/Response.dart';
 import 'package:webapp_angular/src/data_services/websocket/app/AppDataStore.service.dart';
 import 'package:webapp_angular/src/data_services/websocket/utils/DataTransformer.service.dart';
 
-/**
- * Stores everything that is received through the websocket
- */
+/// Stores everything that is received through the websocket client [IotDataClientService].
+///
+/// The IoT/telemetry data provided by this service is not directly polled from the server.
+/// Here is a quick description of the flow of action:
+///
+/// 1. This service initialize its fields with default/empty values.
+/// 2. [IotDataClientService] receives IoT data through a websocket and sends it to this service.
+/// 3. This service updates its fields with the given value.
+/// 4. The fields that were updated are now accessible for the rest of the application.
+///
+/// Steps 2 and 3 are repeated until the Java simulation stops (or the MQTT
+/// server goes down for some reason).
 @Injectable()
 class IotDataStoreService {
 
@@ -30,30 +39,8 @@ class IotDataStoreService {
     companyHeadquarters = new Coordinates(0,0); // Default value
   }
 
-  List<Delivery> requestDeliveries() => _get<List<Delivery>>(["company","deliveries"]);
-  Coordinates requestHeadquarters() => _get<Coordinates>(["company","headquarters"]);
-  List<Transportation> requestTransports() => _get<List<Transportation>>(["transports", "health-state"]);
-  int requestStoreSize(String of) => _get<int>(["company",of,"number"]);
-
-  /**
-   * Retrieves a data from the local storage.
-   */
-  T _get<T>(List<String> topics) {
-    if (topics.length >= 2) {
-      if (topics[0] == "company" && topics[1] == "deliveries") return (deliveries.values as T);
-      if (topics[0] == "company" && topics[1] == "headquarters") return (companyHeadquarters as T);
-    }
-
-    if (topics.length >= 3) {
-      if (topics[0] == "company" && topics[2] == "number")
-        return (storesSizes[_dataTransformer.numberFromString(topics[1])] as T);
-    }
-    return null;
-  }
-
-  /**
-   * Takes care of "routing" the data to the right storage
-   */
+  /// Takes care of "routing" the data to the right storage as well as transform
+  /// these raw data into usable objects/primitive types.
   void store(var data) {
     Response response = _dataTransformer.decode(data);
     List<String> topics = response.topics;
@@ -79,19 +66,14 @@ class IotDataStoreService {
     }
   }
 
-
-
-  /**
-   * Stores the locations of all deliveries in transit.
-   */
+  /// Stores the locations of all deliveries in transit.
   void storeDeliveryLocation(String deliveryId, Coordinates location) {
     deliveries.putIfAbsent(deliveryId, () => new Delivery(deliveryId, currentPosition: location));
     deliveries[deliveryId].currentPosition = location;
   }
 
-  /**
-   * Only stores deliveries that are in transit. Any others are not useful.
-   */
+  /// Only stores deliveries that are in transit. Any others are not useful and therefore
+  /// deleted.
   void updateDelivery(String deliveryId, String deliveryStatus) {
     if (deliveryStatus == "TRANSIT")
       deliveries.putIfAbsent(deliveryId,() => new Delivery(deliveryId));
@@ -99,17 +81,13 @@ class IotDataStoreService {
       deliveries.remove(deliveryId);
   }
 
-  /**
-   * Updates quantity of a store.
-   */
+  /// Updates the quantity of objects contained in the store [of].
   void updateNumber(String of, int number) {
     storesSizes.putIfAbsent(of, () => number);
     storesSizes[of] = number;
   }
 
-  /**
-   * Stores the health status of all transportation.
-   */
+  /// Stores the health status of all transportation.
   void storeHealthState(String transportationId, TransportationHealthState healthState) {
     if (!transports.containsKey(transportationId)) {
       _appData.getTypeOf(transportationId).then((type) =>
@@ -120,9 +98,7 @@ class IotDataStoreService {
     }
   }
 
-  /**
-   * Updates the assigned transporter for a delivery
-   */
+  /// Updates the assigned transporter for a delivery
   void updateDeliveryAssignedTransportation(String deliveryId, String transportationId) {
     deliveries.putIfAbsent(deliveryId, () => new Delivery(deliveryId, transporterId: transportationId));
     deliveries[deliveryId].transporterId = transportationId;

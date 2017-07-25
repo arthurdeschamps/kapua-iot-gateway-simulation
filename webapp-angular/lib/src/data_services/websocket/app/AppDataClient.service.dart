@@ -8,11 +8,12 @@ import 'package:logging/logging.dart';
 import 'package:webapp_angular/src/data_services/websocket/Response.dart';
 import 'package:webapp_angular/src/data_services/websocket/utils/DataTransformer.service.dart';
 
-// AngularDart info: https://webdev.dartlang.org/angular
-
+/// A websocket service that makes the bridge between the Java simulation's data and
+/// the [AppDataStoreService] service for all application-only data (i.e. not IoT/telemetry stuff).
 @Injectable()
 class AppDataClientService {
 
+  /// The port used by the websocket server (started by the Java simulation).
   final String port = "8055";
 
   final DataTransformerService _dataTransformer;
@@ -20,6 +21,7 @@ class AppDataClientService {
 
   WebSocket _sock;
 
+  /// Creates a new websocket at localhost on port [port].
   AppDataClientService(this._dataTransformer) {
 
     logger.info("Opening websocket for app data client...");
@@ -42,10 +44,8 @@ class AppDataClientService {
     });
   }
 
-  /**
-   * Sends a request to the app data server and returns a future of the response
-   * that will eventually send the server.
-   */
+  /// Sends a request to the app data server and returns a future of the response
+  /// that will eventually be returned by the server.
   Future<Map> request(String topics) {
     if (_sock.readyState == WebSocket.OPEN) {
       _sock.send(topics);

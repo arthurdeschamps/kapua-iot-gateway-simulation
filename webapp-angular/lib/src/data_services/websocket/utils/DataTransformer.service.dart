@@ -10,9 +10,7 @@ import 'package:webapp_angular/src/data_services/company/Transportation.dart';
 import 'package:webapp_angular/src/data_services/websocket/Response.dart';
 import 'package:webapp_angular/src/data_services/websocket/utils/EnumConverter.service.dart';
 
-/**
- * Transforms maps into objects
- */
+/// Transforms raw maps into usable objects
 @Injectable()
 class DataTransformerService {
 
@@ -21,34 +19,40 @@ class DataTransformerService {
 
   DataTransformerService(this._enumConverter);
 
+  /// Conversion to coordinates.
   Coordinates coordinates(Map rawCoordinates) {
     Map intermediateParse = JSON.decode(rawCoordinates["coordinates"]);
     return new Coordinates(intermediateParse["latitude"],intermediateParse["longitude"]);
   }
 
+  /// Conversion to a TransportationHealthState.
   TransportationHealthState transportationHealthState(Map rawHealthState) =>
       _enumConverter.fromString(rawHealthState["health"], TransportationHealthState);
 
+  /// Converts to a TransportationType.
   TransportationType transportationType(Map rawType) =>
       _enumConverter.fromString(rawType["transportation-type"], TransportationType);
 
+  /// Converts to a string representing the transportation id.
   String transportationId(Map rawId) => rawId["transportation-id"];
 
+  /// Converts to a string representing the delivery status (delivered, transit, etc).
   String deliveryStatus(Map rawStatus) => rawStatus["status"];
 
+  /// Converts to a Delivery.
   Delivery delivery(Map rawDelivery) =>
       new Delivery(rawDelivery["id"],currentPosition: rawDelivery["currentLocation"], transporterId: rawDelivery["transporterId"]);
 
+  /// Converts to a number (used for stores sizes, for example)
   num numberFromMap(Map map) => map["number"];
-  num numberFromString(String rawNum) => int.parse(rawNum);
 
+  /// Converts to a string representing the name of something.
   String name(Map map) => map["name"];
 
+  /// Converts into a string representing the business type of the company.
   String companyType(Map map) => map["company-type"];
 
-  /**
-   * Converts a raw websocket message into a response object.
-   */
+  /// Converts a raw websocket message into a response object.
   Response decode(var data) {
     // Parses the response
     Map parsed = JSON.decode(data);
