@@ -3,9 +3,7 @@
 
 import 'package:angular2/angular2.dart';
 
-// AngularDart info: https://webdev.dartlang.org/angular
-// Components info: https://webdev.dartlang.org/components
-
+/// A tab that is contained in a nav area. A tab always corresponds to a section.
 @Component(
   selector: 'tab',
   styleUrls: const ['styles/tab_component.css'],
@@ -14,10 +12,17 @@ import 'package:angular2/angular2.dart';
 )
 class TabComponent {
 
+  /// If the tab has been clicked last.
   @Input()
   bool isActive;
+
+  /// The icon class to use for the tab view.
+  ///
+  /// [faClass] is a FontAwesome icon name.
   @Input()
   String faClass;
+
+  /// The name of the section.
   @Input()
   String text;
 

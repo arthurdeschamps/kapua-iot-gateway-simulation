@@ -3,8 +3,9 @@
 
 import 'package:angular2/angular2.dart';
 
-// AngularDart info: https://webdev.dartlang.org/angular
-
+/// Add spaces between uppercases of a String.
+///
+/// Ex: TheBatMan -> The Bat Man
 @Pipe('splitUppercases')
 class SplitUppercases extends PipeTransform {
   String transform(String value) {

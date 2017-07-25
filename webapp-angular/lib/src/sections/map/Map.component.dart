@@ -1,7 +1,6 @@
 // Copyright (c) 2017, arthurdeschamps. All rights reserved. Use of this source code
 // is governed by a BSD-styles license that can be found in the LICENSE file.
 
-import 'dart:async';
 import 'package:angular2/angular2.dart';
 import 'package:webapp_angular/src/sections/map/interop/Leaflet.interop.dart';
 import 'package:logging/logging.dart';
@@ -11,6 +10,7 @@ import 'package:webapp_angular/src/sections/map/DeliveryDisplay.dart';
 import 'package:webapp_angular/src/sections/map/icons/Icon.service.dart';
 import 'package:webapp_angular/src/sections/map/markers/Marker.service.dart';
 
+/// A leaflet map component.
 @Component(
     selector: 'map',
     templateUrl: 'templates/map.component.html',
@@ -35,6 +35,7 @@ class MapComponent implements AfterViewInit {
     _initMap();
   }
 
+  /// Initialized the map view and data.
   void _initMap() {
     map = Leaflet.map("map", null);
     // Tile layer attributions
@@ -53,11 +54,14 @@ class MapComponent implements AfterViewInit {
     _setMapView(headquarters.latitude,headquarters.longitude,9);
   }
 
+  /// Sets the center of the map view.
+  ///
+  /// Useful to "redirect" the user's view to the point we want.
   void _setMapView(num lat, num long, num zoom) {
     map.setView(Leaflet.latLng(lat, long, zoom), 9, null);
   }
 
-  // Places a markers on company's headquarters
+  /// Places a markers on the company's headquarters.
   void _placeHeadquartersMarker(Coordinates headquarters) {
     Marker marker = _markerService.headquartersMarker(headquarters);
     marker.addTo(map);

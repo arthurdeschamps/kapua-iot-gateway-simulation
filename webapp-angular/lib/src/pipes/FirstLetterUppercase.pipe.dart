@@ -3,6 +3,7 @@
 
 import 'package:angular2/angular2.dart';
 
+/// Capitalize the first letter of a string.
 @Pipe('firstLetterUppercase')
 class FirstLetterUppercase extends PipeTransform {
   String transform(String value) {

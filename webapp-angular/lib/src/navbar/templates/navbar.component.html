@@ -1,9 +1,9 @@
 <aside class="menu">
-    <nav-section sectionTitle="General">
+    <nav-area sectionTitle="General">
         <tab [isActive]="isActive('map')" (click)="setActive('map')" text="Map" faClass="globe"></tab>
         <tab [isActive]="isActive('company-data')" (click)="setActive('company-data')" text="Company data" faClass="database"></tab>
-    </nav-section>
-    <nav-section sectionTitle="Parametrizer">
+    </nav-area>
+    <nav-area sectionTitle="Parametrizer">
         <tab [isActive]="isActive('parametrizer')" (click)="setActive('parametrizer')" text="Settings" faClass="sliders"></tab>
-    </nav-section>
+    </nav-area>
 </aside>

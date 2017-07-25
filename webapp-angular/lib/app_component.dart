@@ -32,6 +32,8 @@ import 'package:logging/logging.dart';
 class AppComponent implements OnInit {
 
   final ActiveSectionService _activeSectionService;
+
+  // Do not delete, this allows to have a singleton service.
   final IotDataClientService _sockService;
 
   AppComponent(this._activeSectionService, this._sockService);
@@ -41,6 +43,7 @@ class AppComponent implements OnInit {
     new Logger("AppComponent").info("app building");
   }
 
+  /// Returns if [section] is active or not.
   bool isActive(String section) {
     return _activeSectionService.isActive(section);
   }

@@ -2,22 +2,24 @@
 // is governed by a BSD-styles license that can be found in the LICENSE file.
 
 import 'package:angular2/angular2.dart';
-import 'package:webapp_angular/src/data_services/company/Delivery.dart';
 import 'package:webapp_angular/src/data_services/company/Transportation.dart';
 import 'package:webapp_angular/src/sections/map/interop/LeafletAwesomeMarkers.interop.dart';
 
-/**
- * Any available markers is accessible through this class.
- */
+/// Any available icon for leaflet maps is accessible through this service.
 @Injectable()
 class IconService {
 
+  /// Returns an icon for the company's headquarters.
   Icon headquarters() => AwesomeMarkers.icon(new AwesomeIconOptions(
     icon: "home",
     prefix: "fa",
     markerColor: "black"
   ));
 
+  /// Returns an icon for the transportation [transportation].
+  ///
+  /// The icon will be different given the health state of the transport and its
+  /// type (air, land rail, etc).
   Icon transportation(Transportation transportation) {
 
     String color;

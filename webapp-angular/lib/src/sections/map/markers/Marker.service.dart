@@ -5,14 +5,15 @@ import 'package:webapp_angular/src/sections/map/icons/Icon.service.dart';
 import 'package:angular2/angular2.dart';
 import 'package:webapp_angular/src/sections/map/interop/Leaflet.interop.dart';
 
+/// Any available marker for leaflet maps is accessible through this service.
 @Injectable()
 class MarkerService {
-
 
   final IconService _iconsService;
 
   MarkerService(this._iconsService);
 
+  /// Returns a marker for a couple (delivery, transportation).
   Marker deliveryMarker(Delivery delivery, Transportation transportation) {
     final popupContent =
         "<b>Health state:</b> "+transportation.healthStateString+
@@ -24,6 +25,7 @@ class MarkerService {
     ).bindPopup(popupContent, null);
   }
 
+  /// Returns a marker for the company's headquarters.
   Marker headquartersMarker(Coordinates headquarters) {
     return Leaflet.marker(
         headquarters.latlng,

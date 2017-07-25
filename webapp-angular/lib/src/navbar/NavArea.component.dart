@@ -3,12 +3,13 @@
 
 import 'package:angular2/angular2.dart';
 
-// AngularDart info: https://webdev.dartlang.org/angular
-
+/// An area contained in the side navigation bar.
+///
+/// An area is a collection of tabs that are correlated.
 @Component(
-  selector: 'nav-section',
+  selector: 'nav-area',
   styleUrls: const ['styles/nav_section_component.css'],
-  templateUrl: 'templates/nav_section.component.html',
+  templateUrl: 'templates/nav_area.html',
   directives: const [CORE_DIRECTIVES],
   providers: const [String]
 )

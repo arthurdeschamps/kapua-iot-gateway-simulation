@@ -11,6 +11,7 @@ import 'package:webapp_angular/src/data_services/company/Company.service.dart';
 import 'package:webapp_angular/src/data_services/company/Delivery.dart';
 import 'package:webapp_angular/src/sections/map/markers/Marker.service.dart';
 
+/// Handles deliveries displaying on the leaflet map.
 class DeliveryDisplay {
 
   final CompanyService _companyService;
@@ -23,11 +24,8 @@ class DeliveryDisplay {
     _deliveriesWithMarkers = new HashMap();
   }
 
+  /// Starts displaying deliveries on the map.
   void start(LeafletMap map) {
-    _startDeliveriesDisplay(map);
-  }
-
-  void _startDeliveriesDisplay(LeafletMap map) {
     _deliveriesDisplay(map);
     new Timer.periodic(new Duration(seconds: 1),(Timer timer) => _deliveriesDisplay(map));
   }
@@ -38,7 +36,10 @@ class DeliveryDisplay {
     _deleteTerminatedDeliveriesMarkers(deliveries);
   }
 
-  // Deletes markers for delivered deliveries
+  /// Deletes markers for deliveries not in transit anymore.
+  ///
+  /// A delivery is considered not in transit anymore if it's contained in the
+  /// local list of deliveries but not on the polled one.
   void _deleteTerminatedDeliveriesMarkers(List<Delivery> deliveries) {
      // Removes deliveries that are not in transit anymore
     _deliveriesWithMarkers.keys
@@ -52,7 +53,7 @@ class DeliveryDisplay {
         });
   }
 
-  // Places markers for each delivery
+  /// Places markers on the map for each delivery in transit.
   void _placeDeliveryMarkers(List<Delivery> deliveries, List<Transportation> transports, LeafletMap map) {
     deliveries.forEach((Delivery delivery) {
       if (_deliveriesWithMarkers.containsKey(delivery)) {

@@ -7,8 +7,7 @@ import 'package:angular2/angular2.dart';
 import 'package:chartjs/chartjs.dart';
 import 'package:webapp_angular/src/data_services/company/ChartData.service.dart';
 
-// AngularDart info: https://webdev.dartlang.org/angular
-
+/// A Chart component displaying the evolution of the stores sizes.
 @Component(
   selector: 'data-chart',
   styleUrls: const ["styles/dataChart.component.css"],
@@ -30,6 +29,7 @@ class DataChartComponent implements AfterViewInit {
     });
   }
 
+  /// Initializes the chart.
   void _initChart() {
     // Initiate the chart
     var data = new LinearChartData(
@@ -69,8 +69,12 @@ class DataChartComponent implements AfterViewInit {
     _companyDataChart = new Chart(querySelector('#chart') as CanvasElement, config);
   }
 
+  /// Returns all the data the shall be displayed in the chart.
+  ///
+  /// Time against store size will be displayed, for each defined store (orders,
+  /// customers, etc).
   List<ChartDataSets> _getDataSets() {
-    // Map of background colors for lines
+    // Map of border colors for the lines
     Map<String, String> colorOf = {
       "customers" : "#7b93d1",
       "products" : "#FF4136",
@@ -95,6 +99,7 @@ class DataChartComponent implements AfterViewInit {
     return data;
   }
 
+  /// Updates the chart data.
   void _updateChart() {
     _companyDataChart.data = new LinearChartData(
         labels: _chartDataService.timeline,

@@ -3,21 +3,23 @@
 
 import 'package:angular2/angular2.dart';
 
-// AngularDart info: https://webdev.dartlang.org/angular
-
+/// This service is responsible for managing the sections activeness.
 @Injectable()
 class ActiveSectionService {
 
+  /// The name of the active section.
   @Input() String activeSection;
 
   ActiveSectionService() {
     activeSection = "map";
   }
 
+  /// Sets [section] as the currently active section.
   void setActive(String section) {
     activeSection = section;
   }
 
+  /// Returns if [section] is active.
   bool isActive(String section) {
     return activeSection == section;
   }

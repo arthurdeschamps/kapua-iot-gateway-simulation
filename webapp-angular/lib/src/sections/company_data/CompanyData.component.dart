@@ -11,6 +11,7 @@ import 'package:webapp_angular/src/pipes/SplitUppercases.dart';
 import 'package:webapp_angular/src/sections/company_data/DataChart.dart';
 import 'package:logging/logging.dart';
 
+/// A component displaying some company-related data.
 @Component(
   selector: 'company-data',
   templateUrl: 'templates/companyData.component.html',
@@ -23,7 +24,12 @@ class CompanyDataComponent {
   final CompanyService _companyService;
   final Logger logger = new Logger("CompanyDataComponent");
 
+  /// Contains pairs of (store name, store quantity).
+  ///
+  /// Stores are defined by the Java simulation (e.g. customers, orders, etc).
   Map<String, int> stores;
+
+  /// Contains the values that had [stores] before the last server update.
   Map<String, int> previousStores;
 
   CompanyDataComponent(this._companyService) {
@@ -31,6 +37,7 @@ class CompanyDataComponent {
     new Timer.periodic(new Duration(seconds: 2),(timer) => _updateStores());
   }
 
+  /// Updates the values of [stores].
   void _updateStores() {
     previousStores = new HashMap();
     previousStores.addAll(stores);
@@ -39,6 +46,7 @@ class CompanyDataComponent {
     );
   }
 
+  /// Returns [StorageInformation] objects for every defined store.
   @Input()
   List<StorageInformation> getAllStores() {
     if (stores != null) {
@@ -58,6 +66,8 @@ class CompanyDataComponent {
     }
   }
 
+  /// Returns the evolution in percentage between the initial size of the store [of]
+  /// and the current size of the store [of].
   double getOverallEvolution(String of) {
     if (stores != null && of != null) {
       final int currentVal = stores[of];
@@ -67,9 +77,11 @@ class CompanyDataComponent {
     }
   }
 
+  /// Returns the name of the company.
   @Input()
   String getCompanyName() => _companyService.companyName;
 
+  /// Returns the type of the company.
   @Input()
   String getCompanyType() => _companyService.companyType;
 

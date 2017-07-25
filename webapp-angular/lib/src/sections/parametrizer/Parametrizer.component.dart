@@ -3,8 +3,9 @@
 
 import 'package:angular2/angular2.dart';
 import 'dart:html';
-// AngularDart info: https://webdev.dartlang.org/angular
 
+/// The parametrizer component is a view that is responsible for registering
+/// the custom settings that the user wants for the simulation.
 @Component(
   selector: 'parametrizer',
   styleUrls: const ['styles/parametrizer.component.css'],
