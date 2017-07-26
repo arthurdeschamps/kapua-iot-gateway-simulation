@@ -15,8 +15,8 @@
             <table style="table-layout: fixed;" class="table is-bordered is-striped">
                 <thead>
                     <tr>
-                        <th *ngFor="let storage of getAllStores()">
-                            {{ storage.name || firstLetterUppercase || splitUppercases }}
+                        <th *ngFor="let storage of getAllStores()" style="text-align: center; font-size: 1em;">
+                            {{ storage.name | firstLetterUppercase | splitUppercases }}
                         </th>
                     </tr>
                 </thead>

@@ -6,6 +6,7 @@ import 'package:webapp_angular/src/data_services/company/ChartData.service.dart'
 import 'package:webapp_angular/src/data_services/company/Company.service.dart';
 import 'package:webapp_angular/src/data_services/websocket/app/AppDataClient.service.dart';
 import 'package:webapp_angular/src/data_services/websocket/app/AppDataStore.service.dart';
+import 'package:webapp_angular/src/data_services/websocket/app/ParametrizerClient.service.dart';
 import 'package:webapp_angular/src/data_services/websocket/iot/IotDataStore.service.dart';
 import 'package:webapp_angular/src/data_services/websocket/iot/IotDataClient.service.dart';
 import 'package:webapp_angular/src/data_services/websocket/utils/DataTransformer.service.dart';
@@ -27,7 +28,8 @@ import 'package:logging/logging.dart';
   ParametrizerComponent],
   providers: const [IotDataClientService, CompanyService, DataTransformerService,
   EnumConverterService, IconService, MarkerService, ActiveSectionService,
-  ChartDataService, IotDataStoreService, AppDataClientService, AppDataStoreService]
+  ChartDataService, IotDataStoreService, AppDataClientService, AppDataStoreService,
+  ParametrizerClientService]
 )
 class AppComponent implements OnInit {
 

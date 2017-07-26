@@ -33,7 +33,7 @@ class ChartDataService {
 
   /// Initializes [storesQuantities].
   Future<Null> initChartData() async {
-    Map<String, int> val = await _companyService.getStoresWithSizes();
+    Map<String, int> val = await _companyService.storesWithSizes;
     val.forEach((name, quantity) {
       storesQuantities.putIfAbsent(name, () => [quantity]);
     });
@@ -53,7 +53,7 @@ class ChartDataService {
     timeline.add(_now);
 
     // Same limit for values
-    _companyService.getStoresWithSizes().forEach((name, quantity) {
+    _companyService.storesWithSizes.forEach((name, quantity) {
       if (storesQuantities[name].length >= maxValues)
         storesQuantities[name].removeAt(0);
       storesQuantities[name].add(quantity);

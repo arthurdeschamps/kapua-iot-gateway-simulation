@@ -49,7 +49,7 @@ class MapComponent implements AfterViewInit {
       attribution: _osmAttrib,
     )).addTo(map);
 
-    Coordinates headquarters = _companyService.getHeadquarters();
+    Coordinates headquarters = _companyService.headquarters;
     _placeHeadquartersMarker(headquarters);
     _deliveryDisplay.start(map);
     _setMapView(headquarters.latitude,headquarters.longitude,1);

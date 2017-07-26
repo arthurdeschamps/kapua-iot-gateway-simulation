@@ -33,7 +33,7 @@ class CompanyDataComponent {
   Map<String, int> previousStores;
 
   CompanyDataComponent(this._companyService) {
-    stores = _companyService.getStoresWithSizes();
+    stores = _companyService.storesWithSizes;
     new Timer.periodic(new Duration(seconds: 2),(timer) => _updateStores());
   }
 
@@ -41,7 +41,7 @@ class CompanyDataComponent {
   void _updateStores() {
     previousStores = new HashMap();
     previousStores.addAll(stores);
-    _companyService.getStoresWithSizes().forEach((storageName, quantity) =>
+    _companyService.storesWithSizes.forEach((storageName, quantity) =>
         stores[storageName] = quantity
     );
   }

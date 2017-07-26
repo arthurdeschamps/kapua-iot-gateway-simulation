@@ -26,7 +26,7 @@ public class Simulation {
         Parametrizer parametrizer = new Parametrizer();
 
         // Or use the default parametrizer and set the things you want:
-        parametrizer.setDataSendingDelay(10);
+        parametrizer.setDataSendingDelay(2);
         parametrizer.setTimeFlow(3600);
         parametrizer.setDisplayMetrics(false);
 

@@ -31,3 +31,8 @@
     text-align: center;
     font-style: italic;
 }
+
+:host .table, :host .table td, :host .table tr, :host .table th {
+    color: whitesmoke;
+    background-color: #383a3d;
+}

@@ -31,8 +31,8 @@ class DeliveryDisplay {
   }
 
   void _displayDeliveries(LeafletMap map) {
-    List<Delivery> deliveries = _companyService.getDeliveries();
-    _placeDeliveryMarkers(deliveries, _companyService.getTransportation(), map);
+    List<Delivery> deliveries = _companyService.deliveries;
+    _placeDeliveryMarkers(deliveries, _companyService.transportation, map);
     _deleteTerminatedDeliveriesMarkers(deliveries);
   }
 

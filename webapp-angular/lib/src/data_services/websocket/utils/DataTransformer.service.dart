@@ -52,6 +52,9 @@ class DataTransformerService {
   /// Converts into a string representing the business type of the company.
   String companyType(Map map) => map["company-type"];
 
+  /// Converts to a boolean
+  bool boolean(Map map) => (map["boolean"] as bool);
+
   /// Converts a raw websocket message into a response object.
   Response decode(var data) {
     // Parses the response

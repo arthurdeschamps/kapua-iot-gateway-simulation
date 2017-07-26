@@ -126,8 +126,8 @@ public class DataSenderRunner implements Runnable {
             try {
                 application.data(Topic.of(mainTopic,subCategories)).send(payload);
             } catch (Exception e) {
-                LoggerFactory.getLogger(DataSenderRunner.class).info(e.getMessage());
-                e.printStackTrace();
+               // LoggerFactory.getLogger(DataSenderRunner.class).info(e.getMessage());
+               // e.printStackTrace();
             }
         }
     }
