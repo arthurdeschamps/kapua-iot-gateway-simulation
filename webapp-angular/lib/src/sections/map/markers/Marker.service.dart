@@ -17,7 +17,9 @@ class MarkerService {
   Marker deliveryMarker(Delivery delivery, Transportation transportation) {
     final popupContent =
         "<b>Health state:</b> "+transportation.healthStateString+
-        "</br><b>Transportation type:</b> "+transportation.transportationTypeString;
+        "</br><b>Transportation type:</b> "+transportation.transportationTypeString+
+        "</br><b>Coordinates:</b> "+delivery.currentPosition.toString()+
+        "</br><b>Status:</b> "+status(delivery.status);
 
     return Leaflet.marker(
         delivery.currentPosition.latlng,
@@ -37,4 +39,7 @@ class MarkerService {
         )
     ).bindPopup('Company\'s headquarters', null);
   }
+
+  /// Returns the delivery status or "unknown" if it's null
+  String status(String deliveryStatus) => (deliveryStatus == null) ? "unknown" : deliveryStatus.toLowerCase();
 }

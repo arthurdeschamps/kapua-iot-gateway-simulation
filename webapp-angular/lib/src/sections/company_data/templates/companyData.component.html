@@ -12,6 +12,31 @@
             <!-- Charts for stores' size evolution -->
             <data-chart></data-chart>
             <!-- Table with immediate stores' size -->
+            <table style="table-layout: fixed;" class="table is-bordered is-striped">
+                <thead>
+                    <tr>
+                        <th *ngFor="let storage of getAllStores()">
+                            {{ storage.name || firstLetterUppercase || splitUppercases }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td *ngFor="let storage of getAllStores()">
+                            {{ storage.size }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td *ngFor="let storage of getAllStores()">
+                            <span>
+                                <i *ngIf="storage.percentage > 0" class="fa fa-arrow-up lime" aria-hidden="true"></i>
+                                <i *ngIf="storage.percentage < 0" class="fa fa-arrow-down red" aria-hidden="true"></i>
+                             </span>
+                            {{ storage.percentage | number:'1.2-2' }} %
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
             <!--<table style="table-layout:fixed;" class="table is-bordered is-striped">
                 <thead>
                 <tr>

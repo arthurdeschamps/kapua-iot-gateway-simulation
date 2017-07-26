@@ -19,7 +19,10 @@ class Delivery {
   /// Id of the transportation containing this.
   String transporterId;
 
-  Delivery(this.id,{ this.transporterId, this.currentPosition });
+  /// Delivery status (e.g. delivered, transit, etc)
+  String status;
+
+  Delivery(this.id,{ this.transporterId, this.currentPosition, this.status });
 
   @override
   bool operator ==(Object other) =>

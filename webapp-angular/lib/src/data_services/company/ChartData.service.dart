@@ -46,7 +46,7 @@ class ChartDataService {
 
   /// Updates [storesQuantities] values as well as [timeline] values.
   void _updateChartData() {
-    final int maxValues = 20;
+    final int maxValues = 10;
     // We limit x-axis to 50 values
     if (timeline.length >= maxValues)
       timeline.removeAt(0);

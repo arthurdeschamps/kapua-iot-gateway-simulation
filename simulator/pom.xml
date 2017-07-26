@@ -34,7 +34,7 @@
         <!-- https://mvnrepository.com/artifact/de.dentrassi.kapua/karaf -->
         <dependency>
             <groupId>de.dentrassi.kapua</groupId>
-            <artifactId>kapua-gateway-client-provider-mqtt-fuse</artifactId>
+            <artifactId>kapua-gateway-client-provider-mqtt-paho</artifactId>
             <version>0.2.1</version>
         </dependency>
         <dependency>

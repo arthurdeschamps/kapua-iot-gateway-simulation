@@ -1,9 +1,6 @@
 package mqtt.client;
 
-import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
-import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import websocket.server.IotDataServer;
@@ -37,7 +34,8 @@ public class MqttSubscriptionsManager {
             MqttConnectOptions connOpts = new MqttConnectOptions();
             connOpts.setAutomaticReconnect(true);
             connOpts.setCleanSession(true);
-            connOpts.setMaxInflight(100000);
+            connOpts.setMaxInflight(1000);
+            connOpts.setKeepAliveInterval(1000000);
             connOpts.setUserName("kapua-sys");
             connOpts.setPassword("kapua-password".toCharArray());
             logger.info("Connecting to broker: "+broker);

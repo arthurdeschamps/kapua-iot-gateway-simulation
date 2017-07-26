@@ -40,9 +40,19 @@ class MqttListener implements MqttCallbackExtended {
     }
 
     @Override
-    public void connectComplete(boolean b, String s) {
-        logger.info("Connected");
-        subscribeAll();
+    public void connectComplete(boolean reconnect, String serverUri) {
+        if (!client.isConnected() && reconnect) {
+            try {
+                // TODO: reconnect with MqttSubscriptionsManager
+                logger.info("Try reconnecting...");
+                client.connect();
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        } else {
+            logger.info("Connected");
+            subscribeAll();
+        }
     }
 
     @Override
@@ -50,6 +60,11 @@ class MqttListener implements MqttCallbackExtended {
         logger.info("Subscriptions stopped");
         logger.info("Reason: "+throwable.getMessage());
         throwable.printStackTrace();
+        try {
+            client.disconnect();
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -74,7 +89,7 @@ class MqttListener implements MqttCallbackExtended {
      */
     private void subscribeAll() {
         try {
-            client.subscribe(topic("#"),1);
+            client.subscribe(topic("#"),0);
         } catch (MqttException e) {
             e.printStackTrace();
         }

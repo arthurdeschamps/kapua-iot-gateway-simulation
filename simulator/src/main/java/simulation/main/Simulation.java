@@ -18,7 +18,7 @@ public class Simulation {
         Logger logger = LoggerFactory.getLogger(Simulation.class);
 
         logger.info("Creating parametrizer...");
-        // Uncomment the two lines below and modify the values at will to parametrize the simulation
+        // Uncomment the two lines below and modify the values as you wish to parametrize the simulation
         // Parametrizer parametrizer = new Parametrizer(100, 3, false, 0,
         //         CompanyGenerator.generateInternationalCompany(), false, null);
 
@@ -26,7 +26,7 @@ public class Simulation {
         Parametrizer parametrizer = new Parametrizer();
 
         // Or use the default parametrizer and set the things you want:
-        parametrizer.setDataSendingDelay(1);
+        parametrizer.setDataSendingDelay(10);
         parametrizer.setTimeFlow(3600);
         parametrizer.setDisplayMetrics(false);
 

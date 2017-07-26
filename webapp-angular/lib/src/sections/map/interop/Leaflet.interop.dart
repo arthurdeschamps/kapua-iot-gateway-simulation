@@ -197,9 +197,13 @@ class MapOptions {
   external num get zoom;
   external set zoom(num zoom);
 
+  external num get zoomDelta;
+  external set zoomDelta(num zoomDelta);
+
   external factory MapOptions({
     LatLng center,
-    num zoom
+    num zoom,
+    num zoomDelta
   });
 }
 

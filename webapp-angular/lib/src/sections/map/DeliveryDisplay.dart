@@ -26,11 +26,11 @@ class DeliveryDisplay {
 
   /// Starts displaying deliveries on the map.
   void start(LeafletMap map) {
-    _deliveriesDisplay(map);
-    new Timer.periodic(new Duration(seconds: 1),(Timer timer) => _deliveriesDisplay(map));
+    _displayDeliveries(map);
+    new Timer.periodic(new Duration(seconds: 1),(Timer timer) => _displayDeliveries(map));
   }
 
-  void _deliveriesDisplay(LeafletMap map) {
+  void _displayDeliveries(LeafletMap map) {
     List<Delivery> deliveries = _companyService.getDeliveries();
     _placeDeliveryMarkers(deliveries, _companyService.getTransportation(), map);
     _deleteTerminatedDeliveriesMarkers(deliveries);
@@ -66,7 +66,8 @@ class DeliveryDisplay {
         final Transportation assignedTransportation = transports
             .firstWhere((transport) => transport.id == delivery.transporterId,
             orElse: () => null);
-        if (assignedTransportation != null) {
+        // Checks if the delivery's transporter is already known as well as its current position
+        if (assignedTransportation != null && delivery.currentPosition != null) {
           Marker marker = _markerService.deliveryMarker(delivery, assignedTransportation);
           _deliveriesWithMarkers.putIfAbsent(delivery, () => marker);
           marker.addTo(map);

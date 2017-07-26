@@ -37,7 +37,9 @@ class MapComponent implements AfterViewInit {
 
   /// Initialized the map view and data.
   void _initMap() {
-    map = Leaflet.map("map", null);
+    map = Leaflet.map("map", new MapOptions(
+      zoomDelta: 0.3
+    ));
     // Tile layer attributions
     final String _osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     final String _osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
@@ -45,20 +47,19 @@ class MapComponent implements AfterViewInit {
       minZoom: 1,
       maxZoom: 12,
       attribution: _osmAttrib,
-      noWrap: true
     )).addTo(map);
 
     Coordinates headquarters = _companyService.getHeadquarters();
     _placeHeadquartersMarker(headquarters);
     _deliveryDisplay.start(map);
-    _setMapView(headquarters.latitude,headquarters.longitude,9);
+    _setMapView(headquarters.latitude,headquarters.longitude,1);
   }
 
   /// Sets the center of the map view.
   ///
   /// Useful to "redirect" the user's view to the point we want.
   void _setMapView(num lat, num long, num zoom) {
-    map.setView(Leaflet.latLng(lat, long, zoom), 9, null);
+    map.setView(Leaflet.latLng(lat, long, zoom), zoom, null);
   }
 
   /// Places a markers on the company's headquarters.

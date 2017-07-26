@@ -2,7 +2,7 @@ package communications.kapua;
 
 import company.company.Company;
 import org.eclipse.kapua.gateway.client.Application;
-import org.eclipse.kapua.gateway.client.mqtt.fuse.FuseClient;
+import org.eclipse.kapua.gateway.client.mqtt.paho.PahoClient;
 import org.eclipse.kapua.gateway.client.profile.kura.KuraMqttProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +38,7 @@ public class KapuaClient {
         this.communicationsDelay = communicationsDelay;
 
         try {
-            client = KuraMqttProfile.newProfile(FuseClient.Builder::new)
+            client = KuraMqttProfile.newProfile(PahoClient.Builder::new)
                     .accountName(accountName)
                     .clientId(clientId)
                     .brokerUrl("tcp://"+host+":"+Integer.toString(port))
