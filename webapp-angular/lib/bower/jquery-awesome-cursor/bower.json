@@ -1,0 +1,41 @@
+{
+  "name": "jquery-awesome-cursor",
+  "version": "0.3.1",
+  "description": "jQuery plugin for using FontAwesome icons as custom CSS cursors",
+  "keywords": [
+    "jquery-plugin",
+    "fontawesome",
+    "cursor",
+    "custom",
+    "css"
+  ],
+  "homepage": "https://jwarby.github.io/jquery-awesome-cursor",
+  "bugs": {
+    "url": "http://github.com/jwarby/jquery-awesome-cursor/issues"
+  },
+  "author": "James Warwood <warwood.aj@gmail.com> (https://github.com/jwarby)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jwarby/jquery-awesome-cursor.git"
+  },
+  "license": "MIT",
+  "main": "dist/jquery.awesome-cursor.js",
+  "ignore": [
+    "node_modules",
+    "bower_components",
+    "test",
+    "src",
+    "package.json",
+    "_unified_manifest.json",
+    "Gruntfile.js",
+    "karma.conf.js",
+    "**/.*"
+  ],
+  "dependencies": {
+    "jquery": "2.x"
+  },
+  "devDependencies": {
+    "qunit": "1.x",
+    "jquery": "2.x"
+  }
+}

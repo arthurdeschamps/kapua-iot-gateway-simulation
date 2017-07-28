@@ -7,3 +7,7 @@ pubspec.lock
 
 # Directory created by dartdoc
 doc/api/
+
+# Bower intermediates
+ lib/bower
+ bower_components
