@@ -1,6 +1,6 @@
-import 'package:webapp_angular/src/data_services/company/Coordinates.dart';
-import 'package:webapp_angular/src/data_services/company/Delivery.dart';
-import 'package:webapp_angular/src/data_services/company/Transportation.dart';
+import 'package:webapp_angular/src/data_services/app/company/Coordinates.dart';
+import 'package:webapp_angular/src/data_services/app/company/Delivery.dart';
+import 'package:webapp_angular/src/data_services/app/company/Transportation.dart';
 import 'package:webapp_angular/src/sections/map/icons/Icon.service.dart';
 import 'package:angular2/angular2.dart';
 import 'package:webapp_angular/src/sections/map/interop/Leaflet.interop.dart';

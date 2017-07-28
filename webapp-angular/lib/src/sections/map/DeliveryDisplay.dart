@@ -4,11 +4,11 @@
 import 'dart:async';
 import 'dart:collection';
 import 'package:logging/logging.dart';
-import 'package:webapp_angular/src/data_services/company/Coordinates.dart';
-import 'package:webapp_angular/src/data_services/company/Transportation.dart';
+import 'package:webapp_angular/src/data_services/app/company/Company.service.dart';
+import 'package:webapp_angular/src/data_services/app/company/Coordinates.dart';
+import 'package:webapp_angular/src/data_services/app/company/Delivery.dart';
+import 'package:webapp_angular/src/data_services/app/company/Transportation.dart';
 import 'package:webapp_angular/src/sections/map/interop/Leaflet.interop.dart';
-import 'package:webapp_angular/src/data_services/company/Company.service.dart';
-import 'package:webapp_angular/src/data_services/company/Delivery.dart';
 import 'package:webapp_angular/src/sections/map/markers/Marker.service.dart';
 
 /// Handles deliveries displaying on the leaflet map.

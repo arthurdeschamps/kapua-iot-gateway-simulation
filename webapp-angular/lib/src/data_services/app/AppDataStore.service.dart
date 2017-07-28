@@ -3,9 +3,9 @@
 
 import 'dart:async';
 import 'package:angular2/angular2.dart';
-import 'package:webapp_angular/src/data_services/company/Transportation.dart';
-import 'package:webapp_angular/src/data_services/websocket/app/AppDataClient.service.dart';
-import 'package:webapp_angular/src/data_services/websocket/utils/DataTransformer.service.dart';
+import 'package:webapp_angular/src/data_services/app/AppDataClient.service.dart';
+import 'package:webapp_angular/src/data_services/app/company/Transportation.dart';
+import 'package:webapp_angular/src/data_services/utils/DataTransformer.service.dart';
 
 /// A service that is responsible to provide all the application-only data (that is not IoT/telemetry stuff).
 ///

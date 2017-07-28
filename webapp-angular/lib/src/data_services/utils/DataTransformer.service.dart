@@ -4,11 +4,11 @@
 import 'dart:convert';
 import 'package:angular2/angular2.dart';
 import 'package:logging/logging.dart';
-import 'package:webapp_angular/src/data_services/company/Coordinates.dart';
-import 'package:webapp_angular/src/data_services/company/Delivery.dart';
-import 'package:webapp_angular/src/data_services/company/Transportation.dart';
-import 'package:webapp_angular/src/data_services/websocket/Response.dart';
-import 'package:webapp_angular/src/data_services/websocket/utils/EnumConverter.service.dart';
+import 'package:webapp_angular/src/data_services/app/company/Coordinates.dart';
+import 'package:webapp_angular/src/data_services/app/company/Delivery.dart';
+import 'package:webapp_angular/src/data_services/app/company/Transportation.dart';
+import 'package:webapp_angular/src/data_services/utils/EnumConverter.service.dart';
+import 'package:webapp_angular/src/data_services/utils/Response.dart';
 
 /// Transforms raw maps into usable objects
 @Injectable()

@@ -2,15 +2,15 @@
 // is governed by a BSD-styles license that can be found in the LICENSE file.
 
 import 'package:angular2/angular2.dart';
-import 'package:webapp_angular/src/data_services/company/ChartData.service.dart';
-import 'package:webapp_angular/src/data_services/company/Company.service.dart';
-import 'package:webapp_angular/src/data_services/websocket/app/AppDataClient.service.dart';
-import 'package:webapp_angular/src/data_services/websocket/app/AppDataStore.service.dart';
-import 'package:webapp_angular/src/data_services/websocket/app/ParametrizerClient.service.dart';
-import 'package:webapp_angular/src/data_services/websocket/iot/IotDataStore.service.dart';
-import 'package:webapp_angular/src/data_services/websocket/iot/IotDataClient.service.dart';
-import 'package:webapp_angular/src/data_services/websocket/utils/DataTransformer.service.dart';
-import 'package:webapp_angular/src/data_services/websocket/utils/EnumConverter.service.dart';
+import 'package:webapp_angular/src/data_services/app/AppDataClient.service.dart';
+import 'package:webapp_angular/src/data_services/app/AppDataStore.service.dart';
+import 'package:webapp_angular/src/data_services/app/company/ChartData.service.dart';
+import 'package:webapp_angular/src/data_services/app/company/Company.service.dart';
+import 'package:webapp_angular/src/data_services/app/simulation/ParametrizerClient.service.dart';
+import 'package:webapp_angular/src/data_services/iot/IotDataClient.service.dart';
+import 'package:webapp_angular/src/data_services/iot/IotDataStore.service.dart';
+import 'package:webapp_angular/src/data_services/utils/DataTransformer.service.dart';
+import 'package:webapp_angular/src/data_services/utils/EnumConverter.service.dart';
 import 'package:webapp_angular/src/sections/ActiveSection.service.dart';
 import 'package:webapp_angular/src/sections/company_data/CompanyData.component.dart';
 import 'package:webapp_angular/src/sections/map/Map.component.dart';

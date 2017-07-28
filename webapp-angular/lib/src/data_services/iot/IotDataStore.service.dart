@@ -2,12 +2,12 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'package:angular2/angular2.dart';
-import 'package:webapp_angular/src/data_services/company/Coordinates.dart';
-import 'package:webapp_angular/src/data_services/company/Delivery.dart';
-import 'package:webapp_angular/src/data_services/company/Transportation.dart';
-import 'package:webapp_angular/src/data_services/websocket/Response.dart';
-import 'package:webapp_angular/src/data_services/websocket/app/AppDataStore.service.dart';
-import 'package:webapp_angular/src/data_services/websocket/utils/DataTransformer.service.dart';
+import 'package:webapp_angular/src/data_services/app/AppDataStore.service.dart';
+import 'package:webapp_angular/src/data_services/app/company/Coordinates.dart';
+import 'package:webapp_angular/src/data_services/app/company/Delivery.dart';
+import 'package:webapp_angular/src/data_services/app/company/Transportation.dart';
+import 'package:webapp_angular/src/data_services/utils/DataTransformer.service.dart';
+import 'package:webapp_angular/src/data_services/utils/Response.dart';
 
 /// Stores everything that is received through the websocket client [IotDataClientService].
 ///

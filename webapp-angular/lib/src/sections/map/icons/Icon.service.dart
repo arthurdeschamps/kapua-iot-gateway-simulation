@@ -2,7 +2,7 @@
 // is governed by a BSD-styles license that can be found in the LICENSE file.
 
 import 'package:angular2/angular2.dart';
-import 'package:webapp_angular/src/data_services/company/Transportation.dart';
+import 'package:webapp_angular/src/data_services/app/company/Transportation.dart';
 import 'package:webapp_angular/src/sections/map/interop/LeafletAwesomeMarkers.interop.dart';
 
 /// Any available icon for leaflet maps is accessible through this service.

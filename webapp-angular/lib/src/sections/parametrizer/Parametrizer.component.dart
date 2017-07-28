@@ -3,7 +3,8 @@
 
 import 'package:angular2/angular2.dart';
 import 'dart:html';
-import 'package:webapp_angular/src/data_services/company/Company.service.dart';
+
+import 'package:webapp_angular/src/data_services/app/company/Company.service.dart';
 import 'package:webapp_angular/src/sections/parametrizer/interop/iziToast.interop.dart';
 
 /// The parametrizer component is a view that is responsible for registering
@@ -46,19 +47,23 @@ class ParametrizerComponent implements AfterViewInit {
         if (res) {
           // Asks the company data service to get the new company name
           _company.pollCompanyName();
-
-          final String textColor = "#ffffff";
-          IziToast.show(new IziToastOptions(
-            title: "Saved !",
-            titleColor: textColor,
-            backgroundColor: "#00d1b2",
-            message: "Company name has been registered.",
-            messageColor: textColor,
-          ));
+          _toast("Saved !", "Company name has been registered.");
         }
       });
   }
 
   @Input()
   String get companyName => _company.companyName;
+
+  /// Displays a success notification with title [title] and message [message]
+  void _toast(String title, String message) {
+    final String textColor = "#ffffff";
+    IziToast.show(new IziToastOptions(
+      title: title,
+      titleColor: textColor,
+      backgroundColor: "#00d1b2",
+      message: message,
+      messageColor: textColor,
+    ));
+  }
 }

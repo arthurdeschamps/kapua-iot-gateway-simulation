@@ -5,12 +5,12 @@ import 'dart:async';
 import 'dart:collection';
 import 'package:angular2/angular2.dart';
 import 'package:logging/logging.dart';
-import 'package:webapp_angular/src/data_services/company/Coordinates.dart';
-import 'package:webapp_angular/src/data_services/company/Delivery.dart';
-import 'package:webapp_angular/src/data_services/company/Transportation.dart';
-import 'package:webapp_angular/src/data_services/websocket/app/AppDataStore.service.dart';
-import 'package:webapp_angular/src/data_services/websocket/app/ParametrizerClient.service.dart';
-import 'package:webapp_angular/src/data_services/websocket/iot/IotDataStore.service.dart';
+import 'package:webapp_angular/src/data_services/app/AppDataStore.service.dart';
+import 'package:webapp_angular/src/data_services/app/company/Coordinates.dart';
+import 'package:webapp_angular/src/data_services/app/company/Delivery.dart';
+import 'package:webapp_angular/src/data_services/app/company/Transportation.dart';
+import 'package:webapp_angular/src/data_services/app/simulation/ParametrizerClient.service.dart';
+import 'package:webapp_angular/src/data_services/iot/IotDataStore.service.dart';
 
 /// Takes care of polling the data from the local store and distribute it to the
 /// different components.

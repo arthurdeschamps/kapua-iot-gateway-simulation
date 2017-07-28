@@ -4,8 +4,8 @@
 import 'dart:async';
 import 'dart:collection';
 import 'package:angular2/angular2.dart';
-import 'package:webapp_angular/src/data_services/company/Company.service.dart';
-import 'package:webapp_angular/src/data_services/company/utils/StorageInformation.dart';
+import 'package:webapp_angular/src/data_services/app/company/Company.service.dart';
+import 'package:webapp_angular/src/data_services/app/company/utils/StorageInformation.dart';
 import 'package:webapp_angular/src/pipes/FirstLetterUppercase.pipe.dart';
 import 'package:webapp_angular/src/pipes/SplitUppercases.dart';
 import 'package:webapp_angular/src/sections/company_data/DataChart.dart';

@@ -5,8 +5,8 @@ import 'dart:async';
 import 'dart:html';
 import 'package:angular2/angular2.dart';
 import 'package:logging/logging.dart';
-import 'package:webapp_angular/src/data_services/websocket/Response.dart';
-import 'package:webapp_angular/src/data_services/websocket/utils/DataTransformer.service.dart';
+import 'package:webapp_angular/src/data_services/utils/DataTransformer.service.dart';
+import 'package:webapp_angular/src/data_services/utils/Response.dart';
 
 /// A websocket service that makes the bridge between the Java simulation's data and
 /// the [AppDataStoreService] service for all application-only data (i.e. not IoT/telemetry stuff).

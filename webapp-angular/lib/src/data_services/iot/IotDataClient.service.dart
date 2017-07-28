@@ -4,7 +4,7 @@
 import 'package:angular2/angular2.dart';
 import 'dart:html';
 import 'package:logging/logging.dart';
-import 'package:webapp_angular/src/data_services/websocket/iot/IotDataStore.service.dart';
+import 'package:webapp_angular/src/data_services/iot/IotDataStore.service.dart';
 
 /// This service is responsible for receiving any message from the websocket server
 /// and transmit it to [IotDataStoreService].

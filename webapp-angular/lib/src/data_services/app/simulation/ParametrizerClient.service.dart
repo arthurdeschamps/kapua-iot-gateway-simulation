@@ -3,8 +3,8 @@
 
 import 'dart:async';
 import 'package:angular2/angular2.dart';
-import 'package:webapp_angular/src/data_services/websocket/app/AppDataClient.service.dart';
-import 'package:webapp_angular/src/data_services/websocket/utils/DataTransformer.service.dart';
+import 'package:webapp_angular/src/data_services/app/AppDataClient.service.dart';
+import 'package:webapp_angular/src/data_services/utils/DataTransformer.service.dart';
 
 /// Communicates any change in the settings directly to the simulation
 ///

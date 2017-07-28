@@ -5,7 +5,7 @@ import 'dart:async';
 import 'dart:html';
 import 'package:angular2/angular2.dart';
 import 'package:chartjs/chartjs.dart';
-import 'package:webapp_angular/src/data_services/company/ChartData.service.dart';
+import 'package:webapp_angular/src/data_services/app/company/ChartData.service.dart';
 
 /// A Chart component displaying the evolution of the stores sizes.
 @Component(

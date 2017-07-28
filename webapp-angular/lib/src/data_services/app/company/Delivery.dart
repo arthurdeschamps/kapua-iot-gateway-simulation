@@ -1,8 +1,7 @@
 // Copyright (c) 2017, arthurdeschamps. All rights reserved. Use of this source code
 // is governed by a BSD-styles license that can be found in the LICENSE file.
 
-import 'package:webapp_angular/src/data_services/company/Coordinates.dart';
-import 'package:webapp_angular/src/data_services/company/Transportation.dart';
+import 'package:webapp_angular/src/data_services/app/company/Coordinates.dart';
 
 /// Delivery is a partial description of the Delivery class contained in the
 /// Java simulation.

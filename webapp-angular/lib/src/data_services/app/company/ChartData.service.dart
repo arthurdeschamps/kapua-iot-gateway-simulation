@@ -5,7 +5,7 @@ import 'dart:async';
 import 'dart:collection';
 import 'package:angular2/angular2.dart';
 import 'package:logging/logging.dart';
-import 'package:webapp_angular/src/data_services/company/Company.service.dart';
+import 'package:webapp_angular/src/data_services/app/company/Company.service.dart';
 
 /// Source of data for the DataChart component.
 @Injectable()
