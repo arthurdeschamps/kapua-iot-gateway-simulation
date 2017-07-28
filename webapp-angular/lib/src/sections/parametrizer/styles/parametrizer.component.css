@@ -3,8 +3,98 @@
   text-align: center;
   color: #4a4a4a;
 }
+@media screen and (max-width: 600px) {
+  :host #parametrizer .container {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+}
 :host #parametrizer > .container {
   margin-top: 50px;
+}
+:host #parametrizer #settings #save-settings {
+  clear: both;
+  margin-top: 20px;
+}
+:host #parametrizer #settings #rocket-wrapper {
+  clear: both;
+  margin-top: 20px;
+}
+:host #parametrizer #settings #rocket-wrapper #rocket {
+  width: 60px;
+  height: 80px;
+  -webkit-animation: spin 3s linear infinite /* Safari 4+ */;
+  -moz-animation: spin 3s linear infinite /* Fx 5+ */;
+  -o-animation: spin 3s linear infinite /* Opera 12+ */;
+  animation: spin 3s linear infinite /* IE 10+, Fx 29+ */;
+}
+@-moz-keyframes spin {
+  0% {
+    transform: translateX(-150px) rotate(0deg);
+  }
+  40% {
+    transform: translateX(140px) rotate(0deg);
+  }
+  50% {
+    transform: translateX(150px) rotate(180deg);
+  }
+  90% {
+    transform: translateX(-140px) rotate(180deg);
+  }
+  100% {
+    transform: translateX(-150px) rotate(0deg);
+  }
+}
+@-webkit-keyframes spin {
+  0% {
+    transform: translateX(-150px) rotate(0deg);
+  }
+  40% {
+    transform: translateX(140px) rotate(0deg);
+  }
+  50% {
+    transform: translateX(150px) rotate(180deg);
+  }
+  90% {
+    transform: translateX(-140px) rotate(180deg);
+  }
+  100% {
+    transform: translateX(-150px) rotate(0deg);
+  }
+}
+@-o-keyframes spin {
+  0% {
+    transform: translateX(-150px) rotate(0deg);
+  }
+  40% {
+    transform: translateX(140px) rotate(0deg);
+  }
+  50% {
+    transform: translateX(150px) rotate(180deg);
+  }
+  90% {
+    transform: translateX(-140px) rotate(180deg);
+  }
+  100% {
+    transform: translateX(-150px) rotate(0deg);
+  }
+}
+@keyframes spin {
+  0% {
+    transform: translateX(-150px) rotate(0deg);
+  }
+  40% {
+    transform: translateX(140px) rotate(0deg);
+  }
+  50% {
+    transform: translateX(150px) rotate(180deg);
+  }
+  90% {
+    transform: translateX(-140px) rotate(180deg);
+  }
+  100% {
+    transform: translateX(-150px) rotate(0deg);
+  }
 }
 :host #parametrizer #settings .input-field {
   max-width: 60%;
@@ -35,6 +125,11 @@
   font-style: italic;
   color: #6e6e6e;
 }
+@media screen and (max-width: 600px) {
+  :host #parametrizer #settings .input-field {
+    min-width: 80%;
+  }
+}
 :host #parametrizer #settings .text-input input {
   min-width: 100%;
   font-size: 20px;
@@ -59,14 +154,22 @@
   background: transparent;
 }
 :host #parametrizer #settings .slider input:before {
-  content: "1x";
+  content: "Turtle";
   margin-right: 10px;
   font-size: 13px;
 }
 :host #parametrizer #settings .slider input:after {
-  content: "10000x";
+  content: "Rocket";
   margin-left: 10px;
   font-size: 13px;
+}
+@media screen and (max-width: 600px) {
+  :host #parametrizer #settings .slider input:before,
+  :host #parametrizer #settings .slider input:after {
+    content: "";
+    margin-: 10px;
+    font-size: 13px;
+  }
 }
 :host #parametrizer #settings .slider input::-ms-track {
   width: 100%;

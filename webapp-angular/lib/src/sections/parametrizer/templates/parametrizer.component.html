@@ -3,13 +3,25 @@
         <form id="settings">
             <div class="input-field text-input">
                 <p class="input-title">Name of your company</p>
-                <input id="companyName" type="text" value="{{ companyName }}" autocomplete="off">
+                <input id="company-name" type="text" value="{{ companyName }}" autocomplete="off">
             </div>
             <div class="input-field slider">
                 <p class="input-title">Time flow</p>
                 <p class="input-subtitle">Speed of virtual time against real time speed</p>
-                <input type="range" min="1" max="10000">
+                <input id="time-flow" type="range" min="1" max="10000" value="{{ timeFlow }}">
+                <div id="rocket-wrapper">
+                    <img id="rocket" src="./rocket.svg">
+                    <h3 class="is-2" style="font-weight: bold;">{{ timeFlow }}</h3>
+                </div>
+            </div>
+            <div>
+                <button type="submit" class="button is-primary is-large" id="save-settings">
+                    Save
+                </button>
             </div>
         </form>
+    </div>
+    <div style="text-align: right; font-size: 10px;">
+        Icons made by <a href="https://www.flaticon.com/authors/vectors-market" title="Vectors Market">Vectors Market</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
     </div>
 </div>

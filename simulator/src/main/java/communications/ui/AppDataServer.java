@@ -54,16 +54,36 @@ public class AppDataServer extends org.java_websocket.server.WebSocketServer {
         if (segments.length == 3 && segments[0].equals("transportation") && segments[1].equals("type"))
             data.put("transportation-type", getTransportationMode(segments[2]));
 
-        if (segments.length == 2 && segments[0].equals("company") && segments[1].equals("name"))
-            data.put("name", company.getName());
+        if (segments.length == 2) {
+            if (segments[0].equals("company") && segments[1].equals("name"))
+                data.put("name", company.getName());
 
-        if (segments.length == 2 && segments[0].equals("company") && segments[1].equals("type"))
-            data.put("company-type", company.getType().name());
+            if (segments[0].equals("company") && segments[1].equals("type"))
+                data.put("company-type", company.getType().name());
+
+            if (segments[0].equals("parametrizer") && segments[1].equals("timeFlow"))
+                data.put("number", parametrizer.getTimeFlow());
+
+        }
 
         if (segments.length >= 1 && segments[0].equals("set")) {
-            if (segments.length == 3 && segments[1].equals("companyName")) {
-                company.setName(segments[2]);
-                data.put("boolean",true);
+            if (segments.length == 3) {
+                if (segments[1].equals("companyName")) {
+                    company.setName(segments[2]);
+                    data.put("boolean",true);
+                }
+                if (segments[1].equals("timeFlow")) {
+                    try {
+                        int timeFlow = Integer.valueOf(segments[2]);
+                        if (timeFlow < 1 || timeFlow > 10000)
+                            throw  new IllegalArgumentException("Time flow out of bounds");
+                        parametrizer.setTimeFlow(timeFlow);
+                        data.put("boolean", true);
+                    } catch (IllegalArgumentException e) {
+                        e.printStackTrace();
+                        data.put("boolean", false);
+                    }
+                }
             }
         }
 

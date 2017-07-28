@@ -40,4 +40,11 @@ class AppDataStoreService {
       _dataTransformer.companyType(response)
     );
   }
+
+  /// Will return the simulation's time flow if [AppDataStoreService] is up.
+  Future<int> getTimeFlow() {
+    return _dataClient.request("parametrizer/timeFlow").then((response) =>
+        _dataTransformer.numberFromMap(response) as int
+    );
+  }
 }

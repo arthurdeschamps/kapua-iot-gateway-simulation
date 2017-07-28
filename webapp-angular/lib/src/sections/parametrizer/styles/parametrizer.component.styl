@@ -7,10 +7,50 @@ lightGray = #4a4a4a
     text-align center
     color lightGray
 
+    @media screen and (max-width: 600px)
+      .container
+        margin-right 10px
+        margin-left 10px
+
     > .container
       margin-top 50px
 
     #settings
+
+      #save-settings
+        clear both
+        margin-top 20px
+
+
+      #rocket-wrapper
+        clear both
+        margin-top 20px
+
+        @keyframes spin
+          0%
+            transform translateX(-150px) rotate(0deg)
+          40%
+            transform translateX(140px) rotate(0deg)
+          50%
+            transform translateX(150px) rotate(180deg)
+          90%
+            transform translateX(-140px) rotate(180deg)
+          100%
+            transform translateX(-150px) rotate(0deg)
+
+        anim = spin 3s linear infinite
+
+        allPrefixes(transformation)
+          -webkit-animation transformation /* Safari 4+ */
+          -moz-animation transformation /* Fx 5+ */
+          -o-animation transformation /* Opera 12+ */
+          animation transformation /* IE 10+, Fx 29+ */
+
+        #rocket
+          width 60px
+          height 80px
+          allPrefixes(anim)
+
 
       .input-field
         max-width 60%
@@ -41,6 +81,10 @@ lightGray = #4a4a4a
           font-style italic
           color lighten(@color, 20%)
 
+      @media screen and (max-width: 600px)
+        .input-field
+          min-width 80%
+
       .text-input
         input
           min-width 100%
@@ -70,9 +114,13 @@ lightGray = #4a4a4a
           font-size 13px
 
         input:before
-          indication("1x", "right")
+          indication("Turtle", "right")
         input:after
-          indication("10000x", "left")
+          indication("Rocket", "left")
+
+        @media screen and (max-width: 600px)
+          input:before, input:after
+            indication("","")
 
         input::-ms-track
           width 100%
