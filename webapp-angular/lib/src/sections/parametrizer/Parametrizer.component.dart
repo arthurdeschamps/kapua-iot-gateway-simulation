@@ -2,6 +2,7 @@
 // is governed by a BSD-styles license that can be found in the LICENSE file.
 
 import 'dart:async';
+import 'dart:math';
 import 'package:angular2/angular2.dart';
 import 'dart:html';
 
@@ -27,7 +28,13 @@ class ParametrizerComponent implements AfterViewInit {
   @override
   ngAfterViewInit() {
 
+    // Sets submit handler
     querySelector("#settings").onSubmit.listen((event) => onSubmit(event));
+
+    // Initialize rocket animation duration
+    _setRocketSpeed(_parametrizer.timeFlow);
+
+    // Color animation
     Element input = querySelector(".input-field");
     Element para;
     String initialColor = input.style.color;
@@ -65,11 +72,12 @@ class ParametrizerComponent implements AfterViewInit {
 
     // Updates time flow
     int timeFlow = int.parse(((querySelector("#time-flow") as InputElement).value));
-    print(timeFlow);
     if (timeFlow != null && timeFlow != _parametrizer.timeFlow) {
       bool res = await _parametrizer.setTimeFlow(timeFlow);
-      res ?
-        _success("Saved !", "Time flow has been updated.") :
+      if (res) {
+        _setRocketSpeed(timeFlow);
+        _success("Saved !", "Time flow has been updated.");
+    } else
         _failure("Error", "Time flow must be an integer between 1 and 10000");
     }
   }
@@ -95,5 +103,12 @@ class ParametrizerComponent implements AfterViewInit {
       message: message,
       messageColor: textColor,
     ));
+  }
+
+  /// Sets the speed of the rocket animation.
+  void _setRocketSpeed(int timeFlow) {
+    final String duration = ((log(25000/timeFlow)-5/timeFlow)*1000).toInt().toString()+"ms";
+    print(duration);
+    (querySelector("#rocket") as HtmlElement).style.animationDuration = duration;
   }
 }

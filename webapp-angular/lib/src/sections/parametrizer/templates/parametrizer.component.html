@@ -10,8 +10,16 @@
                 <p class="input-subtitle">Speed of virtual time against real time speed</p>
                 <input id="time-flow" type="range" min="1" max="10000" value="{{ timeFlow }}">
                 <div id="rocket-wrapper">
+                    <h3 class="is-2" style="font-weight: bold;">x {{ timeFlow }}</h3>
                     <img id="rocket" src="./rocket.svg">
-                    <h3 class="is-2" style="font-weight: bold;">{{ timeFlow }}</h3>
+                </div>
+            </div>
+            <div class="input-field number-input">
+                <p class="input-title">Data sending delay</p>
+                <p class="input-subtitle">Period of time between sending data to Kapua</p>
+                <div>
+                    <input id="sending-delay" type="number" value="{{ dataSendingDelay }}" autocomplete="off">
+                    <span>seconds</span>
                 </div>
             </div>
             <div>
@@ -20,8 +28,5 @@
                 </button>
             </div>
         </form>
-    </div>
-    <div style="text-align: right; font-size: 10px;">
-        Icons made by <a href="https://www.flaticon.com/authors/vectors-market" title="Vectors Market">Vectors Market</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
     </div>
 </div>

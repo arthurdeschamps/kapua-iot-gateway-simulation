@@ -18,17 +18,19 @@
 }
 :host #parametrizer #settings #rocket-wrapper {
   clear: both;
-  margin-top: 20px;
+  margin-top: 100px;
 }
 :host #parametrizer #settings #rocket-wrapper #rocket {
   width: 60px;
   height: 80px;
+  position: relative;
+  top: -50px;
   -webkit-animation: spin 3s linear infinite /* Safari 4+ */;
   -moz-animation: spin 3s linear infinite /* Fx 5+ */;
   -o-animation: spin 3s linear infinite /* Opera 12+ */;
   animation: spin 3s linear infinite /* IE 10+, Fx 29+ */;
 }
-@-moz-keyframes spin {
+@-moz-keyframes back_and_forth {
   0% {
     transform: translateX(-150px) rotate(0deg);
   }
@@ -43,57 +45,89 @@
   }
   100% {
     transform: translateX(-150px) rotate(0deg);
+  }
+}
+@-webkit-keyframes back_and_forth {
+  0% {
+    transform: translateX(-150px) rotate(0deg);
+  }
+  40% {
+    transform: translateX(140px) rotate(0deg);
+  }
+  50% {
+    transform: translateX(150px) rotate(180deg);
+  }
+  90% {
+    transform: translateX(-140px) rotate(180deg);
+  }
+  100% {
+    transform: translateX(-150px) rotate(0deg);
+  }
+}
+@-o-keyframes back_and_forth {
+  0% {
+    transform: translateX(-150px) rotate(0deg);
+  }
+  40% {
+    transform: translateX(140px) rotate(0deg);
+  }
+  50% {
+    transform: translateX(150px) rotate(180deg);
+  }
+  90% {
+    transform: translateX(-140px) rotate(180deg);
+  }
+  100% {
+    transform: translateX(-150px) rotate(0deg);
+  }
+}
+@keyframes back_and_forth {
+  0% {
+    transform: translateX(-150px) rotate(0deg);
+  }
+  40% {
+    transform: translateX(140px) rotate(0deg);
+  }
+  50% {
+    transform: translateX(150px) rotate(180deg);
+  }
+  90% {
+    transform: translateX(-140px) rotate(180deg);
+  }
+  100% {
+    transform: translateX(-150px) rotate(0deg);
+  }
+}
+@-moz-keyframes spin {
+  from {
+    transform: rotate(0deg) translate(-70px) rotate(-90deg);
+  }
+  to {
+    transform: rotate(360deg) translate(-70px) rotate(-90deg);
   }
 }
 @-webkit-keyframes spin {
-  0% {
-    transform: translateX(-150px) rotate(0deg);
+  from {
+    transform: rotate(0deg) translate(-70px) rotate(-90deg);
   }
-  40% {
-    transform: translateX(140px) rotate(0deg);
-  }
-  50% {
-    transform: translateX(150px) rotate(180deg);
-  }
-  90% {
-    transform: translateX(-140px) rotate(180deg);
-  }
-  100% {
-    transform: translateX(-150px) rotate(0deg);
+  to {
+    transform: rotate(360deg) translate(-70px) rotate(-90deg);
   }
 }
 @-o-keyframes spin {
-  0% {
-    transform: translateX(-150px) rotate(0deg);
+  from {
+    transform: rotate(0deg) translate(-70px) rotate(-90deg);
   }
-  40% {
-    transform: translateX(140px) rotate(0deg);
-  }
-  50% {
-    transform: translateX(150px) rotate(180deg);
-  }
-  90% {
-    transform: translateX(-140px) rotate(180deg);
-  }
-  100% {
-    transform: translateX(-150px) rotate(0deg);
+  to {
+    transform: rotate(360deg) translate(-70px) rotate(-90deg);
   }
 }
 @keyframes spin {
-  0% {
-    transform: translateX(-150px) rotate(0deg);
+  from {
+    transform: rotate(0deg) translate(-70px) rotate(-90deg);
   }
-  40% {
-    transform: translateX(140px) rotate(0deg);
-  }
-  50% {
-    transform: translateX(150px) rotate(180deg);
-  }
-  90% {
-    transform: translateX(-140px) rotate(180deg);
-  }
-  100% {
-    transform: translateX(-150px) rotate(0deg);
+  to {
+    transform: rotate(360deg) translate(-70px) rotate(-90deg);
   }
 }
 :host #parametrizer #settings .input-field {
@@ -130,7 +164,8 @@
     min-width: 80%;
   }
 }
-:host #parametrizer #settings .text-input input {
+:host #parametrizer #settings .text-input input,
+:host #parametrizer #settings .number-input input {
   min-width: 100%;
   font-size: 20px;
   color: #535353;
@@ -143,9 +178,17 @@
   background-color: #fafafa;
 }
 :host #parametrizer #settings .text-input input:hover,
+:host #parametrizer #settings .number-input input:hover,
 :host #parametrizer #settings .text-input input:active,
-:host #parametrizer #settings .text-input input:focus {
+:host #parametrizer #settings .number-input input:active,
+:host #parametrizer #settings .text-input input:focus,
+:host #parametrizer #settings .number-input input:focus {
   border-bottom-color: #00d1b2;
+}
+:host #parametrizer #settings .number-input input {
+  min-width: 10%;
+  max-width: 10%;
+  text-align: center;
 }
 :host #parametrizer #settings .slider input {
   max-width: 300px;

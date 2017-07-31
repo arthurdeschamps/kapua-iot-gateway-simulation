@@ -24,9 +24,9 @@ lightGray = #4a4a4a
 
       #rocket-wrapper
         clear both
-        margin-top 20px
+        margin-top 100px
 
-        @keyframes spin
+        @keyframes back_and_forth
           0%
             transform translateX(-150px) rotate(0deg)
           40%
@@ -37,6 +37,12 @@ lightGray = #4a4a4a
             transform translateX(-140px) rotate(180deg)
           100%
             transform translateX(-150px) rotate(0deg)
+
+        @keyframes spin
+          from
+            transform: rotate(0deg) translate(-70px) rotate(-90deg)
+          to
+            transform: rotate(360deg) translate(-70px) rotate(-90deg)
 
         anim = spin 3s linear infinite
 
@@ -49,6 +55,8 @@ lightGray = #4a4a4a
         #rocket
           width 60px
           height 80px
+          position relative
+          top -50px
           allPrefixes(anim)
 
 
@@ -85,7 +93,7 @@ lightGray = #4a4a4a
         .input-field
           min-width 80%
 
-      .text-input
+      .text-input, .number-input
         input
           min-width 100%
           font-size 20px
@@ -100,6 +108,13 @@ lightGray = #4a4a4a
 
           &:hover, &:active, &:focus
             border-bottom-color teal
+
+      .number-input
+        input
+          min-width 10%
+          max-width 10%
+          text-align center
+
 
       .slider
         input
