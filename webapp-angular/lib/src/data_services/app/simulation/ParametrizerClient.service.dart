@@ -18,25 +18,39 @@ class ParametrizerClientService {
   final DataTransformerService _dataTransformer;
 
   int timeFlow;
+  int dataSendingDelay;
 
   ParametrizerClientService(this._appDataClient, this._dataTransformer, this._appDataStore) {
-    _pollTimeFlow();
+    for (final String data in ["time flow", "data sending delay"])
+      _poll(data);
   }
 
-  /// Updates the name of the company in the simulation
+  /// Updates the name of the company in simulation.
   Future<bool> setCompanyName(String companyName) => boolean(_appDataClient.request("set/companyName/"+companyName));
 
-  /// Updates the time flow in the simulation
+  /// Updates time flow in simulation
   Future<bool> setTimeFlow(int timeFlow) {
     return boolean(_appDataClient.request("set/timeFlow/" + timeFlow.toString())).then((res) {
-      if (res)
-        _pollTimeFlow();
+      if (res) _poll("time flow");
+      return res;
+    });
+  }
+
+  /// Updates data sending delay in simulation.
+  Future<bool> setDataSendingDelay(int val) {
+    return boolean(_appDataClient.request("set/dataSendingDelay/" + val.toString())).then((res) {
+      if (res) _poll("data sending delay");
       return res;
     });
   }
 
   Future<bool> boolean(Future<Map> rawBool) async => _dataTransformer.boolean(await rawBool);
 
-  /// Polls the time flow from the server.
-  void _pollTimeFlow() => _appDataStore.getTimeFlow().then((val) => timeFlow = val);
+  /// Polls the value of [what] from the application data server.
+  void _poll(String what) {
+    if (what == "time flow")
+      _appDataStore.getTimeFlow().then((val) => timeFlow = val);
+    if (what == "data sending delay")
+      _appDataStore.getDataSendingDelay().then((val) => dataSendingDelay = val);
+  }
 }

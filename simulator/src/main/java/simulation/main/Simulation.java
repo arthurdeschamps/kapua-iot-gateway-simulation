@@ -36,7 +36,7 @@ public class Simulation {
 
         // Start sending data and subscribing
         logger.info("Initializing communications with Kapua...");
-        new KapuaClient(parametrizer.getCompany(),parametrizer.getDataSendingDelay()).startCommunications();
+        new KapuaClient(parametrizer.getCompany(),parametrizer).startCommunications();
 
         logger.info("Initializing communications with frontend app...");
         final int wsPort = 8055;

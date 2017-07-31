@@ -47,4 +47,11 @@ class AppDataStoreService {
         _dataTransformer.numberFromMap(response) as int
     );
   }
+
+  /// Will return the simulation's data sending delay if [AppDataStoreServic] is up.
+  Future<int> getDataSendingDelay() {
+    return _dataClient.request("parametrizer/dataSendingDelay").then((response) =>
+      _dataTransformer.numberFromMap(response) as int
+    );
+  }
 }

@@ -15,6 +15,15 @@
 :host #parametrizer #settings #save-settings {
   clear: both;
   margin-top: 20px;
+  -webkit-box-shadow: 0 6px 0 #007d6b;
+  -moz-box-shadow: 0 6px 0 #007d6b;
+  box-shadow: 0 6px 0 #007d6b;
+}
+:host #parametrizer #settings #save-settings:active {
+  -webkit-box-shadow: 0 2px 0 #007d6b;
+  -moz-box-shadow: 0 2px 0 #007d6b;
+  box-shadow: 0 2px 0 #007d6b;
+  transform: translateY(4px);
 }
 :host #parametrizer #settings #rocket-wrapper {
   clear: both;
@@ -29,74 +38,6 @@
   -moz-animation: spin 3s linear infinite /* Fx 5+ */;
   -o-animation: spin 3s linear infinite /* Opera 12+ */;
   animation: spin 3s linear infinite /* IE 10+, Fx 29+ */;
-}
-@-moz-keyframes back_and_forth {
-  0% {
-    transform: translateX(-150px) rotate(0deg);
-  }
-  40% {
-    transform: translateX(140px) rotate(0deg);
-  }
-  50% {
-    transform: translateX(150px) rotate(180deg);
-  }
-  90% {
-    transform: translateX(-140px) rotate(180deg);
-  }
-  100% {
-    transform: translateX(-150px) rotate(0deg);
-  }
-}
-@-webkit-keyframes back_and_forth {
-  0% {
-    transform: translateX(-150px) rotate(0deg);
-  }
-  40% {
-    transform: translateX(140px) rotate(0deg);
-  }
-  50% {
-    transform: translateX(150px) rotate(180deg);
-  }
-  90% {
-    transform: translateX(-140px) rotate(180deg);
-  }
-  100% {
-    transform: translateX(-150px) rotate(0deg);
-  }
-}
-@-o-keyframes back_and_forth {
-  0% {
-    transform: translateX(-150px) rotate(0deg);
-  }
-  40% {
-    transform: translateX(140px) rotate(0deg);
-  }
-  50% {
-    transform: translateX(150px) rotate(180deg);
-  }
-  90% {
-    transform: translateX(-140px) rotate(180deg);
-  }
-  100% {
-    transform: translateX(-150px) rotate(0deg);
-  }
-}
-@keyframes back_and_forth {
-  0% {
-    transform: translateX(-150px) rotate(0deg);
-  }
-  40% {
-    transform: translateX(140px) rotate(0deg);
-  }
-  50% {
-    transform: translateX(150px) rotate(180deg);
-  }
-  90% {
-    transform: translateX(-140px) rotate(180deg);
-  }
-  100% {
-    transform: translateX(-150px) rotate(0deg);
-  }
 }
 @-moz-keyframes spin {
   from {

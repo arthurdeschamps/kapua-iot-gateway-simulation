@@ -16,7 +16,7 @@ import simulation.simulators.runners.AbstractRunner;
 public class Parametrizer {
 
     private int timeFlow;
-    private long dataSendingDelay;
+    private int dataSendingDelay;
     private boolean displayMetrics;
     private long displayMetricsDelay;
     @Nullable
@@ -43,7 +43,7 @@ public class Parametrizer {
      * but not the behaviors of the Economy simulator. If the parameter is null, then the default Economy is
      * generated.
      */
-    public Parametrizer(int timeFlow, long dataSendingDelay, boolean displayMetrics, long displayMetricsDelay,
+    public Parametrizer(int timeFlow, int dataSendingDelay, boolean displayMetrics, long displayMetricsDelay,
                         @Nullable  Company company, boolean withInitialData, @Nullable Economy economy) {
         this.timeFlow = timeFlow;
         this.dataSendingDelay = dataSendingDelay;
@@ -92,11 +92,11 @@ public class Parametrizer {
         this.timeFlow = timeFlow;
     }
 
-    public long getDataSendingDelay() {
+    public int getDataSendingDelay() {
         return dataSendingDelay;
     }
 
-    public void setDataSendingDelay(long dataSendingDelay) {
+    public void setDataSendingDelay(int dataSendingDelay) {
         this.dataSendingDelay = dataSendingDelay;
     }
 

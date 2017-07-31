@@ -80,6 +80,16 @@ class ParametrizerComponent implements AfterViewInit {
     } else
         _failure("Error", "Time flow must be an integer between 1 and 10000");
     }
+
+    // Updates data sending delay
+    int dataSendingDelay = int.parse((querySelector("#sending-delay") as InputElement).value);
+    if (dataSendingDelay != null && dataSendingDelay != _parametrizer.dataSendingDelay) {
+      bool res = await _parametrizer.setDataSendingDelay(dataSendingDelay);
+      if (res)
+        _success("Saved !", "Data sending delay has been updated.");
+      else
+        _failure("Error", "Data sending delay must ba an integer between 1 and 100");
+    }
   }
 
   @Input()
@@ -87,6 +97,9 @@ class ParametrizerComponent implements AfterViewInit {
 
   @Input()
   int get timeFlow => _parametrizer.timeFlow;
+
+  @Input()
+  int get dataSendingDelay => _parametrizer.dataSendingDelay;
 
   /// Displays a success notification with title [title] and message [message]
   void _success(String title, String message) => _toast(title, message,  "#00d1b2");

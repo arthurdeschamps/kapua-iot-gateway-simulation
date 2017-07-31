@@ -1,6 +1,17 @@
 teal = #00d1b2
 lightGray = #4a4a4a
 
+animation(transformation...)
+  -webkit-animation transformation /* Safari 4+ */
+  -moz-animation transformation /* Fx 5+ */
+  -o-animation transformation /* Opera 12+ */
+  animation transformation /* IE 10+, Fx 29+ */
+
+box-shadow(args...)
+  -webkit-box-shadow args
+  -moz-box-shadow args
+  box-shadow args
+
 :host
   #parametrizer
     background-color #f9f9f9
@@ -16,27 +27,19 @@ lightGray = #4a4a4a
       margin-top 50px
 
     #settings
-
       #save-settings
         clear both
         margin-top 20px
+        box-shadow 0 6px 0 darken(teal, 40%)
+        &:active
+          box-shadow 0 2px 0 darken(teal, 40%)
+          transform translateY(4px)
+
 
 
       #rocket-wrapper
         clear both
         margin-top 100px
-
-        @keyframes back_and_forth
-          0%
-            transform translateX(-150px) rotate(0deg)
-          40%
-            transform translateX(140px) rotate(0deg)
-          50%
-            transform translateX(150px) rotate(180deg)
-          90%
-            transform translateX(-140px) rotate(180deg)
-          100%
-            transform translateX(-150px) rotate(0deg)
 
         @keyframes spin
           from
@@ -44,20 +47,15 @@ lightGray = #4a4a4a
           to
             transform: rotate(360deg) translate(-70px) rotate(-90deg)
 
-        anim = spin 3s linear infinite
+        spinningAnimation = spin 3s linear infinite
 
-        allPrefixes(transformation)
-          -webkit-animation transformation /* Safari 4+ */
-          -moz-animation transformation /* Fx 5+ */
-          -o-animation transformation /* Opera 12+ */
-          animation transformation /* IE 10+, Fx 29+ */
 
         #rocket
           width 60px
           height 80px
           position relative
           top -50px
-          allPrefixes(anim)
+          animation spinningAnimation
 
 
       .input-field
