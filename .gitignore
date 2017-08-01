@@ -30,3 +30,7 @@ data-transmitter/target/
 kapua-iot-gateway-simulation-scm.iml
 webapp-angular/.idea/
 webapp-angular/lib/src/sections/map/styles/
+
+# Others
+listener-tcplocalhost1883
+webapp-angular/lib/bower/angular-cli/
