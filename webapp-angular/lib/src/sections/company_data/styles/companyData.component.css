@@ -17,13 +17,14 @@
     font-weight:bolder;
 }
 
-:host #badges {
+:host #badge {
     margin-bottom:20px;
     padding-left: 10px;
 }
 
-:host #badges > span {
-    background-color: dimgrey;
+:host #badge > span {
+    background-color: lightgray;
+    color: black;
 }
 
 :host .wrapper {

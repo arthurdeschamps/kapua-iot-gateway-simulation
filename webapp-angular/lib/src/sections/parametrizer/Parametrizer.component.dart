@@ -31,10 +31,16 @@ class ParametrizerComponent implements AfterViewInit {
     // Sets submit handler
     querySelector("#settings").onSubmit.listen((event) => onSubmit(event));
 
-    // Initialize rocket animation duration
-    _setRocketSpeed(_parametrizer.timeFlow);
+    // Sets click handler for business types divs
+    querySelectorAll(".choice").onClick.listen((event) =>
+      _selectedCompanyType = (event.currentTarget as Element).id);
 
-    // Color animation
+    // Initialize rocket animation duration
+    int timeFlow = _parametrizer.timeFlow;
+    if (timeFlow != null)
+      _rocketSpeed = _parametrizer.timeFlow;
+
+    // Input fields colors animation on hover
     Element input = querySelector(".input-field");
     Element para;
     String initialColor = input.style.color;
@@ -46,15 +52,24 @@ class ParametrizerComponent implements AfterViewInit {
       para = input.querySelector("p");
       para.style.color = initialColor;
     });
+
+    // Selected company type
+    _selectedCompanyType = _company.companyType;
   }
 
   void onSubmit(Event event) {
     event.preventDefault();
 
     HtmlElement submitButton = querySelector("#save-settings");
+
     if (submitButton != null) {
+      // CSS clicked button animation
+      submitButton.classes.add("clicked");
       submitButton.classes.add("is-loading");
-      updateData().then((_) => submitButton.classes.remove("is-loading"));
+      updateData().then((_) {
+        submitButton.classes.remove("is-loading");
+        submitButton.classes.remove("clicked");
+      });
     }
   }
 
@@ -75,7 +90,7 @@ class ParametrizerComponent implements AfterViewInit {
     if (timeFlow != null && timeFlow != _parametrizer.timeFlow) {
       bool res = await _parametrizer.setTimeFlow(timeFlow);
       if (res) {
-        _setRocketSpeed(timeFlow);
+        _rocketSpeed = timeFlow;
         _success("Saved !", "Time flow has been updated.");
     } else
         _failure("Error", "Time flow must be an integer between 1 and 10000");
@@ -90,6 +105,18 @@ class ParametrizerComponent implements AfterViewInit {
       else
         _failure("Error", "Data sending delay must ba an integer between 1 and 100");
     }
+
+    // Updates company type
+    String selectedType = (querySelector(".selected-choice") as HtmlElement).id;
+    if (selectedType != null && selectedType != companyType) {
+      bool res = await _company.setCompanyType(selectedType);
+      if (res) {
+        _company.pollCompanyType();
+        _success("Saved !", "Company type has been updates.");
+      }
+      else
+        _failure("Error", "Company type could not be updated.");
+    }
   }
 
   @Input()
@@ -100,6 +127,9 @@ class ParametrizerComponent implements AfterViewInit {
 
   @Input()
   int get dataSendingDelay => _parametrizer.dataSendingDelay;
+
+  @Input()
+  String get companyType =>_company.companyType;
 
   /// Displays a success notification with title [title] and message [message]
   void _success(String title, String message) => _toast(title, message,  "#00d1b2");
@@ -119,9 +149,24 @@ class ParametrizerComponent implements AfterViewInit {
   }
 
   /// Sets the speed of the rocket animation.
-  void _setRocketSpeed(int timeFlow) {
+  void set _rocketSpeed(int timeFlow) {
     final String duration = ((log(25000/timeFlow)-5/timeFlow)*1000).toInt().toString()+"ms";
     print(duration);
     (querySelector("#rocket") as HtmlElement).style.animationDuration = duration;
+  }
+
+  /// Adds css style to div corresponding to the company type.
+  void set _selectedCompanyType(String companyType) {
+    HtmlElement el;
+    if (_company.companyTypes.contains(companyType)) {
+      _company.companyTypes.forEach((type) {
+        el = querySelector('#'+type);
+        if (el != null) {
+          type == companyType.toLowerCase() ?
+            el.classes.add("selected-choice") :
+            el.classes.remove("selected-choice");
+        }
+      });
+    }
   }
 }

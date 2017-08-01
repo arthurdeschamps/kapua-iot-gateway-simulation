@@ -15,15 +15,18 @@
 :host #parametrizer #settings #save-settings {
   clear: both;
   margin-top: 20px;
+  margin-bottom: 20px;
   -webkit-box-shadow: 0 6px 0 #007d6b;
   -moz-box-shadow: 0 6px 0 #007d6b;
   box-shadow: 0 6px 0 #007d6b;
 }
-:host #parametrizer #settings #save-settings:active {
-  -webkit-box-shadow: 0 2px 0 #007d6b;
-  -moz-box-shadow: 0 2px 0 #007d6b;
-  box-shadow: 0 2px 0 #007d6b;
+:host #parametrizer #settings .clicked {
+  -webkit-transition-duration: 0.1s;
+  transition-duration: 0.1s;
   transform: translateY(4px);
+  -webkit-box-shadow: 0 2px 0 #007d6b !important;
+  -moz-box-shadow: 0 2px 0 #007d6b !important;
+  box-shadow: 0 2px 0 #007d6b !important;
 }
 :host #parametrizer #settings #rocket-wrapper {
   clear: both;
@@ -130,6 +133,36 @@
   min-width: 10%;
   max-width: 10%;
   text-align: center;
+}
+:host #parametrizer #settings .choice-input {
+  margin-bottom: 10px;
+}
+:host #parametrizer #settings .choice-input div {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+:host #parametrizer #settings .choice-input div .choice {
+  background-color: #001f3f;
+  color: #f5f5f5;
+  opacity: 0.3;
+  width: 100px;
+  height: 2em;
+  overflow-x: scroll;
+  cursor: pointer;
+}
+:host #parametrizer #settings .choice-input div .choice span {
+  padding: 5px;
+}
+:host #parametrizer #settings .choice-input div .selected-choice {
+  opacity: 1;
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  transform: scale(1.2, 1.2);
+}
+:host #parametrizer #settings .slider {
+  margin-bottom: 0;
 }
 :host #parametrizer #settings .slider input {
   max-width: 300px;

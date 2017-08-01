@@ -28,6 +28,8 @@ class ParametrizerClientService {
   /// Updates the name of the company in simulation.
   Future<bool> setCompanyName(String companyName) => boolean(_appDataClient.request("set/companyName/"+companyName));
 
+  Future<bool> setCompanyType(String companyType) => boolean(_appDataClient.request("set/companyType/"+companyType));
+
   /// Updates time flow in simulation
   Future<bool> setTimeFlow(int timeFlow) {
     return boolean(_appDataClient.request("set/timeFlow/" + timeFlow.toString())).then((res) {

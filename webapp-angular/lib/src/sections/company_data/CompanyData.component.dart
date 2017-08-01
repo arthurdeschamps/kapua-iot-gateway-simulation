@@ -79,10 +79,10 @@ class CompanyDataComponent {
 
   /// Returns the name of the company.
   @Input()
-  String getCompanyName() => _companyService.companyName;
+  String get companyName => _companyService.companyName;
 
   /// Returns the type of the company.
   @Input()
-  String getCompanyType() => _companyService.companyType;
+  String get companyType => _companyService.companyType+" business";
 
 }

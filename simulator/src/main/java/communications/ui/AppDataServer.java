@@ -3,6 +3,7 @@ package communications.ui;
 
 import com.google.gson.Gson;
 import company.company.Company;
+import company.company.CompanyType;
 import company.transportation.Transportation;
 import company.transportation.TransportationMode;
 import org.java_websocket.WebSocket;
@@ -74,6 +75,16 @@ public class AppDataServer extends org.java_websocket.server.WebSocketServer {
                 if (segments[1].equals("companyName")) {
                     company.setName(segments[2]);
                     data.put("boolean",true);
+                }
+                if (segments[1].equals("companyType")) {
+                    try {
+                        CompanyType companyType = CompanyType.valueOf(segments[2].toUpperCase());
+                        company.setType(companyType);
+                        data.put("boolean", true);
+                    } catch (IllegalArgumentException e) {
+                        e.printStackTrace();
+                        data.put("boolean", false);
+                    }
                 }
                 if (segments[1].equals("timeFlow")) {
                     try {

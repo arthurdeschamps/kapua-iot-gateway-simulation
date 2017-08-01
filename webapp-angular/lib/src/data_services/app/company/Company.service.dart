@@ -76,14 +76,22 @@ class CompanyService {
     return _iotStore.storesSizes[of];
   }
 
+  /// Returns all possible company types.
+  List<String> get companyTypes => ["local", "national", "international"];
+
   /// Sets the company name in the simulations
   ///
-  /// A bool with value "true" is received when the value is set in the simulation
+  /// A bool with value "true" is received when the value is set in the simulation.
   Future<bool> setCompanyName(String companyName) => _parametrizerClient.setCompanyName(companyName);
+
+  /// Sets the type of business that is the simulated company.
+  ///
+  /// A bool with value "true" is received when the value is set in the simulation.
+  Future<bool> setCompanyType(String companyType) => _parametrizerClient.setCompanyType(companyType);
 
   /// Polls the name of the company in the app data store
   void pollCompanyName() => _appStore.getCompanyName().then((val) => companyName = val);
 
   /// Polls the type of the company in the app data store
-  void pollCompanyType() => _appStore.getCompanyType().then((val) => companyType = val.toLowerCase()+" business");
+  void pollCompanyType() => _appStore.getCompanyType().then((val) => companyType = val.toLowerCase());
 }

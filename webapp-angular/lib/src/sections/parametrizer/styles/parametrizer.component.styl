@@ -12,6 +12,11 @@ box-shadow(args...)
   -moz-box-shadow args
   box-shadow args
 
+transformWithDuration(anim, duration)
+  -webkit-transition-duration duration
+  transition-duration duration
+  transform anim
+
 :host
   #parametrizer
     background-color #f9f9f9
@@ -30,12 +35,12 @@ box-shadow(args...)
       #save-settings
         clear both
         margin-top 20px
+        margin-bottom 20px
         box-shadow 0 6px 0 darken(teal, 40%)
-        &:active
-          box-shadow 0 2px 0 darken(teal, 40%)
-          transform translateY(4px)
 
-
+      .clicked
+        transformWithDuration(translateY(4px), 0.1s)
+        box-shadow 0 2px 0 darken(teal, 40%) !important
 
       #rocket-wrapper
         clear both
@@ -113,8 +118,34 @@ box-shadow(args...)
           max-width 10%
           text-align center
 
+      .choice-input
+        margin-bottom 10px
+        div
+          margin-top 10px
+          display flex
+          flex-direction row
+          justify-content center
+
+          .choice
+            background-color #001f3f
+            color whitesmoke
+            opacity 0.3
+            width 100px
+            height 2em
+            overflow-x scroll
+            cursor pointer
+
+            span
+              padding 5px
+
+          .selected-choice
+            opacity 1
+            transformWithDuration(scale(1.2, 1.2), 0.4s)
+
 
       .slider
+        margin-bottom 0
+
         input
           max-width 300px
           min-width 70%
