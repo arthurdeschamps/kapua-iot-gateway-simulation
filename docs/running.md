@@ -21,7 +21,7 @@ If you have the Kapua docker containers created on your computer, you can start 
 Running **simulator** and **data-transmitter**
 -----------
 
- - **The maven way**
+ - **The maven way**:
  You will need Maven installed. See [these](https://maven.apache.org/install.html) instructions.
  Go to **simulator** directory and run:
 	
@@ -32,15 +32,10 @@ Running **simulator** and **data-transmitter**
 
     That's it !
     
-    You can also build the jars by running 
-    
-    	$ mvn package
-	
-    in the module's directory you desire.
- - **The IDE way**
+ - **The IDE way**:
   If you have access to **IntelliJ idea** (or similar), you can import the global project in the IDE and simply run the two modules **simulator** and **data-transmitter** (no matter the order). No specific option is required, just run the main class for both module.
   
- - **The JAR way**
+ - **The JAR way**:
  Go to directory **simulator/target** and run:
 
         $ java -jar simulator-1.0-SNAPSHOT-jar-with-dependencies.jar
@@ -48,14 +43,20 @@ Running **simulator** and **data-transmitter**
     Go to directory **data-transmitter/target** and run:
  
         $ java -jar data-transmitter-1.0-SNAPSHOT-jar-with-dependencies.jar 
+	
+    You can also build the jars by running 
+    
+    	$ mvn package
+	
+    in the module's directory you desire.
 
 
 Running the **web application**
 -------
-- **The easy way**
+- **The easy way**:
 Go to **webapp-angular/build/web/** and open index.html in any browser you desire.
 
-- **The pub way**
+- **The pub way**:
  
 	 1. Install the **pub** tool. Follow this [link](https://www.dartlang.org/tools/pub/installing) for further instructions.
 
@@ -67,6 +68,6 @@ Go to **webapp-angular/build/web/** and open index.html in any browser you desir
 	
 	*Note that you can choose another port, but neither 8080 or 8081 will be available if you have **kapua-console** and **kapua-api** running on their default ports.*
 
-- **The IDE way**
+- **The IDE way**:
 Using **WebStorm** you can simply run the built-in configuration called "index.html".
 If you encounter 404 errors, just change the port of the configuration. For instance change it from 63342 to 63343.
