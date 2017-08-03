@@ -49,7 +49,7 @@ Running **simulator** and **data-transmitter**
     
     	$ mvn package
 	
-in the module's directory you desire.
+	in the module's directory you desire.
 
 
 Running the **web application**
