@@ -59,6 +59,7 @@ You will need to install the **pub** tool. Follow this [link](https://www.dartla
 - **The easy way**:
 
 	Go to **webapp-angular/** and run `pub build` to build the project.
+	
 	Go to **webapp-angular/build/web/** and open _index.html_ in any browser you desire.
 
 - **The dynamic way**:
