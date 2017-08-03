@@ -1,8 +1,8 @@
 
 
-Supply chain control simulation - General information
+General information
 =======
-## What is this simulation about ?##
+## What is this simulation about ? ##
 This supply chain control simulation (SCCS) is a showcase for [Kapua](https://eclipse.org/kapua/). What is Kapua ? As stated on welcome page of the platform's website :
 
 > Modular IoT cloud platform to manage and integrate devices and their data.
