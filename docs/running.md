@@ -23,14 +23,12 @@ Running **simulator** and **data-transmitter**
 
  - **The maven way**:
  You will need Maven installed. See [these](https://maven.apache.org/install.html) instructions.
- Go to **simulator** directory and run:
+ Go to **simulator** and then **data-transmitter** and run in both directories:
+ 
+ 		$ mvn install   # Downloads dependencies and compiles everything
+ 		$ mvn exec:java # Run
 	
-	    $ mvn exec:java
-    Go to **data-transmitter** directory and run:
-
-       $ mvn exec:java
-
-    That's it !
+ 	That's it !
     
  - **The IDE way**:
   If you have access to **IntelliJ idea** (or similar), you can import the global project in the IDE and simply run the two modules **simulator** and **data-transmitter** (no matter the order). No specific option is required, just run the main class for both module.
