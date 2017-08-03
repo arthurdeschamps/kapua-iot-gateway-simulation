@@ -69,7 +69,7 @@ You will need to install the **pub** tool. Follow this [link](https://www.dartla
 	 If you don't already have it, install [Dartium](https://webdev.dartlang.org/tools/dartium)  (Chromium with the Dart VM). 
 	 Thereafter, run in the **webapp-angular** directory:
  
-	        $ pub serve --port 8082
+	  $ pub serve --port 8082
 		
 	and open localhost:8082 in Dartium.
 	
