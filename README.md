@@ -1,7 +1,11 @@
 # kapua-iot-gateway-simulation
 Supply chain management simulator for kapua. The goal is to build a parameterizable simulator for quick tests of the kapua platform.
 
-For more information, take a look at the Wiki.
+For more information, take a look at:
+* [Home](https://github.com/arthurdeschamps/kapua-iot-gateway-simulation/wiki) : General information
+* [Running](https://github.com/arthurdeschamps/kapua-iot-gateway-simulation/wiki/Running) : Different approaches on how to run the simualation
+* [Technical overview](https://github.com/arthurdeschamps/kapua-iot-gateway-simulation/wiki/Technical-overview) : Detailed explanations of the internal functioning of the application
+* [Topic system](https://github.com/arthurdeschamps/kapua-iot-gateway-simulation/wiki/Topic-system) : Description of the topic system used for communications
 
 ## Project status of advancement
 The simulation's backbone is done.
