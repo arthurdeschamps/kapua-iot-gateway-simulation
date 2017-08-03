@@ -13,7 +13,9 @@ There are basically three main blocks in this simulation. **Simulator** and **da
  - **Webapp-angular**: Communicates with both **simulator** and **data-transmitter** through [*WebSocket*](../webapp-angular/lib/src/data_services/) in order to get telemetry and application data. Use this data in multiple forms ([Map](../webapp-angular/lib/src/sections/map/), [Chart](../webapp-angular/lib/src/sections/company_data/DataChart.dart), etc). Also provides a [settings section](../webapp-angular/lib/src/sections/parametrizer/) to allow the user to customise the simulation.
 
 Here is a simple scheme describing the general flow of the simulation:
-![enter image description here](https://lh3.googleusercontent.com/-ojbfSdIwauI/WYIYOTDsDDI/AAAAAAAACY4/_LVWBRHiJ3cfJLpv-i0QEE8WD3gy0GqewCLcBGAs/s0/untitled+%25281%2529.png "scheme.png")
+<p align="center"> 
+<img src="https://lh3.googleusercontent.com/-ojbfSdIwauI/WYIYOTDsDDI/AAAAAAAACY4/_LVWBRHiJ3cfJLpv-i0QEE8WD3gy0GqewCLcBGAs/s0/untitled+%25281%2529.png">
+</p>
 
 Simulator
 -------
