@@ -33,7 +33,7 @@ Running **simulator** and **data-transmitter**
     
  - **The IDE way**:
  
-	  If you have access to **IntelliJ idea** (or similar), you can import the global project in the IDE and simply run the two modules **simulator** and **data-transmitter** (no matter the order). No specific option is required, just run the main class for both module.
+	  If you have access to **IntelliJ idea**, you can open the .iml file in the IDE and simply run the two modules **simulator** and **data-transmitter** (no matter the order). No specific option is required, just run the main class for both module.
   
  - **The JAR way**:
  
