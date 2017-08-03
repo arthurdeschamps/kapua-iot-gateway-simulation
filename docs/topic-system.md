@@ -1,3 +1,6 @@
+Topic system
+=======
+
 # What is a topic ? #
 In this simulation, the term "topic" is used in different contexts. However, it is always a series of words, attached together to form some kind of path, such as `my/fabulous/topic`.
 
