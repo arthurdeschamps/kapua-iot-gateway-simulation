@@ -31,6 +31,12 @@ Running **simulator** and **data-transmitter**
        $ mvn exec:java
 
     That's it !
+    
+    You can also build the jars by running 
+    
+    	$ mvn package
+	
+    in the module's directory you desire.
  - **The IDE way**
   If you have access to **IntelliJ idea** (or similar), you can import the global project in the IDE and simply run the two modules **simulator** and **data-transmitter** (no matter the order). No specific option is required, just run the main class for both module.
   
