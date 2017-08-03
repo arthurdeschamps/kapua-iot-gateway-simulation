@@ -49,7 +49,7 @@ Running **simulator** and **data-transmitter**
     
     		$ mvn package
 	
-    	 in the module's directory you desire.
+    in the module's directory you desire.
 
 
 Running the **web application**
@@ -57,11 +57,12 @@ Running the **web application**
 You will need to install the **pub** tool. Follow this [link](https://www.dartlang.org/tools/pub/installing) for further instructions.
 
 - **The easy way**:
+
 	Go to **webapp-angular/** and run `pub build` to build the project.
-	
 	Go to **webapp-angular/build/web/** and open _index.html_ in any browser you desire.
 
 - **The dynamic way**:
+
 	You can start a development server that will interpret dart files directly (no JS compilation).
 
 	 If you don't already have it, install [Dartium](https://webdev.dartlang.org/tools/dartium)  (Chromium with the Dart VM). 
@@ -74,5 +75,6 @@ You will need to install the **pub** tool. Follow this [link](https://www.dartla
 	*Note that you can choose another port, but neither 8080 or 8081 will be available if you have **kapua-console** and **kapua-api** running on their default ports.*
 
 - **The IDE way**:
-Using **WebStorm** you can simply run the built-in configuration called "index.html".
-If you encounter 404 errors, just change the port of the configuration. For instance change it from 63342 to 63343.
+
+	Using **WebStorm** you can simply run the built-in configuration called "index.html".
+	If you encounter 404 errors, just change the port of the configuration. For instance change it from 63342 to 63343.
