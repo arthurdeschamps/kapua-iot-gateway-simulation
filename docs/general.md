@@ -9,7 +9,7 @@ This supply chain control simulation (SCCS) is a showcase for [Kapua](https://ec
 
 With this simulation, you are able in a few manipulations to run the simulation and send auto-generated data to the platform via the [Kapua gateway client](https://github.com/ctron/kapua-gateway-client).
 
-The telemetry data is also available in a user friendly web application, a kind of dashboard. This dashboard also enables the user to parametrise the simulation, that is to change parameters that directly affect the simulation's behaviours.
+The telemetry data is also available in a user friendly [web application](../webapp-angular/), a kind of dashboard. This dashboard also enables the user to parametrise the simulation, that is to change parameters that directly affect the simulation's behaviours.
 
 ## What is the simulation's flow ? ##
 SCCS simulates a company evolving in a fluctuating economy. The company has customers, transports, product types and products, orders, etc. 
