@@ -26,12 +26,11 @@ Running **simulator** and **data-transmitter**
  Go to **simulator** directory and run:
 	
 	    $ mvn exec:java
-	
-	Go to **data-transmitter** directory and run:
-	
-		$ mvn exec:java
-	   
-	That's it !
+    Go to **data-transmitter** directory and run:
+
+       $ mvn exec:java
+
+    That's it !
  - **The IDE way**
   If you have access to **IntelliJ idea** (or similar), you can import the global project in the IDE and simply run the two modules **simulator** and **data-transmitter** (no matter the order). No specific option is required, just run the main class for both module.
   
@@ -40,7 +39,7 @@ Running **simulator** and **data-transmitter**
 
         $ java -jar simulator-1.0-SNAPSHOT-jar-with-dependencies.jar
 
- Go to directory **data-transmitter/target** and run:
+    Go to directory **data-transmitter/target** and run:
  
         $ java -jar data-transmitter-1.0-SNAPSHOT-jar-with-dependencies.jar 
 
@@ -60,7 +59,7 @@ Go to **webapp-angular/build/web/** and open index.html in any browser you desir
 	        $ pub serve --port 8082
 	and open localhost:8082 in Dartium.
 	
-		*Note that you can choose another port, but neither 8080 or 8081 will be available if you have **kapua-console** and **kapua-api** running on their default ports.*
+	*Note that you can choose another port, but neither 8080 or 8081 will be available if you have **kapua-console** and **kapua-api** running on their default ports.*
 
 - **The IDE way**
 Using **WebStorm** you can simply run the built-in configuration called "index.html".
