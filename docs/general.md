@@ -29,4 +29,4 @@ The SCCS is composed of three modules.
  
  2. [**Data Transmitter**](../data-transmitter/): The data transmitter listens to the publications made by the simulator and sends them all to the web application.
 
- 3. [**Web application**](../webapp-angular/):  The web-based application is a simple dashboard, displaying deliveries in real-time on an interactive map and showing some quantities evolution over time (e.g. customers). The *parametrizer* section enables the user to modify the simulation's parameters.
+ 3. [**Webapp-angular**](../webapp-angular/):  The web-based application is a simple dashboard, displaying deliveries in real-time on an interactive map and showing some quantities evolution over time (e.g. customers). The *parametrizer* section enables the user to modify the simulation's parameters.
