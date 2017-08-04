@@ -47,6 +47,8 @@ class AppDataClientService extends WebSocketDataClientService {
     }).then((_) => response.data);
   }
 
+  Future<String> get time => request("time/now").then((map) => _dataTransformer.date(map));
+
   @override
   String get clientName => "AppDataClientService";
 

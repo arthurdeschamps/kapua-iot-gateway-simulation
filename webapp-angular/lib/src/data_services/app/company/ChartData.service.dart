@@ -16,6 +16,7 @@ import 'dart:async';
 import 'dart:collection';
 import 'package:angular2/angular2.dart';
 import 'package:logging/logging.dart';
+import 'package:webapp_angular/src/data_services/app/AppDataClient.service.dart';
 import 'package:webapp_angular/src/data_services/app/company/Company.service.dart';
 import 'package:webapp_angular/src/data_services/app/simulation/ParametrizerClient.service.dart';
 
@@ -25,7 +26,7 @@ class ChartDataService {
 
   /// List of times.
   ///
-  /// Each element of this list corresponds to the exact time that [storesQuantities]
+  /// Each element of this list corresponds to the almost exact time that [storesQuantities]
   /// was updated.
   List<String> timeline;
 
@@ -35,14 +36,15 @@ class ChartDataService {
   Map<String, List<int>> storesQuantities;
 
   final CompanyService _companyService;
+  final AppDataClientService _appDataService;
   final ParametrizerClientService _parametrizer;
   final Logger logger = new Logger("DataChart");
 
   Timer _updateTimer;
   int _dataSendingDelay;
 
-  ChartDataService(this._companyService, this._parametrizer) {
-    timeline = <String>[_now];
+  ChartDataService(this._companyService, this._parametrizer, this._appDataService) {
+    timeline = <String>[];
     storesQuantities = new HashMap();
     _initTimer();
   }
@@ -65,10 +67,6 @@ class ChartDataService {
     });
   }
 
-  /// Returns the current time.
-  static String get _now {
-    return new DateTime.now().second.toString();
-  }
 
   /// Updates [storesQuantities] values as well as [timeline] values.
   void _updateChartData() {
@@ -76,7 +74,7 @@ class ChartDataService {
     // We limit x-axis to 50 values
     if (timeline.length >= maxValues)
       timeline.removeAt(0);
-    timeline.add(_now);
+    _appDataService.time.then((dateTime) => timeline.add(dateTime));
 
     // Same limit for values
     _companyService.storesWithSizes.forEach((name, quantity) {

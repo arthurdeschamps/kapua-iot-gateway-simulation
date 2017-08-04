@@ -25,6 +25,7 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import simulation.main.Parametrizer;
+import simulation.main.VirtualTime;
 import websocket.server.Response;
 
 import java.net.InetSocketAddress;
@@ -41,13 +42,15 @@ public class AppDataServer extends org.java_websocket.server.WebSocketServer {
 
     private Company company;
     private Parametrizer parametrizer;
+    private VirtualTime virtualTime;
     private final Gson gson = new Gson();
 
     private final static Logger logger = LoggerFactory.getLogger(AppDataServer.class);
 
-    public AppDataServer(Parametrizer parametrizer, int port) {
+    public AppDataServer(Parametrizer parametrizer, VirtualTime virtualTime, int port) {
         super(new InetSocketAddress("localhost",port));
         this.company = parametrizer.getCompany();
+        this.virtualTime = virtualTime;
         this.parametrizer = parametrizer;
     }
 
@@ -65,6 +68,9 @@ public class AppDataServer extends org.java_websocket.server.WebSocketServer {
 
         // Frontend app expects to receive the same format for the request (e.g. topic/subtopic/...)
         result.setTopics(new String[]{request});
+
+        if (segments.length == 2 && segments[0].equals("time") && segments[1].equals("now"))
+            data.put("time", virtualTime.getCurrentDateTime());
 
         if (segments.length == 3 && segments[0].equals("transportation") && segments[1].equals("type"))
             data.put("transportation-type", getTransportationMode(segments[2]));

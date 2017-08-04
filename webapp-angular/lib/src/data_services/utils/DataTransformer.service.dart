@@ -55,7 +55,7 @@ class DataTransformerService {
       new Delivery(rawDelivery["id"],currentPosition: rawDelivery["currentLocation"], transporterId: rawDelivery["transporterId"]);
 
   /// Converts to a number (used for stores sizes, for example)
-  num numberFromMap(Map map) => map["number"];
+  num number(Map map) => map["number"];
 
   /// Converts to a string representing the name of something.
   String name(Map map) => map["name"];
@@ -65,6 +65,9 @@ class DataTransformerService {
 
   /// Converts to a boolean
   bool boolean(Map map) => (map["boolean"] as bool);
+
+  /// Converts to String representing a date.
+  String date(Map map) => (map["time"] as String);
 
   /// Converts a raw websocket message into a response object.
   Response decode(var data) {

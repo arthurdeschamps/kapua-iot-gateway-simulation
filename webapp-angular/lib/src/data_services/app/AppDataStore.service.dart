@@ -55,14 +55,14 @@ class AppDataStoreService {
   /// Will return the simulation's time flow if [AppDataStoreService] is up.
   Future<int> getTimeFlow() {
     return _dataClient.request("parametrizer/timeFlow").then((response) =>
-        _dataTransformer.numberFromMap(response) as int
+        _dataTransformer.number(response) as int
     );
   }
 
   /// Will return the simulation's data sending delay if [AppDataStoreServic] is up.
   Future<int> getDataSendingDelay() {
     return _dataClient.request("parametrizer/dataSendingDelay").then((response) =>
-      _dataTransformer.numberFromMap(response) as int
+      _dataTransformer.number(response) as int
     );
   }
 }

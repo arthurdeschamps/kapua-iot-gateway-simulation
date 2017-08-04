@@ -73,7 +73,7 @@ class IotDataStoreService {
 
       if (topics[0] == "company")
         if (topics[2] == "number")
-          updateNumber(topics[1], _dataTransformer.numberFromMap(response.data));
+          updateNumber(topics[1], _dataTransformer.number(response.data));
     }
   }
 

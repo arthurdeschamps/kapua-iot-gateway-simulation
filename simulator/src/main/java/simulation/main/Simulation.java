@@ -39,6 +39,8 @@ public class Simulation {
         // Comment the line below if you don't want the default parameters for the simulation
         Parametrizer parametrizer = new Parametrizer();
 
+        VirtualTime virtualTime = new VirtualTime(parametrizer);
+
         // Or use the default parametrizer and set the things you want:
         parametrizer.setDataSendingDelay(2);
         parametrizer.setTimeFlow(3600);
@@ -54,7 +56,7 @@ public class Simulation {
 
         logger.info("Initializing communications with frontend app...");
         final int wsPort = 8055;
-        new AppDataServer(parametrizer, wsPort).start();
+        new AppDataServer(parametrizer, virtualTime, wsPort).start();
     }
 
 }
