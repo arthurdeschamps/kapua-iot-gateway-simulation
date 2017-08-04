@@ -17,6 +17,7 @@ import 'dart:collection';
 import 'package:angular2/angular2.dart';
 import 'package:logging/logging.dart';
 import 'package:webapp_angular/src/data_services/app/company/Company.service.dart';
+import 'package:webapp_angular/src/data_services/app/simulation/ParametrizerClient.service.dart';
 
 /// Source of data for the DataChart component.
 @Injectable()
@@ -34,12 +35,26 @@ class ChartDataService {
   Map<String, List<int>> storesQuantities;
 
   final CompanyService _companyService;
+  final ParametrizerClientService _parametrizer;
   final Logger logger = new Logger("DataChart");
 
-  ChartDataService(this._companyService) {
+  Timer _updateTimer;
+  int _dataSendingDelay;
+
+  ChartDataService(this._companyService, this._parametrizer) {
     timeline = <String>[_now];
     storesQuantities = new HashMap();
-    new Timer.periodic(new Duration(seconds: 1),(_) => _updateChartData());
+    _initTimer();
+  }
+
+  /// Initialize the chart data update timer.
+  ///
+  /// Takes the current dataSendingDelay as time interval.
+  void _initTimer() {
+    _dataSendingDelay = _parametrizer.dataSendingDelay;
+    if (_dataSendingDelay == null)
+      _dataSendingDelay = 10;
+    _updateTimer = new Timer.periodic(new Duration(seconds: _dataSendingDelay),(_) => _updateChartData());
   }
 
   /// Initializes [storesQuantities].
@@ -69,5 +84,17 @@ class ChartDataService {
         storesQuantities[name].removeAt(0);
       storesQuantities[name].add(quantity);
     });
+
+    _verifyDataSendingDelay();
+  }
+
+  /// Checks if dataSendingDelay has changed.
+  ///
+  /// It dataSendingDelay has changed, the timer is re-initialized.
+  void _verifyDataSendingDelay() {
+    if (_dataSendingDelay != _parametrizer.dataSendingDelay) {
+      _updateTimer.cancel();
+      _initTimer();
+    }
   }
 }

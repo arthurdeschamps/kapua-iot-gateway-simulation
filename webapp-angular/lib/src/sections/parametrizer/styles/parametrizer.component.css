@@ -149,7 +149,7 @@
   opacity: 0.3;
   width: 100px;
   height: 2em;
-  overflow-x: scroll;
+  overflow-x: hidden;
   cursor: pointer;
 }
 :host #parametrizer #settings .choice-input div .choice span {

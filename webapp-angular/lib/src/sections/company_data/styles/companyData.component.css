@@ -35,5 +35,12 @@
 
 :host .table, :host .table td, :host .table tr, :host .table th {
     color: whitesmoke;
+    text-align: center;
     background-color: #383a3d;
+    border-color: black;
+    word-wrap: break-word;
+    hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    -webkit-hyphens: auto;
 }

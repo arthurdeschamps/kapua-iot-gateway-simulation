@@ -44,13 +44,10 @@ abstract class WebSocketDataClientService {
 
     sock.onError.listen((error) {
       logger.shout("Websocket unavailable. Please start the kapua simulation on port "+port+".");
-      print(error);
       reconnect();
     });
 
     sock.onClose.listen((CloseEvent e) {
-      logger.warning("Websocket connection closed. Reason : "+e.reason);
-      logger.warning(e.toString());
       reconnect();
     });
 
