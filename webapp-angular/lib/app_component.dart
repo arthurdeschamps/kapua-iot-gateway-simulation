@@ -52,6 +52,12 @@ class AppComponent implements OnInit, AfterViewInit {
   final IotDataClientService _iotSockService;
   final AppDataClientService _appSockService;
 
+  /// If "app data websocket closed" warning already displayed.
+  bool _appWarningDisplayed = false;
+
+  /// If "iot data websocket closed" warning already displayed.
+  bool _iotWarningDisplayed = false;
+
   AppComponent(this._activeSectionService, this._iotSockService, this._appSockService);
 
   @override
@@ -70,7 +76,7 @@ class AppComponent implements OnInit, AfterViewInit {
   /// Displays a warning if they are not.
   @override
   ngAfterViewInit() {
-    new Timer.periodic(new Duration(seconds: 3), (_) => _checkConnectivity());
+    new Timer.periodic(new Duration(seconds: 5), (_) => _checkConnectivity());
   }
 
   /// Displays warnings if websockets are closed.
@@ -86,13 +92,18 @@ class AppComponent implements OnInit, AfterViewInit {
     final bool appSockIsConnected = _appSockService.isConnected();
 
 
-    if (!iotSockIsConnected && iotSockWarning == null)
+    if (!iotSockIsConnected && iotSockWarning == null && !_iotWarningDisplayed) {
       _warning("IoT WebSocket client not connected", "Please start the <b>data-transmitter</b>"
           " module.", red, iotSockId);
+      _iotWarningDisplayed = true;
+    }
 
-    if (!appSockIsConnected && appSockWarning == null)
+    if (!appSockIsConnected && appSockWarning == null && !_appWarningDisplayed) {
       _warning("Application data WebSocket client not connected", "Please start the <b>simulator</b>"
           " module.", red, appSockId);
+      _appWarningDisplayed = true;
+    }
+
 
     if (iotSockIsConnected && iotSockWarning != null) iotSockWarning.remove();
     if (appSockIsConnected && appSockWarning != null) appSockWarning.remove();

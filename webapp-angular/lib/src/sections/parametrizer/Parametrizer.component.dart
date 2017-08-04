@@ -139,6 +139,9 @@ class ParametrizerComponent implements AfterViewInit {
   @Input()
   String get companyType => _company.companyType;
 
+  @Input()
+  bool isCompanyType(String type) => (type.toLowerCase() == companyType);
+
   /// Displays a success notification with title [title] and message [message]
   void _success(String title, String message) => _toast(title, message,  "#00d1b2");
 
@@ -162,7 +165,8 @@ class ParametrizerComponent implements AfterViewInit {
     (querySelector("#rocket") as HtmlElement).style.animationDuration = duration;
   }
 
-  /// Adds css style to div corresponding to the id [companyType].
+
+  /// Adds css style to div corresponding to the [companyType].
   void set _selectedCompanyType(String companyType) {
     HtmlElement el;
     if (_company.companyTypes.contains(companyType)) {
