@@ -25,6 +25,7 @@ Here are all the topics used for application data:
 * `parametrizer/timeFlow` -> `("number", TIME_FLOW)`
 * `parametrizer/dataSendingDelay` -> `("number", DATA_SENDING_DELAY)`
 * `transportation/type` -> `("transportation-type", TRANSPORTATION_TYPE)`
+* `time/now` -> `("time", CURRENT_VIRTUAL_TIME)`
 * `set/companyName` -> `("boolean", true/false)`
 * `set/timeFlow` -> `("boolean", true/false)`
 * `set/dataSendingDelay`-> `("boolean", true/false)`
