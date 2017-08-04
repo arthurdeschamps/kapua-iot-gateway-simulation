@@ -34,6 +34,10 @@ class ParametrizerClientService {
   ParametrizerClientService(this._appDataClient, this._dataTransformer, this._appDataStore) {
     for (final String data in ["time flow", "data sending delay"])
       _poll(data);
+    new Timer.periodic(new Duration(seconds: 3), (_) {
+      _poll("time flow");
+      _poll("data sending delay");
+    });
   }
 
   /// Updates the name of the company in simulation.

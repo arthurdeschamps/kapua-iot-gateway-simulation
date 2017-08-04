@@ -63,9 +63,6 @@ class ParametrizerComponent implements AfterViewInit {
       para = input.querySelector("p");
       para.style.color = initialColor;
     });
-
-    // Selected company type
-    _selectedCompanyType = _company.companyType;
   }
 
   void onSubmit(Event event) {
@@ -118,12 +115,12 @@ class ParametrizerComponent implements AfterViewInit {
     }
 
     // Updates company type
-    String selectedType = (querySelector(".selected-choice") as HtmlElement).id;
-    if (selectedType != null && selectedType != companyType) {
-      bool res = await _company.setCompanyType(selectedType);
+    HtmlElement selectedType = (querySelector(".selected-choice") as HtmlElement);
+    if (selectedType != null && selectedType.id != companyType) {
+      bool res = await _company.setCompanyType(selectedType.id);
       if (res) {
         _company.pollCompanyType();
-        _success("Saved !", "Company type has been updates.");
+        _success("Saved !", "Company type has been updated.");
       }
       else
         _failure("Error", "Company type could not be updated.");
@@ -140,7 +137,7 @@ class ParametrizerComponent implements AfterViewInit {
   int get dataSendingDelay => _parametrizer.dataSendingDelay;
 
   @Input()
-  String get companyType =>_company.companyType;
+  String get companyType => _company.companyType;
 
   /// Displays a success notification with title [title] and message [message]
   void _success(String title, String message) => _toast(title, message,  "#00d1b2");
@@ -151,22 +148,21 @@ class ParametrizerComponent implements AfterViewInit {
   void _toast(final String title, final String message, final String backgroundColor) {
     final String textColor = "#ffffff";
     IziToast.show(new IziToastOptions(
-      title: title,
-      titleColor: textColor,
-      backgroundColor: backgroundColor,
-      message: message,
-      messageColor: textColor,
+        title: title,
+        titleColor: textColor,
+        backgroundColor: backgroundColor,
+        message: message,
+        messageColor: textColor
     ));
   }
 
   /// Sets the speed of the rocket animation.
   void set _rocketSpeed(int timeFlow) {
     final String duration = ((log(25000/timeFlow)-5/timeFlow)*1000).toInt().toString()+"ms";
-    print(duration);
     (querySelector("#rocket") as HtmlElement).style.animationDuration = duration;
   }
 
-  /// Adds css style to div corresponding to the company type.
+  /// Adds css style to div corresponding to the id [companyType].
   void set _selectedCompanyType(String companyType) {
     HtmlElement el;
     if (_company.companyTypes.contains(companyType)) {

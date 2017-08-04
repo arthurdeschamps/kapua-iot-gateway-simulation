@@ -60,6 +60,10 @@ class CompanyService {
     pollCompanyType();
     for (final String name in storesNames)
       initialQuantities.putIfAbsent(name, () => getNumber(name));
+    new Timer.periodic(new Duration(seconds: 3), (_) {
+      pollCompanyName();
+      pollCompanyType();
+    });
   }
 
   /// Returns the coordinates of the company's headquarters.
@@ -83,9 +87,7 @@ class CompanyService {
   }
 
   /// Returns the number of element in a given store [of].
-  int getNumber(String of) {
-    return _iotStore.storesSizes[of];
-  }
+  int getNumber(String of) => _iotStore.storesSizes[of];
 
   /// Returns all possible company types.
   List<String> get companyTypes => ["local", "national", "international"];

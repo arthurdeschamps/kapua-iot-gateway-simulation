@@ -40,9 +40,9 @@
                 <p class="input-title">Type of business</p>
                 <p class="input-subtitle">The more global your company is, the more customers, orders, etc you will get.</p>
                 <div>
-                    <div id="international" class="choice"><span>International</span></div>
-                    <div id="national" class="choice"><span>National</span></div>
-                    <div id="local" class="choice"><span>Local</span></div>
+                    <div id="international" [ngClass]="{'selected-choice' : isCompanyType('international'), 'choice' : true}"><span>International</span></div>
+                    <div id="national" [ngClass]="{'selected-choice' : isCompanyType('national'), 'choice' : true}"><span>National</span></div>
+                    <div id="local" [ngClass]="{'selected-choice' : isCompanyType('local'), 'choice' : true}"><span>Local</span></div>
                 </div>
             </div>
             <div>

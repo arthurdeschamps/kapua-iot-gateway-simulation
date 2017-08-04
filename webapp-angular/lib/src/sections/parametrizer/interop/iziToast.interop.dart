@@ -20,11 +20,16 @@ import 'package:js/js.dart';
 @JS("iziToast")
 class IziToast {
   external static show(IziToastOptions options);
+  external static destroy();
 }
 
 @anonymous
 @JS()
 class IziToastOptions {
+
+  external String get id;
+
+  external set id(String id);
 
   external String get title;
 
@@ -71,6 +76,7 @@ class IziToastOptions {
   external set drag(bool drag);
 
   external factory IziToastOptions({
+    String id,
     String title,
     String titleColor,
     String titleSize,

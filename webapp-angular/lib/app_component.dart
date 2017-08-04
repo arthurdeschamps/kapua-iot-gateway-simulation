@@ -12,6 +12,8 @@
  *  ******************************************************************************
  */
 
+import 'dart:async';
+import 'dart:html';
 import 'package:angular2/angular2.dart';
 import 'package:webapp_angular/src/data_services/app/AppDataClient.service.dart';
 import 'package:webapp_angular/src/data_services/app/AppDataStore.service.dart';
@@ -28,6 +30,7 @@ import 'package:webapp_angular/src/sections/map/Map.component.dart';
 import 'package:webapp_angular/src/sections/map/icons/Icon.service.dart';
 import 'package:webapp_angular/src/sections/map/markers/Marker.service.dart';
 import 'package:webapp_angular/src/sections/parametrizer/Parametrizer.component.dart';
+import 'package:webapp_angular/src/sections/parametrizer/interop/iziToast.interop.dart';
 import 'src/navbar/Navbar.component.dart';
 import 'package:logging/logging.dart';
 
@@ -42,22 +45,73 @@ import 'package:logging/logging.dart';
   ChartDataService, IotDataStoreService, AppDataClientService, AppDataStoreService,
   ParametrizerClientService]
 )
-class AppComponent implements OnInit {
+class AppComponent implements OnInit, AfterViewInit {
 
   final ActiveSectionService _activeSectionService;
 
-  // Do not delete, this allows to have a singleton service.
-  final IotDataClientService _sockService;
+  final IotDataClientService _iotSockService;
+  final AppDataClientService _appSockService;
 
-  AppComponent(this._activeSectionService, this._sockService);
+  AppComponent(this._activeSectionService, this._iotSockService, this._appSockService);
 
   @override
   void ngOnInit() {
     new Logger("AppComponent").info("app building");
+
   }
 
   /// Returns if [section] is active or not.
   bool isActive(String section) {
     return _activeSectionService.isActive(section);
   }
+
+  /// Checks if the websockets are connected or not.
+  ///
+  /// Displays a warning if they are not.
+  @override
+  ngAfterViewInit() {
+    new Timer.periodic(new Duration(seconds: 3), (_) => _checkConnectivity());
+  }
+
+  /// Displays warnings if websockets are closed.
+  void _checkConnectivity() {
+    final String red = "#FF3333";
+    final String iotSockId = "iot-warning";
+    final String appSockId = "app-warning";
+
+    HtmlElement iotSockWarning = (querySelector("#"+iotSockId) as HtmlElement);
+    HtmlElement appSockWarning = (querySelector("#"+appSockId) as HtmlElement);
+
+    final bool iotSockIsConnected = _iotSockService.isConnected();
+    final bool appSockIsConnected = _appSockService.isConnected();
+
+
+    if (!iotSockIsConnected && iotSockWarning == null)
+      _warning("IoT WebSocket client not connected", "Please start the <b>data-transmitter</b>"
+          " module.", red, iotSockId);
+
+    if (!appSockIsConnected && appSockWarning == null)
+      _warning("Application data WebSocket client not connected", "Please start the <b>simulator</b>"
+          " module.", red, appSockId);
+
+    if (iotSockIsConnected && iotSockWarning != null) iotSockWarning.remove();
+    if (appSockIsConnected && appSockWarning != null) appSockWarning.remove();
+
+  }
+
+  /// Warning toast.
+  void _warning(final String title, final String message, final String backgroundColor, final String id) {
+    final String textColor = "#ffffff";
+    IziToast.show(new IziToastOptions(
+      id: id,
+      title: title,
+      titleColor: textColor,
+      backgroundColor: backgroundColor,
+      message: message,
+      messageColor: textColor,
+      timeout: 1000000
+    ));
+  }
+
+
 }
