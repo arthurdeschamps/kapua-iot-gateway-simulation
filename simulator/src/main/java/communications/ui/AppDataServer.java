@@ -109,7 +109,7 @@ public class AppDataServer extends org.java_websocket.server.WebSocketServer {
                 if (segments[1].equals("timeFlow")) {
                     try {
                         final int timeFlow = Integer.valueOf(segments[2]);
-                        if (timeFlow < 1 || timeFlow > 10000)
+                        if (timeFlow < 1 || timeFlow > Math.pow(10,6))
                             throw  new IllegalArgumentException("Time flow out of bounds");
                         parametrizer.setTimeFlow(timeFlow);
                         data.put("boolean", true);
