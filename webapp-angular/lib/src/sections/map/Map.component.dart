@@ -52,7 +52,7 @@ class MapComponent implements AfterViewInit {
   }
 
   /// Initialized the map view and data.
-  Future _initMap() async {
+  Future<Null> _initMap() async {
     map = Leaflet.map("map", new MapOptions(
       zoomDelta: 0.3
     ));
@@ -69,18 +69,18 @@ class MapComponent implements AfterViewInit {
     _placeHeadquartersMarker(headquarters);
     _deliveryDisplay.start(map);
     _customersDisplay.start(map);
-    _setMapView(headquarters.latitude,headquarters.longitude,1);
+    _setMapView(headquarters.latitude,headquarters.longitude,3);
   }
 
   /// Sets the center of the map view.
   ///
   /// Useful to "redirect" the user's view to the point we want.
-  void _setMapView(num lat, num long, num zoom) {
+  Future<Null> _setMapView(num lat, num long, num zoom) async {
     map.setView(Leaflet.latLng(lat, long, zoom), zoom, null);
   }
 
   /// Places a markers on the company's headquarters.
-  void _placeHeadquartersMarker(Coordinates headquarters) {
+  Future<Null> _placeHeadquartersMarker(Coordinates headquarters) async {
     Marker marker = _markerService.headquartersMarker(headquarters);
     marker.addTo(map);
   }

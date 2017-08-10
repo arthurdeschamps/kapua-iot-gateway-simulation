@@ -36,12 +36,12 @@ class DeliveryDisplay {
   }
 
   /// Starts displaying deliveries on the map.
-  Future start(LeafletMap map) async {
+  Future<Null> start(LeafletMap map) async {
     _displayDeliveries(map);
     new Timer.periodic(new Duration(seconds: 1),(Timer timer) => _displayDeliveries(map));
   }
 
-  Future _displayDeliveries(LeafletMap map) async {
+  Future<Null> _displayDeliveries(LeafletMap map) async {
     List<Delivery> deliveries = _companyService.deliveries;
     _placeDeliveryMarkers(deliveries, _companyService.transportation, map);
     _deleteTerminatedDeliveriesMarkers(deliveries);
@@ -51,7 +51,7 @@ class DeliveryDisplay {
   ///
   /// A delivery is considered not in transit anymore if it's contained in the
   /// local list of deliveries but not on the polled one.
-  Future _deleteTerminatedDeliveriesMarkers(List<Delivery> deliveries) async {
+  Future<Null> _deleteTerminatedDeliveriesMarkers(List<Delivery> deliveries) async {
      // Removes deliveries that are not in transit anymore
     _deliveriesWithMarkers.keys
         .where((Delivery delivery) => !deliveries.contains(delivery))
@@ -65,7 +65,7 @@ class DeliveryDisplay {
   }
 
   /// Places markers on the map for each delivery in transit.
-  Future _placeDeliveryMarkers(List<Delivery> deliveries, List<Transportation> transports, LeafletMap map) async {
+  Future<Null> _placeDeliveryMarkers(List<Delivery> deliveries, List<Transportation> transports, LeafletMap map) async {
     deliveries.forEach((Delivery delivery) {
       if (_deliveriesWithMarkers.containsKey(delivery)) {
         // Delivery markers is already on the map, we just move it

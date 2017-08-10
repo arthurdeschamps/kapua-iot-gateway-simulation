@@ -12,6 +12,7 @@
  *  ******************************************************************************
  */
 
+import 'dart:async';
 import 'dart:convert';
 import 'package:angular2/angular2.dart';
 import 'package:logging/logging.dart';
@@ -72,14 +73,17 @@ class DataTransformerService {
   String date(Map map) => (map["time"] as String);
 
   /// Converts to a list of customers.
-  List<Customer> customers(Map map) {
-    List<Customer> customers = [];
+  ///
+  /// This converter is asynchronous because it requires a lot of time and resources
+  /// to create customers when they are in great number.
+  Future<List<Customer>> customers(Map map) async {
+    List<Customer> customers = new List();
     List<Map> rawCustomers = map["customers"];
     for (final Map rawCustomer in rawCustomers) {
       customers.add(new Customer(rawCustomer["firstName"], rawCustomer["lastName"],
       address(rawCustomer["address"]), rawCustomer["emailAddress"], rawCustomer["phoneNumber"]));
     }
-    return customers;
+    return new Future.value(customers);
   }
 
   /// Converts to Address.

@@ -52,10 +52,10 @@ class AppComponent implements OnInit, AfterViewInit {
   final IotDataClientService _iotSockService;
   final AppDataClientService _appSockService;
 
-  /// If "app data websocket closed" warning already displayed.
+  /// If "app data websocket closed" warning already showed up.
   bool _appWarningDisplayed = false;
 
-  /// If "iot data websocket closed" warning already displayed.
+  /// If "iot data websocket closed" warning already showed ups.
   bool _iotWarningDisplayed = false;
 
   AppComponent(this._activeSectionService, this._iotSockService, this._appSockService);
@@ -63,24 +63,19 @@ class AppComponent implements OnInit, AfterViewInit {
   @override
   void ngOnInit() {
     new Logger("AppComponent").info("app building");
-
   }
 
   /// Returns if [section] is active or not.
-  bool isActive(String section) {
-    return _activeSectionService.isActive(section);
-  }
+  bool isActive(String section) => _activeSectionService.isActive(section);
 
   /// Checks if the websockets are connected or not.
   ///
   /// Displays a warning if they are not.
   @override
-  ngAfterViewInit() {
-    new Timer.periodic(new Duration(seconds: 5), (_) => _checkConnectivity());
-  }
+  ngAfterViewInit() => new Timer.periodic(new Duration(seconds: 5), (_) => _checkConnectivity());
 
   /// Displays warnings if websockets are closed.
-  void _checkConnectivity() {
+  Future<Null> _checkConnectivity() async {
     final String red = "#FF3333";
     final String iotSockId = "iot-warning";
     final String appSockId = "app-warning";
@@ -107,11 +102,10 @@ class AppComponent implements OnInit, AfterViewInit {
 
     if (iotSockIsConnected && iotSockWarning != null) iotSockWarning.remove();
     if (appSockIsConnected && appSockWarning != null) appSockWarning.remove();
-
   }
 
   /// Warning toast.
-  void _warning(final String title, final String message, final String backgroundColor, final String id) {
+  Future<Null> _warning(final String title, final String message, final String backgroundColor, final String id) async {
     final String textColor = "#ffffff";
     IziToast.show(new IziToastOptions(
       id: id,

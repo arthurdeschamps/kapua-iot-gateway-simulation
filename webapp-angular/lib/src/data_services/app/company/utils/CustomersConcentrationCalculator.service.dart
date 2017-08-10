@@ -39,7 +39,7 @@ class CustomersConcentrationCalculatorService {
   /// Dart implementation of DBSCAN. See: https://en.wikipedia.org/wiki/DBSCAN.
   ///
   /// Allows to find clusters of clients.
-  Future DBSCAN(List<Customer> allNodes, final num eps, final int minNodes) async {
+  Future<Null> DBSCAN(List<Customer> allNodes, final num eps, final int minNodes) async {
     clusters = new List();
     Cluster cluster;
     visitedNodes = new Set();
@@ -59,7 +59,7 @@ class CustomersConcentrationCalculatorService {
     }
   }
 
-  Future expandCluster(Customer activeNode, LinkedHashSet<Customer> neighbours, Cluster C, final num eps, final int minNodes) async {
+  Future<Null> expandCluster(Customer activeNode, LinkedHashSet<Customer> neighbours, Cluster C, final num eps, final int minNodes) async {
     C.nodes.add(activeNode);
     int i = 0;
     while (neighbours.length > i) {
