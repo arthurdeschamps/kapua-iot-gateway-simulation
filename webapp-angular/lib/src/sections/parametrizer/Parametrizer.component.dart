@@ -166,7 +166,7 @@ class ParametrizerComponent implements AfterViewInit {
   /// That means the rocket would take 4 seconds to make a full circle if [timeFlow]
   /// is equal to 1, and 0.7 seconds if [timeFlow] is equal to 10^6.
   void set _rocketSpeed(int timeFlow) {
-    final String duration = ((log(timeFlow/pow(10,6)*(1/80-1)+1)/log(2)+4)*pow(10,3)).toInt().toString()+"ms";
+    final String duration = ((log(timeFlow/pow(10,6)*(1/8.5-1)+1)/log(2)+4)*pow(10,3)).toInt().toString()+"ms";
     (querySelector("#rocket") as HtmlElement).style.animationDuration = duration;
   }
 

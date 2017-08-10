@@ -41,9 +41,7 @@ class AppDataClientService extends WebSocketDataClientService {
     Response response;
     return sock.onMessage.firstWhere((MessageEvent me) {
       response = _dataTransformer.decode(me.data);
-      if (response.topics.length == 1)
-        return (response.topics[0] == topics);
-      return false;
+      return (response.topics.length == 1 && response.topics[0] == topics);
     }).then((_) => response.data);
   }
 

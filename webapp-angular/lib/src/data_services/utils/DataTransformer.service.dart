@@ -15,7 +15,9 @@
 import 'dart:convert';
 import 'package:angular2/angular2.dart';
 import 'package:logging/logging.dart';
+import 'package:webapp_angular/src/data_services/app/company/Address.dart';
 import 'package:webapp_angular/src/data_services/app/company/Coordinates.dart';
+import 'package:webapp_angular/src/data_services/app/company/Customer.dart';
 import 'package:webapp_angular/src/data_services/app/company/Delivery.dart';
 import 'package:webapp_angular/src/data_services/app/company/Transportation.dart';
 import 'package:webapp_angular/src/data_services/utils/EnumConverter.service.dart';
@@ -68,6 +70,25 @@ class DataTransformerService {
 
   /// Converts to String representing a date.
   String date(Map map) => (map["time"] as String);
+
+  /// Converts to a list of customers.
+  List<Customer> customers(Map map) {
+    List<Customer> customers = [];
+    List<Map> rawCustomers = map["customers"];
+    for (final Map rawCustomer in rawCustomers) {
+      customers.add(new Customer(rawCustomer["firstName"], rawCustomer["lastName"],
+      address(rawCustomer["address"]), rawCustomer["emailAddress"], rawCustomer["phoneNumber"]));
+    }
+    return customers;
+  }
+
+  /// Converts to Address.
+  Address address(Map map) {
+    Map rawCoord = map["coordinates"];
+    Coordinates coordinates = new Coordinates(rawCoord["latitude"], rawCoord["longitude"]);
+    return new Address(map["street"], map["city"], map["region"],
+        map["country"], map["zip"], coordinates);
+  }
 
   /// Converts a raw websocket message into a response object.
   Response decode(var data) {

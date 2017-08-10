@@ -86,9 +86,8 @@ public class Coordinates {
         final int earthRadiusInKm = 6371;
         final double dLat = Math.toRadians(p2.getLatitude()-p1.getLatitude());
         final double dLon = Math.toRadians(p2.getLongitude()-p1.getLongitude());
-
-        final double a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.sin(dLon/2) * Math.sin(dLon/2)
-                * Math.cos(Math.toRadians(p1.getLatitude())) * Math.cos(Math.toRadians(p2.getLatitude()));
+        final double a = Math.pow(Math.sin(dLat/2),2) + Math.pow(Math.sin(dLon/2),2) *
+                Math.cos(Math.toRadians(p1.getLatitude())) * Math.cos(Math.toRadians(p2.getLatitude()));
         return earthRadiusInKm * 2 * Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
     }
 
@@ -96,11 +95,8 @@ public class Coordinates {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Coordinates that = (Coordinates) o;
-
-        if (Float.compare(that.getLatitude(), getLatitude()) != 0) return false;
-        return Float.compare(that.getLongitude(), getLongitude()) == 0;
+        return Float.compare(that.getLatitude(), getLatitude()) == 0 && Float.compare(that.getLongitude(), getLongitude()) == 0;
     }
 
     @Override

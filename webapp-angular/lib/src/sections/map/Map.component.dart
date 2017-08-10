@@ -12,9 +12,12 @@
  *  ******************************************************************************
  */
 
+import 'dart:async';
 import 'package:angular2/angular2.dart';
 import 'package:webapp_angular/src/data_services/app/company/Company.service.dart';
 import 'package:webapp_angular/src/data_services/app/company/Coordinates.dart';
+import 'package:webapp_angular/src/data_services/app/company/utils/CustomersConcentrationCalculator.service.dart';
+import 'package:webapp_angular/src/sections/map/CustomersDisplay.dart';
 import 'package:webapp_angular/src/sections/map/interop/Leaflet.interop.dart';
 import 'package:logging/logging.dart';
 import 'package:webapp_angular/src/sections/map/DeliveryDisplay.dart';
@@ -34,6 +37,7 @@ class MapComponent implements AfterViewInit {
   final CompanyService _companyService;
   final MarkerService _markerService;
   DeliveryDisplay _deliveryDisplay;
+  CustomersDisplay _customersDisplay;
 
   static final Logger logger = new Logger("MapComponent");
 
@@ -42,18 +46,19 @@ class MapComponent implements AfterViewInit {
   @override
   void ngAfterViewInit() {
     _deliveryDisplay = new DeliveryDisplay(_companyService,new MarkerService(new IconService()));
+    _customersDisplay = new CustomersDisplay(_companyService, new CustomersConcentrationCalculatorService());
     // Set up the map
     _initMap();
   }
 
   /// Initialized the map view and data.
-  void _initMap() {
+  Future _initMap() async {
     map = Leaflet.map("map", new MapOptions(
       zoomDelta: 0.3
     ));
     // Tile layer attributions
-    final String _osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-    final String _osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
+    final String _osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    final String _osmAttrib = 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
     Leaflet.tileLayer(_osmUrl, new TileLayerOptions(
       minZoom: 1,
       maxZoom: 12,
@@ -63,6 +68,7 @@ class MapComponent implements AfterViewInit {
     Coordinates headquarters = _companyService.headquarters;
     _placeHeadquartersMarker(headquarters);
     _deliveryDisplay.start(map);
+    _customersDisplay.start(map);
     _setMapView(headquarters.latitude,headquarters.longitude,1);
   }
 

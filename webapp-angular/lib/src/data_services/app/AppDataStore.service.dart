@@ -15,6 +15,7 @@
 import 'dart:async';
 import 'package:angular2/angular2.dart';
 import 'package:webapp_angular/src/data_services/app/AppDataClient.service.dart';
+import 'package:webapp_angular/src/data_services/app/company/Customer.dart';
 import 'package:webapp_angular/src/data_services/app/company/Transportation.dart';
 import 'package:webapp_angular/src/data_services/utils/DataTransformer.service.dart';
 
@@ -63,6 +64,13 @@ class AppDataStoreService {
   Future<int> getDataSendingDelay() {
     return _dataClient.request("parametrizer/dataSendingDelay").then((response) =>
       _dataTransformer.number(response) as int
+    );
+  }
+
+  /// Will return every customers of the company.
+  Future<List<Customer>> getAllCustomers() {
+    return _dataClient.request("company/customers/all").then((response) =>
+      _dataTransformer.customers(response)
     );
   }
 }

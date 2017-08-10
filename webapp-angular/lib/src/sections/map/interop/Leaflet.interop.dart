@@ -25,6 +25,8 @@ class Leaflet {
   external static LatLng latLng(num latitude, num longitude, num altitude);
   external static Marker marker(LatLng latlng, MarkerOptions options);
   external static Icon icon(IconOptions options);
+  external static Circle circle(LatLng latlng, CircleOptions options);
+  external static Polygon polygon(List<LatLng> latlngs, PolygonOptions options);
 }
 
 @JS('L.Map')
@@ -101,6 +103,18 @@ class Marker extends Layer {
   external set options(MarkerOptions options);
 }
 
+@JS('L.circle')
+class Circle extends Layer {
+    external setRadius(num radius);
+    external num getRadius();
+    external num getBounds();
+}
+
+@JS('L.polygon')
+class Polygon extends Layer {
+
+}
+
 @JS()
 @anonymous
 class LayerOptions {
@@ -113,6 +127,31 @@ class LayerOptions {
   external factory LayerOptions({
     String pane,
     String attribution
+  });
+}
+
+@JS()
+@anonymous
+class PolygonOptions extends LayerOptions {
+  external num get smoothFactor;
+  external set smoothFactor(num smoothFactor);
+
+  external bool get noClip;
+  external set noClip(bool noClip);
+
+  external factory PolygonOptions({
+    num smoothFactor,
+    bool noClip
+  });
+}
+
+@JS()
+@anonymous
+class CircleOptions extends LayerOptions {
+  external num get radius;
+  external set radius(num radius);
+  external factory CircleOptions({
+    num radius
   });
 }
 
@@ -173,7 +212,7 @@ class MarkerOptions extends LayerOptions {
 @JS()
 @anonymous
 class IconOptions {
-
+  // TODO
 }
 
 @JS()

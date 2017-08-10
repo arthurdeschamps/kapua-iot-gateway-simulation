@@ -275,7 +275,7 @@ public final class DataGenerator {
                 nbrCustomers = random.nextInt(2000)+700;
                 break;
             case INTERNATIONAL:
-                nbrCustomers = random.nextInt(5000)+15000;
+                nbrCustomers = random.nextInt(5000)+5000;
                 break;
             default:
                 nbrCustomers = 1000;

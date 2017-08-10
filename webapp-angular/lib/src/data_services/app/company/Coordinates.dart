@@ -11,6 +11,7 @@
  *  *     Arthur Deschamps
  *  ******************************************************************************
  */
+import 'dart:math';
 import 'package:webapp_angular/src/sections/map/interop/Leaflet.interop.dart';
 
 /// Represents a coordinate of the form (latitude, longitude).
@@ -31,4 +32,18 @@ class Coordinates {
     return "(lat: "+latitude.toString()+",long: "+longitude.toString()+")";
   }
 
+  /// Calculates the distance between coordinates [A] and [B].
+  ///
+  /// Result in km.
+  static double dist(Coordinates A, Coordinates B) {
+    const int EARTH_RADIUS_KM = 6371;
+    final double dLat = toRadians(B.latitude - A.latitude);
+    final double dLon = toRadians(B.longitude - A.longitude);
+    final double a = pow(sin(dLat/2),2) + pow(sin(dLon/2),2) *
+        cos(toRadians(A.latitude) * cos(toRadians(B.latitude)));
+    return EARTH_RADIUS_KM * 2 * atan2(sqrt(a), sqrt(1-a));
+  }
+
+  /// Converts [angleDeg] from degrees to radians.
+  static num toRadians(num angleDeg) => angleDeg / 180.0 * PI;
 }

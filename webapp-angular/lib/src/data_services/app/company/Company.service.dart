@@ -18,6 +18,7 @@ import 'package:angular2/angular2.dart';
 import 'package:logging/logging.dart';
 import 'package:webapp_angular/src/data_services/app/AppDataStore.service.dart';
 import 'package:webapp_angular/src/data_services/app/company/Coordinates.dart';
+import 'package:webapp_angular/src/data_services/app/company/Customer.dart';
 import 'package:webapp_angular/src/data_services/app/company/Delivery.dart';
 import 'package:webapp_angular/src/data_services/app/company/Transportation.dart';
 import 'package:webapp_angular/src/data_services/app/simulation/ParametrizerClient.service.dart';
@@ -74,6 +75,11 @@ class CompanyService {
 
   /// Returns all the transports contained in the IoT data store.
   List<Transportation> get transportation => _iotStore.transports.values.toList();
+
+  /// Returns all the customers of the company.
+  ///
+  /// Directly retrieve data from the server.
+  Future<List<Customer>> get allCustomers async => await _appStore.getAllCustomers();
 
   /// Returns pairs of (store name, store size).
   ///

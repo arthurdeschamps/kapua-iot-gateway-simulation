@@ -1,8 +1,8 @@
 name: webapp_angular
-description: A web app that uses AngularDart Components
+description: A dahsboard for the kapua gateway supply chain control simulation.
 version: 0.0.1
-#homepage: https://www.example.com
-#author: arthurdeschamps <email@example.com>
+#homepage: https://github.com/arthurdeschamps/kapua-iot-gateway-simulation
+#author: arthurdeschamps <arthur.deschamps1208@gmail.com>
 
 environment:
   sdk: '>=1.23.0 <2.0.0'
