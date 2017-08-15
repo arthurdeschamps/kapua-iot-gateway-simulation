@@ -12,6 +12,7 @@
  *  ******************************************************************************
  */
 
+import 'dart:async';
 import 'package:angular2/angular2.dart';
 import 'package:webapp_angular/src/data_services/app/AppDataStore.service.dart';
 import 'package:webapp_angular/src/data_services/app/company/Coordinates.dart';
@@ -38,7 +39,6 @@ class IotDataStoreService {
   Map<String, Delivery> deliveries;
   Map<String, Transportation> transports;
   Map<String, int> storesSizes;
-  Coordinates companyHeadquarters;
 
   final DataTransformerService _dataTransformer;
   final AppDataStoreService _appData;
@@ -47,12 +47,11 @@ class IotDataStoreService {
     transports = new Map<String, Transportation>();
     deliveries = new Map<String, Delivery>();
     storesSizes = new Map<String, int>();
-    companyHeadquarters = new Coordinates(0,0); // Default value
   }
 
   /// Takes care of "routing" the data to the right storage as well as transform
   /// these raw data into usable objects/primitive types.
-  void store(var data) {
+  Future<Null> store(var data) async {
     Response response = _dataTransformer.decode(data);
     List<String> topics = response.topics;
 
@@ -78,14 +77,14 @@ class IotDataStoreService {
   }
 
   /// Stores the locations of all deliveries in transit.
-  void storeDeliveryLocation(String deliveryId, Coordinates location) {
+  Future<Null> storeDeliveryLocation(String deliveryId, Coordinates location) async {
     deliveries.putIfAbsent(deliveryId, () => new Delivery(deliveryId, currentPosition: location));
     deliveries[deliveryId].currentPosition = location;
   }
 
   /// Only stores deliveries that are in transit. Any others are not useful and therefore
   /// deleted.
-  void updateDelivery(String deliveryId, String deliveryStatus) {
+  Future<Null> updateDelivery(String deliveryId, String deliveryStatus) async {
     if (deliveryStatus == "TRANSIT")
       deliveries.putIfAbsent(deliveryId,() => new Delivery(deliveryId, status: deliveryStatus));
     else
@@ -93,13 +92,13 @@ class IotDataStoreService {
   }
 
   /// Updates the quantity of objects contained in the store [of].
-  void updateNumber(String of, int number) {
+  Future<Null> updateNumber(String of, int number) async {
     storesSizes.putIfAbsent(of, () => number);
     storesSizes[of] = number;
   }
 
   /// Stores the health status of all transportation.
-  void storeHealthState(String transportationId, TransportationHealthState healthState) {
+  Future<Null> storeHealthState(String transportationId, TransportationHealthState healthState) async {
     if (!transports.containsKey(transportationId)) {
       _appData.getTypeOf(transportationId).then((type) =>
         transports.putIfAbsent(transportationId, () =>
@@ -110,7 +109,7 @@ class IotDataStoreService {
   }
 
   /// Updates the assigned transporter for a delivery
-  void updateDeliveryAssignedTransportation(String deliveryId, String transportationId) {
+  Future<Null> updateDeliveryAssignedTransportation(String deliveryId, String transportationId) async {
     deliveries.putIfAbsent(deliveryId, () => new Delivery(deliveryId, transporterId: transportationId));
     deliveries[deliveryId].transporterId = transportationId;
   }

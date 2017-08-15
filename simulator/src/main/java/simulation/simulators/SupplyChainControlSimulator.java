@@ -23,6 +23,7 @@ import simulation.simulators.runners.CompanySimulatorRunner;
 import simulation.simulators.runners.EconomySimulatorRunner;
 import simulation.simulators.runners.TelemetryDataSimulatorRunner;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -42,9 +43,18 @@ public class SupplyChainControlSimulator {
     private  CompanySimulatorRunner companySimulator;
     private TelemetryDataSimulatorRunner telemetrySimulator;
 
+    private ScheduledExecutorService simulatorsExecutor;
+
     private  final Logger logger = LoggerFactory.getLogger(SupplyChainControlSimulator.class);
 
     public SupplyChainControlSimulator(Parametrizer parametrizer) {
+        buildSimulation(parametrizer);
+    }
+
+    public SupplyChainControlSimulator() {
+    }
+
+    private void buildSimulation(Parametrizer parametrizer) {
         this.parametrizer = parametrizer;
         this.economy = parametrizer.getEconomy();
         this.company = parametrizer.getCompany();
@@ -57,8 +67,10 @@ public class SupplyChainControlSimulator {
      * Starts simulations. If showMetrics is true, also starts threads that will display data.
      */
     public void start() {
+        if (parametrizer == null)
+            throw new IllegalArgumentException("Parametrizer must be set before starting simulation.");
         try {
-            ScheduledExecutorService simulatorsExecutor = Executors.newSingleThreadScheduledExecutor();
+            simulatorsExecutor = Executors.newSingleThreadScheduledExecutor();
 
             simulatorsExecutor.scheduleWithFixedDelay(economySimulator,0,parametrizer.getDelayInMilliSeconds(),
                     TimeUnit.MILLISECONDS);
@@ -76,6 +88,20 @@ public class SupplyChainControlSimulator {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void stop() {
+        simulatorsExecutor.shutdown();
+        try {
+            simulatorsExecutor.awaitTermination(1, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void restart() {
+        stop();
+        start();
     }
 
     /**
@@ -99,5 +125,9 @@ public class SupplyChainControlSimulator {
                 ", Orders: "+Integer.toString(company.getOrders().size())+", Deliveries: "+Integer.toString(company.getDeliveries().size())
                 +", Transportation: "+Integer.toString(company.getAllTransportation().size())+
                 ", Customers:"+Integer.toString(company.getCustomers().size())),0,5,TimeUnit.SECONDS);
+    }
+
+    public void setParametrizer(Parametrizer parametrizer) {
+        buildSimulation(parametrizer);
     }
 }

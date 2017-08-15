@@ -185,7 +185,6 @@ public final class DataGenerator {
      */
     void generateData() {
         // Different quantities considering the company's type will be generated.
-
         generateProductTypes();
         generateProducts();
         generateTransportation();
@@ -283,7 +282,6 @@ public final class DataGenerator {
         }
 
         // We make use of multi-threading in order to speed up the process, which might be very long otherwise.
-
         final int nbrThreads = 100;
         Set<Customer> customers = new HashSet<>(nbrCustomers);
         final ExecutorService executorService = Executors.newScheduledThreadPool(nbrThreads);

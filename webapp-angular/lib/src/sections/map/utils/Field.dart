@@ -1,5 +1,3 @@
-import 'package:webapp_angular/src/data_services/app/company/Coordinates.dart';
-
 /*
  * ******************************************************************************
  *  * Copyright (c) 2017 Arthur Deschamps
@@ -13,23 +11,11 @@ import 'package:webapp_angular/src/data_services/app/company/Coordinates.dart';
  *  *     Arthur Deschamps
  *  ******************************************************************************
  */
+ 
+class Field {
+  String name;
+  String content;
 
-class Address {
+  Field(this.name, this.content);
 
-  String street;
-  String city;
-  String region;
-  String country;
-  String zip;
-  Coordinates coordinates;
-
-  Address(this.street, this.city, this.region, this.country, this.zip,
-      this.coordinates);
-
-  Address deepCopy() =>
-      new Address(this.street, this.city, this.region, this.country, this.zip, this.coordinates);
-
-  @override
-  String toString() =>
-      street+", "+zip+" "+city+" ("+region+"), "+country;
 }

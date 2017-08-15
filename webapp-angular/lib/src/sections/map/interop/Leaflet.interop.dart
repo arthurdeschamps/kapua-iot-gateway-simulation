@@ -27,6 +27,7 @@ class Leaflet {
   external static Icon icon(IconOptions options);
   external static Circle circle(LatLng latlng, CircleOptions options);
   external static Polygon polygon(List<LatLng> latlngs, PolygonOptions options);
+  external static Point point(num x, num y, bool round);
 }
 
 @JS('L.Map')
@@ -46,6 +47,20 @@ class Layer {
   external Layer bindPopup(dynamic content, PopupOptions options);
   external Marker setLatLng(LatLng latlng);
   external Marker remove();
+  external on(String event, callback(Event e));
+}
+
+@JS()
+@anonymous
+class Callback {
+  external String get event;
+  external set event(String event);
+  external Function get callback;
+  external set callback(Function callback(Event e));
+  external factory Callback({
+    String event,
+    Function callback
+  });
 }
 
 @JS('L.TileLayer')
@@ -101,6 +116,8 @@ class Marker extends Layer {
 
   external MarkerOptions get options;
   external set options(MarkerOptions options);
+
+  external on(String event, callback(MouseEvent e));
 }
 
 @JS('L.circle')
@@ -113,6 +130,36 @@ class Circle extends Layer {
 @JS('L.polygon')
 class Polygon extends Layer {
 
+}
+
+@JS('L.point')
+class Point {
+  external num get x;
+  external set x(num x);
+  external num get y;
+  external set y(num y);
+  external bool get round;
+  external set round(bool round);
+}
+
+@JS()
+@anonymous
+class Event {
+  external String get type;
+  external set type(String type);
+  external Object get target;
+  external set target(Object target);
+}
+
+@JS()
+@anonymous
+class MouseEvent extends Event {
+  external LatLng get latlng;
+  external set latlng(LatLng latlng);
+  external Point get layerPoint;
+  external set layerPoint(Point layerPoint);
+  external Point get containerPoint;
+  external set containerPoint(Point layerPoint);
 }
 
 @JS()

@@ -68,5 +68,5 @@ abstract class WebSocketDataClientService {
   String get clientName;
 
   /// Method to call when onMessage is triggered.
-  void handleMessage(MessageEvent e);
+  Future<Null> handleMessage(MessageEvent e);
 }

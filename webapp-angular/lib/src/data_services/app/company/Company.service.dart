@@ -17,6 +17,7 @@ import 'dart:collection';
 import 'package:angular2/angular2.dart';
 import 'package:logging/logging.dart';
 import 'package:webapp_angular/src/data_services/app/AppDataStore.service.dart';
+import 'package:webapp_angular/src/data_services/app/company/Address.dart';
 import 'package:webapp_angular/src/data_services/app/company/Coordinates.dart';
 import 'package:webapp_angular/src/data_services/app/company/Customer.dart';
 import 'package:webapp_angular/src/data_services/app/company/Delivery.dart';
@@ -68,7 +69,7 @@ class CompanyService {
   }
 
   /// Returns the coordinates of the company's headquarters.
-  Coordinates get headquarters => _iotStore.companyHeadquarters;
+  Future<Address> get headquarters => _appStore.getCompanyHeadquarters();
 
   /// Returns all the deliveries contained in the IoT data store.
   List<Delivery> get deliveries => _iotStore.deliveries.values.toList();

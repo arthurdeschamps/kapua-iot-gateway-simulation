@@ -52,7 +52,7 @@ class AppDataClientService extends WebSocketDataClientService {
 
   /// Messages from the server are ignored.
   @override
-  void handleMessage(MessageEvent e) {}
+  Future<Null> handleMessage(MessageEvent e) async {}
 
   /// The port used by the websocket server (started by the Java simulation).
   @override

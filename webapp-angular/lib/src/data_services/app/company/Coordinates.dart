@@ -11,6 +11,7 @@
  *  *     Arthur Deschamps
  *  ******************************************************************************
  */
+import 'dart:async';
 import 'dart:math';
 import 'package:webapp_angular/src/sections/map/interop/Leaflet.interop.dart';
 
@@ -29,19 +30,30 @@ class Coordinates {
 
   @override
   String toString() {
-    return "(lat: "+latitude.toString()+",long: "+longitude.toString()+")";
+    return "Latitude : "+latitude.toString()+", Longitude : "+longitude.toString();
   }
 
   /// Calculates the distance between coordinates [A] and [B].
   ///
   /// Result in km.
-  static double dist(Coordinates A, Coordinates B) {
+  static Future<double> dist(Coordinates A, Coordinates B) async {
     const int EARTH_RADIUS_KM = 6371;
     final double dLat = toRadians(B.latitude - A.latitude);
     final double dLon = toRadians(B.longitude - A.longitude);
     final double a = pow(sin(dLat/2),2) + pow(sin(dLon/2),2) *
         cos(toRadians(A.latitude) * cos(toRadians(B.latitude)));
-    return EARTH_RADIUS_KM * 2 * atan2(sqrt(a), sqrt(1-a));
+    final double distance = EARTH_RADIUS_KM * 2 * atan2(sqrt(a), sqrt(1-a));
+    return distance;
+  }
+
+  static distanceFunc(Coordinates A, Coordinates B) {
+    const int EARTH_RADIUS_KM = 6371;
+    final double dLat = toRadians(B.latitude - A.latitude);
+    final double dLon = toRadians(B.longitude - A.longitude);
+    final double a = pow(sin(dLat/2),2) + pow(sin(dLon/2),2) *
+        cos(toRadians(A.latitude) * cos(toRadians(B.latitude)));
+    final double distance = EARTH_RADIUS_KM * 2 * atan2(sqrt(a), sqrt(1-a));
+    return distance;
   }
 
   /// Converts [angleDeg] from degrees to radians.

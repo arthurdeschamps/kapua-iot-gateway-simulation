@@ -12,6 +12,7 @@
  *  ******************************************************************************
  */
 
+import 'dart:async';
 import 'package:angular2/angular2.dart';
 import 'dart:html';
 import 'package:logging/logging.dart';
@@ -36,7 +37,5 @@ class IotDataClientService extends WebSocketDataClientService {
   String get clientName => "IotDataClientService";
 
   @override
-  void handleMessage(MessageEvent e) {
-    _store.store(e.data);
-  }
+  Future<Null> handleMessage(MessageEvent e) async => _store.store(e.data);
 }

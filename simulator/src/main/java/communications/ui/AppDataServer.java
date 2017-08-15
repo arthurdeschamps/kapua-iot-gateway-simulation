@@ -16,8 +16,10 @@ package communications.ui;
 
 
 import com.google.gson.Gson;
+import communications.ui.utils.CustomersClusterFinder;
 import company.company.Company;
 import company.company.CompanyType;
+import company.customer.Customer;
 import company.transportation.Transportation;
 import company.transportation.TransportationMode;
 import org.java_websocket.WebSocket;
@@ -29,9 +31,8 @@ import simulation.main.VirtualTime;
 import websocket.server.Response;
 
 import java.net.InetSocketAddress;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.*;
 
 /**
  * Sends and receive non-iot data from the UI
@@ -43,6 +44,7 @@ public class AppDataServer extends org.java_websocket.server.WebSocketServer {
     private Company company;
     private Parametrizer parametrizer;
     private VirtualTime virtualTime;
+    private CustomersClusterFinder customersClusterFinder;
     private final Gson gson = new Gson();
 
     private final static Logger logger = LoggerFactory.getLogger(AppDataServer.class);
@@ -52,6 +54,8 @@ public class AppDataServer extends org.java_websocket.server.WebSocketServer {
         this.company = parametrizer.getCompany();
         this.virtualTime = virtualTime;
         this.parametrizer = parametrizer;
+        this.customersClusterFinder = new CustomersClusterFinder(parametrizer);
+        customersClusterFinder.build();
     }
 
     /**
@@ -69,6 +73,8 @@ public class AppDataServer extends org.java_websocket.server.WebSocketServer {
         // Frontend app expects to receive the same format for the request (e.g. topic/subtopic/...)
         result.setTopics(new String[]{request});
 
+        // Now we actually parse the request be checking every acceptable case of request.
+        // If the request is not one of the possible cases, then a null data will be responded to the client.
         if (segments.length == 3 && segments[0].equals("transportation") && segments[1].equals("type"))
             data.put("transportation-type", getTransportationMode(segments[2]));
 
@@ -79,9 +85,21 @@ public class AppDataServer extends org.java_websocket.server.WebSocketServer {
             if (segments[0].equals("company")) {
                 if (segments[1].equals("name")) data.put("name", company.getName());
                 if (segments[1].equals("type")) data.put("company-type", company.getType().name());
+                if (segments[1].equals("headquarters")) data.put("address", company.getHeadquarters());
 
-                if (segments.length == 3 && segments[1].equals("customers") && segments[2].equals("all"))
-                    data.put("customers", company.getCustomers().toArray());
+                if (segments.length == 3 && segments[1].equals("customers")) {
+                    if (segments[2].equals("all"))
+                        data.put("customers", company.getCustomers().toArray());
+                    if (segments[2].equals("clusters")) {
+                        ExecutorService executorService = Executors.newSingleThreadExecutor();
+                        Future<List<List<Customer>>> listFuture = executorService.submit(() -> customersClusterFinder.getClusters());
+                        try {
+                            data.put("customersAgglomerations", listFuture.get());
+                        } catch (InterruptedException | ExecutionException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
             }
 
             if (segments[0].equals("parametrizer") && segments[1].equals("timeFlow"))
@@ -100,7 +118,7 @@ public class AppDataServer extends org.java_websocket.server.WebSocketServer {
                 if (segments[1].equals("companyType")) {
                     try {
                         CompanyType companyType = CompanyType.valueOf(segments[2].toUpperCase());
-                        company.setType(companyType);
+                        parametrizer.setCompanyType(companyType);
                         data.put("boolean", true);
                     } catch (IllegalArgumentException e) {
                         e.printStackTrace();

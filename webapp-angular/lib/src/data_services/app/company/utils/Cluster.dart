@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:webapp_angular/src/data_services/app/company/Coordinates.dart';
 import 'package:webapp_angular/src/data_services/app/company/Customer.dart';
 import 'package:webapp_angular/src/sections/map/interop/Leaflet.interop.dart';
@@ -17,23 +18,35 @@ import 'package:webapp_angular/src/sections/map/interop/Leaflet.interop.dart';
  */
  
 class Cluster {
+  /// Nodes of the cluster.
+  ///
+  /// A node is in this context a customer.
   Set<Customer> nodes;
 
   Cluster({Set<Customer> nodes}) {
     this.nodes = (nodes == null) ? new Set<Customer>() : nodes;
   }
 
-  Circle get circle {
-      final Coordinates center = centroid;
-      final List<Coordinates> vertices = polygonVertices;
+  /// Returns a leaflet circle object, representing the cluster.
+  ///
+  /// The circle should wrap every customer and have a diameter just a little
+  /// wider than the greatest distance between two customers of this.
+  Future<Circle> get circle async {
+      final Coordinates center = await centroid;
+      final List<Coordinates> vertices = await polygonVertices;
       final Coordinates last = vertices.last;
       final Coordinates first = vertices.first;
       // Radius is in meter. Distance must be converted from km to m.
-      final num radius = Coordinates.dist(first, last)*1000;
+      final num radius = (await Coordinates.dist(first, last)) * 1000;
       return Leaflet.circle(center.latlng, new CircleOptions(radius: radius));
   }
 
-  List<Coordinates> get polygonVertices {
+  /// Returns "vertices" (customers coordinates) in order of distance from one of this'
+  /// nodes (chosen randomly).
+  ///
+  /// The returned list can be use to draw a polygon.
+  /// Note that one vertex represents one customer's position.
+  Future<List<Coordinates>> get polygonVertices async {
     // Deep copies nodes list.
     List<Customer> nodes_cpy = new List();
     nodes.forEach((customer) => nodes_cpy.add(customer.deepCopy()));
@@ -44,7 +57,7 @@ class Cluster {
       Customer closest_neighbour = null;
       double min_distance;
       for (final Customer node in nodes_cpy) {
-          double temp_dist = Coordinates.dist(orderedVertices.last, node.address.coordinates);
+          double temp_dist = await Coordinates.dist(orderedVertices.last, node.address.coordinates);
           if (closest_neighbour == null || temp_dist <= min_distance) {
             min_distance = temp_dist;
             closest_neighbour = node;
@@ -58,21 +71,23 @@ class Cluster {
     return orderedVertices;
   }
 
-  Coordinates get centroid {
-    List<Coordinates> orderedCoordinates = polygonVertices;
-    if (polygonVertices.length == 1)
-      return polygonVertices[0];
-    if (polygonVertices.length == 2)
-      return new Coordinates((polygonVertices[0].latitude+polygonVertices[1].latitude)/2,
-          (polygonVertices[0].longitude+polygonVertices[1].longitude)/2);
-    final int nbrVertices = polygonVertices.length;
-    final double area = _getSignedArea(orderedCoordinates, nbrVertices);
-    final double Cx = _getCentroidX(polygonVertices, nbrVertices, area);
-    final double Cy = _getCentroidY(polygonVertices, nbrVertices, area);
+  /// Returns the centroid of this' polygonal form.
+  Future<Coordinates> get centroid async {
+    List<Coordinates> orderedCoordinates = await polygonVertices;
+    if (orderedCoordinates.length == 1)
+      return orderedCoordinates[0];
+    if (orderedCoordinates.length == 2)
+      return new Coordinates((orderedCoordinates[0].latitude+orderedCoordinates[1].latitude)/2,
+          (orderedCoordinates[0].longitude+orderedCoordinates[1].longitude)/2);
+    final int nbrVertices = orderedCoordinates.length;
+    final double area = await _getSignedArea(orderedCoordinates, nbrVertices);
+    final double Cx = await _getCentroidX(orderedCoordinates, nbrVertices, area);
+    final double Cy = await _getCentroidY(orderedCoordinates, nbrVertices, area);
     return new Coordinates(Cx, Cy);
   }
 
-  double _getCentroidX(List<Coordinates> vertices, int n, double signedArea) {
+  /// Returns this' polygonal form centroid's abscissa.
+  Future<double> _getCentroidX(List<Coordinates> vertices, int n, double signedArea) async {
     double sum = 0.0;
     for (int i = 0; i < n; i++)
       sum += (vertices[i].latitude + vertices[(i+1) % n].latitude) *
@@ -81,7 +96,8 @@ class Cluster {
     return sum/(6*signedArea);
   }
 
-  double _getCentroidY(List<Coordinates> vertices, int n, double signedArea) {
+  /// Returns this' polygonal form centroid's ordinates.
+  Future<double> _getCentroidY(List<Coordinates> vertices, int n, double signedArea) async {
     double sum = 0.0;
     for (int i = 0; i < n; i++)
       sum += (vertices[i].longitude + vertices[(i+1) % n].longitude) *
@@ -90,7 +106,8 @@ class Cluster {
     return sum/(6*signedArea);
   }
 
-  double _getSignedArea(List<Coordinates> vertices, int n) {
+  /// Returns this' polygonal form signed area.
+  Future<double> _getSignedArea(List<Coordinates> vertices, int n) async {
     double sum = 0.0;
     for (int i = 0; i < n; i++)
       sum += vertices[i].latitude * vertices[(i+1) % n].longitude

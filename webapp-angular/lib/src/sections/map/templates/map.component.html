@@ -16,5 +16,17 @@
     <section class="hero is-fullheight">
         <div id="map" class="hero-body">
         </div>
+        <div id="map-information" class="hero">
+            <div class="hero-body">
+                <div id="mapElementDescription" *ngIf="informationPanelContent != null">
+                    <p *ngFor="let informationField of informationPanelContent">
+                        <b>{{ informationField.name }} :</b> {{ informationField.content }}
+                    </p>
+                </div>
+                <p *ngIf="informationPanelContent == null">
+                    No information to display. Please select an element of the map.
+                </p>
+            </div>
+        </div>
     </section>
 </div>

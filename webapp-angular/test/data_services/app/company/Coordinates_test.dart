@@ -27,9 +27,9 @@ void main() {
   test("dist method", () {
     Coordinates p1 = new Coordinates(105.49, -45.3);
     Coordinates p2 = new Coordinates(11.93, 58.9);
-    num dist = Coordinates.dist(p1, p2);
-    expect(dist == null, false);
-    expect(dist.isNaN, false);
-    print(dist);
+    Coordinates.dist(p1, p2).then((dist) {
+      expect(dist == null, false);
+      expect(dist.isNaN, false);
+    });
   });
 }

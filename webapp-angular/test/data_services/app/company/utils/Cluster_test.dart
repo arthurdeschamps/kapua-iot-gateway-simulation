@@ -37,11 +37,11 @@ void main() {
   });
 
   test("that vertices are ordered by distance from first node", () {
-
-    List<Coordinates> vertices = cluster.polygonVertices;
-    for (int i = 0; i < vertices.length-2; i++) {
-      expect(Coordinates.dist(vertices[i], vertices[i+1]) <= Coordinates.dist(vertices[i], vertices[i+1]), true);
-    }
+    cluster.polygonVertices.then((vertices) {
+      for (int i = 0; i < vertices.length-2; i++)
+        Coordinates.dist(vertices[i], vertices[i+1]).then((distance1) =>
+          Coordinates.dist(vertices[i], vertices[i+1]).then((distance2) => expect(distance1 <= distance2, true)));
+    });
   });
 
   test("that nodes can't have two equal customers", () {
@@ -53,9 +53,10 @@ void main() {
   });
 
   test("circle creation", () {
-    Circle circle = cluster.circle;
-    expect(circle == null, false);
-    expect(circle.getRadius() == null, false);
-    expect(circle.getRadius().isNaN, false);
+    cluster.circle.then((circle) {
+      expect(circle == null, false);
+      expect(circle.getRadius() == null, false);
+      expect(circle.getRadius().isNaN, false);
+    });
   });
 }

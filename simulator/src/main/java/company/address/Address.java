@@ -37,6 +37,15 @@ public class Address {
         this.coordinates = coordinates;
     }
 
+    public Address(Address addressToCopy) {
+        this.street  = addressToCopy.street;
+        this.city = addressToCopy.city;
+        this.region = addressToCopy.region;
+        this.country = addressToCopy.region;
+        this.zip = addressToCopy.zip;
+        this.coordinates = new Coordinates(addressToCopy.coordinates.getLatitude(), addressToCopy.coordinates.getLongitude());
+    }
+
     @Override
     public String toString() {
         return this.getZip()+" "+this.getStreet()+" "+this.getCity()+" "+this.getRegion()+" "+this.getCountry();

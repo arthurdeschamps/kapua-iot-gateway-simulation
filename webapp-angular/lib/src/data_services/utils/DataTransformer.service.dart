@@ -79,19 +79,35 @@ class DataTransformerService {
   Future<List<Customer>> customers(Map map) async {
     List<Customer> customers = new List();
     List<Map> rawCustomers = map["customers"];
-    for (final Map rawCustomer in rawCustomers) {
-      customers.add(new Customer(rawCustomer["firstName"], rawCustomer["lastName"],
-      address(rawCustomer["address"]), rawCustomer["emailAddress"], rawCustomer["phoneNumber"]));
-    }
-    return new Future.value(customers);
+    for (final Map rawCustomer in rawCustomers) customers.add(await customer(rawCustomer));
+    return customers;
   }
+
+  Future<Customer> customer(Map rawCustomer) async => new Customer(rawCustomer["firstName"], rawCustomer["lastName"],
+        address(rawCustomer["address"]), rawCustomer["emailAddress"], rawCustomer["phoneNumber"]);
 
   /// Converts to Address.
   Address address(Map map) {
-    Map rawCoord = map["coordinates"];
-    Coordinates coordinates = new Coordinates(rawCoord["latitude"], rawCoord["longitude"]);
-    return new Address(map["street"], map["city"], map["region"],
-        map["country"], map["zip"], coordinates);
+    final Map rawAddress = map["address"];
+    final Map rawCoord = rawAddress["coordinates"];
+    final Coordinates coordinates = new Coordinates(rawCoord["latitude"], rawCoord["longitude"]);
+    return new Address(rawAddress["street"], rawAddress["city"], rawAddress["region"],
+        rawAddress["country"], rawAddress["zip"], coordinates);
+  }
+
+  /// Converts to clusters
+  ///
+  /// A cluster is a list of nodes (here customers)
+  Future<List<List<Customer>>> customersAgglomerations(Map map) async {
+      List<List<Map>> rawAgglomerations = map["customersAgglomerations"];
+      List<List<Customer>> agglomerations = new List();
+      for (final List<Map> rawAgglomeration in rawAgglomerations) {
+        List<Customer> agglomeration = new List();
+        for (final Map rawCustomer in rawAgglomeration)
+          agglomeration.add(await customer(rawCustomer));
+        agglomerations.add(agglomeration);
+      }
+      return agglomerations;
   }
 
   /// Converts a raw websocket message into a response object.

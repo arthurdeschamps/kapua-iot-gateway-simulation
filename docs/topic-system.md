@@ -22,6 +22,7 @@ Application data is all non IoT-related data, parametrizer included. It obviousl
 Here are all the topics used for application data:
 * `company/name` -> `("name", COMPANY_NAME)`
 * `company/type` -> `("company-type", COMPANY_TYPE)`
+* `company/headquarters` -> `("address", COMPANY_ADDRESS)`
 * `parametrizer/timeFlow` -> `("number", TIME_FLOW)`
 * `parametrizer/dataSendingDelay` -> `("number", DATA_SENDING_DELAY)`
 * `transportation/type` -> `("transportation-type", TRANSPORTATION_TYPE)`

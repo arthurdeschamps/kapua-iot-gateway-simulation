@@ -16,6 +16,7 @@ package simulation.main;
 
 import communications.kapua.KapuaClient;
 import communications.ui.AppDataServer;
+import company.company.CompanyType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import simulation.simulators.SupplyChainControlSimulator;
@@ -31,13 +32,15 @@ public class Simulation {
 
         Logger logger = LoggerFactory.getLogger(Simulation.class);
 
+        SupplyChainControlSimulator simulation = new SupplyChainControlSimulator();
+
         logger.info("Creating parametrizer...");
         // Uncomment the two lines below and modify the values as you wish to parametrize the simulation
         // Parametrizer parametrizer = new Parametrizer(100, 3, false, 0,
         //         CompanyGenerator.generateInternationalCompany(), false, null);
 
         // Comment the line below if you don't want the default parameters for the simulation
-        Parametrizer parametrizer = new Parametrizer();
+        Parametrizer parametrizer = new Parametrizer(simulation);
 
         VirtualTime virtualTime = new VirtualTime(parametrizer);
 
@@ -48,7 +51,8 @@ public class Simulation {
 
         // Starts the simulation
         logger.info("Starting simulators...");
-        new SupplyChainControlSimulator(parametrizer).start();
+        simulation.setParametrizer(parametrizer);
+        simulation.start();
 
         // Start sending data and subscribing
         logger.info("Initializing communications with Kapua...");

@@ -252,6 +252,7 @@ public class Company implements Serializable {
     }
 
     public void setType(CompanyType type) {
+        //TODO: RESTART SIMULTION
         this.type = type;
     }
 

@@ -38,6 +38,17 @@ public class Customer extends Item {
         this.phoneNumber = phoneNumber;
     }
 
+    public Customer(Customer customerToCopy) {
+        this.firstName = customerToCopy.firstName;
+        this.lastName = customerToCopy.lastName;
+        this.emailAddress = customerToCopy.emailAddress;
+        this.phoneNumber = customerToCopy.phoneNumber;
+        this.address = new Address(customerToCopy.address);
+    }
+
+    /**
+     * A customer is uniquely identified by the triplet (first name, last name, address).
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
