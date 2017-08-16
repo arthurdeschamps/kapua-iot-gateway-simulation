@@ -4,7 +4,7 @@ matrix:
       sudo: false
       dart: stable
       dist: trusty
-      before_script:
+      before_install:
         - cd $TRAVIS_BUILD_DIR/webapp-angular
       dart_task:
         - test: --platform dartium
