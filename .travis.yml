@@ -34,5 +34,4 @@ before_script:
 
 script:
   - mvn clean verify
-  - cd webapp-angular
-  - pub run test -p dartium test/
+  - cd webapp-angular && pub get && pub run test -p dartium test/
