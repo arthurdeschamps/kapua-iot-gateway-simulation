@@ -14,12 +14,15 @@
 
 import 'dart:async';
 import 'dart:collection';
+import 'package:js/js.dart';
 import 'package:logging/logging.dart';
 import 'package:webapp_angular/src/data_services/app/company/Company.service.dart';
 import 'package:webapp_angular/src/data_services/app/company/Coordinates.dart';
 import 'package:webapp_angular/src/data_services/app/company/Delivery.dart';
 import 'package:webapp_angular/src/data_services/app/company/Transportation.dart';
-import 'package:webapp_angular/src/sections/map/interop/Leaflet.interop.dart';
+import 'package:webapp_angular/src/pipes/FirstLetterUppercase.pipe.dart';
+import 'package:webapp_angular/src/sections/map/InformationPanel.service.dart';
+import 'package:webapp_angular/src/sections/map/interop/Leaflet.interop.dart' as L;
 import 'package:webapp_angular/src/sections/map/markers/Marker.service.dart';
 
 /// Handles deliveries displaying on the leaflet map.
@@ -27,21 +30,24 @@ class DeliveryDisplay {
 
   final CompanyService _companyService;
   final MarkerService _markerService;
-  Map<Delivery, Marker> _deliveriesWithMarkers;
+  final InformationPanelService _informationPanel;
+  FirstLetterUppercase _firstLetterUppercase;
+  Map<Delivery, L.Marker> _deliveriesWithMarkers;
 
   final Logger logger = new Logger("DeliveryDisplay");
 
-  DeliveryDisplay(this._companyService, this._markerService) {
+  DeliveryDisplay(this._companyService, this._markerService, this._informationPanel) {
+    _firstLetterUppercase = new FirstLetterUppercase();
     _deliveriesWithMarkers = new HashMap();
   }
 
   /// Starts displaying deliveries on the map.
-  Future<Null> start(LeafletMap map) async {
+  Future<Null> start(L.LeafletMap map) async {
     _displayDeliveries(map);
     new Timer.periodic(new Duration(seconds: 1),(Timer timer) => _displayDeliveries(map));
   }
 
-  Future<Null> _displayDeliveries(LeafletMap map) async {
+  Future<Null> _displayDeliveries(L.LeafletMap map) async {
     List<Delivery> deliveries = _companyService.deliveries;
     _placeDeliveryMarkers(deliveries, _companyService.transportation, map);
     _deleteTerminatedDeliveriesMarkers(deliveries);
@@ -65,25 +71,40 @@ class DeliveryDisplay {
   }
 
   /// Places markers on the map for each delivery in transit.
-  Future<Null> _placeDeliveryMarkers(List<Delivery> deliveries, List<Transportation> transports, LeafletMap map) async {
-    deliveries.forEach((Delivery delivery) {
-      if (_deliveriesWithMarkers.containsKey(delivery)) {
-        // Delivery markers is already on the map, we just move it
-        Coordinates position = delivery.currentPosition;
-        if (position != null)
-          _deliveriesWithMarkers[delivery].setLatLng(position.latlng);
-      } else {
-        // Delivery markers is not yet on the map
-        final Transportation assignedTransportation = transports
-            .firstWhere((transport) => transport.id == delivery.transporterId,
-            orElse: () => null);
-        // Checks if the delivery's transporter is already known as well as its current position
-        if (assignedTransportation != null && delivery.currentPosition != null) {
-          Marker marker = _markerService.deliveryMarker(delivery, assignedTransportation);
-          _deliveriesWithMarkers.putIfAbsent(delivery, () => marker);
-          marker.addTo(map);
-        }
-      }
-    });
+  Future<Null> _placeDeliveryMarkers(List<Delivery> deliveries, List<Transportation> transports, L.LeafletMap map) async =>
+    deliveries.forEach((Delivery delivery) =>
+        _deliveriesWithMarkers.containsKey(delivery) ?
+          _moveDeliveryMarker(delivery) : _addNewDeliveryMarker(transports, delivery, map));
+
+  /// Adds a new delivery marker on the map.
+  Future<Null> _addNewDeliveryMarker(List<Transportation> transports, Delivery delivery, L.LeafletMap map) async {
+    // Delivery markers is not yet on the map
+    final Transportation assignedTransportation = transports
+        .firstWhere((transport) => transport.id == delivery.transporterId,
+        orElse: () => null);
+
+    // Checks that the delivery's transporter and its current position are already known
+    if (assignedTransportation != null && delivery.currentPosition != null) {
+      L.Marker marker = _markerService.deliveryMarker(delivery, assignedTransportation);
+      _deliveriesWithMarkers.putIfAbsent(delivery, () => marker);
+      marker.on("click", allowInterop((L.MouseEvent e) {
+        _informationPanel.setInformationPanel(
+            const ["what", "location", "status", "transportationType", "transportationHealthStatus"],
+            ["Delivery "+delivery.id, delivery.currentPosition, _firstLetterUppercase.transform(delivery.status.toLowerCase()),
+            _firstLetterUppercase.transform(assignedTransportation.transportationTypeString),
+            _firstLetterUppercase.transform(assignedTransportation.healthStateString)]
+        );
+        map.setView(delivery.currentPosition.latlng, 6, null);
+      }));
+      marker.addTo(map);
+    }
+  }
+
+  /// Moves a existing delivery marker to another position.
+  Future<Null> _moveDeliveryMarker(Delivery delivery) async {
+    // Delivery markers is already on the map, we just move it away.
+    Coordinates position = delivery.currentPosition;
+    if (position != null)
+      _deliveriesWithMarkers[delivery].setLatLng(position.latlng);
   }
 }

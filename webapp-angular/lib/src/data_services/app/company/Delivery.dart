@@ -30,9 +30,13 @@ class Delivery {
   String transporterId;
 
   /// Delivery status (e.g. delivered, transit, etc)
-  String status;
+  String _status;
 
-  Delivery(this.id,{ this.transporterId, this.currentPosition, this.status });
+  Delivery(this.id,{ this.transporterId, this.currentPosition, String status }) {
+    this._status = status;
+  }
+
+  String get status => (_status == null) ? "" : _status;
 
   @override
   bool operator ==(Object other) =>

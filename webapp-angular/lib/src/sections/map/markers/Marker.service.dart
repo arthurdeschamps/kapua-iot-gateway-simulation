@@ -28,18 +28,11 @@ class MarkerService {
   MarkerService(this._iconsService);
 
   /// Returns a marker for a couple (delivery, transportation).
-  L.Marker deliveryMarker(Delivery delivery, Transportation transportation) {
-    final popupContent =
-        "<b>Health state:</b> "+transportation.healthStateString+
-        "</br><b>Transportation type:</b> "+transportation.transportationTypeString+
-        "</br><b>Coordinates:</b> "+delivery.currentPosition.toString()+
-        "</br><b>Status:</b> "+status(delivery.status);
-
-    return L.Leaflet.marker(
+  L.Marker deliveryMarker(Delivery delivery, Transportation transportation) =>
+      L.Leaflet.marker(
         delivery.currentPosition.latlng,
         new L.MarkerOptions(icon:  _iconsService.transportation(transportation))
-    ).bindPopup(popupContent, null);
-  }
+    );
 
   /// Returns a marker for the company's headquarters.
   L.Marker headquartersMarker(Utils.Coordinates headquarters) =>

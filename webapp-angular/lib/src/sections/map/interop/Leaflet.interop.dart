@@ -39,6 +39,7 @@ class LeafletMap {
   external set mapOptions(MapOptions mapOptions);
 
   external setView(LatLng center, num zoom, ZoomPanOptions options);
+  external on(String event, callback(MouseEvent e));
 }
 
 @JS('L.Layer')

@@ -26,6 +26,7 @@ import 'package:webapp_angular/src/data_services/utils/DataTransformer.service.d
 import 'package:webapp_angular/src/data_services/utils/EnumConverter.service.dart';
 import 'package:webapp_angular/src/sections/ActiveSection.service.dart';
 import 'package:webapp_angular/src/sections/company_data/CompanyData.component.dart';
+import 'package:webapp_angular/src/sections/map/InformationPanel.service.dart';
 import 'package:webapp_angular/src/sections/map/Map.component.dart';
 import 'package:webapp_angular/src/sections/map/icons/Icon.service.dart';
 import 'package:webapp_angular/src/sections/map/markers/Marker.service.dart';
@@ -43,7 +44,7 @@ import 'package:logging/logging.dart';
   providers: const [IotDataClientService, CompanyService, DataTransformerService,
   EnumConverterService, IconService, MarkerService, ActiveSectionService,
   ChartDataService, IotDataStoreService, AppDataClientService, AppDataStoreService,
-  ParametrizerClientService]
+  ParametrizerClientService, InformationPanelService]
 )
 class AppComponent implements OnInit, AfterViewInit {
 
