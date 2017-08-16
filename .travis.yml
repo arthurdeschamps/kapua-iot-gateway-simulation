@@ -1,20 +1,16 @@
 matrix:
   include:
     - language: java
-
-      jdk:
-        - oraclejdk8
-
+      jdk: oraclejdk8
       sudo: false
-
       script:
         - mvn clean verify
 
     - language: dart
-
       dart:
         - stable
-
       dart_task:
         - test: --platform dartium
           install_dartium: true
+      before_script:
+        - cd webapp_angular
