@@ -1,13 +1,20 @@
-language: java
+matrix:
+  include:
+    - language: java
 
-jdk:
-  - oraclejdk8
+      jdk:
+        - oraclejdk8
 
-sudo: required
+      sudo: false
 
-before_install:
-  - export DISPLAY=:99.0
+      script:
+        - mvn clean verify
 
-script:
-  - mvn clean verify
-  - ./webapp-angular/test/test_script.sh
+    - language: dart
+
+      dart:
+        - stable
+
+      dart_task:
+        - test: --platform dartium
+          install_dartium: true
