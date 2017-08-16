@@ -23,7 +23,6 @@ export DARTIUM_BIN="$PWD/dartium/chrome"
 echo Pub install
 pub install
 
-sh -e /etc/init.d/xvfb start
-
 cd ../
+echo pwd
 pub run test -p dartium test/

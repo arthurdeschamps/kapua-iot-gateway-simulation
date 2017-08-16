@@ -1,7 +1,7 @@
 :host #chart {
-    margin-top:20px;
-    margin-bottom:20px;
-    min-height: 400px;
-    height: 100%;
-    max-width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  min-height: 400px;
+  height: 100%;
+  max-width: 100%;
 }
