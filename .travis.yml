@@ -6,9 +6,9 @@ matrix:
       dist: trusty
       before_install:
         - cd $TRAVIS_BUILD_DIR/webapp-angular
-      dart_task:
-        - test: --platform dartium
-          install_dartium: true
+      install_dartium: true
+      script:
+        - pub get && pub run test --platform dartium test/
 
 
     - language: java
