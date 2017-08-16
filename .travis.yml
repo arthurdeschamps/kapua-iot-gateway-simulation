@@ -6,8 +6,8 @@ matrix:
       install_dartium: true
       before_install:
         - cd $TRAVIS_BUILD_DIR/webapp_angular
-      dart_task:
-        - test: --platform dartium
+      script:
+        pub run test -p dartium test/
 
     - language: java
       jdk: oraclejdk8
