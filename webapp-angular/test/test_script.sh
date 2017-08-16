@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd webapp-angular
+echo pwd
 set -e
 
 DART_DIST=dartsdk-linux-x64-release.zip
@@ -23,6 +25,4 @@ export DARTIUM_BIN="$PWD/dartium/chrome"
 echo Pub install
 pub install
 
-cd ../
-echo pwd
 pub run test -p dartium test/
