@@ -4,8 +4,11 @@ matrix:
       sudo: false
       dart: stable
       dist: trusty
+      before_script:
+        - cd $TRAVIS_BUILD_DIR/webapp_angular
+        - pub get
       script:
-        - cd webapp_angular && pub get && pub run test -p dartium test/
+        - pub run test -p dartium test/
 
 
     - language: java
