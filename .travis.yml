@@ -3,7 +3,6 @@ matrix:
     - language: dart
       dart:
         - stable
-      install_dartium: true
       before_install:
         - cd $TRAVIS_BUILD_DIR/webapp_angular
         - wget https://storage.googleapis.com/dart-archive/channels/stable/release/latest/dartium/dartium-linux-x64-release.zip
