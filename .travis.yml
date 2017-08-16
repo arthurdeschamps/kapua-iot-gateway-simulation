@@ -7,7 +7,7 @@ matrix:
       script:
         - set -e
         # Run the tests.
-        - pub run test -p dartium test/
+        - pub get && pub run test -p dartium test/
 
 
     - language: java
