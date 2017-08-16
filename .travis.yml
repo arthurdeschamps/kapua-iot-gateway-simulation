@@ -2,8 +2,8 @@ matrix:
   include:
     - language: dart
       sudo: false
-      dart:
-        - dev
+      dart: stable
+      dist: trusty
       script:
         - set -e
         # Run the tests.
