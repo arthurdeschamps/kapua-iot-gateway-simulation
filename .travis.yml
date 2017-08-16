@@ -5,7 +5,6 @@ matrix:
       dart: stable
       dist: trusty
       script:
-        - set -e
         - cd webapp_angular && pub get && pub run test -p dartium test/
 
 
