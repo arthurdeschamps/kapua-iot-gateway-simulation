@@ -6,8 +6,11 @@ matrix:
       install_dartium: true
       before_install:
         - cd $TRAVIS_BUILD_DIR/webapp_angular
+        - wget https://storage.googleapis.com/dart-archive/channels/stable/release/latest/dartium/dartium-linux-x64-release.zip
+        - unzip dartium-linux-x64-release.zip
+        - rm -rf dartium-linux-x64-release.zip
       script:
-        pub run test -p dartium test/
+        - pub get && pub run test -p dartium test/
 
     - language: java
       jdk: oraclejdk8
