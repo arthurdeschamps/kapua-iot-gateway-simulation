@@ -3,11 +3,11 @@ matrix:
     - language: dart
       dart:
         - stable
-      before_script:
-        - cd webapp_angular
+      install_dartium: true
+      before_install:
+        - cd $TRAVIS_BUILD_DIR/webapp_angular
       dart_task:
         - test: --platform dartium
-          install_dartium: true
 
     - language: java
       jdk: oraclejdk8
