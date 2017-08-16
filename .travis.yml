@@ -6,8 +6,7 @@ matrix:
       dist: trusty
       script:
         - set -e
-        # Run the tests.
-        - pub get && pub run test -p dartium test/
+        - cd webapp_angular && pub get && pub run test -p dartium test/
 
 
     - language: java
