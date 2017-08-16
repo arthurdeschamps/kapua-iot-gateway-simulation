@@ -84,7 +84,7 @@ class DataTransformerService {
   }
 
   Future<Customer> customer(Map rawCustomer) async => new Customer(rawCustomer["firstName"], rawCustomer["lastName"],
-        address(rawCustomer["address"]), rawCustomer["emailAddress"], rawCustomer["phoneNumber"]);
+        address(rawCustomer), rawCustomer["emailAddress"], rawCustomer["phoneNumber"]);
 
   /// Converts to Address.
   Address address(Map map) {

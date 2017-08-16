@@ -45,7 +45,6 @@ class MapComponent implements AfterViewInit {
   DeliveryDisplay _deliveryDisplay;
   CustomersDisplay _customersDisplay;
 
-
   static final Logger logger = new Logger("MapComponent");
 
   MapComponent(this._companyService,this._markerService, this._appDataStore, this._informationPanel);
@@ -53,7 +52,7 @@ class MapComponent implements AfterViewInit {
   @override
   void ngAfterViewInit() {
     _deliveryDisplay = new DeliveryDisplay(_companyService,new MarkerService(new IconService()), _informationPanel);
-    _customersDisplay = new CustomersDisplay(_companyService, _appDataStore);
+    _customersDisplay = new CustomersDisplay(_appDataStore);
     // Set up the map
     new Future(() => _initMap());
   }
@@ -78,7 +77,7 @@ class MapComponent implements AfterViewInit {
     _placeHeadquartersMarker(headquarters);
     _deliveryDisplay.start(map);
     _setMapView(headquarters.coordinates.latitude,headquarters.coordinates.longitude,3);
-    //_customersDisplay.start(map);
+    _customersDisplay.start(map);
   }
 
   /// Sets the center of the map view.

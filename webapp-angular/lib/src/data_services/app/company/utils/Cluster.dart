@@ -27,6 +27,13 @@ class Cluster {
     this.nodes = (nodes == null) ? new Set<Customer>() : nodes;
   }
 
+  Future<Polygon> get polygon async {
+    List<Coordinates> vertices = polygonVertices;
+    List<LatLng> latlngs = new List();
+    vertices.forEach((vertex) => latlngs.add(vertex.latlng));
+    return Leaflet.polygon(latlngs, null);
+  }
+
   /// Returns a leaflet circle object, representing the cluster.
   ///
   /// The circle should wrap every customer and have a diameter just a little
@@ -41,37 +48,34 @@ class Cluster {
       return Leaflet.circle(center.latlng, new CircleOptions(radius: radius));
   }
 
-  /// Returns "vertices" (customers coordinates) in order of distance from one of this'
-  /// nodes (chosen randomly).
+  /// Returns "vertices" (customers coordinates) in order of distance from a
+  /// node of [this] (chosen randomly).
   ///
   /// The returned list can be use to draw a polygon.
   /// Note that one vertex represents one customer's position.
-  Future<List<Coordinates>> get polygonVertices async {
-    // Deep copies nodes list.
-    List<Customer> nodes_cpy = new List();
-    nodes.forEach((customer) => nodes_cpy.add(customer.deepCopy()));
-    // List of vertices ordered by increasing distance from initial vertex.
-    List<Coordinates> orderedVertices = [nodes_cpy.first.address.coordinates];
-    nodes_cpy.removeAt(0);
-    while (nodes_cpy.isNotEmpty) {
-      Customer closest_neighbour = null;
-      double min_distance;
-      for (final Customer node in nodes_cpy) {
-          double temp_dist = await Coordinates.dist(orderedVertices.last, node.address.coordinates);
-          if (closest_neighbour == null || temp_dist <= min_distance) {
-            min_distance = temp_dist;
-            closest_neighbour = node;
-          }
-      }
-      if (closest_neighbour != null) {
-        orderedVertices.add(closest_neighbour.address.coordinates);
-        nodes_cpy.remove(closest_neighbour);
-      }
-    }
-    return orderedVertices;
+  List<Coordinates> get polygonVertices {
+    List<Coordinates> vertices = new List();
+    final Coordinates rootNode = nodes.elementAt(0).address.coordinates;
+    nodes.forEach((node) => vertices.add(node.address.coordinates));
+    vertices.sort((a, b) => compareNodes(a, b, rootNode));
+    return vertices;
   }
 
-  /// Returns the centroid of this' polygonal form.
+  /// Compares two coordinates [a] and [b] with respect to their distances from
+  /// [rootNode] and act as a <i>Comparator</i> to which one is the closest.
+  int compareNodes(final Coordinates a, final Coordinates b, final Coordinates rootNode) {
+    final double distA = Coordinates.dist(a, rootNode);
+    final double distB = Coordinates.dist(b, rootNode);
+    if (distA == distB)
+      return 0;
+    if (distA < distB)
+      return -1;
+    if (distA > distB)
+      return 1;
+    throw new Exception("Couldn't compare coordinates");
+  }
+
+  /// Returns the centroid of polygonal form of [this].
   Future<Coordinates> get centroid async {
     List<Coordinates> orderedCoordinates = await polygonVertices;
     if (orderedCoordinates.length == 1)
@@ -81,6 +85,8 @@ class Cluster {
           (orderedCoordinates[0].longitude+orderedCoordinates[1].longitude)/2);
     final int nbrVertices = orderedCoordinates.length;
     final double area = await _getSignedArea(orderedCoordinates, nbrVertices);
+    if (area == 0)
+      return orderedCoordinates[0];
     final double Cx = await _getCentroidX(orderedCoordinates, nbrVertices, area);
     final double Cy = await _getCentroidY(orderedCoordinates, nbrVertices, area);
     return new Coordinates(Cx, Cy);

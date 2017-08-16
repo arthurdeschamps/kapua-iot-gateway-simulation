@@ -37,11 +37,13 @@ void main() {
   });
 
   test("that vertices are ordered by distance from first node", () {
-    cluster.polygonVertices.then((vertices) {
-      for (int i = 0; i < vertices.length-2; i++)
-        Coordinates.dist(vertices[i], vertices[i+1]).then((distance1) =>
-          Coordinates.dist(vertices[i], vertices[i+1]).then((distance2) => expect(distance1 <= distance2, true)));
-    });
+    final List<Coordinates> vertices = cluster.polygonVertices;
+    expect(vertices.length == nodes.length, true);
+    for (int i = 0; i < vertices.length-2; i++) {
+      final double distance1 = Coordinates.dist(vertices[i], vertices[i + 1]);
+      final double distance2 = Coordinates.dist(vertices[i], vertices[i + 2]);
+      expect(distance1 <= distance2, true);
+    }
   });
 
   test("that nodes can't have two equal customers", () {

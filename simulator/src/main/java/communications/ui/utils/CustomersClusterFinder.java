@@ -19,7 +19,6 @@ import company.customer.Customer;
 import simulation.main.Parametrizer;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Finds clusters of customers using DBSCAN algorithm.
@@ -32,8 +31,14 @@ public class CustomersClusterFinder {
     private List<Customer> nodes;
     private List<Integer> visited;
     private List<Integer> assigned;
+    /**
+     * The minimum of nodes that need to be contained in a cluster.
+     * If a agglomeration of nodes contains less than minNodes, then it is not considered a cluster.
+     */
     private int minNodes;
-    /** Minimum distance in km between two nodes to be neighbours **/
+    /**
+     * Minimum distance in km between two nodes in order to be neighbours.
+     */
     private double eps;
 
     public CustomersClusterFinder(Parametrizer parametrizer) {
@@ -60,6 +65,9 @@ public class CustomersClusterFinder {
     }
 
 
+    /**
+     * Prepares everything for dbscan (parameters, customers in a non-concurrent list, etc) and start dbscan.
+     */
     public void build() {
         copyCustomers();
         this.minNodes = 0;
@@ -76,17 +84,19 @@ public class CustomersClusterFinder {
                 break;
             case NATIONAL:
                 minNodes = 8;
-                eps = 100;
+                eps = 200;
                 break;
             case INTERNATIONAL:
                 minNodes = 15;
-                eps = 50;
+                eps = 100;
                 break;
         }
         dbscan();
     }
 
-
+    /**
+     * Apply the whole DBSCAN algorithm to find clusters of customers.
+     */
     private void dbscan() {
         for (int activeNodeIndex = 0; activeNodeIndex < nodes.size(); activeNodeIndex++) {
             if (!isVisited(activeNodeIndex)) {
@@ -101,6 +111,15 @@ public class CustomersClusterFinder {
         }
     }
 
+    /**
+     * Expands a cluster by iteratively finding epsilon-neighbours.
+     * @param activeNodeIndex
+     * The index of the "root node" from which the expansion starts.
+     * @param cluster
+     * The cluster to expand, that is the one that we will add the root node and its potential neighbours to.
+     * @param neighboursIndexes
+     * The direct neighbours of the root node.
+     */
     private void expandCluster(final int activeNodeIndex, List<Customer> cluster, List<Integer> neighboursIndexes) {
         addToCluster(activeNodeIndex, cluster);
         for (int i = 0; i < neighboursIndexes.size(); i++) {
@@ -116,6 +135,13 @@ public class CustomersClusterFinder {
         }
     }
 
+    /**
+     * Finds the epsilon-neighbours of the node given by the index ofIndex.
+     * @param ofIndex
+     * The index of the node that we need to find the epsilon-neighbours of.
+     * @return
+     * A list containing the indexes of any node closer than epsilon in terms of distance in km.
+     */
     private List<Integer> getNeighbours(final int ofIndex) {
         List<Integer> neighboursIndexes = new ArrayList<>();
         for (int i = 0; i < nodes.size(); i++)
@@ -124,15 +150,30 @@ public class CustomersClusterFinder {
         return neighboursIndexes;
     }
 
+    /**
+     * Adds a node to a cluster.
+     * @param nodeIndex
+     * The index of the node to add.
+     * @param cluster
+     * The cluster to add the node to.
+     */
     private void addToCluster(final int nodeIndex, final List<Customer> cluster) {
         cluster.add(nodes.get(nodeIndex));
         setAssigned(nodeIndex);
     }
 
+    /**
+     * @return
+     * If the node at nodeIndex has already been "visited", that is expanded by DBSCAN.
+     */
     private boolean isVisited(final int nodeIndex) {
         return visited.get(nodeIndex) == 1;
     }
 
+    /**
+     * @return
+     * If the node at nodeIndex has already been assigned to a cluster.
+     */
     private boolean isAssigned(final int nodeIndex) {
         return assigned.get(nodeIndex) == 1;
     }

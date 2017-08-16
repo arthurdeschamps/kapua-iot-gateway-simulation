@@ -36,7 +36,7 @@ class Coordinates {
   /// Calculates the distance between coordinates [A] and [B].
   ///
   /// Result in km.
-  static Future<double> dist(Coordinates A, Coordinates B) async {
+  static double dist(Coordinates A, Coordinates B) {
     const int EARTH_RADIUS_KM = 6371;
     final double dLat = toRadians(B.latitude - A.latitude);
     final double dLon = toRadians(B.longitude - A.longitude);
