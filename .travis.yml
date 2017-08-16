@@ -5,33 +5,11 @@ jdk:
 
 sudo: required
 
-addons:
-apt:
-  sources:
-    - google-chrome
-  packages:
-    - google-chrome-stable
-    - google-chrome-beta
-
 before_install:
-  - export CHROME_BIN=chromium-browser
   - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-  # Enable HTTPS for apt.
-  - sudo apt-get update
-  - sudo apt-get install apt-transport-https
-  # Get the Google Linux package signing key.
-  - sudo sh -c 'curl https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -'
-  # Set up the location of the stable repository.
-  - sudo sh -c 'curl https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list'
-  - sudo apt-get update
-
 install:
   - sudo apt-get install dart
 
-before_script:
-  - export PATH=/usr/lib/dart/bin:$PATH
-
 script:
   - mvn clean verify
-  - cd webapp-angular && pub get && pub run test -p dartium test/
+  - ./webapp-angular/test/test_script.sh
