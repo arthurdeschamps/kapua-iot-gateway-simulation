@@ -2,12 +2,13 @@ matrix:
   include:
     - language: dart
       sudo: false
-      dart: dev
-      install_dartium: true
-      before_install:
-        - cd $TRAVIS_BUILD_DIR/webapp_angular
-      dart_task:
-        - test: --platform dartium
+      dart:
+        - dev
+      script:
+        - set -e
+        # Run the tests.
+        - pub run test -p dartium test/
+
 
     - language: java
       jdk: oraclejdk8
