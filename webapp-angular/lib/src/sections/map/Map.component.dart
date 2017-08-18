@@ -13,6 +13,7 @@
  */
 
 import 'dart:async';
+import 'dart:html';
 import 'package:angular2/angular2.dart';
 import 'package:js/js.dart';
 import 'package:webapp_angular/src/data_services/app/AppDataStore.service.dart';
@@ -53,9 +54,12 @@ class MapComponent implements AfterViewInit {
   void ngAfterViewInit() {
     _deliveryDisplay = new DeliveryDisplay(_companyService,new MarkerService(new IconService()), _informationPanel);
     _customersDisplay = new CustomersDisplay(_appDataStore);
+    (querySelector('#close') as HtmlElement).onClick.listen((e) => closeHandler(e));
     // Set up the map
     new Future(() => _initMap());
   }
+
+  void closeHandler(MouseEvent e) => _informationPanel.hide();
 
   /// Initialized the map view and data.
   Future<Null> _initMap() async {
@@ -77,7 +81,7 @@ class MapComponent implements AfterViewInit {
     _placeHeadquartersMarker(headquarters);
     _deliveryDisplay.start(map);
     _setMapView(headquarters.coordinates.latitude,headquarters.coordinates.longitude,3);
-    _customersDisplay.start(map);
+    //_customersDisplay.start(map);
   }
 
   /// Sets the center of the map view.
@@ -89,10 +93,12 @@ class MapComponent implements AfterViewInit {
   /// Places a markers on the company's headquarters.
   Future<Null> _placeHeadquartersMarker(Address headquarters) async {
     /// Handler when headquarters marker is clicked.
-    void clicked(L.MouseEvent e) =>
+    void clicked(L.MouseEvent e) {
+      _informationPanel.show();
       _informationPanel.setInformationPanel(
           const ["what", "companyName", "location", "fullAddress", "companyType"],
           ["Company", _companyService.companyName, headquarters.coordinates, headquarters, _companyService.companyType]);
+    }
 
     L.Marker marker = _markerService.headquartersMarker(headquarters.coordinates);
     marker.on("click", allowInterop(clicked));

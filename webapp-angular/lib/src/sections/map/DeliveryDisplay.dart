@@ -87,7 +87,10 @@ class DeliveryDisplay {
     if (assignedTransportation != null && delivery.currentPosition != null) {
       L.Marker marker = _markerService.deliveryMarker(delivery, assignedTransportation);
       _deliveriesWithMarkers.putIfAbsent(delivery, () => marker);
+
+      // Click handler: displays data relative to this delivery in the information panel
       marker.on("click", allowInterop((L.MouseEvent e) {
+        _informationPanel.show();
         _informationPanel.setInformationPanel(
             const ["what", "location", "status", "transportationType", "transportationHealthStatus"],
             ["Delivery "+delivery.id, delivery.currentPosition, _firstLetterUppercase.transform(delivery.status.toLowerCase()),
@@ -96,6 +99,8 @@ class DeliveryDisplay {
         );
         map.setView(delivery.currentPosition.latlng, 6, null);
       }));
+
+
       marker.addTo(map);
     }
   }

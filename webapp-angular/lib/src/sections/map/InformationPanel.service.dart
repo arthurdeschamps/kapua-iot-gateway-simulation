@@ -12,6 +12,7 @@
  *  ******************************************************************************
  */
 
+import 'dart:html';
 import 'package:angular2/angular2.dart';
 import 'package:webapp_angular/src/data_services/app/company/Address.dart';
 import 'package:webapp_angular/src/data_services/app/company/Coordinates.dart' as Utils;
@@ -78,4 +79,7 @@ class InformationPanelService {
 
   Map<String, dynamic> _buildMap(final List<String> keys, final List<dynamic> values) =>
       new Map.fromIterables(keys, values);
+
+  void show() => (querySelector("#map-information") as HtmlElement).classes.remove("fade-out");
+  void hide() => (querySelector("#map-information") as HtmlElement).classes.add("fade-out");
 }

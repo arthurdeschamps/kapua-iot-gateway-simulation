@@ -66,6 +66,8 @@ class Cluster {
   int compareNodes(final Coordinates a, final Coordinates b, final Coordinates rootNode) {
     final double distA = Coordinates.dist(a, rootNode);
     final double distB = Coordinates.dist(b, rootNode);
+    print(distA.toString());
+    print(distB.toString());
     if (distA == distB)
       return 0;
     if (distA < distB)

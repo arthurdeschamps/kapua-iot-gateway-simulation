@@ -13,44 +13,54 @@
   -->
 
 <div class="company-data">
-    <section class="hero is-fullheight is-large">
-        <div class="container is-fluid">
-            <div>
-                <h3 id="companyName" class="is-3 title">
-                    Name of your company: <span>{{ companyName }}</span>
-                </h3>
-            </div>
-            <div id="badge">
-                <span class="tag is-info">{{ companyType | firstLetterUppercase }}</span>
-            </div>
+    <section>
+        <div id="company-info">
+            <h3 id="company-name" class="is-3 title">
+                Name of your company: <span>{{ companyName }}</span>
+            </h3>
+            <span id="badge" class="tag is-info">{{ companyType | firstLetterUppercase }}</span>
+        </div>
+        <div id="chart-zone">
             <!-- Charts for stores' size evolution -->
             <data-chart></data-chart>
-            <!-- Table with immediate stores' size -->
-            <table style="table-layout: fixed;" class="table is-bordered is-striped">
+        </div>
+        <div id="stores-info">
+            <div id="left-store">
+                <span><i class="fa fa-arrow-left" aria-hidden="true"></i> </span>
+            </div>
+            <div id="store-info">
+                <p id="store-name">Store name</p>
+                <p id="store-size">1000</p>
+                <p id="store-evolution">+49.9 <span><i class="fa fa-arrow-up lime" aria-hidden="true"></i></span></p>
+            </div>
+            <div id="right-store">
+                <span><i class="fa fa-arrow-right fa-5x" aria-hidden="true"></i></span>
+            </div>
+           <!-- <table class="table is-bordered is-striped">
                 <thead>
-                    <tr>
-                        <th *ngFor="let storage of getAllStores()" style="text-align: center; font-size: 1em;">
-                            {{ storage.name | firstLetterUppercase | splitUppercases }}
-                        </th>
-                    </tr>
+                <tr>
+                    <th *ngFor="let storage of getAllStores()" style="text-align: center; font-size: 1em;">
+                        {{ storage.name | firstLetterUppercase | splitUppercases }}
+                    </th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td *ngFor="let storage of getAllStores()">
-                            {{ storage.size }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td *ngFor="let storage of getAllStores()">
+                <tr>
+                    <td *ngFor="let storage of getAllStores()">
+                        {{ storage.size }}
+                    </td>
+                </tr>
+                <tr>
+                    <td *ngFor="let storage of getAllStores()">
                             <span>
                                 <i *ngIf="storage.percentage > 0" class="fa fa-arrow-up lime" aria-hidden="true"></i>
                                 <i *ngIf="storage.percentage < 0" class="fa fa-arrow-down red" aria-hidden="true"></i>
                              </span>
-                            {{ storage.percentage | number:'1.2-2' }} %
-                        </td>
-                    </tr>
+                        {{ storage.percentage | number:'1.2-2' }} %
+                    </td>
+                </tr>
                 </tbody>
-            </table>
+            </table>-->
         </div>
     </section>
 </div>

@@ -43,8 +43,12 @@ class CompanyDataComponent {
   /// Contains the values that had [stores] before the last server update.
   Map<String, int> previousStores;
 
+  @Input()
+  StorageInformation selectedStoreInformation;
+
   CompanyDataComponent(this._companyService) {
     stores = _companyService.storesWithSizes;
+    selectedStoreInformation = getStorageInformation(stores.keys.first, stores[stores.keys.first]);
     new Timer.periodic(new Duration(seconds: 2),(timer) => _updateStores());
   }
 
@@ -62,20 +66,28 @@ class CompanyDataComponent {
   List<StorageInformation> getAllStores() {
     if (stores != null) {
       List<StorageInformation> storesInformation = new List();
-      stores.forEach((name, quantity) {
-        int previousQuantity;
-        if (previousStores == null)
-          previousQuantity = 0;
-        else
-          previousQuantity = previousStores[name];
-        storesInformation.add(new StorageInformation(quantity, name,
-            previousStorageQuantity: previousQuantity));
-      });
+      stores.forEach((name, quantity) => storesInformation.add(getStorageInformation(name, quantity)));
       return storesInformation;
     } else {
       return new List.filled(6, new StorageInformation(0,""));
     }
   }
+
+  /**
+   * Returns a new StorageInformation object containing information about storage
+   * [name].
+   */
+  StorageInformation getStorageInformation(String name, int quantity) {
+    int previousQuantity;
+    if (previousStores == null)
+      previousQuantity = 0;
+    else
+      previousQuantity = previousStores[name];
+    return new StorageInformation(quantity, name,
+        previousStorageQuantity: previousQuantity);
+  }
+
+  void set selectedStorageInformation(String selectedStorage) => getStorageInformation(selectedStorage, stores[selectedStorage]);
 
   /// Returns the evolution in percentage between the initial size of the store [of]
   /// and the current size of the store [of].

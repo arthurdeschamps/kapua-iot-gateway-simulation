@@ -1,25 +1,64 @@
+withMin(ppty, val)
+  {ppty} val
+  min-{ppty} val
+
 :host
-  .hero-body
-    padding 0
-  .hero
+  .company-data
+    max-width 100%
+
+  section
     background-color #252525
-  #companyName
-    margin-bottom 20px
-    margin-top 20px
-    padding-left 10px
-    color #e6e8ed
-    span
-      font-weight bolder
-  #badge
-    margin-bottom 20px
-    padding-left 10px
-    & > span
-      background-color lightgray
-      color black
-  .wrapper
-    margin 0 auto
-    text-align center
-    font-style italic
+    min-height 100vh
+    max-width 100%
+
+    & > div
+      overflow-x scroll
+      padding 10px
+      max-width 100%
+
+    #company-info
+      #company-name
+        color #e6e8ed
+        margin 0
+        span
+          font-weight bolder
+      #badge
+        background-color lightgray
+        color black
+
+    #chart-zone
+      padding 10px
+      text-align center
+      font-style italic
+
+    #stores-info
+      text-align center
+      color #e6e8ed
+
+      & > div
+        withMin('height', 100%)
+        overflow hidden
+        display inline-block
+
+      #store-info
+        #store-name
+          font-weight bolder
+          font-size 1.5em
+
+      #left-store, #right-store
+        i
+          font-size 10vh
+          cursor pointer
+      #left-store
+        margin-right 10vw
+      #right-store
+        margin-left 10vw
+
+    #data-table
+      withMin('height', 20vh)
+      padding 10px
+      table
+        table-layout: fixed;
 
 :host .table, :host .table td, :host .table tr, :host .table th
   color whitesmoke

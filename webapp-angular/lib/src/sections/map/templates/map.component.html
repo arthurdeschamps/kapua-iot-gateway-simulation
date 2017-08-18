@@ -17,8 +17,9 @@
         <div id="map" class="hero-body">
         </div>
         <div id="map-information" class="hero">
+            <span><i id="close" class="fa fa-times fa-3x"></i></span>
             <div class="hero-body">
-                <div id="mapElementDescription" *ngIf="informationPanelContent != null">
+                <div id="map-element-description" *ngIf="informationPanelContent != null">
                     <p *ngFor="let informationField of informationPanelContent">
                         <b>{{ informationField.name }} :</b> {{ informationField.content }}
                     </p>

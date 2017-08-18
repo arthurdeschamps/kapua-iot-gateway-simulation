@@ -29,9 +29,7 @@ class Coordinates {
   }
 
   @override
-  String toString() {
-    return "Latitude : "+latitude.toString()+", Longitude : "+longitude.toString();
-  }
+  String toString() => "Latitude : "+latitude.toString()+", Longitude : "+longitude.toString();
 
   /// Calculates the distance between coordinates [A] and [B].
   ///
@@ -43,6 +41,8 @@ class Coordinates {
     final double a = pow(sin(dLat/2),2) + pow(sin(dLon/2),2) *
         cos(toRadians(A.latitude) * cos(toRadians(B.latitude)));
     final double distance = EARTH_RADIUS_KM * 2 * atan2(sqrt(a), sqrt(1-a));
+    if (distance.isNaN)
+      throw new ArgumentError("Couldn't calculate distance between Coordinate "+A.toString()+" and Coordinate "+B.toString());
     return distance;
   }
 

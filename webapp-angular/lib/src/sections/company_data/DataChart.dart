@@ -53,7 +53,7 @@ class DataChartComponent implements AfterViewInit {
         options: new ChartOptions(
           title: new ChartTitleOptions(
             display: true,
-            text: "Company's evolution over time",
+            text: "Evolution of the company over time",
             fontColor: "#e6e8ed",
             fontSize: 16,
             fontStyle: "normal"
