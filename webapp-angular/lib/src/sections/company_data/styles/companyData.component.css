@@ -38,7 +38,13 @@
   overflow: hidden;
   display: inline-block;
 }
+:host section #stores-info #store-info {
+  max-width: 40%;
+  width: 40%;
+  overflow-x: hidden;
+}
 :host section #stores-info #store-info #store-name {
+  overflow-x: scroll;
   font-weight: bolder;
   font-size: 1.5em;
 }
@@ -46,10 +52,6 @@
 :host section #stores-info #right-store i {
   font-size: 6vh;
   cursor: pointer;
-}
-:host section #stores-info #left-store:hover,
-:host section #stores-info #right-store:hover {
-  font-size: 8vh;
 }
 :host section #stores-info #left-store {
   margin-right: 10vw;

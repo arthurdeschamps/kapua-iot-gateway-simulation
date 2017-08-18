@@ -67,16 +67,26 @@ class ParametrizerComponent implements AfterViewInit {
 
   void onSubmit(Event event) {
     event.preventDefault();
-
     HtmlElement submitButton = querySelector("#save-settings");
+
+    void removeClasses() {
+      submitButton.classes.remove("is-loading");
+      submitButton.classes.remove("clicked");
+    }
 
     if (submitButton != null) {
       // CSS clicked button animation
       submitButton.classes.add("clicked");
       submitButton.classes.add("is-loading");
+
+      // We want the animation to last at least 1 second, so we use a timer.
+      final int start = new DateTime.now().millisecondsSinceEpoch;
       updateData().then((_) {
-        submitButton.classes.remove("is-loading");
-        submitButton.classes.remove("clicked");
+        final int stop = new DateTime.now().millisecondsSinceEpoch;
+        final int duration = stop-start;
+        duration >= 1000 ?
+          removeClasses() :
+          new Timer(new Duration(milliseconds: 1000-duration),() => removeClasses());
       });
     }
   }

@@ -42,7 +42,11 @@ withMin(ppty, val)
         display inline-block
 
       #store-info
+        max-width 40%
+        width 40%
+        overflow-x hidden
         #store-name
+          overflow-x scroll
           font-weight bolder
           font-size 1.5em
 
@@ -50,8 +54,6 @@ withMin(ppty, val)
         i
           font-size 6vh
           cursor pointer
-        &:hover
-          font-size 8vh
 
       #left-store
         margin-right 10vw

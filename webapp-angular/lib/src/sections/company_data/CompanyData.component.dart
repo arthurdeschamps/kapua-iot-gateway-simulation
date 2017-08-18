@@ -14,6 +14,7 @@
 
 import 'dart:async';
 import 'dart:collection';
+import 'dart:html';
 import 'package:angular2/angular2.dart';
 import 'package:webapp_angular/src/data_services/app/company/Company.service.dart';
 import 'package:webapp_angular/src/data_services/app/company/utils/StorageInformation.dart';
@@ -30,25 +31,23 @@ import 'package:logging/logging.dart';
   directives: const [CORE_DIRECTIVES, DataChartComponent],
   pipes: const [COMMON_PIPES, FirstLetterUppercase, SplitUppercases]
 )
-class CompanyDataComponent {
+class CompanyDataComponent implements AfterViewInit {
 
   final CompanyService _companyService;
   final Logger logger = new Logger("CompanyDataComponent");
-
   /// Contains pairs of (store name, store quantity).
   ///
   /// Stores are defined by the Java simulation (e.g. customers, orders, etc).
   Map<String, int> stores;
-
   /// Contains the values that had [stores] before the last server update.
   Map<String, int> previousStores;
-
-  @Input()
-  StorageInformation selectedStoreInformation;
+  /// Index of the currently selected store.
+  ///
+  /// Is between 0 and [stores] length - 1.
+  int selectedStoreIndex = 0;
 
   CompanyDataComponent(this._companyService) {
     stores = _companyService.storesWithSizes;
-    selectedStoreInformation = getStorageInformation(stores.keys.first, stores[stores.keys.first]);
     new Timer.periodic(new Duration(seconds: 2),(timer) => _updateStores());
   }
 
@@ -108,4 +107,18 @@ class CompanyDataComponent {
   @Input()
   String get companyType => _companyService.companyType+" business";
 
+  /// Information about the currently selected store.
+  @Input()
+  StorageInformation get selectedStoreInformation => getStorageInformation(
+      stores.keys.elementAt(selectedStoreIndex),
+      stores[stores.keys.elementAt(selectedStoreIndex)]
+  );
+
+  @override
+  ngAfterViewInit() {
+    void increment() => selectedStoreIndex = (selectedStoreIndex+1)%stores.length;
+    void decrement() => selectedStoreIndex == 0 ? selectedStoreIndex = stores.length-1 : selectedStoreIndex--;
+    (querySelector("#right-store") as HtmlElement).onClick.listen((e) => increment());
+    (querySelector("#left-store") as HtmlElement).onClick.listen((e) => decrement());
+  }
 }

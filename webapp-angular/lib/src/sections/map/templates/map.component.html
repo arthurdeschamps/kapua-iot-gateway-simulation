@@ -17,7 +17,12 @@
         <div id="map" class="hero-body">
         </div>
         <div id="map-information" class="hero">
-            <span><i id="close" class="fa fa-times fa-3x"></i></span>
+            <a id="close" class="button is-primary is-outlined">
+                <span>Close</span>
+                <span class="icon is-small">
+                  <i class="fa fa-times"></i>
+                </span>
+            </a>
             <div class="hero-body">
                 <div id="map-element-description" *ngIf="informationPanelContent != null">
                     <p *ngFor="let informationField of informationPanelContent">
