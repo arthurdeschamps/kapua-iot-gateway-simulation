@@ -1,4 +1,5 @@
-:host .company-data {
+:host .company-data,
+:host .company-data * {
   max-width: 100%;
 }
 :host section {
@@ -43,8 +44,12 @@
 }
 :host section #stores-info #left-store i,
 :host section #stores-info #right-store i {
-  font-size: 10vh;
+  font-size: 6vh;
   cursor: pointer;
+}
+:host section #stores-info #left-store:hover,
+:host section #stores-info #right-store:hover {
+  font-size: 8vh;
 }
 :host section #stores-info #left-store {
   margin-right: 10vw;

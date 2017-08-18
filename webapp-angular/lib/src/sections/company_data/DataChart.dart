@@ -60,6 +60,7 @@ class DataChartComponent implements AfterViewInit {
           ),
           animation: new ChartAnimationOptions(duration: 0),
           responsive: true,
+          maintainAspectRatio: false,
           scales: new LogarithmicScale(
             yAxes: [new ChartYAxe(
               type: "logarithmic",

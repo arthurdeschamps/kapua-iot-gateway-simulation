@@ -4,6 +4,7 @@ withMin(ppty, val)
 
 :host
   .company-data
+  .company-data *
     max-width 100%
 
   section
@@ -47,8 +48,11 @@ withMin(ppty, val)
 
       #left-store, #right-store
         i
-          font-size 10vh
+          font-size 6vh
           cursor pointer
+        &:hover
+          font-size 8vh
+
       #left-store
         margin-right 10vw
       #right-store
