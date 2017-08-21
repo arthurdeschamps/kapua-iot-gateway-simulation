@@ -65,9 +65,7 @@ class MapComponent implements AfterViewInit {
   Future<Null> _initMap() async {
     // Creates a new leaflet map, precising the zoom delta (how much one zoom
     // brings the view closer to the ground).
-    map = L.Leaflet.map("map", new L.MapOptions(
-      zoomDelta: 0.3
-    ));
+    map = L.Leaflet.map("map", null);
     // Tile layer attributions
     final String _osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     final String _osmAttrib = 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
