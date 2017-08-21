@@ -20,11 +20,8 @@
     "drmonty-leaflet-awesome-markers": "^2.0.2",
     "font-awesome": "Font-Awesome#^4.7.0",
     "leaflet": "Leaflet#^1.1.0",
-    "angular-cli": "^1.2.0",
-    "angular": "^1.6.5",
     "chart.js": "^2.6.0",
     "stylus": "^0.54.5",
-    "jquery-awesome-cursor": "^0.3.1",
     "izitoast": "^1.1.5",
     "colors": "^3.0.0"
   }
