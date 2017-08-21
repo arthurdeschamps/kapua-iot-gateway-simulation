@@ -17,7 +17,6 @@ package simulation.main;
 import company.company.Company;
 import company.company.CompanyType;
 import economy.Economy;
-import org.jetbrains.annotations.Nullable;
 import simulation.generators.CompanyGenerator;
 import simulation.simulators.SupplyChainControlSimulator;
 import simulation.simulators.runners.AbstractRunner;
