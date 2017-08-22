@@ -75,7 +75,7 @@ class AppComponent implements OnInit, AfterViewInit {
   @override
   ngAfterViewInit() {
     new Timer.periodic(new Duration(seconds: 5), (_) => _checkConnectivity());
-    _userGuide.start();
+    //_userGuide.start();
   }
 
   /// Checks if the websockets are connected or not.

@@ -65,7 +65,7 @@ public class CustomersClusterFinderTest {
     }
 
 
-    @Test(timeout = 60000)
+    @Test(timeout = 120000)
     public void testPerformances() {
         long start = new Date().getTime();
         List<List<Customer>> clusters = dbscanner.getClusters();
