@@ -7,14 +7,6 @@
 *.iml
 out
 gen
-### Example user template template
-### Example user template
-
-# IntelliJ project files
-.idea
-*.iml
-out
-gen
 .idea/compiler.xml
 .idea/dbnavigator.xml
 .idea/dictionaries/
@@ -29,7 +21,6 @@ data-transmitter/src/main/resources/
 data-transmitter/target/
 kapua-iot-gateway-simulation-scm.iml
 webapp-angular/.idea/
-webapp-angular/lib/src/sections/map/styles/
 
 # Others
 listener-tcplocalhost1883

@@ -1,0 +1,25 @@
+#map-information {
+    min-height: 200px;
+    background-color: #252525;
+}
+
+#map-information .hero-body div {
+    min-width: 100%;
+}
+
+#map-information .hero-body * {
+    text-align: center;
+    min-width: 100%;
+    color: whitesmoke;
+}
+
+#map-information #close {
+    position: absolute;
+    right: 10px;
+    margin-top: 10px;
+    max-width: 100px;
+}
+
+.fade-out {
+    display: none;
+}
