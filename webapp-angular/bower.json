@@ -22,7 +22,6 @@
     "leaflet": "Leaflet#^1.1.0",
     "chart.js": "^2.6.0",
     "stylus": "^0.54.5",
-    "izitoast": "^1.1.5",
-    "colors": "^3.0.0"
+    "izitoast": "^1.1.5"
   }
 }
