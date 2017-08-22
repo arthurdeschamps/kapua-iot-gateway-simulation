@@ -8,6 +8,8 @@
 - Leaflet 1.1.0, BSD-2-Clause, https://github.com/Leaflet/Leaflet
 - Colors 3.0.0, MIT, https://github.com/mrmrs/colors
 - Stylus 0.54.5, MIT, https://github.com/stylus/stylus
+- Tether 1.4.0, MIT, http://github.hubspot.com/tether
+- Tether-shepherd 1.8.1, MIT, https://github.com/HubSpot/shepherd
 
 ## Pub (https://pub.dartlang.org/packages)
 ### Prod

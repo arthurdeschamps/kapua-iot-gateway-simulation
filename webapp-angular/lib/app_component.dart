@@ -24,6 +24,7 @@ import 'package:webapp_angular/src/data_services/iot/IotDataClient.service.dart'
 import 'package:webapp_angular/src/data_services/iot/IotDataStore.service.dart';
 import 'package:webapp_angular/src/data_services/utils/DataTransformer.service.dart';
 import 'package:webapp_angular/src/data_services/utils/EnumConverter.service.dart';
+import 'package:webapp_angular/src/guide/UserGuide.service.dart';
 import 'package:webapp_angular/src/sections/ActiveSection.service.dart';
 import 'package:webapp_angular/src/sections/company_data/CompanyData.component.dart';
 import 'package:webapp_angular/src/sections/map/InformationPanel.service.dart';
@@ -44,10 +45,11 @@ import 'package:logging/logging.dart';
   providers: const [IotDataClientService, CompanyService, DataTransformerService,
   EnumConverterService, IconService, MarkerService, ActiveSectionService,
   ChartDataService, IotDataStoreService, AppDataClientService, AppDataStoreService,
-  ParametrizerClientService, InformationPanelService]
+  ParametrizerClientService, InformationPanelService, UserGuideService]
 )
 class AppComponent implements OnInit, AfterViewInit {
 
+  final UserGuideService _userGuide;
   final ActiveSectionService _activeSectionService;
 
   final IotDataClientService _iotSockService;
@@ -59,7 +61,7 @@ class AppComponent implements OnInit, AfterViewInit {
   /// If "iot data websocket closed" warning already showed ups.
   bool _iotWarningDisplayed = false;
 
-  AppComponent(this._activeSectionService, this._iotSockService, this._appSockService);
+  AppComponent(this._userGuide, this._activeSectionService, this._iotSockService, this._appSockService);
 
   @override
   void ngOnInit() {
@@ -69,13 +71,16 @@ class AppComponent implements OnInit, AfterViewInit {
   /// Returns if [section] is active or not.
   bool isActive(String section) => _activeSectionService.isActive(section);
 
+
+  @override
+  ngAfterViewInit() {
+    new Timer.periodic(new Duration(seconds: 5), (_) => _checkConnectivity());
+    _userGuide.start();
+  }
+
   /// Checks if the websockets are connected or not.
   ///
   /// Displays a warning if they are not.
-  @override
-  ngAfterViewInit() => new Timer.periodic(new Duration(seconds: 5), (_) => _checkConnectivity());
-
-  /// Displays warnings if websockets are closed.
   Future<Null> _checkConnectivity() async {
     final String red = "#FF3333";
     final String iotSockId = "iot-warning";
