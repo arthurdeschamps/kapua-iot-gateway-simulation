@@ -1,11 +1,6 @@
 // Test the rectangle element
 
 describe('Title block tests', function() {
-	it('Should be constructed', function() {
-		var title = new Chart.Title({});
-		expect(title).not.toBe(undefined);
-	});
-
 	it('Should have the correct default config', function() {
 		expect(Chart.defaults.global.title).toEqual({
 			display: false,
@@ -13,6 +8,7 @@ describe('Title block tests', function() {
 			fullWidth: true,
 			weight: 2000,
 			fontStyle: 'bold',
+			lineHeight: 1.2,
 			padding: 10,
 			text: ''
 		});
@@ -43,7 +39,7 @@ describe('Title block tests', function() {
 
 		expect(minSize).toEqual({
 			width: 400,
-			height: 32
+			height: 34.4
 		});
 	});
 
@@ -72,7 +68,29 @@ describe('Title block tests', function() {
 		minSize = title.update(200, 400);
 
 		expect(minSize).toEqual({
-			width: 32,
+			width: 34.4,
+			height: 400
+		});
+	});
+
+	it('should have the correct size when there are multiple lines of text', function() {
+		var chart = {};
+
+		var options = Chart.helpers.clone(Chart.defaults.global.title);
+		options.text = ['line1', 'line2'];
+		options.position = 'left';
+		options.display = true;
+		options.lineHeight = 1.5;
+
+		var title = new Chart.Title({
+			chart: chart,
+			options: options
+		});
+
+		var minSize = title.update(200, 400);
+
+		expect(minSize).toEqual({
+			width: 56,
 			height: 400
 		});
 	});
@@ -113,7 +131,7 @@ describe('Title block tests', function() {
 			args: []
 		}, {
 			name: 'translate',
-			args: [300, 66]
+			args: [300, 67.2]
 		}, {
 			name: 'rotate',
 			args: [0]
@@ -163,7 +181,7 @@ describe('Title block tests', function() {
 			args: []
 		}, {
 			name: 'translate',
-			args: [106, 250]
+			args: [117.2, 250]
 		}, {
 			name: 'rotate',
 			args: [-0.5 * Math.PI]
@@ -196,7 +214,7 @@ describe('Title block tests', function() {
 			args: []
 		}, {
 			name: 'translate',
-			args: [126, 250]
+			args: [117.2, 250]
 		}, {
 			name: 'rotate',
 			args: [0.5 * Math.PI]

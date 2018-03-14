@@ -4,7 +4,7 @@
 
 (function() {
 	Chart.plugins.register({
-		id: 'samples_filler_analyser',
+		id: 'samples-filler-analyser',
 
 		beforeInit: function(chart, options) {
 			this.element = document.getElementById(options.target);
@@ -20,7 +20,7 @@
 				return;
 			}
 
-			for (i=0, ilen=datasets.length; i<ilen; ++i) {
+			for (i = 0, ilen = datasets.length; i < ilen; ++i) {
 				meta = chart.getDatasetMeta(i).$filler;
 				if (meta) {
 					dataset = datasets[i];

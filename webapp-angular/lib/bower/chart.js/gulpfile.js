@@ -3,7 +3,6 @@ var concat = require('gulp-concat');
 var connect = require('gulp-connect');
 var eslint = require('gulp-eslint');
 var file = require('gulp-file');
-var htmlv = require('gulp-html-validator');
 var insert = require('gulp-insert');
 var replace = require('gulp-replace');
 var size = require('gulp-size');
@@ -17,34 +16,46 @@ var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var merge = require('merge-stream');
 var collapse = require('bundle-collapser/plugin');
-var argv  = require('yargs').argv
+var yargs = require('yargs');
 var path = require('path');
+var fs = require('fs');
+var htmllint = require('gulp-htmllint');
 var package = require('./package.json');
+
+var argv = yargs
+  .option('force-output', {default: false})
+  .option('silent-errors', {default: false})
+  .option('verbose', {default: false})
+  .argv
 
 var srcDir = './src/';
 var outDir = './dist/';
-var testDir = './test/';
 
 var header = "/*!\n" +
   " * Chart.js\n" +
   " * http://chartjs.org/\n" +
   " * Version: {{ version }}\n" +
   " *\n" +
-  " * Copyright 2017 Nick Downie\n" +
+  " * Copyright " + (new Date().getFullYear()) + " Chart.js Contributors\n" +
   " * Released under the MIT license\n" +
   " * https://github.com/chartjs/Chart.js/blob/master/LICENSE.md\n" +
   " */\n";
+
+if (argv.verbose) {
+  util.log("Gulp running with options: " + JSON.stringify(argv, null, 2));
+}
 
 gulp.task('bower', bowerTask);
 gulp.task('build', buildTask);
 gulp.task('package', packageTask);
 gulp.task('watch', watchTask);
-gulp.task('lint', lintTask);
+gulp.task('lint', ['lint-html', 'lint-js']);
+gulp.task('lint-html', lintHtmlTask);
+gulp.task('lint-js', lintJsTask);
 gulp.task('docs', docsTask);
-gulp.task('test', ['lint', 'validHTML', 'unittest']);
+gulp.task('test', ['lint', 'unittest']);
 gulp.task('size', ['library-size', 'module-sizes']);
 gulp.task('server', serverTask);
-gulp.task('validHTML', validHTMLTask);
 gulp.task('unittest', unittestTask);
 gulp.task('library-size', librarySizeTask);
 gulp.task('module-sizes', moduleSizesTask);
@@ -80,9 +91,25 @@ function bowerTask() {
 
 function buildTask() {
 
+  var errorHandler = function (err) {
+    if(argv.forceOutput) {
+      var browserError = 'console.error("Gulp: ' + err.toString() + '")';
+      ['Chart', 'Chart.min', 'Chart.bundle', 'Chart.bundle.min'].forEach(function(fileName) {
+        fs.writeFileSync(outDir+fileName+'.js', browserError);
+      });
+    }
+    if(argv.silentErrors) {
+      util.log(util.colors.red('[Error]'), err.toString());
+      this.emit('end');
+    } else {
+      throw err;
+    }
+  }
+
   var bundled = browserify('./src/chart.js', { standalone: 'Chart' })
     .plugin(collapse)
     .bundle()
+    .on('error', errorHandler)
     .pipe(source('Chart.bundle.js'))
     .pipe(insert.prepend(header))
     .pipe(streamify(replace('{{ version }}', package.version)))
@@ -97,6 +124,7 @@ function buildTask() {
     .ignore('moment')
     .plugin(collapse)
     .bundle()
+    .on('error', errorHandler)
     .pipe(source('Chart.js'))
     .pipe(insert.prepend(header))
     .pipe(streamify(replace('{{ version }}', package.version)))
@@ -126,10 +154,12 @@ function packageTask() {
   .pipe(gulp.dest(outDir));
 }
 
-function lintTask() {
+function lintJsTask() {
   var files = [
-    srcDir + '**/*.js',
-    testDir + '**/*.js'
+    'samples/**/*.html',
+    'samples/**/*.js',
+    'src/**/*.js',
+    'test/**/*.js'
   ];
 
   // NOTE(SB) codeclimate has 'complexity' and 'max-statements' eslint rules way too strict
@@ -137,31 +167,22 @@ function lintTask() {
   // to fix, let's turn them as warnings and rewrite code later progressively.
   var options = {
     rules: {
-      'complexity': [1, 6],
+      'complexity': [1, 10],
       'max-statements': [1, 30]
-    },
-    globals: [
-      'Chart',
-      'acquireChart',
-      'afterAll',
-      'afterEach',
-      'beforeAll',
-      'beforeEach',
-      'describe',
-      'expect',
-      'fail',
-      'it',
-      'jasmine',
-      'moment',
-      'spyOn',
-      'xit'
-    ]
+    }
   };
 
   return gulp.src(files)
     .pipe(eslint(options))
     .pipe(eslint.format())
     .pipe(eslint.failAfterError());
+}
+
+function lintHtmlTask() {
+  return gulp.src('samples/**/*.html')
+    .pipe(htmllint({
+      failOnError: true,
+    }));
 }
 
 function docsTask(done) {
@@ -177,11 +198,6 @@ function docsTask(done) {
   });
 }
 
-function validHTMLTask() {
-  return gulp.src('samples/*.html')
-    .pipe(htmlv());
-}
-
 function startTest() {
   return [
     {pattern: './test/fixtures/**/*.json', included: false},
@@ -190,8 +206,8 @@ function startTest() {
     './test/jasmine.index.js',
     './src/**/*.js',
   ].concat(
-    argv.inputs?
-      argv.inputs.split(';'):
+    argv.inputs ?
+      argv.inputs.split(';') :
       ['./test/specs/**/*.js']
   );
 }
@@ -204,7 +220,12 @@ function unittestTask(done) {
     args: {
       coverage: !!argv.coverage
     }
-  }, done).start();
+  },
+  // https://github.com/karma-runner/gulp-karma/issues/18
+  function(error) {
+    error = error ? new Error('Karma returned with the error code: ' + error) : undefined;
+    done(error);
+  }).start();
 }
 
 function librarySizeTask() {
@@ -216,9 +237,7 @@ function librarySizeTask() {
 
 function moduleSizesTask() {
   return gulp.src(srcDir + '**/*.js')
-    .pipe(uglify({
-      preserveComments: 'some'
-    }))
+    .pipe(uglify())
     .pipe(size({
       showFiles: true,
       gzip: true

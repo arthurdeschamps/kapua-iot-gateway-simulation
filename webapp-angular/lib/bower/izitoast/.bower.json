@@ -15,25 +15,28 @@
   "license": "Apache-2.0",
   "keywords": [
     "izitoast",
-    "notification",
     "toaster",
     "toast",
     "message",
+    "notification",
     "alert",
+    "info,",
+    "success",
+    "warning",
     "confirm",
+    "question",
     "js"
   ],
   "homepage": "http://izitoast.marcelodolce.com",
   "ignore": [],
-  "version": "1.1.5",
-  "_release": "1.1.5",
+  "version": "1.3.0",
+  "_release": "1.3.0",
   "_resolution": {
     "type": "version",
-    "tag": "v1.1.5",
-    "commit": "9f87adfb63521219b98de85aba52f2bc76245e40"
+    "tag": "v1.3.0",
+    "commit": "e2807fabeb00b0d1c8cfbdf3f0edac426dd2796e"
   },
   "_source": "https://github.com/dolce/iziToast.git",
   "_target": "^1.1.5",
-  "_originalSource": "izitoast",
-  "_direct": true
+  "_originalSource": "izitoast"
 }

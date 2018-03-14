@@ -25,12 +25,28 @@ ___
 - ### [Events](http://izitoast.marcelodolce.com/#Events)
 - ### [Use](http://izitoast.marcelodolce.com/#Start)
 ___
-#### [npm](https://www.npmjs.com/package/izitoast)
+
+#### Gulp Tasks
+The default build task
+```
+gulp
+```
+Rerun the build task when a file changes
+```
+gulp watch
+```
+___
+
+
+#### [NPM](https://www.npmjs.com/package/izitoast)
 ```
 npm install izitoast --save
 ```
-
-#### bower
+#### Yarn
+```
+yarn add izitoast --save
+```
+#### Bower
 ```
 bower install izitoast --save
 ```
@@ -39,6 +55,13 @@ bower install izitoast --save
 
 ```
 npm install ng2-izitoast --save
+```
+
+#### Vue 2 ([NPM](https://www.npmjs.com/package/vue-izitoast), [Github](https://github.com/arthurvasconcelos/vue-izitoast))
+
+```
+npm install vue-izitoast --save
+yarn add vue-izitoast
 ```
 
 #### [GEM](https://github.com/BadAllOff/iziToast-rails)

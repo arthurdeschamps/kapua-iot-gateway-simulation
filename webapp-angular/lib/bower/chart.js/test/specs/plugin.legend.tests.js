@@ -1,10 +1,5 @@
 // Test the rectangle element
 describe('Legend block tests', function() {
-	it('Should be constructed', function() {
-		var legend = new Chart.Legend({});
-		expect(legend).not.toBe(undefined);
-	});
-
 	it('should have the correct default config', function() {
 		expect(Chart.defaults.global.legend).toEqual({
 			display: true,
@@ -154,6 +149,31 @@ describe('Legend block tests', function() {
 			pointStyle: 'crossRot',
 			datasetIndex: 2
 		}]);
+	});
+
+	it('should not throw when the label options are missing', function() {
+		var makeChart = function() {
+			window.acquireChart({
+				type: 'bar',
+				data: {
+					datasets: [{
+						label: 'dataset1',
+						backgroundColor: '#f31',
+						borderCapStyle: 'butt',
+						borderDash: [2, 2],
+						borderDashOffset: 5.5,
+						data: []
+					}],
+					labels: []
+				},
+				options: {
+					legend: {
+						labels: false,
+					}
+				}
+			});
+		};
+		expect(makeChart).not.toThrow();
 	});
 
 	it('should draw correctly', function() {

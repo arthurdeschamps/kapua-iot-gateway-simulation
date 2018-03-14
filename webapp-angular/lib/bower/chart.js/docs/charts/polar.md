@@ -46,7 +46,6 @@ The following options can be included in a polar area chart dataset to configure
 
 | Name | Type | Description
 | ---- | ---- | -----------
-| `label` | `String` | The label for the dataset which appears in the legend and tooltips.
 | `backgroundColor` | `Color[]` | The fill color of the arcs in the dataset. See [Colors](../general/colors.md#colors)
 | `borderColor` | `Color[]` | The border color of the arcs in the dataset. See [Colors](../general/colors.md#colors)
 | `borderWidth` | `Number[]` | The border width of the arcs in the dataset.
@@ -56,7 +55,7 @@ The following options can be included in a polar area chart dataset to configure
 
 ## Config Options
 
-These are the customisation options specific to Polar Area charts. These options are merged with the [global chart configuration options](#global-chart-configuration), and form the options of the chart.
+These are the customisation options specific to Polar Area charts. These options are merged with the [global chart default options](#default-options), and form the options of the chart.
 
 | Name | Type | Default | Description
 | ---- | ---- | ------- | -----------
