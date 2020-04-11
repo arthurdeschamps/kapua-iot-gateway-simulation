@@ -8,11 +8,7 @@ For more information, take a look at:
 * [Topic system](docs/topic-system.md) : Description of the topic system used for communications
 
 ## Project status of advancement
-The simulation's backbone is done.
-
-Some details will be added and more content will be available in the UI.
-
-Maybe the Faker used in the simulation will be modified to make data more realistic.
+This project is completed.
 
 ## Google Summer of Code
 This project has been created and developed in the context of the Google Summer of Code 2017, under the guidance of [Jens Reimann](https://github.com/ctron).
